@@ -52,6 +52,12 @@ dev = [
     "ruff>=0.4",
     "pre-commit>=3.5",
 ]
+# full v1.1-style geographic rendering (options; graceful fallbacks exist)
+viz = [
+    "cartopy>=0.22",
+    "statsmodels>=0.14",
+    "openpyxl>=3.1",
+]
 
 [project.scripts]
 recad = "recad.cli:main"
@@ -80,7 +86,10 @@ src = ["src", "tests", "scripts"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4", "RUF"]
-ignore = ["E501"]  # line length is enforced by the formatter
+ignore = [
+    "E501",  # line length is enforced by the formatter
+    "UP031",  # %-format with LaTeX/µ markup is intentional in recad.viz text
+]
 
 [tool.ruff.format]
 quote-style = "double"

@@ -55,6 +55,8 @@ recad train       --config configs/global_1over8.yaml      # deep ensemble (GPU)
 recad predict     --config configs/global_1over8.yaml      # full product field (fCO2 + pCO2 + model std)
 recad uncertainty --config configs/global_1over8.yaml      # input-error MC + combined sigma_total
 recad validate    --config configs/global_1over8.yaml      # hold-out-year R2/RMSE table (v1.1 format)
+recad plot        --product outputs/ReCAD-v2.0-pCO2.nc     # v1.1-style figure set + summary tables
+                   --prepared outputs/prepared.nc --masks outputs/masks.nc
 ```
 
 Every knob of an experiment — domain, resolution, coastal mask, data paths,

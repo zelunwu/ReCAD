@@ -246,6 +246,28 @@ def cmd_validate(args) -> int:
     return 0
 
 
+def cmd_plot(args) -> int:
+    """Regenerate the v1.1-style figure set from product + data + masks."""
+    from recad.data.pipeline import load_masks, load_prepared
+    from recad.viz.report import render_figure_set
+
+    prepared = load_prepared(args.prepared)
+    masks = load_masks(args.masks)
+    outdir = args.outdir or "figures"
+    outputs = render_figure_set(
+        args.product,
+        prepared,
+        masks,
+        outdir,
+        fmts=tuple(args.fmt),
+        target_var=args.var,
+    )
+    for name in ("product_mean_map", "density_scatter_ttv", "trend_map"):
+        _LOG.info("wrote %s -> %s", name, outputs.get(name, "?"))
+    _LOG.info("plot set complete (%d outputs)", len(outputs))
+    return 0
+
+
 def cmd_e2e(args) -> int:
     """Full pipeline on synthetic data inside a workdir (CI smoke test)."""
     from recad.testing.synthetic import make_synthetic_workdir
@@ -336,6 +358,20 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--workdir", default=None, help="workdir (default: temp)")
     p.add_argument("--n-years", type=int, default=4)
     p.set_defaults(func=cmd_e2e)
+
+    p = sub.add_parser("plot", help="regenerate the v1.1-style figure set")
+    _add_common(p)
+    p.add_argument(
+        "--product",
+        default="outputs/ReCAD-v2.0-pCO2.nc",
+        help="product NetCDF from 'recad predict/uncertainty'",
+    )
+    p.add_argument("--prepared", default="outputs/prepared.nc")
+    p.add_argument("--masks", default="outputs/masks.nc")
+    p.add_argument("--outdir", default=None, help="figure output dir")
+    p.add_argument("--var", default="fco2", help="product variable to plot")
+    p.add_argument("--fmt", action="append", default=["png"], choices=["png", "pdf", "jpg"])
+    p.set_defaults(func=cmd_plot)
 
     return parser
 
