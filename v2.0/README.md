@@ -48,6 +48,10 @@ cmake --build csrc/build_cuda && ctest --test-dir csrc/build_cuda
 ## Full pipeline (config-driven, reproducible)
 
 ```bash
+recad download --list                              # data manifest (latest versions)
+recad download                                     # open sources -> data/raw (git-ignored)
+recad download --only socat --region=-100,-40,10,65 --years=1993,2021
+#   registered sources (sst/sss/adt/wspd/bathymetry): see docs/data_download.md
 recad describe                                    # registered data sources
 recad ingest      --config configs/global_1over8.yaml      # stage raw -> standardised cache
 recad preprocess  --config configs/global_1over8.yaml      # PreparedData + split masks + feature stats

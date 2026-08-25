@@ -268,6 +268,30 @@ def cmd_plot(args) -> int:
     return 0
 
 
+def cmd_download(args) -> int:
+    """Download the latest data stack into data/raw (git-ignored)."""
+    from recad.data.download import SOURCES
+    from recad.data.download import main as download_main
+
+    if args.list:
+        for name, spec in SOURCES.items():
+            auth = f"  [auth: {spec.requires_auth[:50]}...]" if spec.requires_auth else ""
+            _LOG.info("%-12s %s%s", name, spec.title, auth)
+        return 0
+    mapped: list[str] = []
+    if args.doc:
+        mapped.append("--doc")
+    if args.only:
+        mapped += ["--only", args.only]
+    if args.region != "-100,-40,10,65":
+        mapped += [f"--region={args.region}"]
+    if args.years != "1993,2021":
+        mapped += [f"--years={args.years}"]
+    if args.dry_run:
+        mapped.append("--dry-run")
+    return download_main(mapped)
+
+
 def cmd_e2e(args) -> int:
     """Full pipeline on synthetic data inside a workdir (CI smoke test)."""
     from recad.testing.synthetic import make_synthetic_workdir
@@ -372,6 +396,19 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--var", default="fco2", help="product variable to plot")
     p.add_argument("--fmt", action="append", default=["png"], choices=["png", "pdf", "jpg"])
     p.set_defaults(func=cmd_plot)
+
+    p = sub.add_parser("download", help="download the latest data stack into data/raw")
+    p.add_argument("--list", action="store_true", help="print the download manifest")
+    p.add_argument("--doc", action="store_true", help="print per-source instructions")
+    p.add_argument(
+        "--only",
+        default=None,
+        help="download one source (xco2air|socat|gshhg|sst|sss|adt|wspd|bathymetry)",
+    )
+    p.add_argument("--region", default="-100,-40,10,65", help="lon0,lon1,lat0,lat1 (SOCAT subset)")
+    p.add_argument("--years", default="1993,2021", help="year0,year1 (SOCAT subset)")
+    p.add_argument("--dry-run", action="store_true", help="plan only, download nothing")
+    p.set_defaults(func=cmd_download)
 
     return parser
 

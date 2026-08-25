@@ -29,14 +29,15 @@ htmlcov/
 .vscode/
 *.swp
 
-# Data & outputs (never commit large scientific artifacts)
-data/
-outputs/
-runs/
-*.nc
-*.mat
-*.zarr/
-*.h5
+# Data & outputs (never commit large scientific artifacts; paths are anchored
+# to the repo root so src/recad/data/ (the Python package) is NOT ignored)
+/data/
+/outputs/
+/runs/
+/*.nc
+/*.mat
+/*.zarr/
+/*.h5
 
 # OS noise
 .DS_Store
