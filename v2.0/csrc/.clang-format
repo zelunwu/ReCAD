@@ -1,0 +1,5 @@
+# Matches the style of include/recad/kernels.hpp (LLVM with a small tweak).
+BasedOnStyle: LLVM
+AllowShortFunctionsOnASingleLine: Inline
+IndentWidth: 2
+ColumnLimit: 80

@@ -1,0 +1,40 @@
+# ReCAD v2.0 - NACCOM benchmark at 1/8 degree.
+# Ports the v1.1 North-American-Atlantic-Coastal-Margin domain (the v1.1 grid
+# at quarter degree was lon [-100, -40] using the 0-360 convention 260-320
+# and lat 10-65) to the v2.0 pipeline WITH the exact v1.1 split protocol:
+#   - random 80/20 train/validation (create4DSplitIndices.m),
+#   - 2004-2005 held out as the external test set (RFR_models.mlx).
+# The purpose is a one-to-one benchmark of the ST-Transformer against the
+# published random-forest product (Wu et al., 2024, ESSD).
+grid:
+  domain: custom
+  resolution_deg: 0.125
+  lon_min: 260.0
+  lon_max: 320.0
+  lat_min: 10.0
+  lat_max: 65.0
+  patch_size_cells: 8            # 1 deg x 1 deg patches for the smaller domain
+
+split:
+  scheme: random_80_20            # exactly the v1.1 protocol
+  train_fraction: 0.8
+  seed: 100
+  test_holdout_years: [2004, 2005]
+
+model:
+  embed_dim: 64
+  n_heads: 4
+  spatial_layers: 2
+  temporal_layers: 2
+
+ensemble:
+  n_members: 5
+  bootstrap_fraction: 1.0         # v1.1 trained a single RF; ensemble is v2.0
+
+train:
+  n_epochs: 60
+  use_amp: true
+  device: auto
+
+output:
+  product_name: ReCAD-v2.0-pCO2-NACCOM-1over8-benchmark

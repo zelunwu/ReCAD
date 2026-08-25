@@ -1,0 +1,63 @@
+# ReCAD v2.0 - CPU smoke-test config (used by `recad e2e` and CI).
+# Tiny domain + tiny model: the whole pipeline must run in well under a
+# minute on a laptop, validating every stage end to end.
+grid:
+  domain: custom
+  resolution_deg: 0.125
+  lon_min: 0.0
+  lon_max: 20.0
+  lat_min: 10.0
+  lat_max: 20.0
+  patch_size_cells: 8
+
+coastal_mask:
+  method: file
+  source_file: data/raw/mask.nc
+
+data:
+  root: data/raw
+  year_min: 1993
+  year_max: 1993
+  variable_name: fco2
+  templates:
+    sst: sst.nc
+    sss: sss.nc
+    adt: adt.nc
+    wspd: wspd.nc
+    xco2air: xco2air.nc
+    fco2: fco2.nc
+    mask: mask.nc
+
+split:
+  scheme: random_80_20
+  train_fraction: 0.8
+  seed: 100
+  test_holdout_years: []
+
+model:
+  embed_dim: 8
+  n_heads: 2
+  spatial_layers: 1
+  temporal_layers: 1
+  mlp_ratio: 2.0
+  dropout: 0.0
+  head: gaussian
+
+ensemble:
+  n_members: 1
+
+train:
+  n_epochs: 1
+  batch_windows: 1
+  lr: 1.0e-3
+  use_amp: false
+  early_stop_patience: 5
+  checkpoint_dir: outputs/checkpoints
+
+uncertainty:
+  n_mc_draws: 2
+  propagate_input: false
+
+output:
+  out_dir: outputs
+  product_name: ReCAD-smoke

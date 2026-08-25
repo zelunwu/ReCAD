@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "recad"
+version = "2.0.0"
+description = "ReCAD v2.0 - Reconstructed Coastal Acidification Database: global-coastal sea-surface pCO2/fCO2 reconstruction with a spatio-temporal transformer deep ensemble, GPU-accelerated."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Zelun Wu", email = "zelunwu@outlook.com" },
+    { name = "Wei-Jun Cai", email = "wcai@udel.edu" },
+]
+keywords = [
+    "pCO2", "fCO2", "coastal ocean", "carbon cycle", "deep learning",
+    "transformer", "deep ensemble", "uncertainty quantification", "geoscience",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pandas>=2.0",
+    "xarray>=2024.1",
+    "netCDF4>=1.6",
+    "h5netcdf>=1.3",
+    "PyYAML>=6.0",
+    "tqdm>=4.66",
+    "matplotlib>=3.7",
+    "torch>=2.2",
+    "PyCO2SYS>=1.8",
+    "dask[array]>=2024.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.1",
+    "ruff>=0.4",
+    "pre-commit>=3.5",
+]
+
+[project.scripts]
+recad = "recad.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+recad = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "slow: long-running integration tests (default off)",
+    "gpu: tests requiring a CUDA-capable device",
+]
+filterwarnings = [
+    "ignore:Detected call of `lr_scheduler.step\\(\\)` before `optimizer.step\\(\\)`:UserWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4", "RUF"]
+ignore = ["E501"]  # line length is enforced by the formatter
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.coverage.run]
+source = ["recad"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

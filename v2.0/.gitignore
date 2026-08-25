@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+env/
+conda-env/
+.env
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+csrc/build*/
+csrc/out/
+
+# Test / coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Data & outputs (never commit large scientific artifacts)
+data/
+outputs/
+runs/
+*.nc
+*.mat
+*.zarr/
+*.h5
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Native bindings
+*.pyd
+*.so
+recad_cuda.dll

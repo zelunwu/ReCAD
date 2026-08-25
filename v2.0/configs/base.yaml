@@ -1,0 +1,92 @@
+# ReCAD v2.0 - base configuration.
+# Every field is documented in recad/config.py. Values inherit v1.1 choices
+# where comparability matters (see docs/migration_v1_to_v2.md).
+grid:
+  domain: global
+  resolution_deg: 0.125          # 1/8 degree
+  lon_min: 0.0
+  lon_max: 360.0
+  lat_min: -78.0
+  lat_max: 84.0
+  patch_size_cells: 16           # 2 deg x 2 deg spatial patches at 1/8 deg
+
+coastal_mask:
+  method: distance              # GSHHG coastline distance, see data_sources.md
+  distance_km: 200.0
+  source_file: null
+  socat_coastal_flag: true
+
+data:
+  root: data/raw
+  year_min: 1993
+  year_max: 2021
+  variable_name: fco2
+  longitude_shift: 0.0
+  templates:
+    sst: sst.nc
+    sss: sss.nc
+    adt: adt.nc
+    wspd: wspd.nc
+    xco2air: xco2air.nc
+    fco2: fco2.nc
+    mask: mask.nc
+
+split:
+  scheme: blocked_spatiotemporal  # rigorous default; random_80_20 = v1.1-style
+  train_fraction: 0.8
+  seed: 100                      # v1.1 seeding
+  test_holdout_years: [2004, 2005]  # v1.1 external test years
+  spatial_block_deg: 2.0
+  temporal_block_months: 6
+
+model:
+  name: st_transformer
+  embed_dim: 96
+  n_heads: 4
+  spatial_layers: 3
+  temporal_layers: 3
+  mlp_ratio: 4.0
+  dropout: 0.1
+  pos_encoding: sinusoidal
+  head: gaussian                  # heteroscedastic aleatoric uncertainty
+  temporal_window_months: 12
+
+ensemble:
+  n_members: 5
+  seed_offset: 0
+  bootstrap_fraction: 0.8         # year-level bootstrap per member
+
+train:
+  n_epochs: 80
+  batch_windows: 2
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  warmup_epochs: 3
+  scheduler: cosine
+  grad_clip_norm: 1.0
+  use_amp: true
+  early_stop_patience: 12
+  eval_every_epochs: 1
+  device: auto                    # cuda when available
+  checkpoint_dir: outputs/checkpoints
+  log_every_batches: 50
+
+uncertainty:
+  n_mc_draws: 100                 # v1.1 used 100 draws
+  propagate_input: true
+  input_uncertainties:            # v1.1 defaults (u_inputs_Monte_Carlo.mlx)
+    u_sst: 0.23
+    u_sss: 0.6
+    u_ssh: 0.018
+    u_u10: 0.901
+    u_pco2air: 0.22
+  per_pixel_sst_err: false
+  per_pixel_ssh_err: false
+  combine: rss
+
+output:
+  out_dir: outputs
+  product_name: ReCAD-v2.0-pCO2
+  product_attrs:
+    contact: zelunwu@outlook.com
+    license: CC-BY-4.0

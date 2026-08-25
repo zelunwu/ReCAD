@@ -1,0 +1,45 @@
+# ReCAD v2.0 - global coastal reconstruction at 1/8 degree (reference run).
+# Inherits all base defaults; only the production-relevant differences are
+# listed here. Data templates must point at the standardised cache produced
+# by `recad ingest` from the sources in docs/data_sources.md.
+grid:
+  domain: global
+  resolution_deg: 0.125
+  lon_min: 0.0
+  lon_max: 360.0
+  lat_min: -78.0
+  lat_max: 84.0
+  patch_size_cells: 16
+
+data:
+  root: data/raw
+  year_min: 1993
+  year_max: 2021
+  variable_name: fco2
+
+model:
+  embed_dim: 128
+  n_heads: 8
+  spatial_layers: 4
+  temporal_layers: 4
+
+ensemble:
+  n_members: 5
+
+train:
+  n_epochs: 100
+  batch_windows: 2
+  tile_cells: 131072             # per-item cell tile to bound GPU memory
+  use_amp: true
+  device: auto
+
+uncertainty:
+  n_mc_draws: 100
+  propagate_input: true
+  # NOTE: for the full 1/8-deg global run the MC input-error term becomes the
+  # dominant cost; the docs recommend a spatial subsample (tile_cells) for the
+  # MC pass. That subsample flag is wired through the CLI uncertainty command.
+
+output:
+  out_dir: outputs
+  product_name: ReCAD-v2.0-pCO2-global-1over8
