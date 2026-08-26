@@ -33,6 +33,7 @@ import time
 import urllib.error
 import urllib.request
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -423,31 +424,52 @@ def _list_month_files(month_url: str) -> list[str]:
     return files
 
 
+def _download_oisst_month(dest_dir: Path, year: int, month: str) -> int:
+    """Download one OISST YYYYMM/ directory; return the file count."""
+    month_url = f"{OISST_BASE}{year:04d}{month}/"
+    files = _list_month_files(month_url)
+    for fname in files:
+        dest = dest_dir / fname
+        download_file(month_url + fname, dest, timeout=300, show_progress=False)
+    _LOG.info("OISST: %04d-%s -> %d files", year, month, len(files))
+    return len(files)
+
+
 def download_sst(
     root: Path,
     year_range: tuple[int, int],
     *,
     months: tuple[str, ...] | None = None,
+    workers: int = 4,
 ) -> Path:
     """Download OISST v2.1 daily files for the given years (open archive).
 
     ``months`` selects 2-digit month names (e.g. ("01", "02")); None = all 12.
-    Files keep their original names under ``data/raw/sst/``; ingest averages
-    them to the monthly target field. ~1.7 MB/day -> ~620 MB/year.
+    ``workers`` parallel HTTP streams within/across month directories (this
+    archive tolerates concurrent connections; the bottleneck is usually the
+    link). Files keep their original names under ``data/raw/sst/``; ingest
+    averages them to the monthly target field. ~1.7 MB/day -> ~620 MB/year.
     """
     dest_dir = touch_dir(root / SOURCES["sst"].dest_dir)
     y0, y1 = int(year_range[0]), int(year_range[1])
     month_list = months or tuple(f"{m:02d}" for m in range(1, 13))
-    count = 0
-    for y in range(y0, y1 + 1):
-        for mm in month_list:
-            month_url = f"{OISST_BASE}{y:04d}{mm}/"
-            files = _list_month_files(month_url)
-            for fname in files:
-                dest = dest_dir / fname
-                download_file(month_url + fname, dest, timeout=300)
-                count += 1
-    _LOG.info("OISST: %d daily files for %d-%d -> %s", count, y0, y1, dest_dir)
+    tasks = [(y, mm) for y in range(y0, y1 + 1) for mm in month_list]
+    total = 0
+    errors: list[str] = []
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        futures = {pool.submit(_download_oisst_month, dest_dir, y, mm): (y, mm) for y, mm in tasks}
+        for future in futures:
+            y, mm = futures[future]
+            try:
+                total += future.result()
+            except Exception as exc:
+                errors.append(f"{y:04d}-{mm}: {exc}")
+                _LOG.error("OISST %04d-%s failed: %s", y, mm, exc)
+    if errors:
+        _LOG.warning(
+            "OISST: %d/%d month dirs had failures -> rerun to resume", len(errors), len(tasks)
+        )
+    _LOG.info("OISST: %d daily files for %d-%d -> %s", total, y0, y1, dest_dir)
     return dest_dir
 
 
@@ -548,6 +570,7 @@ def download_source(
     years=(1993, 2021),
     kind: str = "decimated",
     months: tuple[str, ...] | None = None,
+    workers: int = 4,
 ) -> Path:
     """Download one manifest source into ``root``; raise on auth-gated ones."""
     if name not in SOURCES:
@@ -564,7 +587,7 @@ def download_source(
     if name == "socat_tracks":
         return download_socat_tracks(root, region, years, kind=kind)
     if name == "sst":
-        return download_sst(root, years, months=months)
+        return download_sst(root, years, months=months, workers=workers)
     raise ValueError(f"no downloader implemented for '{name}'")
 
 
@@ -623,6 +646,12 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="OISST months to fetch, comma-separated (e.g. 01,02); default: all 12",
     )
+    parser.add_argument(
+        "--sst-workers",
+        type=int,
+        default=4,
+        help="parallel OISST month-download threads (default 4)",
+    )
     parser.add_argument("--dry-run", action="store_true", help="resolve URLs/plans only")
     args = parser.parse_args(argv)
 
@@ -654,7 +683,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.only:
         try:
             path = download_source(
-                args.only, region=region, years=years, kind=args.kind, months=months
+                args.only,
+                region=region,
+                years=years,
+                kind=args.kind,
+                months=months,
+                workers=args.sst_workers,
             )
             _LOG.info("downloaded %s -> %s", args.only, path)
         except (RuntimeError, ValueError) as exc:
