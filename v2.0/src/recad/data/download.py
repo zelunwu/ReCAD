@@ -106,15 +106,12 @@ SOURCES: dict[str, DownloadSpec] = {
     ),
     "sst": DownloadSpec(
         name="sst",
-        title="OISST v2.1 sea-surface temperature (0.25 deg, daily)",
+        title="OISST v2.1 sea-surface temperature (0.25 deg, daily, no login)",
         kind="sst",
         dest_dir="sst",
-        note="Distribution moved to NCEI cloud/PODAAC-style archives; download via "
-        "https://www.ncei.noaa.gov/products/optimum-interpolation-sst or the NCEI "
-        "THREDDS fileServer, place daily .nc files in data/raw/sst/*.nc. The ingest "
-        "pipeline averages daily -> monthly on the target grid.",
-        requires_auth="no login for NCEI bulk access; exact HTTPS patterns are "
-        "distribution-dependent - see docs/data_download.md",
+        note="NCEI open archive (no account): monthly dirs access/avhrr/YYYYMM/ with "
+        "daily files oisst-avhrr-v02r01.YYYYMMDD.nc (~1.7 MB each, sst+err+ice). "
+        "recad ingest averages daily -> monthly on the target grid.",
     ),
     "sss": DownloadSpec(
         name="sss",
@@ -410,6 +407,50 @@ def download_xco2air(root: Path) -> Path:
     return dest
 
 
+OISST_BASE = (
+    "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/"
+    "v2.1/access/avhrr/"
+)
+"""NCEI open archive root for OISST v2.1 daily AVHRR files (no login)."""
+
+
+def _list_month_files(month_url: str) -> list[str]:
+    """List daily .nc files in one OISST YYYYMM/ directory."""
+    import re
+
+    txt = _fetch_text(month_url)
+    files = sorted(set(re.findall(r'href="([^"]+\.nc)"', txt)))
+    return files
+
+
+def download_sst(
+    root: Path,
+    year_range: tuple[int, int],
+    *,
+    months: tuple[str, ...] | None = None,
+) -> Path:
+    """Download OISST v2.1 daily files for the given years (open archive).
+
+    ``months`` selects 2-digit month names (e.g. ("01", "02")); None = all 12.
+    Files keep their original names under ``data/raw/sst/``; ingest averages
+    them to the monthly target field. ~1.7 MB/day -> ~620 MB/year.
+    """
+    dest_dir = touch_dir(root / SOURCES["sst"].dest_dir)
+    y0, y1 = int(year_range[0]), int(year_range[1])
+    month_list = months or tuple(f"{m:02d}" for m in range(1, 13))
+    count = 0
+    for y in range(y0, y1 + 1):
+        for mm in month_list:
+            month_url = f"{OISST_BASE}{y:04d}{mm}/"
+            files = _list_month_files(month_url)
+            for fname in files:
+                dest = dest_dir / fname
+                download_file(month_url + fname, dest, timeout=300)
+                count += 1
+    _LOG.info("OISST: %d daily files for %d-%d -> %s", count, y0, y1, dest_dir)
+    return dest_dir
+
+
 def download_socat_tracks(root: Path, region, years, *, kind: str = "decimated") -> Path:
     """SOCAT scatter observations via ERDDAP tabledap (window subset).
 
@@ -506,6 +547,7 @@ def download_source(
     region=(-100.0, -40.0, 10.0, 65.0),
     years=(1993, 2021),
     kind: str = "decimated",
+    months: tuple[str, ...] | None = None,
 ) -> Path:
     """Download one manifest source into ``root``; raise on auth-gated ones."""
     if name not in SOURCES:
@@ -521,6 +563,8 @@ def download_source(
         return download_socat(root, region, years)
     if name == "socat_tracks":
         return download_socat_tracks(root, region, years, kind=kind)
+    if name == "sst":
+        return download_sst(root, years, months=months)
     raise ValueError(f"no downloader implemented for '{name}'")
 
 
@@ -574,6 +618,11 @@ def main(argv: list[str] | None = None) -> int:
         nargs="?",
         help="year0,year1 (SOCAT subset); e.g. --years=1993,2021",
     )
+    parser.add_argument(
+        "--months",
+        default=None,
+        help="OISST months to fetch, comma-separated (e.g. 01,02); default: all 12",
+    )
     parser.add_argument("--dry-run", action="store_true", help="resolve URLs/plans only")
     args = parser.parse_args(argv)
 
@@ -592,6 +641,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         region = tuple(float(x) for x in args.region.split(","))
         years = tuple(int(x) for x in args.years.split(","))
+        months = tuple(args.months.split(",")) if args.months else None
     except ValueError:
         parser.error("--region/--years must be four/two comma-separated numbers")
 
@@ -603,13 +653,15 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.only:
         try:
-            path = download_source(args.only, region=region, years=years, kind=args.kind)
+            path = download_source(
+                args.only, region=region, years=years, kind=args.kind, months=months
+            )
             _LOG.info("downloaded %s -> %s", args.only, path)
         except (RuntimeError, ValueError) as exc:
             _LOG.error("%s", exc)
             return 1
     else:
-        # download the open sources by default, report the auth-gated ones
+        # open sources by default (large/opt-in ones skipped - use --only)
         for name in SOURCES:
             if SOURCES[name].requires_auth:
                 _LOG.warning(
@@ -618,8 +670,13 @@ def main(argv: list[str] | None = None) -> int:
                     SOURCES[name].requires_auth,
                 )
                 continue
-            if name == "socat_tracks":
-                continue  # tracks are a large opt-in subset; use --only socat_tracks
+            if name in ("socat_tracks", "sst"):
+                _LOG.warning(
+                    "skipping '%s' (large opt-in; use --only %s with --years/--months)",
+                    name,
+                    name,
+                )
+                continue
             try:
                 download_source(name, region=region, years=years)
             except Exception as exc:

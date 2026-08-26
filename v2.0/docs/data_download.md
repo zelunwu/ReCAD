@@ -99,24 +99,36 @@ recad download --doc                           # 打印各源说明
   （`recad ingest` 时把掩膜栅格化成 `data/raw/mask.nc`；或直接下载社区
   预生成掩膜置于 `data/raw/mask.nc`）。
 
-## 4. SST — OISST v2.1（0.25°，日平均；需自行批量下载）
+## 4. SST — OISST v2.1（0.25°，日平均，**免账号直链**）
 
-- 版本：**OISST v2.1**（NCEI，仍是当前主产品；无 v3）。
-- 入口（NCEI 归档/云分发，HTTPS 模式随分发方不同，勿硬编码）：
-  - 产品页：<https://www.ncei.noaa.gov/products/optimum-interpolation-sst>
-  - THREDDS：<https://www.ncei.noaa.gov/thredds-ocean/catalog/oisst-base/catalog.html>
-- 最小方案（先验证流程）：
+- 版本：**OISST v2.1**（NCEI 开放归档，无需注册；当前主产品，无 v3）。
+- 官方目录（月为单位组织）：
+  `https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/YYYYMM/`
+  每日文件 `oisst-avhrr-v02r01.YYYYMMDD.nc`（sst/err/ice/anom 四变量，
+  0.25° 全球，**约 1.7 MB/天** → 一年约 620 MB）。
+- 工具下载（推荐，断点续传 + 校验）：
   ```bash
-  # 直接在浏览器/NCEI 归档选取 1993 年 1 月的 daily 文件（~15 MB/天），
-  # 或下载月度聚合文件 OISST-V2.1-AVHRR_19930101-...v02r01 系列。
-  # 放入：
-  mkdir -p data/raw/sst
-  # 每个文件命名为 oisst 任意 *.nc 均可；recad ingest 会日→月平均并重采样到目标网格
+  # 单个验证月
+  recad download --only sst --years=1993,1993 --months=01
+  # 整年（1993 全年 = 12 个月目录，约 620 MB）
+  recad download --only sst --years=1993,1993
+  # 多年（NACCOM 重建 1993-2021 全量约 18 GB，建议分批/后台）
+  recad download --only sst --years=1993,2000
   ```
-- 需求规模：全球月度化 SST 的最小集 = 每期 monthly aggregate（~10 GB/年
-  daily原始估算 → 建议只取 monthly mean 产品）。
-- 替代（可选）：MUR 1 km（2002+）、ESA CCI/C3S 0.05°（见
-  `docs/data_sources.md` §4）。
+- wget 直抓（一个月；用户自选）：
+  ```bash
+  # 方式 A：整目录镜像（每月目录）
+  wget -r -np -nH --cut-dirs=5 -A 'oisst-avhrr-v02r01.*.nc' \
+       https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/199301/
+  # 方式 B：curl 循环（更直观）
+  for d in $(seq -w 1 31); do
+    curl -O "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/199301/oisst-avhrr-v02r01.199301${d}.nc"
+  done
+  ```
+- 落地：`data/raw/sst/*.nc`（保持原名即可；`recad ingest` 自动日→月平均并重采样）。
+- 注意区分 `access/avhrr/`（AVHRR-only，与 v1.1 相同）与 `access/avhrr-asc/`
+  （加 ASCAT，产品页选择时注意）；本仓库默认前者。
+- 替代（可选）：MUR 1 km（2002+）、ESA CCI/C3S 0.05°（见 `docs/data_sources.md` §4）。
 
 ## 5. SSS — GLORYS12v1（CMEMS，需注册）
 

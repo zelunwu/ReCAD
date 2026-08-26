@@ -138,10 +138,51 @@ def test_build_socat_subset_url_uses_coordinates(monkeypatch):
 
 
 def test_download_source_auth_gated(tmp_path):
-    with pytest.raises(RuntimeError, match="requires external access"):
-        dl.download_source("sss", root=tmp_path)
-    with pytest.raises(RuntimeError, match="requires external access"):
-        dl.download_source("sst", root=tmp_path)
+    for name in ("sss", "adt", "wspd", "bathymetry"):
+        with pytest.raises(RuntimeError, match="requires external access"):
+            dl.download_source(name, root=tmp_path)
+
+
+def test_list_month_files_regex(monkeypatch):
+    """The OISST month-directory parser extracts daily .nc names."""
+
+    def fake_fetch(url, timeout=60):
+        return (
+            '<a href="..">../</a>\n'
+            '<a href="oisst-avhrr-v02r01.19930102.nc">..nc</a>\n'
+            '<a href="oisst-avhrr-v02r01.19930101.nc">..nc</a>\n'
+            '<a href="README.txt">readme</a>\n'
+        )
+
+    monkeypatch.setattr(dl, "_fetch_text", fake_fetch)
+    files = dl._list_month_files("http://x/199301/")
+    assert files == ["oisst-avhrr-v02r01.19930101.nc", "oisst-avhrr-v02r01.19930102.nc"]
+
+
+def test_download_sst_routes_through_files(monkeypatch, tmp_path):
+    """download_source('sst') no longer requires auth and writes to sst/."""
+    from pathlib import Path
+
+    calls: list[tuple[str, Path]] = []
+
+    def fake_download(url, dest, **kw):
+        calls.append((url, dest))
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(b"dummy")
+        return dest
+
+    def fake_list(month_url):
+        m = month_url.rstrip("/").rsplit("/", 1)[-1]
+        return [f"oisst-avhrr-v02r01.{m}01.nc", f"oisst-avhrr-v02r01.{m}02.nc"]
+
+    monkeypatch.setattr(dl, "download_file", fake_download)
+    monkeypatch.setattr(dl, "_list_month_files", fake_list)
+    out = dl.download_source("sst", root=tmp_path, years=(1993, 1993), months=("01",))
+    assert out == tmp_path / "sst"
+    assert len(calls) == 2
+    assert calls[0][1].parent == tmp_path / "sst"
+    assert calls[0][1].name.endswith(".nc")
+    assert "199301" in calls[0][0]
 
 
 def test_unknown_source_rejected(tmp_path):
