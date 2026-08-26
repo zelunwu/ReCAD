@@ -85,8 +85,8 @@ def build_target_grid(cfg: GridConfig) -> DomainGrid:
     else:
         raise ConfigError(f"unknown domain preset: {cfg.domain}")
 
-    n_lon = int(round((lon_max - lon_min) / cfg.resolution_deg))
-    n_lat = int(round((lat_max - lat_min) / cfg.resolution_deg)) + 1
+    n_lon = int(np.ceil((lon_max - lon_min) / cfg.resolution_deg))
+    n_lat = int(np.ceil((lat_max - lat_min) / cfg.resolution_deg)) + 1
     # Longitude is half-open [min, max): the last node is max - res, so a
     # global 1/8-deg grid has exactly 2880 nodes and no duplicated wrap cell.
     lon = lon_min + np.arange(n_lon, dtype=np.float64) * cfg.resolution_deg

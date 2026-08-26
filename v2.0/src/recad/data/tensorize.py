@@ -104,9 +104,8 @@ class CoastalPatchDataset(Dataset):
             year_repeats: optional per-year multiplicity (ensemble-bootstrap),
                 mapping year index -> number of times its windows appear.
         """
-        if masks is not None:
-            if split is None or split not in masks.names:
-                raise ValueError(f"split must be one of {masks.names}, got {split}")
+        if masks is not None and (split is None or split not in masks.names):
+            raise ValueError(f"split must be one of {masks.names}, got {split}")
         self.prepared = prepared
         self.masks = masks
         self.split = split
@@ -195,9 +194,7 @@ class CoastalPatchDataset(Dataset):
         self.token_feats_ym = np.full(
             (n_year, MONTHS_PER_YEAR, n_active, n_pred), np.nan, dtype=np.float32
         )
-        self.coverage_ym = np.zeros(
-            (n_year, MONTHS_PER_YEAR, n_active), dtype=np.float32
-        )
+        self.coverage_ym = np.zeros((n_year, MONTHS_PER_YEAR, n_active), dtype=np.float32)
         flat_ids = self.patch_map.ravel().astype(np.int32)
 
         for y in range(n_year):
@@ -229,7 +226,6 @@ class CoastalPatchDataset(Dataset):
         P = self.active_tokens.size
         C = self.n_cells
         prepared = self.prepared
-        arr_shape = prepared.shape4d
 
         # ---- per cell: month cyclic encoding + z-scored predictors ----
         mon_sin = np.sin(2 * np.pi * (months + 1) / 12).astype(np.float32)
@@ -257,10 +253,7 @@ class CoastalPatchDataset(Dataset):
                 cell_feats[t, :, 4 + n_pred + j] = missing.astype(np.float32)
             tgt = prepared.target_values()[y, m, :, :].reshape(-1)[flat_sel]
             targets[t] = (tgt - self.t_mean) / self.t_std  # standardized target
-            if self.require_target:
-                valid = ~np.isnan(tgt)
-            else:
-                valid = np.ones(tgt.shape, dtype=bool)  # every coastal/selected cell
+            valid = ~np.isnan(tgt) if self.require_target else np.ones(tgt.shape, dtype=bool)
             cell_mask[t] = valid
             cell_patch[t] = self.token_pos[self.patch_map.ravel()[flat_sel]]
             cell_patch[t][cell_patch[t] < 0] = -1

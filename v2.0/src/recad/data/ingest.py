@@ -10,22 +10,17 @@ two hardening changes documented in ``docs/migration_v1_to_v2.md``:
 
 from __future__ import annotations
 
-from typing import Iterable
-
 import numpy as np
 import xarray as xr
 
 from recad.constants import N_STD_OUTLIER
-
 
 # ---------------------------------------------------------------------------
 # Quality control
 # ---------------------------------------------------------------------------
 
 
-def apply_qc(
-    values: np.ndarray, vmin: float | None, vmax: float | None
-) -> np.ndarray:
+def apply_qc(values: np.ndarray, vmin: float | None, vmax: float | None) -> np.ndarray:
     """Set values outside [vmin, vmax] to NaN (bounds inclusive keep)."""
     out = np.asarray(values, dtype=np.float64).copy()
     if vmin is not None:
@@ -102,7 +97,7 @@ def calc_clim_anom(ts: np.ndarray, n_years: int) -> tuple[np.ndarray, np.ndarray
         anom = series.reshape(n_years, 12) - clim
         clim_flat[:, k] = clim
         anom_flat[:, k] = anom.ravel()
-    clim = clim_flat.reshape((12,) + ts.shape[1:])
+    clim = clim_flat.reshape((12, *ts.shape[1:]))
     anom = anom_flat.reshape(ts.shape)
     return clim, anom
 

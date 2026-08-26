@@ -84,6 +84,17 @@ SOURCES: dict[str, DownloadSpec] = {
         "Subsets are built live by index from the .dds metadata and coordinate arrays, "
         "so any lon/lat/time window fits in one NetCDF.",
     ),
+    "socat_tracks": DownloadSpec(
+        name="socat_tracks",
+        title="SOCAT scatter observations (per-cruise tracks, decimated/full)",
+        kind="target_scatter",
+        dest_dir="socat_tracks",
+        note="original scatter observations (per-cruise tracks) at full spatial "
+        "precision of the in-situ positions - the 0.25-deg gridded product "
+        "averages them away.  Windows are subset via ERDDAP tabledap "
+        "(socat_v2026_decimated / socat_v2026_fulldata); columns include "
+        "fCO2_recommended and the WOCE_CO2_water QC flag.",
+    ),
     "gshhg": DownloadSpec(
         name="gshhg",
         title="GSHHG coastline database v2.3.7 (Zenodo)",
@@ -381,9 +392,7 @@ def build_socat_subset_url(
     xi, xf = _index_range(lon_vals, lon0, lon1)
     yi, yf = _index_range(lat_vals, lat0, lat1)
 
-    var_spec = ",".join(
-        f"{v}[{t0}:1:{t1}][{yi}:1:{yf}][{xi}:1:{xf}]" for v in variables
-    )
+    var_spec = ",".join(f"{v}[{t0}:1:{t1}][{yi}:1:{yf}][{xi}:1:{xf}]" for v in variables)
     return f"{base}.nc?{var_spec}"
 
 
@@ -401,6 +410,46 @@ def download_xco2air(root: Path) -> Path:
     return dest
 
 
+def download_socat_tracks(root: Path, region, years, *, kind: str = "decimated") -> Path:
+    """SOCAT scatter observations via ERDDAP tabledap (window subset).
+
+    ``kind`` selects ``decimated`` (1/minute, the modelling standard) or
+    ``fulldata`` (all observations; much larger). The returned NetCDF keeps
+    per-observation rows with ``fCO2_recommended`` and the WOCE QC flag.
+    """
+    if kind not in ("decimated", "fulldata"):
+        raise ValueError(f"unknown tracks kind '{kind}'")
+    dest_dir = touch_dir(root / SOURCES["socat_tracks"].dest_dir)
+    version = "v2026"
+    dataset = f"socat_{version}_{kind}"
+    base = f"https://data.pmel.noaa.gov/socat/erddap/tabledap/{dataset}"
+    lon0, lon1, lat0, lat1 = region
+    y0, y1 = int(years[0]), int(years[1])
+    cols = ",".join(
+        (
+            "time",
+            "latitude",
+            "longitude",
+            "fCO2_recommended",
+            "WOCE_CO2_water",
+            "dataset_name",
+            "sal",
+            "temp",
+        )
+    )
+    url = (
+        f"{base}.nc?{cols}"
+        f"&longitude>={lon0}&longitude<={lon1}"
+        f"&latitude>={lat0}&latitude<={lat1}"
+        f"&year>={y0}&year<={y1}"
+    )
+    fname = f"SOCAT_{version}_{kind}_lon{lon0}_{lon1}_lat{lat0}_{lat1}_{y0}-{y1}.nc"
+    dest = dest_dir / fname
+    download_file(url, dest, timeout=600)
+    write_checksum(dest)
+    return dest
+
+
 def download_gshhg(root: Path) -> Path:
     import json as _json
 
@@ -412,7 +461,9 @@ def download_gshhg(root: Path) -> Path:
     if not files:
         raise RuntimeError(f"Zenodo record {record} exposes no files")
     # prefer the shapefile archive when present, else the first file
-    pick = next((f for f in files if "shp" in f["key"] or "tar" in f["key"] or "zip" in f["key"]), files[0])
+    pick = next(
+        (f for f in files if "shp" in f["key"] or "tar" in f["key"] or "zip" in f["key"]), files[0]
+    )
     url = pick["links"]["self"]
     dest = dest_dir / pick["key"]
     download_file(url, dest)
@@ -449,7 +500,12 @@ def download_socat(root: Path, region, years) -> Path:
 
 
 def download_source(
-    name: str, root: Path = DATA_ROOT, *, region=(-100.0, -40.0, 10.0, 65.0), years=(1993, 2021)
+    name: str,
+    root: Path = DATA_ROOT,
+    *,
+    region=(-100.0, -40.0, 10.0, 65.0),
+    years=(1993, 2021),
+    kind: str = "decimated",
 ) -> Path:
     """Download one manifest source into ``root``; raise on auth-gated ones."""
     if name not in SOURCES:
@@ -463,6 +519,8 @@ def download_source(
         return download_gshhg(root)
     if name == "socat":
         return download_socat(root, region, years)
+    if name == "socat_tracks":
+        return download_socat_tracks(root, region, years, kind=kind)
     raise ValueError(f"no downloader implemented for '{name}'")
 
 
@@ -492,7 +550,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="recad-download", description=__doc__)
     parser.add_argument("--list", action="store_true", help="print the manifest")
     parser.add_argument("--doc", action="store_true", help="print per-source instructions")
-    parser.add_argument("--only", default=None, help="download one source by name")
+    parser.add_argument(
+        "--only",
+        default=None,
+        help="download one source (xco2air|socat|socat_tracks|gshhg|sst|sss|adt|wspd|bathymetry)",
+    )
+    parser.add_argument(
+        "--kind",
+        default="decimated",
+        choices=["decimated", "fulldata"],
+        help="SOCAT tracks kind (decimated=1/minute standard; fulldata=all obs)",
+    )
     parser.add_argument(
         "--region",
         default="-100,-40,10,65",
@@ -535,7 +603,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.only:
         try:
-            path = download_source(args.only, region=region, years=years)
+            path = download_source(args.only, region=region, years=years, kind=args.kind)
             _LOG.info("downloaded %s -> %s", args.only, path)
         except (RuntimeError, ValueError) as exc:
             _LOG.error("%s", exc)
@@ -550,6 +618,8 @@ def main(argv: list[str] | None = None) -> int:
                     SOURCES[name].requires_auth,
                 )
                 continue
+            if name == "socat_tracks":
+                continue  # tracks are a large opt-in subset; use --only socat_tracks
             try:
                 download_source(name, region=region, years=years)
             except Exception as exc:

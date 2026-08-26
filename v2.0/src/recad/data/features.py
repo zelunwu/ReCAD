@@ -57,9 +57,7 @@ class PreparedData:
     def require(self, name: str) -> np.ndarray:
         """Return a field array, raising if it is absent."""
         if name not in self.arrays:
-            raise KeyError(
-                f"field '{name}' not present; have: {sorted(self.arrays)}"
-            )
+            raise KeyError(f"field '{name}' not present; have: {sorted(self.arrays)}")
         return self.arrays[name]
 
     def target_values(self) -> np.ndarray:

@@ -47,15 +47,47 @@ recad download --doc                           # 打印各源说明
   片 → 下载单变量 NetCDF（断点续传）。
 - 命令：
   ```bash
-  recad download --only socat --region -100,-40,10,65 --years 1993,2021   # NACCOM 窗口
-  # 全球：直接把窗口换成全局 --region -180,-180,-90,90？不对——
-  # SOCAT 经度为 0-360，见下：
-  recad download --only socat --region 0,360,-78,84 --years 1993,2021      # 全球窗口（大！）
+  recad download --only socat --region=-100,-40,10,65 --years=1993,2021   # NACCOM 窗口
   ```
 - 落地：`data/raw/socat/SOCAT_v2026_coast_monthly_lon.._lat.._1993-2021.nc`
 - 手工方式（浏览器）：打开
   <https://data.pmel.noaa.gov/socat/erddap/griddap/SOCAT_v2026_qrtrdeg_gridded_coast_monthly.html>
   选择变量与窗口导出 `.nc`。
+
+### 2b. SOCAT 原始散点观测（tracks）——训练推荐（本仓库默认路线）
+
+网格化产品把每个 0.25° 格内的观测**平均**掉了，丢失船测航迹的原位空间
+信息（河口、陆架锋、近岸梯度）。**点级（scatter）训练**保留每个观测的
+原始经纬度，预测因子在观测位置采样——这正是 1/8° 海岸重建需要的精度。
+
+- 数据源：PMEL ERDDAP **tabledap** `socat_v2026_decimated`（1 分钟抽稀，
+  建模标准）或 `socat_v2026_fulldata`（全部观测，体量大很多）。
+- 命令：
+  ```bash
+  # NACCOM 窗口 1993-2021（decimated；约几十 MB，视航次密度）
+  recad download --only socat_tracks --region=-100,-40,10,65 --years=1993,2021
+  # 全球窗口（很大；建议按区域/年份分批下）
+  recad download --only socat_tracks --region=0,360,-78,84 --years=1993,2010
+  # 全部观测（不含 1 分钟抽稀；数据量约为 decimated 的 3-5 倍）
+  recad download --only socat_tracks --kind=fulldata --region=-100,-40,10,65 --years=1993,2021
+  ```
+- 落地：`data/raw/socat_tracks/SOCAT_v2026_decimated_lon.._lat.._1993-2021.nc`
+  每行一个观测：`time, latitude, longitude, fCO2_recommended,
+  WOCE_CO2_water(QC旗标), dataset_name, sal, temp`。
+- 读取/QC/预测因子采样（`recad.data.tracks`）：
+  ```python
+  from recad.data.tracks import load_tracks, qc_tracks, prepare_point_table
+  from recad.data.pipeline import load_prepared
+  tr = qc_tracks(load_tracks("data/raw/socat_tracks/*.nc"), qc_flag_max=2)
+  tab = prepare_point_table(tr, load_prepared("outputs/prepared.nc"))
+  # tab.predictors: [n, 5] = 每个观测处采样的 sst/sss/adt/pco2air/wspd
+  ```
+- QC 说明：`WOCE_CO2_water <= 2` 视为可用（SOCAT 约定）；fCO2 范围与
+  3σ 规则沿用 v1.1（`recad.constants.QC_RANGES`）；**划分训练/验证/测试**
+  必须在散点层面按时间或船次进行（点级训练的下一步，见 docs/design.md）。
+- 整库（可选）：`files/socat_v2026_fulldata/`、`files/socat_v2026_decimated/`
+  目录下有逐船次 CSV，可全量镜像；
+  文档数据库 SOCAT v2025：<https://catalog.data.gov/dataset/surface-ocean-co2-atlas-database-version-2025-socatv2025-ncei-accession-0304549>。
 
 ## 3. GSHHG 海岸线（开放，约 55 MB）
 

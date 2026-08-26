@@ -105,8 +105,7 @@ _SOURCES: tuple[DataSourceSpec, ...] = (
         native_resolution_deg=(4.0, 5.0),
         temporal_sampling="monthly",
         years="1992-present",
-        v11_provenance="Data_readalldata.ipynb cell 8 (NOAA GML Surface CO2, "
-        "90S-90N latitudes)",
+        v11_provenance="Data_readalldata.ipynb cell 8 (NOAA GML Surface CO2, 90S-90N latitudes)",
         notes="Converted to pCO2air at in-situ SST/SSS with PyCO2SYS.",
     ),
     DataSourceSpec(
@@ -117,8 +116,7 @@ _SOURCES: tuple[DataSourceSpec, ...] = (
         temporal_sampling="static",
         years="-",
         v11_provenance="v1.1 hand-crafted regional masks (RFR_models.mlx cell 12)",
-        notes="v2.0 uses a reproducible coastline-distance mask (GSHHG), "
-        "see docs/data_sources.md.",
+        notes="v2.0 uses a reproducible coastline-distance mask (GSHHG), see docs/data_sources.md.",
     ),
 )
 

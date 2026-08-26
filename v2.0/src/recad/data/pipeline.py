@@ -25,7 +25,7 @@ import xarray as xr
 
 from recad.config import Config
 from recad.constants import QC_RANGES
-from recad.data.features import FEATURE_NAMES, PreparedData
+from recad.data.features import PreparedData
 from recad.data.grid import build_target_grid
 from recad.data.ingest import apply_qc, regrid_to_target, remove_outliers_3sigma
 from recad.data.split import SplitMasks, make_split_masks
@@ -82,7 +82,7 @@ def _read_monolithic_or_composite(cfg: Config, name: str, template: str, grid):
         return _read_composite_files(cfg, name, tpl, grid, time_coords)
 
     ds = xr.open_dataset(path)
-    var = name if name in ds.data_vars else (list(ds.data_vars)[0] if ds.data_vars else name)
+    var = name if name in ds.data_vars else (next(iter(ds.data_vars)) if ds.data_vars else name)
     da = ds[var]
     da = _normalise_dims(da, time_coords, cfg, grid)
     return da
@@ -102,8 +102,13 @@ def _read_composite_files(cfg, name, tpl, grid, time_coords) -> xr.DataArray:
             if not file.exists():
                 raise FileNotFoundError(f"missing composite file: {file}")
             ds = xr.open_dataset(file)
-            var = name if name in ds.data_vars else next(
-                (v for v in var_candidates if v in ds.data_vars), list(ds.data_vars)[0]
+            var = (
+                name
+                if name in ds.data_vars
+                else next(
+                    (v for v in var_candidates if v in ds.data_vars),
+                    next(iter(ds.data_vars)),
+                )
             )
             plane = ds[var]
             # assume 2-D lat/lon data per file (or squeeze leading day dim)
@@ -111,8 +116,9 @@ def _read_composite_files(cfg, name, tpl, grid, time_coords) -> xr.DataArray:
             plane = regrid_to_target(plane, lon, lat, method="linear")
             out[t] = plane.values
             t += 1
-    return xr.DataArray(out, dims=("time", "lat", "lon"),
-                        coords={"time": time_coords, "lat": lat, "lon": lon})
+    return xr.DataArray(
+        out, dims=("time", "lat", "lon"), coords={"time": time_coords, "lat": lat, "lon": lon}
+    )
 
 
 def _normalise_dims(da: xr.DataArray, time_coords, cfg, grid) -> xr.DataArray:
@@ -124,9 +130,18 @@ def _normalise_dims(da: xr.DataArray, time_coords, cfg, grid) -> xr.DataArray:
     da = da.squeeze()
     if "lat" not in da.dims or "lon" not in da.dims:
         # try common aliases
-        da = da.rename({k: v for k, v in (
-            ("latitude", "lat"), ("longitude", "lon"), ("ylat", "lat"), ("xlon", "lon"),
-        ) if k in da.dims})
+        da = da.rename(
+            {
+                k: v
+                for k, v in (
+                    ("latitude", "lat"),
+                    ("longitude", "lon"),
+                    ("ylat", "lat"),
+                    ("xlon", "lon"),
+                )
+                if k in da.dims
+            }
+        )
     if "time" not in da.dims and da.ndim == 3:
         da = da.rename({da.dims[0]: "time"})
     if cfg.data.longitude_shift:
@@ -134,9 +149,7 @@ def _normalise_dims(da: xr.DataArray, time_coords, cfg, grid) -> xr.DataArray:
     da = regrid_to_target(da, grid.lon, grid.lat, method="linear")
     if "time" in da.dims:
         if da.sizes["time"] != time_coords.size:
-            raise ValueError(
-                f"time axis length {da.sizes['time']} != expected {time_coords.size}"
-            )
+            raise ValueError(f"time axis length {da.sizes['time']} != expected {time_coords.size}")
         da = da.assign_coords(time=time_coords)
     elif time_coords.size:
         da = da.assign_coords(time=time_coords[0])  # static field annotation
@@ -161,8 +174,9 @@ def build_prepared(cfg: Config, cache_dir: str | Path) -> PreparedData:
     """Combine the standardised variables into model-ready fields."""
     cache_dir = Path(cache_dir)
     grid = build_target_grid(cfg.grid)
-    time_coords = _monthly_time_coords(cfg)
-    years = np.array([cfg.data.year_min + y for y in range((cfg.data.year_max - cfg.data.year_min) + 1)])
+    years = np.array(
+        [cfg.data.year_min + y for y in range((cfg.data.year_max - cfg.data.year_min) + 1)]
+    )
 
     n_year = years.size
     shape4 = (n_year, 12, grid.n_lat, grid.n_lon)
@@ -172,16 +186,13 @@ def build_prepared(cfg: Config, cache_dir: str | Path) -> PreparedData:
         path = cache_dir / f"{name}.nc"
         if not path.exists():
             raise FileNotFoundError(
-                f"standardised variable '{name}' missing ({path}) - run the "
-                "'ingest' step first"
+                f"standardised variable '{name}' missing ({path}) - run the 'ingest' step first"
             )
         da = xr.open_dataset(path)[name].load()
         arrays[name] = da.values.reshape(shape4).astype(np.float32)
 
     # xCO2air -> pCO2air at in-situ SST/SSS (v1.1 cell 8); then v1.1 QC
-    pco2air = xco2air_to_pco2air(
-        arrays["xco2air"], arrays["sst"], arrays["sss"]
-    ).astype(np.float32)
+    pco2air = xco2air_to_pco2air(arrays["xco2air"], arrays["sst"], arrays["sss"]).astype(np.float32)
     vmin_p, vmax_p = QC_RANGES.get("pco2air", (None, None))
     pco2air = apply_qc(pco2air, vmin_p, vmax_p)
     arrays["pco2air"] = pco2air
@@ -210,7 +221,9 @@ def build_prepared(cfg: Config, cache_dir: str | Path) -> PreparedData:
     )
     _LOG.info(
         "prepared data: %d years, %d coastal cells, target='%s'",
-        n_year, int(coastal.sum()), target_name,
+        n_year,
+        int(coastal.sum()),
+        target_name,
     )
     return prepared
 
@@ -248,9 +261,7 @@ def load_prepared(path: str | Path) -> PreparedData:
     from recad.data.grid import DomainGrid
 
     ds = xr.open_dataset(path)
-    grid = DomainGrid(
-        lon=ds.lon.values, lat=ds.lat.values, patch_size=int(ds.attrs["patch_size"])
-    )
+    grid = DomainGrid(lon=ds.lon.values, lat=ds.lat.values, patch_size=int(ds.attrs["patch_size"]))
     arrays = {
         name: ds[name].values.astype(np.float32)
         for name in ds.data_vars

@@ -283,6 +283,8 @@ def cmd_download(args) -> int:
         mapped.append("--doc")
     if args.only:
         mapped += ["--only", args.only]
+    if getattr(args, "kind", "decimated") != "decimated":
+        mapped += [f"--kind={args.kind}"]
     if args.region != "-100,-40,10,65":
         mapped += [f"--region={args.region}"]
     if args.years != "1993,2021":
@@ -403,7 +405,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--only",
         default=None,
-        help="download one source (xco2air|socat|gshhg|sst|sss|adt|wspd|bathymetry)",
+        help="download one source (xco2air|socat|socat_tracks|gshhg|sst|sss|adt|wspd|bathymetry)",
+    )
+    p.add_argument(
+        "--kind",
+        default="decimated",
+        choices=["decimated", "fulldata"],
+        help="SOCAT tracks kind (decimated=1/minute standard; fulldata=all obs)",
     )
     p.add_argument("--region", default="-100,-40,10,65", help="lon0,lon1,lat0,lat1 (SOCAT subset)")
     p.add_argument("--years", default="1993,2021", help="year0,year1 (SOCAT subset)")

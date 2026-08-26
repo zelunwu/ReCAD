@@ -44,7 +44,7 @@ class SplitMasks:
     def counts(self) -> dict[str, int]:
         return {name: int(np.count_nonzero(self.get(name))) for name in self.names}
 
-    def validate(self) -> "SplitMasks":
+    def validate(self) -> SplitMasks:
         """Assert the partitions are disjoint and cover the valid samples."""
         for a in self.names:
             for b in self.names:
@@ -65,13 +65,13 @@ def _block_ids(
     prepared: PreparedData, spatial_block_deg: float, temporal_block_months: int
 ) -> tuple[np.ndarray, np.ndarray]:
     """Assign each (year, month, lat, lon) sample a (spatial, temporal) block id."""
-    n_year, _, n_lat, n_lon = prepared.shape4d
-    lat_edges = np.floor(
-        (prepared.grid.lat - prepared.grid.lat[0]) / spatial_block_deg
-    ).astype(np.int64)
-    lon_edges = np.floor(
-        (prepared.grid.lon - prepared.grid.lon[0]) / spatial_block_deg
-    ).astype(np.int64)
+    n_year, _, _, n_lon = prepared.shape4d
+    lat_edges = np.floor((prepared.grid.lat - prepared.grid.lat[0]) / spatial_block_deg).astype(
+        np.int64
+    )
+    lon_edges = np.floor((prepared.grid.lon - prepared.grid.lon[0]) / spatial_block_deg).astype(
+        np.int64
+    )
 
     spatial = lat_edges[:, None] * (n_lon + 1) + lon_edges[None, :]  # [n_lat, n_lon]
     spatial = np.broadcast_to(spatial[None, None, :, :], prepared.shape4d).copy()
@@ -106,13 +106,11 @@ def make_split_masks(cfg: SplitConfig, prepared: PreparedData) -> SplitMasks:
     return SplitMasks(**masks).validate()
 
 
-def _assign_random_80_20(
-    cfg: SplitConfig, pool: np.ndarray, masks: dict[str, np.ndarray]
-) -> None:
+def _assign_random_80_20(cfg: SplitConfig, pool: np.ndarray, masks: dict[str, np.ndarray]) -> None:
     rng = np.random.default_rng(cfg.seed)
     flat = np.flatnonzero(pool)
     perm = rng.permutation(flat.size)
-    n_train = int(round(cfg.train_fraction * flat.size))
+    n_train = round(cfg.train_fraction * flat.size)
     train_flat = flat[perm[:n_train]]
     val_flat = flat[perm[n_train:]]
     masks["train"].ravel()[train_flat] = True
@@ -125,27 +123,23 @@ def _assign_blocked(
     prepared: PreparedData,
     masks: dict[str, np.ndarray],
 ) -> None:
-    spatial, temporal = _block_ids(
-        prepared, cfg.spatial_block_deg, cfg.temporal_block_months
-    )
+    spatial, temporal = _block_ids(prepared, cfg.spatial_block_deg, cfg.temporal_block_months)
     # Only consider blocks that contain at least one pooled sample.
     pooled = pool
-    block_ids = np.stack(
-        [spatial[pooled], temporal[pooled]], axis=1
-    )  # [n_pooled, 2]
+    block_ids = np.stack([spatial[pooled], temporal[pooled]], axis=1)  # [n_pooled, 2]
     keys = np.unique(block_ids, axis=0)
     # Deterministic, reproducible assignment of whole blocks to train/val.
     # (Python's builtin hash() is salted per process, so a stable mix is used.)
-    hashes = ((keys[:, 0].astype(np.int64) * 73856093) ^ (keys[:, 1].astype(np.int64) * 19349663)) % (2**31)
+    hashes = (
+        (keys[:, 0].astype(np.int64) * 73856093) ^ (keys[:, 1].astype(np.int64) * 19349663)
+    ) % (2**31)
     order = np.argsort(hashes)
     keys_sorted = keys[order]
-    n_train_blocks = int(round(cfg.train_fraction * keys_sorted.shape[0]))
-    train_keys = set(
-        (int(a), int(b)) for a, b in keys_sorted[:n_train_blocks]
-    )
+    n_train_blocks = round(cfg.train_fraction * keys_sorted.shape[0])
+    train_keys = {(int(a), int(b)) for a, b in keys_sorted[:n_train_blocks]}
     val_sel = np.zeros(pooled.shape, dtype=bool)
     train_sel = np.zeros(pooled.shape, dtype=bool)
-    for (a, b) in keys_sorted:
+    for a, b in keys_sorted:
         sel = (spatial == a) & (temporal == b) & pooled
         if (a, b) in train_keys:
             train_sel |= sel
