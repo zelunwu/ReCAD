@@ -31,6 +31,32 @@ SOCAT is released annually. As of writing: the **SOCATv2025 database** (NCEI Acc
 
 **Fallback: satellite SSS.** RSS **SMAP Salinity V5.0** (monthly/8-day on 0.25° grid, April 2015→present; [NASA Salinity page](https://salinity.oceansciences.org/data-smap-v5.htm)) is the best-validated product, but **land–sea contamination degrades retrievals within ~100–200 km of coast** (a well-documented coastal limitation, e.g., [SMOS/coastal studies](https://www.infona.pl/resource/bwmeta1.element.ieee-art-000007730999)); SMOS (CATDS/BEC L3/L4) is worse near land. Use satellite SSS only as an independent validation/correction signal for 2015+, never inside the <=200 km coastal mask. CMEMS multi-observation SSS NRT product id changed from the v1.1-era `MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_003` to the current `MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013` ([product page](https://data.marine.copernicus.eu/product/MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013/description)) — **verify the live product id at build time**. v1.1 baseline **SODA 3.15.2** (0.5°, [ERDDAP SODA 3.3.1 example](https://coastwatch.pfeg.noaa.gov/erddap/es/griddap/erdSoda331icemday_LonPM180.iso19115)) is superseded at 1/8°.
 
+### 3b. SSS 备选与误差策略（v2.0 决策记录）
+
+**问题**：卫星 L-band 反演盐度沿岸精度差；模式再分析（GLORYS）沿岸/河口也有偏差——两者都不完美，选错会把系统性误差带进 pCO₂ 重建。
+
+**备选评估**（2026 年核实）：
+
+| 方案 | 年代 | 分辨率 | 沿岸适用性 | 建议角色 |
+|---|---|---|---|---|
+| GLORYS12v1 `so` | 1993→ | 1/12° | 平滑、无陆地污染尖刺；但独立评估显示沿岸误差可观：自主水面艇对比 r≈0.59、RMSD≈0.96 g/kg（[IEEE 2025](https://ieeexplore.ieee.org/document/11558341)） | **主预测因子（保留）** |
+| ORAS5 (ECMWF) | 1958→ | 0.25° | 不同模式家族；集合成员自带不确定度 | 敏感性/稳健性实验 |
+| SMOS BEC L3 | 2010-01→ | ~25-50 km 有效 | 近岸 ~100 km 内退化 | 离岸验证/次级因子(2010+) |
+| SMAP RSS V5.0 | 2015-04→ | 40/70 km | 墨西哥湾对比显示与现场"距岸无关地"相当（[Remote Sensing 10(10):1590](https://www.mdpi.com/2072-4292/10/10/1590)）；缅因湾沿岸研究亦正面（[coastal SMAP](https://searchworks-lb.stanford.edu/articles/edsdoj__edsdoj.700bdd89aa3a4536b5bfa3f20fc4b582)） | 离岸验证/消融实验特征 |
+| ESA CCI+ SSS v5.x | 2010–2023+ | 25 km 周产品 | 多任务合并优于单星，仍≥25–50 km 有效分辨率 | 开阔海域验证 |
+| EN4.2.2 / ISAS / BOA | 各异 | 0.5–1° | 现场剖面客观分析；Argo 前(2005)稀疏、陆架覆盖差 | **独立校验集** |
+| WOA23 月气候态 | 气候态 | 1° | 无年际变率 | 校验基线/松弛目标 |
+| 多变量观测重建 1993–2016（[Frontiers 2018](https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2018.00084/full)） | 1993–2016 | ~0.25-0.5° | 覆盖本重建年代 | 预测因子候选/交叉校验 |
+
+**v2.0 决策**：
+1. **主预测因子维持 GLORYS12v1 `so` 不换源**。理由：(a) 唯一覆盖 1993→今且到达沿岸格点的来源；(b) 误差场平滑（无卫星式陆地污染尖峰），对 ML 训练友好——卫星盐度误差在近岸是结构化/相关的，会恰好污染我们最关心的区域；(c) 与 SST/流场动力一致。
+2. **用误差传播代替换源**：MC 输入误差保持 u_sss=0.6 PSU（v1.1 值，已宽于 GLORYS 开阔域 ~0.1–0.2）；计划增加按离岸距离缩放 u_sss 的选项（如 <50 km 内 ×1.5，对应上述沿岸 RMSD~1 PSU 的评估），并做河口区强扰动敏感性实验。
+3. **独立验证（不作为预测因子）**：用 SOCAT 航迹自带的现场 `sal`（已在 socat_tracks 里）、EN4 月分析、WOA23 气候态逐区逐年核对 GLORYS SSS，统计入论文附表。
+4. **稳健性实验**：用 ORAS5 盐度替换重训一轮——若重建结果对盐度源替换不敏感，即为论文的强稳健性论据。
+5. **消融实验（可选）**：2015+ 时段加入离岸掩膜后的卫星 SSS 距平作为附加特征，仅当验证 RMSE 改善才保留；另做一次完全去掉 SSS 的训练以量化其贡献。
+
+**实现状态**：u_sss 已在 `UncertaintyConfig.input_uncertainties` 中可配；距岸缩放为待办小项。
+
 ## 4. SST at 1/8°
 
 **Keep OISST v2.1** ([NCEI C01606](https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01606); daily, 0.25°, 1981-09→present) as primary for the full 1993–2021 record and direct v1.1 continuity. No OISST v3 release was found **[unverified]**.
