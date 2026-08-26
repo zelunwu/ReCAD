@@ -58,6 +58,8 @@ viz = [
     "statsmodels>=0.14",
     "openpyxl>=3.1",
 ]
+# Copernicus Marine Toolbox (GLORYS / sea-level downloads; needs free account)
+cmems = ["copernicusmarine>=2.4"]
 
 [project.scripts]
 recad = "recad.cli:main"
