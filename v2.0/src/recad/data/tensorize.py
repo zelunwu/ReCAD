@@ -1,6 +1,6 @@
 """PyTorch dataset that turns prepared fields into transformer inputs.
 
-Design (see docs/design.md §Model input):
+Design (see docs/backup/design.md §Model input):
  * The domain is tiled into spatial patches (``grid.patch_size_cells`` cells
    per side). Patches that intersect the coastal mask become *tokens* for the
    spatial transformer stage. Token features are per-patch aggregations of the
@@ -85,9 +85,11 @@ class CoastalPatchDataset(Dataset):
         model_cfg: ModelConfig,
         *,
         tile_cells: int | None = None,
+        cell_indices: np.ndarray | None = None,
         seed: int = 100,
         require_target: bool = True,
         year_repeats: Mapping[int, int] | None = None,
+        shared_cache: Mapping[str, object] | None = None,
     ) -> None:
         """Build a dataset.
 
@@ -97,6 +99,9 @@ class CoastalPatchDataset(Dataset):
             split: one of masks.names, required iff ``masks`` is not None.
             model_cfg: transformer hyper-parameters (temporal window etc.).
             tile_cells: optional deterministic subsample of coastal cells.
+            cell_indices: explicit flat indices of coastal cells.  This is
+                used for chunked full-domain inference and takes precedence
+                over ``tile_cells``.
             seed: seeding for the (deterministic) stride-based tiling.
             require_target: if True, a cell counts as observable only where
                 the target exists (training/validation); if False every
@@ -111,7 +116,7 @@ class CoastalPatchDataset(Dataset):
         self.split = split
         self.model_cfg = model_cfg
         self.require_target = require_target
-        self.year_repeats = year_repeats or {}
+        self.year_repeats = year_repeats
         self.window = model_cfg.temporal_window_months
         if self.window < 1 or self.window > MONTHS_PER_YEAR:
             raise ValueError("temporal_window_months must be in [1, 12]")
@@ -121,14 +126,21 @@ class CoastalPatchDataset(Dataset):
         self.token_pos[self.active_tokens] = np.arange(self.active_tokens.size)
         self.coast = prepared.coastal_mask
         self.cell_idx_global = np.flatnonzero(self.coast)  # flat index of every coastal cell
+        self.seed = seed
         self.rng = np.random.default_rng(seed)
+        self.tile_cells = tile_cells
+        self.explicit_cell_indices = None if cell_indices is None else np.asarray(cell_indices, dtype=np.int64)
+        if self.explicit_cell_indices is not None:
+            if self.explicit_cell_indices.ndim != 1:
+                raise ValueError("cell_indices must be one-dimensional")
+            if not np.isin(self.explicit_cell_indices, self.cell_idx_global).all():
+                raise ValueError("cell_indices contains a non-coastal cell")
 
-        # ---- tile (deterministic subsample) of coastal cells ----
-        if tile_cells is None or tile_cells >= self.cell_idx_global.size:
-            self.cell_idx_global_sel = self.cell_idx_global
-        else:
-            step = int(np.ceil(self.cell_idx_global.size / tile_cells))
-            self.cell_idx_global_sel = self.cell_idx_global[::step]
+        # ---- tile of coastal cells ----
+        # When tiled, Trainer calls set_epoch() before every epoch.  This
+        # draws a new reproducible spatial mini-batch instead of repeatedly
+        # optimizing the same deterministic stride sample.
+        self._select_cells(epoch=0)
 
         # ---- per-patch denominators ----
         self.patch_coast_counts = _cell_coastal_counts(prepared, self.patch_map)
@@ -142,15 +154,27 @@ class CoastalPatchDataset(Dataset):
         mean, std = prepared.feature_stats()
         self.pred_mean = mean
         self.pred_std = std
-        self.zscored: dict[str, np.ndarray] = {}
-        for name in FEATURE_NAMES:
-            arr = prepared.require(name).astype(np.float64)
-            self.zscored[name] = (arr - mean[FEATURE_NAMES.index(name)]) / std[
-                FEATURE_NAMES.index(name)
-            ]
+        self.zscored: dict[str, np.ndarray]
+        if shared_cache is None:
+            self.zscored = {}
+            for name in FEATURE_NAMES:
+                # Prepared caches are float32. Keeping the standardized staging
+                # fields float32 avoids three full float64 copies (probe/train/
+                # validation datasets) on the 1/8-degree domain.
+                i = FEATURE_NAMES.index(name)
+                arr = prepared.require(name).astype(np.float32, copy=False)
+                self.zscored[name] = ((arr - np.float32(mean[i])) / np.float32(std[i])).astype(
+                    np.float32, copy=False
+                )
+        else:
+            self.zscored = shared_cache["zscored"]  # type: ignore[assignment]
         # ---- standardized target (same-learner scaling as the predictors) ----
         self.t_mean, self.t_std = prepared.target_stats()
-        self._build_token_features()
+        if shared_cache is None:
+            self._build_token_features()
+        else:
+            self.token_feats_ym = shared_cache["token_feats_ym"]  # type: ignore[assignment]
+            self.coverage_ym = shared_cache["coverage_ym"]  # type: ignore[assignment]
 
         # ---- item list: (year, start_month) windows ----
         n_windows = MONTHS_PER_YEAR - self.window + 1
@@ -161,7 +185,7 @@ class CoastalPatchDataset(Dataset):
             split_mask = masks.get(split)
             year_range = [y for y in range(prepared.n_year) if split_mask[y].any()]
         for y in year_range:
-            repeats = self.year_repeats.get(y, 1)
+            repeats = 1 if self.year_repeats is None else self.year_repeats.get(y, 0)
             for _ in range(repeats):
                 for start in range(n_windows):
                     self.items.append((y, start))
@@ -174,6 +198,24 @@ class CoastalPatchDataset(Dataset):
         lon = lon_grid.ravel()[self.cell_idx_global_sel]
         lat = lat_grid.ravel()[self.cell_idx_global_sel]
         return lon.astype(np.float32), lat.astype(np.float32)
+
+    def _select_cells(self, epoch: int) -> None:
+        """Select the reproducible spatial mini-batch for an epoch."""
+        if self.explicit_cell_indices is not None:
+            self.cell_idx_global_sel = self.explicit_cell_indices
+        elif self.tile_cells is None or self.tile_cells >= self.cell_idx_global.size:
+            self.cell_idx_global_sel = self.cell_idx_global
+        else:
+            rng = np.random.default_rng(self.seed + epoch)
+            picked = rng.choice(self.cell_idx_global, size=self.tile_cells, replace=False)
+            self.cell_idx_global_sel = np.sort(picked)
+
+    def set_epoch(self, epoch: int) -> None:
+        """Rotate tiled coastal cells while retaining deterministic runs."""
+        if self.explicit_cell_indices is not None or self.tile_cells is None or self.tile_cells >= self.cell_idx_global.size:
+            return
+        self._select_cells(epoch)
+        self.cell_lon, self.cell_lat = self._cell_lonlat()
 
     # ------------------------------------------------------------------
     # Token features (per year AND month), using the native patch kernel
@@ -211,6 +253,14 @@ class CoastalPatchDataset(Dataset):
                         self.coverage_ym[y, m, :],
                         counts_sel / np.maximum(self.patch_coast_counts_sel, 1),
                     )
+
+    def shared_cache(self) -> dict[str, object]:
+        """Reusable immutable preprocessing shared by fit/dev/ensemble datasets."""
+        return {
+            "zscored": self.zscored,
+            "token_feats_ym": self.token_feats_ym,
+            "coverage_ym": self.coverage_ym,
+        }
 
     # ------------------------------------------------------------------
     # Item construction

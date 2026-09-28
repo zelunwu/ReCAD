@@ -1,0 +1,51 @@
+schema_version: 1
+experiment_id: p1_fco2_baselines_v2.1
+status: preregistered
+owner: ReCAD
+created_utc: 2026-09-28T05:35:00Z
+science:
+  question: Which model class improves coastal fCO2 beyond climatology and point regression under cruise and region shift?
+  hypothesis: Soft spatial experts improve cruise-grouped and leave-LME-out error without hard regional boundaries.
+  product_scope: Global coastal fCO2; North-American grouped cache is the first formal comparison.
+  primary_comparison: Point residual baseline versus shared backbone with soft spatial experts.
+  acceptance_gate: Development LME macro-RMSE improves and locked cruise test is non-inferior across three seeds.
+  stopping_rule: Fixed budget; select only on grouped development metrics.
+data:
+  manifest_path: configs/frozen/data_manifest_v2.1.json
+  manifest_sha256: 5980f2e31a78f7dcc9bebbb6508c101de3298f30e722ca0b6a8c9116591bb725
+  prepared_path: outputs/prepared_global_p32.nc
+  prepared_sha256: 13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719
+  observation_products: [SOCATv2026 Coastal]
+  time_range: 1993-2024
+  spatial_domain: global coast; North-American formal grouped comparison
+  qc_policy: fCO2 1-1000 uatm and fCO2rec_flag <= 2
+  provenance_policy: SOCAT fCO2rec only; CODAP CO2SYS-derived fCO2 is forbidden as an independent label
+  aggregation: cruise x grid-cell x calendar-month
+splits:
+  manifest_path: C:/backup/phd/data/processed/recad_v2_1/split_manifest_v2.1.parquet
+  manifest_sha256: 6b486d1f7e601a29bce4977e56ef57a112641cc6251f6c927e48c0526a357d0e
+  grouping: normalized Expocode/cruise
+  train: deterministic 70% cruise groups
+  development: deterministic 15% cruise groups
+  locked_test: deterministic 15% cruise groups; open once
+  external_independent: future SOCAT post-v2026 increment; labels unavailable and sealed
+  previously_opened_benchmarks: [2004-2005 legacy split]
+model:
+  family: climatology/ridge/MLP/ST plus soft spatial experts
+  config_path: configs/p1_fco2_baselines_v2.1.yaml
+  config_sha256: c230e2f9afd56c09cfde80f049ba5317f9c867d81f20a9636eb43f8b3b9e1aae
+  inputs: [SST, GLORYS_SSS, ADT, wind_speed, atmospheric_pCO2, lon, lat, month]
+  learned_outputs: [fCO2]
+  derived_outputs: []
+  loss: cruise-balanced robust regression
+  sampling: cruise-balanced plus inverse regional density weighting
+  parameter_count: null
+training: {seeds: [100, 101, 102], optimizer_steps: 5000 per learned candidate per seed, compute_budget: fixed registered candidate set with no locked-test search, checkpoint_selection: development LME macro-RMSE only, uncertainty_method: ensemble plus conformal calibration}
+evaluation:
+  primary_metrics: [RMSE, MAE, bias, R2]
+  group_metrics: [LME_macro_RMSE, regime_macro_RMSE, worst_LME_RMSE, forward_chain_RMSE, distance_to_support]
+  calibration_metrics: [coverage_90, interval_width]
+  baselines: [monthly_climatology, ridge, point_MLP, STTransformer]
+reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
+artifacts: {output_directory: outputs/experiments/p1_fco2_baselines_v2.1, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.1.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
+outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}

@@ -38,21 +38,24 @@ class MultiHeadSelfAttention(nn.Module):
         N, S, _ = x.shape
         qkv = self.qkv(x).reshape(N, S, 3, self.n_heads, self.head_dim)
         q, k, v = qkv.permute(2, 0, 3, 1, 4).unbind(0)  # each [N, H, S, hd]
-        attn = (q @ k.transpose(-2, -1)) * self.scale  # [N, H, S, S]
+        valid = None
+        query_valid = None
         if mask is not None:
             if mask.dim() == 2:
-                valid = mask[:, None, None, :] & mask[:, None, :, None]  # [N,1,S,S]
+                # Keep a broadcast key mask instead of allocating S x S.
+                valid = mask[:, None, None, :]
+                query_valid = mask[:, None, :, None]
             elif mask.dim() == 3:
                 valid = mask[:, None, :, :]  # [N,1,q,k]
             else:
                 raise ValueError(f"unexpected mask dims {mask.dim()}")
-            attn = attn.masked_fill(~valid, float("-inf"))
-        attn = F.softmax(attn, dim=-1)
-        # A query with no valid keys at all (fully padded row) otherwise gets
-        # NaN softmax weights; its output is never used downstream, so zero it.
-        attn = torch.nan_to_num(attn, nan=0.0)
-        attn = self.dropout(attn)
-        out = (attn @ v).transpose(1, 2).reshape(N, S, self.d_model)
+        out = F.scaled_dot_product_attention(
+            q, k, v, attn_mask=valid,
+            dropout_p=self.dropout.p if self.training else 0.0,
+        )
+        if query_valid is not None:
+            out = torch.where(query_valid, out, torch.zeros_like(out))
+        out = out.transpose(1, 2).reshape(N, S, self.d_model)
         return self.proj(out)
 
 

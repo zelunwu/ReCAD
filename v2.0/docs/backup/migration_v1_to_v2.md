@@ -38,7 +38,7 @@ meaningful.
    aleatoric + epistemic terms and combines all three in quadrature (RSS),
    which subsumes the v1.1 result.
 4. **Model**: RFR → ST-Transformer deep ensemble (rationale:
-   `docs/design.md` §2). For benchmarking, the RFR recipe itself is *not*
+   `docs/backup/design.md` §2). For benchmarking, the RFR recipe itself is *not*
    re-implemented in v2.0; the v1.1 MATLAB code remains the reference and
    `configs/naccom_1over8.yaml` makes the v2.0 side of the comparison as
    close as possible (same domain, predictors, QC, split).

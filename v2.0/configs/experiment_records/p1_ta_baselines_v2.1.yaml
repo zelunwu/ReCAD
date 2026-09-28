@@ -1,0 +1,51 @@
+schema_version: 1
+experiment_id: p1_ta_baselines_v2.1
+status: preregistered
+owner: ReCAD
+created_utc: 2026-09-28T05:35:00Z
+science:
+  question: Where does local conservative TA-SSS calibration outperform Carter/ESPER and where does it fail?
+  hypothesis: Hierarchical LME/regime calibration improves cruise-held-out TA while uncertainty expands in non-conservative regimes.
+  product_scope: North-American coastal TA only
+  primary_comparison: Carter/ESPER prior versus train-cruise-only local linear and hierarchical partial-pooling baselines
+  acceptance_gate: Lower LME macro-RMSE and calibrated 90% coverage on locked cruises; external CODAP cruises remain sealed
+  stopping_rule: Fixed model set and grouped development selection
+data:
+  manifest_path: configs/frozen/data_manifest_v2.1.json
+  manifest_sha256: 5980f2e31a78f7dcc9bebbb6508c101de3298f30e722ca0b6a8c9116591bb725
+  prepared_path: outputs/prepared_global_p32.nc
+  prepared_sha256: 13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719
+  observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
+  time_range: 1993-2024
+  spatial_domain: North American coast
+  qc_policy: is_primary=1 and TA QC=2
+  provenance_policy: observed/adjusted TA methods retained; Carter/ESPER is predictor/prior and never truth
+  aggregation: primary point records with cruise grouping
+splits:
+  manifest_path: C:/backup/phd/data/processed/recad_v2_1/split_manifest_v2.1.parquet
+  manifest_sha256: 6b486d1f7e601a29bce4977e56ef57a112641cc6251f6c927e48c0526a357d0e
+  grouping: normalized Expocode/cruise and cross-product duplicate group
+  train: deterministic non-external train cruises
+  development: deterministic non-external development cruises
+  locked_test: deterministic non-external locked cruises
+  external_independent: 41 CODAP 2022-2024 cruises unmatched to GLODAP; sealed until P3
+  previously_opened_benchmarks: [2004-2005 legacy split]
+model:
+  family: global/local linear and hierarchical partial pooling
+  config_path: configs/p1_ta_baselines_v2.1.yaml
+  config_sha256: fb29e37eb7bacc6c2880b3cf0664a9794ac9a8b57860c9e0134daa19d6a269ce
+  inputs: [in_situ_or_background_SSS, SST, lon, lat, month, LME, environmental_regime, Carter_ESPER_TA_prior]
+  learned_outputs: [TA]
+  derived_outputs: []
+  loss: cruise-balanced robust heteroscedastic regression
+  sampling: equalized by cruise and LME
+  parameter_count: null
+training: {seeds: [100, 101, 102], optimizer_steps: 4000 per learned candidate per seed, compute_budget: fixed registered candidate set with no external-label access, checkpoint_selection: grouped development LME macro-RMSE, uncertainty_method: hierarchical posterior or ensemble conformal}
+evaluation:
+  primary_metrics: [RMSE, MAE, bias, R2]
+  group_metrics: [LME_macro_RMSE, worst_LME_RMSE, salinity_band_RMSE, distance_to_support]
+  calibration_metrics: [coverage_90, interval_width]
+  baselines: [Carter_ESPER, global_TA_SSS_linear, LME_TA_SSS_linear]
+reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
+artifacts: {output_directory: outputs/experiments/p1_ta_baselines_v2.1, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.1.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
+outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}

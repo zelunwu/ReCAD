@@ -1,0 +1,86 @@
+# Copy before a formal experiment and commit the filled record before training.
+schema_version: 1
+experiment_id: null
+status: preregistered  # preregistered | running | complete | failed | invalidated
+owner: null
+created_utc: null
+
+science:
+  question: null
+  hypothesis: null
+  product_scope: null
+  primary_comparison: null
+  acceptance_gate: null
+  stopping_rule: null
+
+data:
+  manifest_path: null
+  manifest_sha256: null
+  prepared_path: null
+  prepared_sha256: null
+  observation_products: []
+  time_range: null
+  spatial_domain: null
+  qc_policy: null
+  provenance_policy: null
+  aggregation: null
+
+splits:
+  manifest_path: null
+  manifest_sha256: null
+  grouping: null
+  train: null
+  development: null
+  locked_test: null
+  external_independent: null
+  previously_opened_benchmarks: []
+
+model:
+  family: null
+  config_path: null
+  config_sha256: null
+  inputs: []
+  learned_outputs: []
+  derived_outputs: []
+  loss: null
+  sampling: null
+  parameter_count: null
+
+training:
+  seeds: []
+  optimizer_steps: null
+  compute_budget: null
+  checkpoint_selection: null
+  uncertainty_method: null
+
+evaluation:
+  primary_metrics: []
+  group_metrics: []
+  calibration_metrics: []
+  baselines: []
+
+reproducibility:
+  git_commit: null
+  git_worktree_clean: null
+  source_hashes: {}
+  environment_lock: null
+
+artifacts:
+  output_directory: null
+  protocol: null
+  data_manifest: null
+  selection: null
+  checkpoints: []
+  predictions: []
+  metrics: []
+  figures: []
+  report: null
+
+outcome:
+  completed_utc: null
+  primary_result: null
+  acceptance_gate_passed: null
+  deviations: []
+  invalidation_reason: null
+  evidence_grade: null  # A | B | C | X
+  allowed_claims: null

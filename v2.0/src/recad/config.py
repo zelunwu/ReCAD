@@ -190,7 +190,7 @@ class SplitConfig:
 class ModelConfig:
     """Spatio-temporal transformer (ST-Transformer) hyper-parameters.
 
-    Architecture (see docs/design.md): coastal cells are grouped into spatial
+    Architecture (see docs/backup/design.md): coastal cells are grouped into spatial
     patches; a spatial transformer encoder fuses context within each month;
     a temporal transformer encoder fuses context across months for each patch;
     a per-cell MLP head emits the predictive distribution.
@@ -297,7 +297,7 @@ class UncertaintyConfig:
     """Uncertainty-quantification configuration.
 
     v2.0 combines three, physics-aware sources of uncertainty (see
-    recad/uncertainty/decompose.py and docs/design.md §Uncertainty):
+    recad/uncertainty/decompose.py and docs/backup/design.md §Uncertainty):
 
     1. aleatoric  - mean over members of the Gaussian-NLL variance head;
     2. epistemic  - std over member means (ensemble disagreement);

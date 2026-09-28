@@ -1,0 +1,29 @@
+experiment_id: p1_fco2_baselines_v2.1
+data_manifest: configs/frozen/data_manifest_v2.1.json
+cache: C:/backup/phd/data/processed/recad_v2_1/na_socat_cache_v2.1.parquet
+target: fco2
+label_filter: f_n > 0
+features: [sst, sss, adt, wspd, pco2air, xco2air, latitude, longitude, mon]
+split_column: split
+group_column: group_key
+region_columns: [lme_id, basin_id, regime_id]
+candidates:
+  - {name: seasonal_climatology, family: grouped_mean, groups: [regime_id, mon]}
+  - {name: ridge, family: ridge, alpha_grid: [0.1, 1.0, 10.0, 100.0]}
+  - {name: point_mlp, family: mlp, hidden: [192, 192], dropout: 0.1}
+  - {name: st_transformer, family: STTransformer, embed_dim: 192, spatial_layers: 3, temporal_layers: 3, heads: 6, dropout: 0.1}
+  - {name: soft_experts, family: mixture_of_experts, experts: 8, top_k: 2, hidden: [192, 192], shrinkage: 0.001}
+training:
+  seeds: [100, 101, 102]
+  steps: 5000
+  batch_size: 2048
+  optimizer: {name: AdamW, learning_rate: 0.001, weight_decay: 0.0001}
+  sampling: equal_cruise_then_equal_LME
+  checkpoint_every: 250
+  selection: development_LME_macro_RMSE
+evaluation:
+  metrics: [RMSE, MAE, bias, R2]
+  grouped: [cruise, lme_id, regime_id, forward_split, nearest_carbon_km]
+  locked_test_openings: 1
+  external_access: forbidden_until_P3
+

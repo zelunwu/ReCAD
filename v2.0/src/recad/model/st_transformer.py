@@ -1,6 +1,6 @@
 """ReCAD v2.0 flagship model: spatio-temporal transformer (ST-Transformer).
 
-Scientific rationale (full treatment in ``docs/design.md``):
+Scientific rationale (full treatment in ``docs/backup/design.md``):
 
   * v1.1's random forest predicts each (month, cell) sample independently; it
     cannot exploit spatial context (neighbouring coastal cells covary through
@@ -71,7 +71,7 @@ class SpatioTemporalTransformer(nn.Module):
         self.head = build_head(cfg.head, d_in=2 * D, hidden=D)
 
     # ------------------------------------------------------------------
-    def forward(self, batch: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
+    def encode_context(self, batch: dict[str, torch.Tensor]) -> torch.Tensor:
         """Run the full ST-Transformer on one batch.
 
         Batch keys (from ``recad.data.tensorize.CoastalPatchDataset``):
@@ -111,6 +111,10 @@ class SpatioTemporalTransformer(nn.Module):
             mask=token_valid.transpose(1, 2).reshape(B * P, T),
         )  # [B*P, T, D]
         ctx = temporal.reshape(B, P, T, -1).transpose(1, 2)  # [B, T, P, D]
+        return ctx
+
+    def forward(self, batch: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
+        ctx = self.encode_context(batch)
 
         # ---- per-cell decoder ----
         cell_feats = batch["cell_feats"]
@@ -126,6 +130,22 @@ class SpatioTemporalTransformer(nn.Module):
 
         hidden = torch.cat([cell_emb, ctx_cell], dim=-1)  # [B, T, C, 2D]
         return self.head(hidden)
+
+    def decode_queries(
+        self, ctx: torch.Tensor, cell_feats: torch.Tensor,
+        month_index: torch.Tensor, patch_index: torch.Tensor,
+    ) -> dict[str, torch.Tensor]:
+        """Decode arbitrary supervised queries from one year's context.
+
+        Exactly the same decoder as forward(), without allocating unobserved
+        cells/months. ctx has shape [1, T, P, D], queries [N, F].
+        """
+        if ctx.shape[0] != 1:
+            raise ValueError("decode_queries expects one context year")
+        own = self.cell_embed(torch.nan_to_num(cell_feats, nan=0.0))
+        context = ctx[0, month_index, patch_index.clamp(min=0)]
+        context = torch.where((patch_index >= 0)[:, None], context, torch.zeros_like(context))
+        return self.head(torch.cat([own, context], dim=-1))
 
 
 def count_parameters(model: nn.Module) -> int:

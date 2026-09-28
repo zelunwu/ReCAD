@@ -1,0 +1,69 @@
+schema_version: 1
+experiment_id: p1_sss_baselines_v2.1
+status: preregistered
+owner: ReCAD
+created_utc: 2026-09-28T05:35:00Z
+science:
+  question: Can predictor-only baselines and spatially adaptive models bias-correct coastal SSS across unseen cruises and LMEs?
+  hypothesis: A shared model with soft regional adaptation improves LME macro-RMSE over a global point baseline without worsening worst-LME RMSE.
+  product_scope: Global coastal SSS; formal North-American grouped evaluation in this stage.
+  primary_comparison: Global point residual baseline versus soft spatial-expert residual model.
+  acceptance_gate: Lower development LME macro-RMSE and no material degradation on grouped locked test; external remains sealed.
+  stopping_rule: Fixed optimizer budget; checkpoint selected only by grouped development LME macro-RMSE.
+data:
+  manifest_path: configs/frozen/data_manifest_v2.1.json
+  manifest_sha256: 5980f2e31a78f7dcc9bebbb6508c101de3298f30e722ca0b6a8c9116591bb725
+  prepared_path: outputs/prepared_global_p32.nc
+  prepared_sha256: 13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719
+  observation_products: [SOCATv2026 Coastal]
+  time_range: 1993-2024
+  spatial_domain: global coastal predictors; North-American cruise cache for formal grouped comparison
+  qc_policy: fCO2rec_flag <= 2; salinity in [0,50]
+  provenance_policy: SOCAT in-situ salinity is label; GLORYS SSS is a background predictor only
+  aggregation: cruise x grid-cell x calendar-month
+splits:
+  manifest_path: C:/backup/phd/data/processed/recad_v2_1/split_manifest_v2.1.parquet
+  manifest_sha256: 6b486d1f7e601a29bce4977e56ef57a112641cc6251f6c927e48c0526a357d0e
+  grouping: normalized Expocode/cruise
+  train: deterministic 70% cruise groups
+  development: deterministic 15% cruise groups
+  locked_test: deterministic 15% cruise groups; open once after selection
+  external_independent: future SOCAT post-v2026 increment; labels unavailable and sealed
+  previously_opened_benchmarks: [2004-2005 legacy split]
+model:
+  family: point residual baseline plus soft spatial experts
+  config_path: configs/p1_sss_baselines_v2.1.yaml
+  config_sha256: c2bbd41ab133ef343f2228f52ba04e6b31e1adcb327b059caf1f1c2a84407705
+  inputs: [SST, GLORYS_SSS, ADT, wind_speed, atmospheric_pCO2, lon, lat, month]
+  learned_outputs: [SSS]
+  derived_outputs: []
+  loss: cruise-balanced robust regression
+  sampling: cruise-balanced plus inverse regional density weighting
+  parameter_count: null
+training:
+  seeds: [100, 101, 102]
+  optimizer_steps: 5000 per learned candidate per seed
+  compute_budget: 3 seeds; stop after registered candidates and no adaptive search on locked test
+  checkpoint_selection: development LME macro-RMSE only
+  uncertainty_method: ensemble spread plus conformal calibration on development groups
+evaluation:
+  primary_metrics: [RMSE, MAE, bias, R2]
+  group_metrics: [LME_macro_RMSE, regime_macro_RMSE, worst_LME_RMSE, distance_to_support]
+  calibration_metrics: [coverage_90, interval_width]
+  baselines: [GLORYS_background, climatology, ridge, point_MLP]
+reproducibility:
+  git_commit: null
+  git_worktree_clean: false
+  source_hashes: {}
+  environment_lock: null
+artifacts:
+  output_directory: outputs/experiments/p1_sss_baselines_v2.1
+  protocol: this file
+  data_manifest: configs/frozen/data_manifest_v2.1.json
+  selection: null
+  checkpoints: []
+  predictions: []
+  metrics: []
+  figures: []
+  report: null
+outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}

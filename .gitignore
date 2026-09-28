@@ -1,0 +1,11 @@
+# Data & large artifacts — NEVER commit scientific data.
+# Mirrors v2.0/.gitignore but anchored at the repo root, because some
+# download scripts resolve relative --out-dir against the session cwd and
+# can drop files in the root-level data/ directory (see docs/data_download.md).
+/data/
+/outputs/
+/runs/
+/*.nc
+/*.mat
+/*.zarr/
+/*.h5
