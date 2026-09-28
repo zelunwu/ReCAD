@@ -148,7 +148,21 @@ A2–A4 使用相同 fCO2 损失、归一化和采样权重，第一轮采用 MS
 
 当前预处理产物仅供工程检查，原有 masks 和已使用全部标签拟合的统计不可用于正式独立实验。尚未获得或确认严格 IV-external；本方案不虚构独立数据已经存在。
 
-## 8.1 已完成的工程基准（2026-09-05；不用于模型定论）
+## 8.1 Reviewer-ready 实验归档门槛（强制）
+
+任何支撑科学结论的正式实验，包括未通过门槛、负结果和失败实验，只有在 `docs/experiment_archive/<experiment_id>/` 建立可复核归档并通过自动校验后才能标记 `complete` 或关闭对应 Issue。工程 smoke/MVP 若不用于科学结论可以不归档；一旦被报告或用于选择路线，也必须补齐归档。
+
+每个归档至少包含：
+
+- `REPORT.md`：完整记录科学问题、允许的结论、数据与 split、泄漏控制、模型、训练与选择规则、全部主要指标、分层结果、不确定性、偏离项、负结果和限制；
+- `figures/`：可直接用于 reviewer 回复的高分辨率图片，图中或报告中给出单位、样本量、误差线含义和 caption；
+- `tables/`：每个汇总图和主结果表对应的机器可读 CSV，不允许只有图片而没有作图数据；
+- `archive_manifest.json`：记录 experiment ID、Git commit、数据/config/code 哈希、证据范围、locked test 与 external-independent 是否开启、图表到源数据的映射，以及归档文件 SHA256；
+- `README.md`：归档入口和复现命令。
+
+大型逐行预测、checkpoint 和原始数据继续放在 Git 忽略的 `outputs/`，归档通过路径和 SHA256 引用它们。报告必须同时展示预登记主模型、基线、未通过门槛的候选、关键分层、失败率和不确定性，禁止只挑选有利结果。数据、代码或结论发生实质变化时使用新版本重建归档；旧证据不得静默覆盖。完成状态由 `scripts/verify_experiment_archive.py` 校验，实验记录中的 `artifacts.reviewer_archive.verification_status` 必须为 `verified`。
+
+## 8.2 已完成的工程基准（2026-09-05；不用于模型定论）
 
 NACCOM 1/8° 的 fCO2-only 大型 ST-Transformer 已完成一次可复现运行：`D=96`、3 个空间层 + 3 个时间层、12 个月窗口、Gaussian head、5 个 bootstrap 成员、每 epoch 轮换 8,192 个海岸格点、最多 80 epochs（实际早停分别为 60/79/41/36/47 epochs）。最终推理以 8,192 格点分块进行，完整覆盖每个评分集合，而不是沿用训练 tile。
 

@@ -71,6 +71,13 @@ artifacts:
   metrics: [outputs/experiments/p1_sss_viability_v2.2/summary.csv, outputs/experiments/p1_sss_viability_v2.2/cv_metrics.csv, outputs/experiments/p1_sss_viability_v2.2/forward_metrics.csv, outputs/experiments/p1_sss_viability_v2.2/development_gate.json]
   figures: [outputs/experiments/p1_sss_viability_v2.2/figures]
   report: docs/p1_sss_viability_v2.2.md
+  reviewer_archive:
+    path: docs/experiment_archive/p1_sss_viability_v2.2
+    report: docs/experiment_archive/p1_sss_viability_v2.2/REPORT.md
+    figures: [docs/experiment_archive/p1_sss_viability_v2.2/figures]
+    source_tables: [docs/experiment_archive/p1_sss_viability_v2.2/tables]
+    manifest: docs/experiment_archive/p1_sss_viability_v2.2/archive_manifest.json
+    verification_status: verified
 outcome:
   completed_utc: 2026-09-28T15:25:11Z
   primary_result: Soft-experts residual model reduced development cruise-equal/LME-macro RMSE by 39.9%/40.1% versus GLORYS and retained positive forward skill for all three seeds.

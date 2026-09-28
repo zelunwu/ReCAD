@@ -1,0 +1,3 @@
+model,seeds,pooled_rmse_mean,pooled_rmse_sd,lme_macro_rmse_mean,lme_macro_rmse_sd,pooled_skill_mean,pooled_skill_sd
+GLORYS,1,2.125042350787762,,2.6703216178538733,,0.0,
+Soft experts residual,3,1.3481513964057097,0.10471490777409258,1.815141602832622,0.0698329699765384,0.5959032039962743,0.06318889763534466

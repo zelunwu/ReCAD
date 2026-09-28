@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p1_sss_viability_v2.2",
+  "created_utc": "2026-09-28T15:43:05.596261+00:00",
+  "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_sss_viability_v2.2",
+  "training_git_commit": "dc653ddce3a55d927038c542b9396215e51d2f03",
+  "archive_builder": "scripts/build_p1_sss_reviewer_archive.py",
+  "archive_builder_sha256": "11a25597b5433882e1959ca81c2f63df40f7b5eae7998c53368c977f243fc4b5",
+  "analysis_script_sha256": "aa185b8abfb1fe53f7b5b9158a739894afa759c5059ed36c09c804e20d2de5ea",
+  "source_artifacts_sha256": {
+    "candidate_predictions.parquet": "0e0f5ced1fd65feef06292f39f56b79df28af997ef4b885e6dd9a31e131dc29e",
+    "selected_development_predictions.parquet": "fe8eba71a21786ef408ee646e5dfeab2b0ee237d3609837a10dfc7776fa9d988",
+    "summary.csv": "6f40dd1a51a0dd1b2fb5fc7498c2f2530c537befcaa7418f4906d16f6643a402",
+    "cv_metrics.csv": "773acdb4bc59f6d666c80cbf282324ee24055a9929d42851f4427e12d91e6fd2",
+    "forward_metrics.csv": "46ab62188d39a3ec6dea11307c494af67247c79f7bf793b3c5dd327b567b0832",
+    "development_gate.json": "c5f0dfd73211b1febc8473e000bcee871178279ccf5711a4cd63f7c050b37831",
+    "protocol.json": "3ff43d508741801ea4675e71a3222a3284aabd5cedb888b06a7f89c071fffe5b"
+  },
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "data_hash_mode": "full",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "North-American-adjacent train/development and grouped CV only",
+  "decision": "nominate_for_issue_11_locked_gate",
+  "figure_source_data": {
+    "fig01_development_model_comparison.png": [
+      "table01_development_model_summary.csv"
+    ],
+    "fig02_five_fold_cv.png": [
+      "table02_five_fold_cv_summary.csv"
+    ],
+    "fig03_lme_skill_sensitivity.png": [
+      "table04_lme_skill.csv"
+    ],
+    "fig04_salinity_band_skill.png": [
+      "table05_salinity_band_skill.csv"
+    ],
+    "fig05_forward_chain.png": [
+      "table03_forward_summary.csv"
+    ],
+    "fig06_sss_support_distance.png": [
+      "table06_sss_support_distance.csv"
+    ],
+    "fig07_observed_vs_predicted.png": [
+      "local:selected_development_predictions.parquet"
+    ],
+    "fig08_absolute_error_calibration.png": [
+      "table08_uncertainty_calibration.csv",
+      "local:candidate_predictions.parquet"
+    ]
+  },
+  "files_sha256": {
+    "README.md": "d55babe10bc8f9ffe4e7573a214f3b52c19d28b0ae58bc7669042a872d6ce749",
+    "REPORT.md": "cffc31f8210a8d6c8cf37be608c8d3041c79371dbaa12e72af6ca02b8db27677",
+    "figures/fig01_development_model_comparison.png": "c37d9aefda4587f1dc53b0d4fb12cb37eaf30e5cc8adca278c6b038c9ce9880c",
+    "figures/fig02_five_fold_cv.png": "96e75c09c5f82c5f306307e62fc3e5016b3e32da9103036797952e39f2cef35e",
+    "figures/fig03_lme_skill_sensitivity.png": "f531c3eb626157ddd24daf6850e3173e85a4ef0ab7d1ea211a9edec3604ed98f",
+    "figures/fig04_salinity_band_skill.png": "5a7f563ce4178f18f13a2966c67c80d66d6365fb855f64e712e4f17ed0a0be0e",
+    "figures/fig05_forward_chain.png": "111b24e845d8c410c2e9894a69ed41f1ab514053b609967170eaae2b64fdea07",
+    "figures/fig06_sss_support_distance.png": "e3af9a32ef64a6d37cf9d9254803217e85bf4893a5eea2bf4693b17a45274672",
+    "figures/fig07_observed_vs_predicted.png": "3bba163dd3de4d3ed8363ab7aed61ee1cd64c40f63605b134be7ab214ebf7125",
+    "figures/fig08_absolute_error_calibration.png": "ebdfc5e45ce4f3b15bc4db89fa9a9ca0a2255b3087fb61e7ccb10dcb6cf34d34",
+    "tables/table01_development_model_summary.csv": "bc8abf2e04572af2bdc08a783a62d7362e58e504e86bf8897c8bad5d7e94a4af",
+    "tables/table02_five_fold_cv_summary.csv": "1ac5c5ebed06072786fc5ce913f160fab4f061be136abf4f81f196e83ac1219b",
+    "tables/table03_forward_summary.csv": "3a5f023443d0cf3a7f2f65a32de09dc74a6a28b3e3051bba83582766e8ed6904",
+    "tables/table04_lme_skill.csv": "c45369b12c30fc177aee9c0c4ff788bc687b54c3d17afeef7e3b03918fba85a1",
+    "tables/table05_salinity_band_skill.csv": "87faae5c892932b269def9821174cb1b4cea922603db81ec2b16b7d5596be075",
+    "tables/table06_sss_support_distance.csv": "88f027ea60631d0e18334b31733281aeb696af6fc8cb6dc9484923172bf0239e",
+    "tables/table07_development_gates.csv": "58b306e4296d9abfbf76097e96913f3e74772adbba3fc91451f91095be7934ed",
+    "tables/table08_uncertainty_calibration.csv": "db12c550746c5366e01a0797bf2b4d3280c25cec9089fa4f7e9b2871e3e9af34"
+  }
+}

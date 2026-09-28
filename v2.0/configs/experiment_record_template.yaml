@@ -75,6 +75,14 @@ artifacts:
   metrics: []
   figures: []
   report: null
+  # Formal/claim-bearing experiments cannot be complete until this archive verifies.
+  reviewer_archive:
+    path: null
+    report: null
+    figures: []
+    source_tables: []
+    manifest: null
+    verification_status: null  # verified | failed | not_required_smoke
 
 outcome:
   completed_utc: null

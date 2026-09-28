@@ -7,8 +7,9 @@
 1. `docs/experiment_protocol.md`：全项目共同的验证原则和统计口径。
 2. `configs/experiment_record_template.yaml`：每个新正式实验在运行前填写的预登记记录。
 3. `outputs/experiments/<experiment_id>/`：本地机器可读产物，包括 `protocol.json`、`data_manifest.json`、`selection.json`、metrics、预测和 checkpoint；该目录不进入 Git。
-4. 本文件：跨实验总账、证据等级、已打开测试集和失效实验。
-5. GitHub Roadmap Issue：未来任务、依赖关系和通过门槛，不代替实验记录。
+4. `docs/experiment_archive/<experiment_id>/`：进入 Git 的 reviewer-ready 报告、图片、图片源表和哈希清单；正式实验完成与关闭 Issue 的强制门槛。
+5. 本文件：跨实验总账、证据等级、已打开测试集和失效实验。
+6. GitHub Roadmap Issue：未来任务、依赖关系和通过门槛，不代替实验记录。
 
 ## 证据等级
 
@@ -27,7 +28,7 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 
 | 实验 ID | 目标 | 状态 | checkpoint 选择 |
 |---|---|---|---|
-| `p1_sss_baselines_v2.2` | SSS 背景订正与软空间专家 | development complete；进入 #11 | soft experts by development LME macro-RMSE |
+| `p1_sss_baselines_v2.2` | SSS 背景订正与软空间专家 | development complete；reviewer archive verified；进入 #11 | soft experts by development LME macro-RMSE |
 | `p1_fco2_baselines_v2.2` | fCO2 基线与软空间专家 | preregistered | development LME macro-RMSE |
 | `p1_ta_baselines_v2.2` | 北美 TA 局地线性/层级部分池化，DIC 结构派生 | preregistered | grouped development LME macro-RMSE |
 
@@ -156,6 +157,7 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 - checkpoint 选择规则、主指标、区域宏平均、worst-group 和不确定性覆盖；
 - Git commit、工作树是否干净、配置和源码哈希；
 - 结果目录、checkpoint、预测、metrics、图和报告路径；
+- reviewer-ready 归档路径、完整报告、作图源表、manifest 和自动校验状态；
 - 失败、偏离预登记、测试开启时间和结论可信范围。
 
-实验完成后更新本总账。探索运行不得事后补写成“预登记”；必须标为 C。任何输入错误保留原目录并降为 X，修复后使用新的 experiment ID。
+实验完成后更新本总账。正式实验必须先通过 `python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_id>` 才能标记完成或关闭 Issue。探索运行不得事后补写成“预登记”；必须标为 C。任何输入错误保留原目录并降为 X，修复后使用新的 experiment ID。

@@ -1,5 +1,7 @@
 # P1.1 沿海 SSS 产品可行性实验
 
+> Reviewer-ready 的完整方法、图片、图片源表和哈希清单已归档到 [`docs/experiment_archive/p1_sss_viability_v2.2/`](experiment_archive/p1_sss_viability_v2.2/REPORT.md)。本文保留为项目内简明结论入口。
+
 日期：2026-09-28。实验代码提交：`dc653dd`。数据清单：`data_manifest_v2.2.json`，SHA256 为 `46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f`。
 
 本实验只读取冻结的 train 和 development 标签。`locked_test` 与 `external_independent` 均未打开。结论的地理范围限于冻结缓存覆盖的北美邻近沿海水域（0–70.125°N、180–315°E），不能据此给出全球沿海 SSS 的通过结论。

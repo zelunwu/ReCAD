@@ -13,6 +13,8 @@
 
 共同实验规范在 `experiment_protocol.md`。操作交接和本机路径在 `../HANDOFF.md`。GitHub 任务状态在 Roadmap issue #1；Issue 不是实验结果数据库。
 
+正式实验的 reviewer-ready 证据归档位于 `experiment_archive/<experiment_id>/`。每个归档包含完整报告、可直接回复审稿人的图片、图片源 CSV 和可自动核验的哈希清单；索引见 `experiment_archive/README.md`。
+
 ## 当前有效结论
 
 - 全球产品重点为 SSS/fCO2；北美扩展为 TA 和由 inverse CO2SYS 派生的 DIC。
@@ -44,5 +46,5 @@
 
 - 当前数值只在总账出现一次；详细报告链接到总账，不复制成新的“最新结论”。
 - 新实验在训练前复制 `../configs/experiment_record_template.yaml`，完成后登记到实验总账。
-- 大型数据、checkpoint、预测、metrics 和图不进入 Git；总账记录其外部路径和哈希。
+- 大型数据、checkpoint 和逐行预测不进入 Git；正式实验的汇总表、reviewer-ready 图片、报告与归档 manifest 必须进入 `experiment_archive/`，并引用大型产物哈希。
 - 错误实验不删除，标记为 X；测试集一旦用于选择，立即在总账降级为 benchmark。
