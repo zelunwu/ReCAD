@@ -5,10 +5,10 @@ owner: ReCAD
 created_utc: 2026-09-28T05:35:00Z
 science:
   question: Can predictor-only baselines and spatially adaptive models bias-correct coastal SSS across unseen cruises and LMEs?
-  hypothesis: A shared model with soft regional adaptation improves LME macro-RMSE over a global point baseline without worsening worst-LME RMSE.
-  product_scope: Global coastal SSS; formal North-American grouped evaluation in this stage.
-  primary_comparison: Global point residual baseline versus soft spatial-expert residual model.
-  acceptance_gate: Lower development LME macro-RMSE and no material degradation on grouped locked test; external remains sealed.
+  hypothesis: Residual correction can improve cruise-equal and LME-macro error over GLORYS without widespread regional or low-salinity degradation.
+  product_scope: North-American-adjacent coastal SSS development evidence; global status cannot be assigned from this cache.
+  primary_comparison: Best residual candidate versus unmodified GLORYS background.
+  acceptance_gate: At least 5% development improvement in cruise-equal and LME-macro RMSE, positive skill in at least 70% of adequately sampled LMEs, no more than 10% worst-LME degradation, and positive forward-development skill.
   stopping_rule: Fixed optimizer budget; checkpoint selected only by grouped development LME macro-RMSE.
 data:
   manifest_path: configs/frozen/data_manifest_v2.2.json
@@ -31,10 +31,10 @@ splits:
   external_independent: future SOCAT post-v2026 increment; labels unavailable and sealed
   previously_opened_benchmarks: [2004-2005 legacy split]
 model:
-  family: point residual baseline plus soft spatial experts
+  family: background, hierarchical bias, ridge, CatBoost, point MLP, and soft spatial experts
   config_path: configs/p1_sss_baselines_v2.2.yaml
   config_sha256: 09de6adfb9502fb0ec81fe90616f515ef3be396b1bdfad0e8e84863a8a00492a
-  inputs: [SST, GLORYS_SSS, ADT, wind_speed, atmospheric_pCO2, lon, lat, month]
+  inputs: [SST, GLORYS_SSS, ADT, wind_speed, lon, lat, month, LME, basin, predictor_regime]
   learned_outputs: [SSS]
   derived_outputs: []
   loss: cruise-balanced robust regression
@@ -50,7 +50,7 @@ evaluation:
   primary_metrics: [RMSE, MAE, bias, R2]
   group_metrics: [LME_macro_RMSE, regime_macro_RMSE, worst_LME_RMSE, distance_to_support]
   calibration_metrics: [coverage_90, interval_width]
-  baselines: [GLORYS_background, climatology, ridge, point_MLP]
+  baselines: [GLORYS_background, regional_month_bias, ridge, CatBoost, point_MLP]
 reproducibility:
   git_commit: null
   git_worktree_clean: false

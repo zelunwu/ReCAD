@@ -6,13 +6,15 @@ target: salinity
 background: sss
 periods: {core_labels: 1993-2025, provisional_prediction: 2026}
 label_filter: sal_n > 0
-features: [sst, sss, adt, wspd, pco2air, xco2air, latitude, longitude, mon]
+features: [sst, sss, adt, wspd, latitude, longitude, month, lme_id, basin_id, regime_id]
 split_column: split
 group_column: group_key
 region_columns: [lme_id, basin_id, regime_id]
 candidates:
   - {name: background, family: identity}
+  - {name: regional_month_bias, family: empirical_bayes_bias, shrinkage_records: 50}
   - {name: ridge_residual, family: ridge, alpha_grid: [0.1, 1.0, 10.0, 100.0]}
+  - {name: catboost_residual, family: catboost, iterations: 1500, depth: 8, learning_rate: 0.05}
   - {name: point_mlp_residual, family: mlp, hidden: [128, 128], dropout: 0.1}
   - {name: soft_experts_residual, family: mixture_of_experts, experts: 8, top_k: 2, hidden: [128, 128], shrinkage: 0.001}
 training:
@@ -25,7 +27,13 @@ training:
   selection: development_LME_macro_RMSE
 evaluation:
   metrics: [RMSE, MAE, bias, R2]
-  grouped: [cruise, lme_id, regime_id, nearest_carbon_km]
+  grouped: [cruise, lme_id, regime_id, nearest_carbon_km, salinity_band]
+  development_gates:
+    cruise_equal_rmse_improvement_vs_glorys: 0.05
+    lme_macro_rmse_improvement_vs_glorys: 0.05
+    minimum_positive_skill_lme_fraction: 0.70
+    maximum_worst_lme_degradation: 0.10
+    forward_skill_must_be_positive: true
   locked_test_openings: 1
   external_access: forbidden_until_P3
 
