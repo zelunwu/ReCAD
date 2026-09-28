@@ -138,6 +138,12 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 | cache 构建 | manifest 分散，部分错误缓存仍在 | 错误目录保留 `_invalid_*`，总账标 X |
 | 外部验证 | TA/DIC 已冻结 41 个新 CODAP 航次；SSS/fCO2 为未来 SOCAT 增量，标签尚不可用 | 开发期只使用 grouped CV/development；P3 一次性开启外部标签 |
 
+## P1 共享运行基础设施
+
+`p1_framework_v2.2`（GitHub Issue #6）冻结了 P1 的唯一数据访问和评估接口。实现位于 `src/recad/evaluate/p1_framework.py`，配置为 `configs/p1_framework_v2.2.yaml`，接口和运行方式见 `docs/p1_shared_evaluation_framework.md`。真实 v2.2 数据的机器审计写入被 Git 忽略的 `outputs/audits/p1_framework_v2.2.json`；审计只读取 train/development 标签，未开启 locked test 或 external-independent 标签。
+
+真实数据 smoke audit 的可用标签为：SSS train/development 332,295/72,161，fCO2 359,603/78,669，TA 4,515/925，DIC 4,516/840。SSS 和 fCO2 的开发标签覆盖至 2025；2026 严格输入可用位置共 140,746 个节点月，全部只能输出为 provisional。
+
 ## 新实验必须记录的字段
 
 运行正式训练前，从 `configs/experiment_record_template.yaml` 复制一份到版本控制目录，冻结以下内容：

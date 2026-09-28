@@ -1,0 +1,31 @@
+schema_version: 1
+data_manifest: frozen/data_manifest_v2.2.json
+formal_hash_mode: full
+targets:
+  sss: {cache: socat, label_end_year: 2025}
+  fco2: {cache: socat, label_end_year: 2025}
+  ta: {cache: carbon, label_end_year: 2024}
+  dic: {cache: carbon, label_end_year: 2024, role: evaluation_only}
+access:
+  train: train
+  selection: development
+  locked_test: explicit_audited_grant_only
+  external_independent: forbidden_until_P3
+  prediction_2026: provisional_only
+cv:
+  folds: 5
+  group: group_key
+forward_chain:
+  train: "<=2018"
+  development: "2019-2021"
+  locked_test: "2022-2025"
+sampling:
+  hierarchy: [lme_id, group_key, month, record]
+  deterministic: true
+seeds: [100, 101, 102]
+checkpoint_selection:
+  metric: lme_macro_rmse
+  mode: min
+metrics: [rmse, mae, bias, r2, pearson_r]
+aggregations: [pooled, cruise_equal, lme_macro, regime_macro, worst_lme, support_distance]
+support_distance_bins_km: [0, 25, 50, 100, 200, 500, .inf]

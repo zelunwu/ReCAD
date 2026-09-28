@@ -1,4 +1,5 @@
 experiment_id: p1_ta_baselines_v2.2
+framework: configs/p1_framework_v2.2.yaml
 data_manifest: configs/frozen/data_manifest_v2.2.json
 cache: C:/backup/phd/data/processed/recad_v2_2/na_carbon_cache_v2.2.parquet
 target: ta
