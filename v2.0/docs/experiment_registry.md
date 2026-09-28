@@ -21,15 +21,15 @@
 
 `2004–2005` 已被多轮查看，所有相关结果只能标为历史 benchmark，不能再作为独立验证。`independent` 旧字段名不自动代表统计独立。
 
-## v2.1 正式实验入口
+## v2.2 正式实验入口
 
-P0 已在 `configs/frozen/data_manifest_v2.1.json` 冻结 1993–2024 数据、航次 split、空间支持和外部验证规则。验收报告见 `docs/p0_freeze_report_v2.1.md`。首轮 P1 实验在运行前分别登记为：
+P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留至 2026，SSS/fCO2 核心观测期到 2025，TA/DIC 观测期到 2024，TA/DIC 模型输出可延伸至 2026。验收报告见 `docs/p0_freeze_report_v2.2.md`。v2.1 因错误排除完整 2025 数据而失效。首轮 P1 实验为：
 
 | 实验 ID | 目标 | 状态 | checkpoint 选择 |
 |---|---|---|---|
-| `p1_sss_baselines_v2.1` | SSS 背景订正与软空间专家 | preregistered | development LME macro-RMSE |
-| `p1_fco2_baselines_v2.1` | fCO2 基线与软空间专家 | preregistered | development LME macro-RMSE |
-| `p1_ta_baselines_v2.1` | 北美 TA 局地线性/层级部分池化 | preregistered | grouped development LME macro-RMSE |
+| `p1_sss_baselines_v2.2` | SSS 背景订正与软空间专家 | preregistered | development LME macro-RMSE |
+| `p1_fco2_baselines_v2.2` | fCO2 基线与软空间专家 | preregistered | development LME macro-RMSE |
+| `p1_ta_baselines_v2.2` | 北美 TA 局地线性/层级部分池化，DIC 结构派生 | preregistered | grouped development LME macro-RMSE |
 
 41 个 CODAP 2022–2024、未匹配 GLODAP 的完整航次已标记 `external_independent`。未来 SOCAT 相对 v2026 的新增航次是 SSS/fCO2 外部集；P3 前不得查看标签。
 

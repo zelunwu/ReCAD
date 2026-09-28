@@ -1,0 +1,34 @@
+experiment_id: p1_ta_baselines_v2.2
+data_manifest: configs/frozen/data_manifest_v2.2.json
+cache: C:/backup/phd/data/processed/recad_v2_2/na_carbon_cache_v2.2.parquet
+target: ta
+periods: {observed_labels: 1993-2024, model_prediction: 1993-2026, provisional_prediction: 2026}
+prediction_outputs:
+  TA: {provenance: model_predicted}
+  DIC: {provenance: co2sys_derived_from_predictions, inputs: [T, SSS, fCO2, TA]}
+label_filter: label_ta_ok == true and split != external_independent
+features: [salinity, sss, sst, adt, wspd, pco2air, latitude, longitude, month, lme_id, regime_id]
+split_column: split
+group_column: group_key
+region_columns: [lme_id, basin_id, regime_id]
+candidates:
+  - {name: carter_esper_prior, family: external_prior}
+  - {name: global_ta_sss, family: robust_linear, interactions: [salinity_month]}
+  - {name: lme_ta_sss, family: grouped_robust_linear, min_group_cruises: 5, fallback: global_ta_sss}
+  - {name: hierarchical_ta_sss, family: partial_pooling, varying: [intercept, salinity_slope], groups: [lme_id, regime_id]}
+  - {name: hierarchical_residual, family: partial_pooling_mlp, hidden: [64, 64], dropout: 0.1}
+training:
+  seeds: [100, 101, 102]
+  steps: 4000
+  batch_size: 512
+  optimizer: {name: AdamW, learning_rate: 0.001, weight_decay: 0.001}
+  sampling: equal_cruise_then_equal_LME
+  checkpoint_every: 200
+  selection: development_LME_macro_RMSE
+evaluation:
+  metrics: [RMSE, MAE, bias, R2]
+  grouped: [cruise, lme_id, regime_id, salinity_band, nearest_carbon_km]
+  uncertainty: {method: ensemble_conformal, nominal_coverage: 0.90}
+  locked_test_openings: 1
+  external_access: forbidden_until_P3
+

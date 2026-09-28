@@ -1,6 +1,6 @@
 schema_version: 1
-experiment_id: p1_ta_baselines_v2.1
-status: invalidated
+experiment_id: p1_ta_baselines_v2.2
+status: preregistered
 owner: ReCAD
 created_utc: 2026-09-28T05:35:00Z
 science:
@@ -11,19 +11,19 @@ science:
   acceptance_gate: Lower LME macro-RMSE and calibrated 90% coverage on locked cruises; external CODAP cruises remain sealed
   stopping_rule: Fixed model set and grouped development selection
 data:
-  manifest_path: configs/frozen/data_manifest_v2.1.json
-  manifest_sha256: 5980f2e31a78f7dcc9bebbb6508c101de3298f30e722ca0b6a8c9116591bb725
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
   prepared_path: outputs/prepared_global_p32.nc
   prepared_sha256: 13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719
   observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
-  time_range: 1993-2024
+  time_range: observed TA labels 1993-2024; forward model output axis through 2026
   spatial_domain: North American coast
   qc_policy: is_primary=1 and TA QC=2
-  provenance_policy: observed/adjusted TA methods retained; Carter/ESPER is predictor/prior and never truth
+  provenance_policy: observed/adjusted TA methods retained; Carter/ESPER is predictor/prior and never truth; 2025-2026 TA is model_predicted
   aggregation: primary point records with cruise grouping
 splits:
-  manifest_path: C:/backup/phd/data/processed/recad_v2_1/split_manifest_v2.1.parquet
-  manifest_sha256: 6b486d1f7e601a29bce4977e56ef57a112641cc6251f6c927e48c0526a357d0e
+  manifest_path: C:/backup/phd/data/processed/recad_v2_2/split_manifest_v2.2.parquet
+  manifest_sha256: 25d5423c15ef0149336bbb0ac95866e182ba365bec2e129aecee03d3d71154e5
   grouping: normalized Expocode/cruise and cross-product duplicate group
   train: deterministic non-external train cruises
   development: deterministic non-external development cruises
@@ -32,11 +32,11 @@ splits:
   previously_opened_benchmarks: [2004-2005 legacy split]
 model:
   family: global/local linear and hierarchical partial pooling
-  config_path: configs/p1_ta_baselines_v2.1.yaml
-  config_sha256: fb29e37eb7bacc6c2880b3cf0664a9794ac9a8b57860c9e0134daa19d6a269ce
+  config_path: configs/p1_ta_baselines_v2.2.yaml
+  config_sha256: d078a3d42428d72cad94c467bac9d22249e8c8b2d6ca7df00053759cfd915195
   inputs: [in_situ_or_background_SSS, SST, lon, lat, month, LME, environmental_regime, Carter_ESPER_TA_prior]
   learned_outputs: [TA]
-  derived_outputs: []
+  derived_outputs: [DIC_via_inverse_CO2SYS_from_predicted_T_SSS_fCO2_TA]
   loss: cruise-balanced robust heteroscedastic regression
   sampling: equalized by cruise and LME
   parameter_count: null
@@ -47,6 +47,6 @@ evaluation:
   calibration_metrics: [coverage_90, interval_width]
   baselines: [Carter_ESPER, global_TA_SSS_linear, LME_TA_SSS_linear]
 reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
-artifacts: {output_directory: outputs/experiments/p1_ta_baselines_v2.1, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.1.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
-outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: superseded by v2.2 because v2.1 incorrectly excluded complete 2025 SOCAT observations, evidence_grade: X, allowed_claims: null}
+artifacts: {output_directory: outputs/experiments/p1_ta_baselines_v2.2, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.2.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
+outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}
 

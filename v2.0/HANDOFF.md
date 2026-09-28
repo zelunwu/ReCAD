@@ -2,7 +2,7 @@
 
 > **当前权威入口（2026-09-28）**：数据版本与路径见 `docs/data_registry.md`；实验方法、结果和证据等级见 `docs/experiment_registry.md`；研究方向变化见 `docs/decision_log.md`；当前 P0–P3 路线见 `docs/current_status_and_roadmap_20260928.md` 和 GitHub issue #1。下方早期章节保留工程历史，若与四个权威入口冲突，以权威入口为准。
 
-> **2026-09-28 P0 闭环**：`configs/frozen/data_manifest_v2.1.json`、航次 split、外部验证清单、LME/环境区、沿岸图、支持距离和北美 compact caches 已冻结，验收见 `docs/p0_freeze_report_v2.1.md`。项目已进入 P1；下文“尚未冻结/立即要做”的早期段落只保留历史语境。
+> **2026-09-28 P0 v2.2 闭环**：数据轴保留 1993–2026；SSS/fCO2 核心期到 2025；TA/DIC 观测到 2024，但 TA 可前向预测、DIC 可由 inverse CO2SYS 推理到 2026。当前入口为 `configs/frozen/data_manifest_v2.2.json` 和 `docs/p0_freeze_report_v2.2.md`；v2.1 已替代。
 
 > **2026-09-05 更新**：模型选择进入独立验证优先的实验设计阶段，见
 > [`docs/experiment_protocol.md`](docs/experiment_protocol.md)。尚未冻结正式 split 或运行模型比较。
@@ -18,7 +18,7 @@
 
 ## 0. 当前一句话
 
-ReCAD v2.0 当前定义为：全球 1/8°月尺度 SSS 偏差订正与 fCO2 重建，加北美沿岸 TA 扩展；DIC 在 TA 适用域内由 `T+SSS+fCO2+TA` 经 inverse CO2SYS 派生。P0 数据/split/独立验证冻结已经完成，下一步是按预登记协议运行 P1 单任务基线；尚未用 v2.1 正式数据运行候选训练。
+ReCAD v2.0 当前定义为：全球 1/8°月尺度 SSS 偏差订正与 fCO2 重建，加北美沿岸 TA 扩展；DIC 在 TA 适用域内由 `T+SSS+fCO2+TA` 经 inverse CO2SYS 派生。P0 v2.2 已完成，下一步按 v2.2 预登记运行 P1；尚未启动正式候选训练。
 
 ---
 

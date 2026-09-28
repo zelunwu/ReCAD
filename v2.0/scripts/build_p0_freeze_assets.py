@@ -1,8 +1,10 @@
-"""Build the frozen v2.1 P0 spatial, split, support, and compact-cache assets.
+"""Build the frozen v2.2 P0 spatial, split, support, and compact-cache assets.
 
 Large generated artifacts are written outside Git.  The repository receives
 only small manifests that contain their paths, SHA256 values, and protocols.
-The formal cutoff is 2024-12-31; incomplete 2026 fields are never sampled.
+The dataset retains 1993--2026.  SSS/fCO2 core modeling extends through the
+complete 2025 calendar year; carbonate labels end in 2024; incomplete 2026 is
+retained as provisional and is never used for training or formal scoring.
 """
 from __future__ import annotations
 
@@ -26,13 +28,17 @@ from shapely import contains_xy
 from shapely.geometry import shape
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUT = Path(r"C:\backup\phd\data\processed\recad_v2_1")
+DEFAULT_OUT = Path(r"C:\backup\phd\data\processed\recad_v2_2")
 DEFAULT_CARBON = Path(r"C:\backup\phd\data\processed\carbon\codap_glodap_na_surface5m_v1.nc")
 DEFAULT_SOCAT = Path(r"C:\backup\phd\data\raw\socat\SOCATv2026_Coastal.tsv")
 LME_URL = ("https://maps.edc.uri.edu/ArcGIS/rest/services/LME/LMEWebMap/"
            "MapServer/2/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson")
 FEATURES = ("sst", "sss", "adt", "wspd", "pco2air")
-FORMAL_END_YEAR = 2024
+VERSION = "v2.2"
+DATA_END_YEAR = 2026
+SOCAT_CORE_END_YEAR = 2025
+CARBON_CORE_END_YEAR = 2024
+CLIMATOLOGY_END_YEAR = 2025
 
 
 def sha256(path: Path, block: int = 16 << 20) -> str:
@@ -61,12 +67,12 @@ def group_key(value: object) -> str:
 
 
 def split_for_group(key: str) -> str:
-    u = stable_fraction(key, "recad-v2.1-cruise-split")
+    u = stable_fraction(key, "recad-v2.2-cruise-split")
     return "locked_test" if u < 0.15 else ("development" if u < 0.30 else "train")
 
 
 def cv_for_group(key: str) -> int:
-    return int(stable_fraction(key, "recad-v2.1-group-cv") * 5) % 5
+    return int(stable_fraction(key, "recad-v2.2-group-cv") * 5) % 5
 
 
 def coarse_basin(lon180: np.ndarray, lat: np.ndarray) -> np.ndarray:
@@ -160,7 +166,7 @@ def read_carbon(path: Path) -> pd.DataFrame:
     with xr.open_dataset(path) as d:
         frame = d[keep].to_dataframe().reset_index(drop=True)
     frame = frame[(frame.is_primary == 1) & (frame.year >= 1993) &
-                  (frame.year <= FORMAL_END_YEAR)].copy()
+                  (frame.year <= DATA_END_YEAR)].copy()
     raw_group = frame.expocode.where(frame.expocode.astype(str).str.len() > 2, frame.cruise_id)
     frame["group_key"] = raw_group.map(group_key)
     return frame
@@ -188,7 +194,7 @@ def build_socat_na(path: Path, lat_grid: np.ndarray, lon_grid: np.ndarray,
         lat = chunk[cols[4]].to_numpy(float); yr = chunk.yr.to_numpy(float)
         flag = chunk[cols[6]].to_numpy(float); f = chunk[cols[5]].to_numpy(float)
         ok = (np.isfinite(f) & (f >= 1) & (f <= 1000) & (flag <= 2) &
-              (yr >= 1993) & (yr <= FORMAL_END_YEAR) & (lat >= 0) & (lat <= 75) &
+              (yr >= 1993) & (yr <= DATA_END_YEAR) & (lat >= 0) & (lat <= 75) &
               (lon180 >= -180) & (lon180 <= -45))
         sub = chunk.loc[ok].copy()
         if sub.empty: continue
@@ -282,8 +288,37 @@ def main() -> int:
         li, oi = flats // len(lon_grid), flats % len(lon_grid)
         node_lon = lon_grid[oi]; node_lat = lat_grid[li]; lon180 = ((node_lon + 180) % 360) - 180
         years = np.asarray(ds.variables["year"][:], int)
-        year_ix = np.flatnonzero((years >= 1993) & (years <= FORMAL_END_YEAR))
+        year_ix = np.flatnonzero((years >= 1993) & (years <= CLIMATOLOGY_END_YEAR))
         env, socat_month_count = environmental_climatology(ds, year_ix, flats)
+        recent_coverage = {}
+        availability = {name: np.zeros((2, 12, len(flats)), np.int8)
+                        for name in FEATURES + ("xco2air",)}
+        for yr in (2025, 2026):
+            yi_cov = int(np.flatnonzero(years == yr)[0])
+            recent_coverage[str(yr)] = {}
+            for name in FEATURES + ("xco2air", "fco2"):
+                monthly = []
+                for mi in range(12):
+                    present = np.isfinite(np.asarray(ds.variables[name][yi_cov, mi], np.float32).reshape(-1)[flats])
+                    monthly.append(int(present.sum()))
+                    if name in availability:
+                        availability[name][yr - 2025, mi] = present
+                recent_coverage[str(yr)][name] = {
+                    "months_nonzero": int(sum(v > 0 for v in monthly)),
+                    "gridmonths": int(sum(monthly)), "monthly_cells": monthly}
+        strict_ready = np.logical_and.reduce([v.astype(bool) for v in availability.values()]).astype(np.int8)
+        inference_path = args.out / f"inference_availability_{VERSION}.nc"
+        ids = xr.Dataset(
+            {**{f"available_{k}": (("year", "month", "node"), v) for k, v in availability.items()},
+             "strict_all_inputs_ready": (("year", "month", "node"), strict_ready)},
+            coords={"year": [2025, 2026], "month": np.arange(1, 13, dtype=np.int8),
+                    "node": np.arange(len(flats), dtype=np.int32)},
+            attrs={"purpose": "forward prediction availability, not observation-label availability",
+                   "2025_status": "core SSS/fCO2 inference; TA model prediction and CO2SYS-derived DIC allowed",
+                   "2026_status": "provisional rolling year; predictions must retain provisional flag",
+                   "ta_provenance": "model_predicted", "dic_provenance": "co2sys_derived_from_predictions"})
+        ids.to_netcdf(inference_path, engine="netcdf4",
+                      encoding={v: {"zlib": True, "complevel": 4} for v in ids.data_vars})
 
         # Target-free regimes: location plus mean/variability of predictors only.
         feat = np.column_stack((node_lat / 90, np.sin(np.deg2rad(node_lon)),
@@ -309,9 +344,9 @@ def main() -> int:
         spatial = {"flat_to_node": flat_to_node, "lme_id": lme_id, "basin_id": basin_id,
                    "regime_id": regime.astype(np.int16), "nearest_carbon_km": nearest_km}
 
-        graph_path = args.out / "coastal_graph_v2.1.npz"
+        graph_path = args.out / f"coastal_graph_{VERSION}.npz"
         graph_audit = build_graph(mask, flats, graph_path)
-        spatial_path = args.out / "spatial_support_v2.1.nc"
+        spatial_path = args.out / f"spatial_support_{VERSION}.nc"
         sds = xr.Dataset(
             {"grid_flat": ("node", flats.astype(np.int32)), "lat_index": ("node", li.astype(np.int16)),
              "lon_index": ("node", oi.astype(np.int16)), "latitude": ("node", node_lat.astype(np.float32)),
@@ -320,7 +355,8 @@ def main() -> int:
              "carbon_observation_count": ("node", obs_count), "carbon_cruise_count": ("node", cruise_count),
              "carbon_nearest_support_km": ("node", nearest_km),
              "socat_observed_gridmonth_count": ("node", socat_month_count)},
-            attrs={"generated_utc": generated, "formal_period": "1993-2024",
+            attrs={"generated_utc": generated, "dataset_period": "1993-2026",
+                   "regime_climatology_period": "1993-2025 complete years",
                    "regime_inputs": "lat, lon sin/cos, predictor means/stds: " + ",".join(FEATURES),
                    "regime_excludes_targets": "fco2,TA,DIC and all observation labels",
                    "lme_names_json": json.dumps(lme_names, ensure_ascii=False),
@@ -333,8 +369,29 @@ def main() -> int:
         carbon_cache = attach_grid(carbon, ds, spatial, lat_grid, lon_grid, False)
         socat_cache = attach_grid(socat, ds, spatial, lat_grid, lon_grid, True)
 
-    carbon_cache.loc[carbon_cache.group_key.isin(external_groups), "split"] = "external_independent"
-    socat_cache.loc[socat_cache.group_key.isin(external_groups), "split"] = "external_independent"
+    # Assign whole groups after both sources are present.  A cruise touching
+    # incomplete 2026 is moved in its entirety, preventing a year-boundary
+    # cruise from leaking into development.  Complete 2025 SOCAT observations
+    # remain in the normal cruise-grouped core.  The source-independent
+    # carbonate set has highest priority and remains sealed across both tables.
+    group_year = pd.concat([
+        carbon_cache[["group_key", "year"]],
+        socat_cache[["group_key", "yr"]].rename(columns={"yr": "year"})
+    ]).groupby("group_key").year.max()
+    special_split = {}
+    for key, max_year in group_year.items():
+        if key in external_groups:
+            special_split[key] = "external_independent"
+        elif max_year >= 2026:
+            special_split[key] = "provisional_2026"
+    for table in (carbon_cache, socat_cache):
+        override = table.group_key.map(special_split)
+        table.loc[override.notna(), "split"] = override[override.notna()]
+    carbon_cache["record_status"] = np.where(carbon_cache.year <= CARBON_CORE_END_YEAR, "core_carbon_1993_2024", "unexpected")
+    socat_cache["record_status"] = np.where(socat_cache.yr <= SOCAT_CORE_END_YEAR, "core_socat_1993_2025", "provisional_2026")
+    for table in (carbon_cache, socat_cache):
+        table["training_eligible"] = table.split.eq("train")
+        table["selection_eligible"] = table.split.eq("development")
 
     # Keep explicit label provenance and masks. Calculated fCO2 (method 3) is
     # retained for audits but excluded from independent fCO2 supervision.
@@ -343,8 +400,8 @@ def main() -> int:
     carbon_cache["label_dic_ok"] = np.isfinite(carbon_cache.dic) & (carbon_cache.dic_qc == 2)
     carbon_cache["label_fco2_measured_ok"] = (np.isfinite(carbon_cache.fco2) &
         (carbon_cache.fco2_qc == 2) & carbon_cache.parameter_method_fco2.isin([1, 2]))
-    carbon_path = args.out / "na_carbon_cache_v2.1.parquet"
-    socat_path = args.out / "na_socat_cache_v2.1.parquet"
+    carbon_path = args.out / f"na_carbon_cache_{VERSION}.parquet"
+    socat_path = args.out / f"na_socat_cache_{VERSION}.parquet"
     carbon_cache.to_parquet(carbon_path, index=False, compression="zstd")
     socat_cache.to_parquet(socat_path, index=False, compression="zstd")
 
@@ -352,15 +409,11 @@ def main() -> int:
         carbon_cache[["group_key", "split", "cv_fold"]].assign(dataset="carbon"),
         socat_cache[["group_key", "split", "cv_fold"]].assign(dataset="socat")
     ]).drop_duplicates().sort_values(["group_key", "dataset"])
-    group_year = pd.concat([
-        carbon_cache[["group_key", "year"]],
-        socat_cache[["group_key", "yr"]].rename(columns={"yr": "year"})
-    ]).groupby("group_key").year.max()
     groups["max_year"] = groups.group_key.map(group_year)
-    groups["forward_split"] = np.where(groups.group_key.isin(external_groups), "external_independent",
+    groups["forward_split"] = np.where(groups.split.isin(["external_independent", "provisional_2026"]), groups.split,
         np.where(groups.max_year <= 2018, "train",
         np.where(groups.max_year <= 2021, "development", "locked_test")))
-    split_path = args.out / "split_manifest_v2.1.parquet"
+    split_path = args.out / f"split_manifest_{VERSION}.parquet"
     groups.to_parquet(split_path, index=False, compression="zstd")
 
     leakage = {
@@ -389,16 +442,21 @@ def main() -> int:
                                     "forward_group_cross_split_violations")):
         raise RuntimeError(f"split leakage detected: {split_audit}")
 
-    coverage_path = args.out / "coverage_independence_audit_v2.1.json"
-    atomic_json(coverage_path, {"generated_utc": generated, "formal_cutoff": "2024-12-31",
-        "excluded": "2025-2026 (2026 incomplete; conservative common cutoff)",
+    coverage_path = args.out / f"coverage_independence_audit_{VERSION}.json"
+    atomic_json(coverage_path, {"generated_utc": generated, "dataset_period": "1993-2026",
+        "roles": {"1993-2024": "core for all targets",
+                  "2025": "complete core year for SOCAT SSS/fCO2; no TA/DIC observations, but model-predicted TA and CO2SYS-derived DIC are allowed",
+                  "2026": "retained provisional partial year; excluded from formal scoring"},
+        "recent_prepared_coverage": recent_coverage,
         "spatial": {"coastal_nodes": int(len(flats)), "lme_assigned": int((lme_id >= 0).sum()),
                     "regimes": int(args.regimes), "graph": graph_audit},
         "splits": split_audit, "leakage": leakage,
-        "cache_rows": {"socat_cruise_gridmonth": int(len(socat_cache)), "carbon_primary": int(len(carbon_cache))}})
+        "cache_rows": {"socat_cruise_gridmonth": int(len(socat_cache)), "carbon_primary": int(len(carbon_cache))},
+        "socat_rows_by_status": {str(k): int(v) for k, v in socat_cache.record_status.value_counts().items()},
+        "socat_rows_by_split": {str(k): int(v) for k, v in socat_cache.split.value_counts().items()}})
 
     external_manifest = {
-        "schema_version": "2.1", "frozen_utc": generated,
+        "schema_version": "2.2", "frozen_utc": generated,
         "carbonate_external": {
             "source": "CODAP-NA v2026 cruises from 2022-2024 unmatched to GLODAPv2.2023",
             "selection_uses_labels": False, "grouping": "whole normalized Expocode/cruise",
@@ -406,37 +464,42 @@ def main() -> int:
             "isolation": "split=external_independent in both compact caches; forbidden for training, tuning, checkpoint selection and ablation decisions",
             "deduplication": "duplicate_group=0 only; matched GLODAP rows excluded from this external set"},
         "sss_fco2_external": {
-            "source": "prospective SOCAT release after v2026",
-            "eligibility": "new Expocode/cruise groups absent from frozen SOCATv2026 SHA256, observation time after 2024-12-31",
-            "labels_available_at_freeze": False,
-            "isolation": "do not download or inspect labels until P3 model and analysis plan are frozen"},
+            "core_through_2025": "SOCAT 2025 has observations and complete predictor coverage; it uses the same frozen cruise-grouped split as 1993-2024",
+            "provisional_2026": "all SOCAT cruise groups touching 2026; retained but excluded from formal scoring because source variables are incomplete",
+            "prospective": "new cruise groups in a release after SOCATv2026, absent from the frozen v2026 SHA256",
+            "isolation": "do not score forward/external labels until the corresponding P3 model and analysis plan are frozen"},
         "access_rule": "external labels may be opened once for P3 final evaluation; never for model selection"}
-    external_path = ROOT / "configs/frozen/external_validation_manifest_v2.1.json"
+    external_path = ROOT / f"configs/frozen/external_validation_manifest_{VERSION}.json"
     atomic_json(external_path, external_manifest)
 
-    artifacts = [spatial_path, graph_path, split_path, carbon_path, socat_path, coverage_path]
+    artifacts = [spatial_path, graph_path, inference_path, split_path, carbon_path, socat_path, coverage_path]
     hashes = {str(p): sha256(p) for p in artifacts}
     print("Hashing formal inputs (prepared file is large)", flush=True)
     inputs = {str(p): sha256(p) for p in (args.prepared, args.carbon, args.socat, lme)}
     manifest = {
-        "schema_version": "2.1", "frozen_utc": generated, "formal_time_range": "1993-01 through 2024-12",
-        "exclusion": {"2025": "excluded for conservative complete common window",
-                      "2026": "excluded because source year is incomplete at freeze time"},
+        "schema_version": "2.2", "frozen_utc": generated, "dataset_time_range": "1993-01 through 2026-12 axis",
+        "analysis_periods": {"SSS_fCO2_core": "1993-2025", "TA_DIC_core": "1993-2024",
+                             "provisional": "2026; retain available records and per-variable coverage flags"},
         "inputs_sha256": inputs, "artifacts_sha256": hashes,
         "qc": {"SOCAT": "fCO2 1..1000 uatm and fCO2rec_flag<=2; salinity 0..50",
                "carbon": "is_primary=1; TA/DIC/SSS require QC=2; measured fCO2 requires QC=2 and method in {1,2}"},
         "target_provenance": {"SSS": "SOCAT in-situ sal", "fCO2": "SOCAT fCO2rec",
             "TA": "CODAP/GLODAP observed or adjusted with method retained", "DIC": "CODAP/GLODAP observed or adjusted with method retained",
             "forbidden": "calculated carbon-product fCO2 method=3 is audit-only"},
+        "prediction_scope": {"SSS_fCO2": "model outputs through 2026 where inference inputs permit",
+            "TA": "model-predicted through 2026; observation labels end in 2024",
+            "DIC": "derived through inverse CO2SYS from predicted T/SSS/fCO2/TA; observation labels end in 2024",
+            "2025": "complete core product year", "2026": "provisional rolling product; never presented as independently validated",
+            "availability_asset": str(inference_path)},
         "split_protocol": {"group": "normalized Expocode/cruise key", "assignment": "SHA256 salted deterministic",
             "fractions": {"train": 0.70, "development": 0.15, "locked_test": 0.15},
             "grouped_cv": "5-fold salted SHA256", "whole_region": "leave-one-LME-out",
-            "forward_chain": "cruise max year: <=2018 train, 2019-2021 development, 2022-2024 locked_test"},
-        "independent_validation": {"path": "configs/frozen/external_validation_manifest_v2.1.json",
+            "forward_chain": "cruise max year: <=2018 train, 2019-2021 development, 2022-2025 locked_test; 2026 provisional"},
+        "independent_validation": {"path": f"configs/frozen/external_validation_manifest_{VERSION}.json",
                                    "sha256": sha256(external_path)},
         "audit": str(coverage_path), "split_manifest": str(split_path),
     }
-    manifest_path = ROOT / "configs/frozen/data_manifest_v2.1.json"
+    manifest_path = ROOT / f"configs/frozen/data_manifest_{VERSION}.json"
     atomic_json(manifest_path, manifest)
     print(f"DONE manifest={manifest_path} manifest_sha256={sha256(manifest_path)}")
     return 0

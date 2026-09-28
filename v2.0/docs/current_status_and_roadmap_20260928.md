@@ -151,12 +151,12 @@ SSS 单独按残差订正产品训练和评价，至少比较 `GLORYS 原场`、
 ### P0：已于 2026-09-28 完成并冻结
 
 1. [x] 修复 `selection_score` 缺失，并用回归测试约束密集/稀疏两类任务的 checkpoint 选择。
-2. [x] 冻结 `data_manifest_v2.1.json`：正式期 1993–2024，含 QC、空间 metadata、输入/产物哈希。
+2. [x] 冻结 `data_manifest_v2.2.json`：数据轴 1993–2026；SSS/fCO2 核心期到 2025；TA/DIC 观测到 2024、预测可到 2026；含 QC、availability、空间 metadata 和哈希。
 3. [x] 2004–2005 统一降为历史 benchmark，不再用于正式模型选择。
 4. [x] CODAP-NA V2026 与 GLODAP 已合并、标记重复组和 primary 记录。
 5. [x] 冻结航次 grouped split、五折 CV、leave-LME-out 和 forward-chain；41 个新 CODAP 航次封存为碳参数外部集，未来 SOCAT 增量封存为 SSS/fCO2 外部集。
 
-验收证据和复现命令见 `docs/p0_freeze_report_v2.1.md`。P1 必须使用 v2.1 manifest；任何数据或 split 改动需提升版本。
+验收证据和复现命令见 `docs/p0_freeze_report_v2.2.md`。P1 必须使用 v2.2 manifest；v2.1 已被替代。任何数据或 split 改动需继续提升版本。
 
 ### 空间非平稳性：全局主干 + 软门控区域专家
 

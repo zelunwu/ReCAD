@@ -1,6 +1,6 @@
 schema_version: 1
-experiment_id: p1_fco2_baselines_v2.1
-status: invalidated
+experiment_id: p1_fco2_baselines_v2.2
+status: preregistered
 owner: ReCAD
 created_utc: 2026-09-28T05:35:00Z
 science:
@@ -11,19 +11,19 @@ science:
   acceptance_gate: Development LME macro-RMSE improves and locked cruise test is non-inferior across three seeds.
   stopping_rule: Fixed budget; select only on grouped development metrics.
 data:
-  manifest_path: configs/frozen/data_manifest_v2.1.json
-  manifest_sha256: 5980f2e31a78f7dcc9bebbb6508c101de3298f30e722ca0b6a8c9116591bb725
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
   prepared_path: outputs/prepared_global_p32.nc
   prepared_sha256: 13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719
   observation_products: [SOCATv2026 Coastal]
-  time_range: 1993-2024
+  time_range: core labels 1993-2025; provisional prediction axis through 2026
   spatial_domain: global coast; North-American formal grouped comparison
   qc_policy: fCO2 1-1000 uatm and fCO2rec_flag <= 2
   provenance_policy: SOCAT fCO2rec only; CODAP CO2SYS-derived fCO2 is forbidden as an independent label
   aggregation: cruise x grid-cell x calendar-month
 splits:
-  manifest_path: C:/backup/phd/data/processed/recad_v2_1/split_manifest_v2.1.parquet
-  manifest_sha256: 6b486d1f7e601a29bce4977e56ef57a112641cc6251f6c927e48c0526a357d0e
+  manifest_path: C:/backup/phd/data/processed/recad_v2_2/split_manifest_v2.2.parquet
+  manifest_sha256: 25d5423c15ef0149336bbb0ac95866e182ba365bec2e129aecee03d3d71154e5
   grouping: normalized Expocode/cruise
   train: deterministic 70% cruise groups
   development: deterministic 15% cruise groups
@@ -32,8 +32,8 @@ splits:
   previously_opened_benchmarks: [2004-2005 legacy split]
 model:
   family: climatology/ridge/MLP/ST plus soft spatial experts
-  config_path: configs/p1_fco2_baselines_v2.1.yaml
-  config_sha256: c230e2f9afd56c09cfde80f049ba5317f9c867d81f20a9636eb43f8b3b9e1aae
+  config_path: configs/p1_fco2_baselines_v2.2.yaml
+  config_sha256: 01206efcb40a9e90941b61cc06e28399e712a9814c659f4f9bfbfda0a3603888
   inputs: [SST, GLORYS_SSS, ADT, wind_speed, atmospheric_pCO2, lon, lat, month]
   learned_outputs: [fCO2]
   derived_outputs: []
@@ -47,6 +47,6 @@ evaluation:
   calibration_metrics: [coverage_90, interval_width]
   baselines: [monthly_climatology, ridge, point_MLP, STTransformer]
 reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
-artifacts: {output_directory: outputs/experiments/p1_fco2_baselines_v2.1, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.1.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
-outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: superseded by v2.2 because v2.1 incorrectly excluded complete 2025 SOCAT observations, evidence_grade: X, allowed_claims: null}
+artifacts: {output_directory: outputs/experiments/p1_fco2_baselines_v2.2, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.2.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
+outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}
 

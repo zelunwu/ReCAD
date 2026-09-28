@@ -19,7 +19,7 @@
 - 2004–2005 已被多轮查看，只是历史 benchmark。
 - `weighted_global_v2` 是修复 SSS 泄漏后的全球基线；全球 fCO2 尚未通过产品门槛。
 - CODAP+GLODAP 北美表层逐观测产品已完成，正式模型尚未使用新合并数据重训。
-- P0 已通过：v2.1 数据、航次级 split、外部验证规则、空间支持和 compact joint cache 已冻结；下一步进入 P1 单任务基线。
+- P0 已通过 v2.2 更正：数据轴保留到 2026，SSS/fCO2 核心期到 2025，TA/DIC 观测到 2024 并允许模型前向输出到 2026；下一步进入 P1 单任务基线。
 
 ## 详细报告索引
 
@@ -27,7 +27,8 @@
 
 | 报告 | 内容 | 当前角色 |
 |---|---|---|
-| `p0_freeze_report_v2.1.md` | v2.1 数据/split/外部验证/空间资产验收 | 当前 P1 的正式数据入口 |
+| `p0_freeze_report_v2.2.md` | 2025 核心期、2026 provisional 与 TA/DIC 推理覆盖更正 | 当前 P1 的正式数据入口 |
+| `p0_freeze_report_v2.1.md` | 首次冻结记录 | 已由 v2.2 替代；仅保留审计 |
 | `backup/model_design_review_20260906.md` | ST 模型容量、优化和训练审计 | 历史诊断 |
 | `backup/controlled_experiments_20260906.md` | fCO2 受控容量/优化实验 | 有效开发实验附件 |
 | `backup/chla_ablation_20260906.md` | MODIS Chl-a 消融 | 有效开发消融附件 |

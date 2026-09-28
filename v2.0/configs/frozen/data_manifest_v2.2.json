@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.2",
+  "frozen_utc": "2026-09-28T05:46:47.310477+00:00",
+  "dataset_time_range": "1993-01 through 2026-12 axis",
+  "analysis_periods": {
+    "SSS_fCO2_core": "1993-2025",
+    "TA_DIC_core": "1993-2024",
+    "provisional": "2026; retain available records and per-variable coverage flags"
+  },
+  "inputs_sha256": {
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\prepared_global_p32.nc": "13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719",
+    "C:\\backup\\phd\\data\\processed\\carbon\\codap_glodap_na_surface5m_v1.nc": "edb2565decd8c4b75b62c8b4f5fc0d534d6fbaf6657aaddd4915d3e8cc06aed4",
+    "C:\\backup\\phd\\data\\raw\\socat\\SOCATv2026_Coastal.tsv": "e28bde997226a07164feb4b374e6f25eb4ffa613d1942ac92fab82a1aa66ab34",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\lme_66.geojson": "25ce65db770f20cac1d254c5fdd5e15366c738c89c959245ce9324f7a4df1444"
+  },
+  "artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\spatial_support_v2.2.nc": "21b6a99195bdd58e05d27eac97ffff70dc3a4cc115ce070eea46ef3055fb5acc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\coastal_graph_v2.2.npz": "70b06b411d41b001a74ae46deb059f6a5b0d4897318f6099afdd4aff86fb229b",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\inference_availability_v2.2.nc": "b48d449c320c51de9417da9dfc71e446fc5f1f5180988173e08f4492f7be93b6",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\split_manifest_v2.2.parquet": "25d5423c15ef0149336bbb0ac95866e182ba365bec2e129aecee03d3d71154e5",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\na_carbon_cache_v2.2.parquet": "a7b8c311ac55f80ebf6e17c647d374c0459be0898ba79fdfdc751fe5634bd059",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\na_socat_cache_v2.2.parquet": "8fbf2876308b457d11c5838041c05d6ff44b0f7c9731ac8def31878d73ac5fdb",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\coverage_independence_audit_v2.2.json": "6efccd34813be536ed69a7fc9de464b942501e5d7f383567eabe4662daa213ef"
+  },
+  "qc": {
+    "SOCAT": "fCO2 1..1000 uatm and fCO2rec_flag<=2; salinity 0..50",
+    "carbon": "is_primary=1; TA/DIC/SSS require QC=2; measured fCO2 requires QC=2 and method in {1,2}"
+  },
+  "target_provenance": {
+    "SSS": "SOCAT in-situ sal",
+    "fCO2": "SOCAT fCO2rec",
+    "TA": "CODAP/GLODAP observed or adjusted with method retained",
+    "DIC": "CODAP/GLODAP observed or adjusted with method retained",
+    "forbidden": "calculated carbon-product fCO2 method=3 is audit-only"
+  },
+  "prediction_scope": {
+    "SSS_fCO2": "model outputs through 2026 where inference inputs permit",
+    "TA": "model-predicted through 2026; observation labels end in 2024",
+    "DIC": "derived through inverse CO2SYS from predicted T/SSS/fCO2/TA; observation labels end in 2024",
+    "2025": "complete core product year",
+    "2026": "provisional rolling product; never presented as independently validated",
+    "availability_asset": "C:\\backup\\phd\\data\\processed\\recad_v2_2\\inference_availability_v2.2.nc"
+  },
+  "split_protocol": {
+    "group": "normalized Expocode/cruise key",
+    "assignment": "SHA256 salted deterministic",
+    "fractions": {
+      "train": 0.7,
+      "development": 0.15,
+      "locked_test": 0.15
+    },
+    "grouped_cv": "5-fold salted SHA256",
+    "whole_region": "leave-one-LME-out",
+    "forward_chain": "cruise max year: <=2018 train, 2019-2021 development, 2022-2025 locked_test; 2026 provisional"
+  },
+  "independent_validation": {
+    "path": "configs/frozen/external_validation_manifest_v2.2.json",
+    "sha256": "76936fb0428ff97ca6e3de68eca358fabaccba1c309f13b2b327606d82ce05ce"
+  },
+  "audit": "C:\\backup\\phd\\data\\processed\\recad_v2_2\\coverage_independence_audit_v2.2.json",
+  "split_manifest": "C:\\backup\\phd\\data\\processed\\recad_v2_2\\split_manifest_v2.2.parquet"
+}
