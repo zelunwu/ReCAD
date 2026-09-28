@@ -341,7 +341,7 @@ def main() -> int:
     model_dir = args.output / "checkpoints"
     model_dir.mkdir(exist_ok=True)
     manifest = FrozenManifest.load(ROOT / "configs/frozen/data_manifest_v2.2.json")
-    validation = manifest.validate(hash_mode="artifacts")
+    validation = manifest.validate(hash_mode="full")
     gateway = P1DataGateway(manifest)
     columns = ["sst", "sss", "adt", "wspd"]
     train = prepare(gateway.load_labels("sss", Purpose.TRAIN, columns=columns))

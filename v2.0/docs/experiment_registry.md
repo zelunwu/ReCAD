@@ -27,7 +27,7 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 
 | 实验 ID | 目标 | 状态 | checkpoint 选择 |
 |---|---|---|---|
-| `p1_sss_baselines_v2.2` | SSS 背景订正与软空间专家 | preregistered | development LME macro-RMSE |
+| `p1_sss_baselines_v2.2` | SSS 背景订正与软空间专家 | development complete；进入 #11 | soft experts by development LME macro-RMSE |
 | `p1_fco2_baselines_v2.2` | fCO2 基线与软空间专家 | preregistered | development LME macro-RMSE |
 | `p1_ta_baselines_v2.2` | 北美 TA 局地线性/层级部分池化，DIC 结构派生 | preregistered | grouped development LME macro-RMSE |
 

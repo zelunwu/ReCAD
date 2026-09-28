@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_sss_baselines_v2.2
-status: preregistered
+status: complete
 owner: ReCAD
 created_utc: 2026-09-28T05:35:00Z
 science:
@@ -33,13 +33,13 @@ splits:
 model:
   family: background, hierarchical bias, ridge, CatBoost, point MLP, and soft spatial experts
   config_path: configs/p1_sss_baselines_v2.2.yaml
-  config_sha256: 09de6adfb9502fb0ec81fe90616f515ef3be396b1bdfad0e8e84863a8a00492a
+  config_sha256: 4f3f428c02765f6a2411358b80b1c6b238765c4a442744b458b56c8f32d8e19b
   inputs: [SST, GLORYS_SSS, ADT, wind_speed, lon, lat, month, LME, basin, predictor_regime]
   learned_outputs: [SSS]
   derived_outputs: []
   loss: cruise-balanced robust regression
   sampling: cruise-balanced plus inverse regional density weighting
-  parameter_count: null
+  parameter_count: recorded in serialized candidate checkpoints
 training:
   seeds: [100, 101, 102]
   optimizer_steps: 5000 per learned candidate per seed
@@ -52,19 +52,31 @@ evaluation:
   calibration_metrics: [coverage_90, interval_width]
   baselines: [GLORYS_background, regional_month_bias, ridge, CatBoost, point_MLP]
 reproducibility:
-  git_commit: null
+  git_commit: dc653ddce3a55d927038c542b9396215e51d2f03
   git_worktree_clean: false
-  source_hashes: {}
-  environment_lock: null
+  source_hashes:
+    scripts/run_p1_sss_viability.py@dc653dd: a47f21163cd91e02fd8072348aeaafaf4b59d1fa5672a001ba23b2b87b00e918
+    scripts/run_p1_sss_viability.py@postrun_full_hash_default: d9e1426e7ed78f41af6110ffb71e5bca62d5df5af1738f27cceaa58e3b213217
+    scripts/analyze_p1_sss_results.py: aa185b8abfb1fe53f7b5b9158a739894afa759c5059ed36c09c804e20d2de5ea
+    src/recad/evaluate/p1_framework.py: 57c010f29421bdf885e9d5408a73e7f05f917813237351e95bc77de01ca0aed2
+    configs/p1_sss_baselines_v2.2.yaml: 4f3f428c02765f6a2411358b80b1c6b238765c4a442744b458b56c8f32d8e19b
+  environment_lock: pyproject.toml plus protocol.json runtime record
 artifacts:
-  output_directory: outputs/experiments/p1_sss_baselines_v2.2
+  output_directory: outputs/experiments/p1_sss_viability_v2.2
   protocol: this file
   data_manifest: configs/frozen/data_manifest_v2.2.json
-  selection: null
-  checkpoints: []
-  predictions: []
-  metrics: []
-  figures: []
-  report: null
-outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}
+  selection: outputs/experiments/p1_sss_viability_v2.2/selection.json
+  checkpoints: [outputs/experiments/p1_sss_viability_v2.2/checkpoints]
+  predictions: [outputs/experiments/p1_sss_viability_v2.2/candidate_predictions.parquet, outputs/experiments/p1_sss_viability_v2.2/selected_development_predictions.parquet]
+  metrics: [outputs/experiments/p1_sss_viability_v2.2/summary.csv, outputs/experiments/p1_sss_viability_v2.2/cv_metrics.csv, outputs/experiments/p1_sss_viability_v2.2/forward_metrics.csv, outputs/experiments/p1_sss_viability_v2.2/development_gate.json]
+  figures: [outputs/experiments/p1_sss_viability_v2.2/figures]
+  report: docs/p1_sss_viability_v2.2.md
+outcome:
+  completed_utc: 2026-09-28T15:25:11Z
+  primary_result: Soft-experts residual model reduced development cruise-equal/LME-macro RMSE by 39.9%/40.1% versus GLORYS and retained positive forward skill for all three seeds.
+  acceptance_gate_passed: true
+  deviations: [SSS-specific support distance was added after training because the shared nearest_carbon_km field is not a valid SSS support measure. No model fitting or selection changed.]
+  invalidation_reason: null
+  evidence_grade: A
+  allowed_claims: Development and grouped-CV evidence nominates a North-American-adjacent regional SSS candidate for the Issue 11 locked gate; no global or final product claim.
 
