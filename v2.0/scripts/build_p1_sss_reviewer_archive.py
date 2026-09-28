@@ -135,12 +135,6 @@ def main() -> int:
         gate, selection, protocol,
     )
     (args.archive / "REPORT.md").write_text(report, encoding="utf-8")
-    (args.archive / "README.md").write_text(
-        "# Archive index\n\nStart with [REPORT.md](REPORT.md). Every figure has a CSV source table "
-        "and a SHA256 entry in `archive_manifest.json`. Large predictions and checkpoints remain in "
-        "the local ignored experiment directory recorded by the manifest.\n",
-        encoding="utf-8",
-    )
     figure_sources = {
         "fig01_development_model_comparison.png": ["table01_development_model_summary.csv"],
         "fig02_five_fold_cv.png": ["table02_five_fold_cv_summary.csv"],
@@ -151,6 +145,60 @@ def main() -> int:
         "fig07_observed_vs_predicted.png": ["local:selected_development_predictions.parquet"],
         "fig08_absolute_error_calibration.png": ["table08_uncertainty_calibration.csv", "local:candidate_predictions.parquet"],
     }
+    figure_captions = {
+        "fig01_development_model_comparison.png": (
+            "Development-set SSS RMSE for GLORYS and five residual-correction candidates under pooled, "
+            "cruise-equal, and LME-macro aggregation. Points are means across seeds 100-102 and error bars "
+            "show one standard deviation; lower is better. Soft experts win the preregistered LME-macro "
+            "criterion, while CatBoost has the lowest pooled and cruise-equal RMSE."
+        ),
+        "fig02_five_fold_cv.png": (
+            "Five-fold cruise-grouped cross-validation for the same candidate families. Bars show mean "
+            "LME-macro RMSE and pooled skill relative to GLORYS across folds; error bars show one standard "
+            "deviation. CatBoost is the strongest cross-validation sensitivity comparator."
+        ),
+        "fig03_lme_skill_sensitivity.png": (
+            "Development skill by Large Marine Ecosystem (LME), comparing the selected soft-expert ensemble "
+            "with CatBoost; positive skill indicates lower MSE than GLORYS. Labels give development record "
+            "counts. The soft-expert selection advantage is sensitive to sparse LME 55 (n=30)."
+        ),
+        "fig04_salinity_band_skill.png": (
+            "Development skill of the selected soft-expert ensemble across observed-SSS bands, with record "
+            "counts shown separately. Skill remains positive in every reported band, including low-salinity "
+            "coastal observations, but the freshest bands have much smaller support."
+        ),
+        "fig05_forward_chain.png": (
+            "Forward-chain development skill for seeds 100-102: training cruises end by 2018 and evaluation "
+            "uses cruises assigned to 2019-2021. All seeds retain positive pooled skill relative to GLORYS; "
+            "the horizontal line marks zero skill."
+        ),
+        "fig06_sss_support_distance.png": (
+            "Development skill of the selected soft-expert ensemble by distance to the nearest SSS training "
+            "support, with record counts by bin. Positive skill persists in all populated bins, but distant "
+            "support bins contain fewer observations and remain an extrapolation risk."
+        ),
+        "fig07_observed_vs_predicted.png": (
+            "Hexbin density of development observations against GLORYS and the three-seed mean soft-expert "
+            "prediction on identical 0-40 PSU axes. The white line is 1:1 and color is log10 record count. "
+            "Displayed RMSE is the row-pooled ensemble RMSE, not the across-seed mean reported in Table 1."
+        ),
+        "fig08_absolute_error_calibration.png": (
+            "Development absolute-error empirical distributions for GLORYS and the selected soft-expert "
+            "ensemble. The dashed line is the development-calibrated 90th-percentile error threshold "
+            "(1.156 PSU); its 0.900 development coverage is not independent calibration evidence."
+        ),
+    }
+    captions_text = "# Figure captions\n\n" + "\n\n".join(
+        f"## {name}\n\n{figure_captions[name]}" for name in figure_sources
+    ) + "\n"
+    (args.archive / "CAPTIONS.md").write_text(captions_text, encoding="utf-8")
+    (args.archive / "README.md").write_text(
+        "# Archive index\n\nStart with [REPORT.md](REPORT.md); standalone figure captions are in "
+        "[CAPTIONS.md](CAPTIONS.md). Every figure has source data and a SHA256 entry in "
+        "`archive_manifest.json`. Large predictions and checkpoints remain in the local ignored experiment "
+        "directory recorded by the manifest.\n",
+        encoding="utf-8",
+    )
     files = {str(path.relative_to(args.archive)).replace("\\", "/"): digest(path)
              for path in args.archive.rglob("*") if path.is_file() and path.name != "archive_manifest.json"}
     source_artifacts = {
@@ -182,6 +230,7 @@ def main() -> int:
         "evidence_scope": "North-American-adjacent train/development and grouped CV only",
         "decision": gate["decision"],
         "figure_source_data": figure_sources,
+        "figure_captions": figure_captions,
         "files_sha256": files,
     }
     (args.archive / "archive_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")

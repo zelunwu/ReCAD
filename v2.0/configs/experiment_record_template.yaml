@@ -79,6 +79,7 @@ artifacts:
   reviewer_archive:
     path: null
     report: null
+    captions: null
     figures: []
     source_tables: []
     manifest: null

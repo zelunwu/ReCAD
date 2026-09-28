@@ -16,4 +16,5 @@ def test_p1_sss_reviewer_archive_is_complete_and_hash_verified() -> None:
     result = MODULE.verify_archive(ROOT / "docs/experiment_archive/p1_sss_viability_v2.2")
     assert result["verified"], result["errors"]
     assert result["figures"] >= 8
+    assert result["captions"] == result["figures"]
     assert result["source_tables"] >= 8

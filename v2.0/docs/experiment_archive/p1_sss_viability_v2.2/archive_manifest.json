@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "experiment_id": "p1_sss_viability_v2.2",
-  "created_utc": "2026-09-28T15:43:05.596261+00:00",
+  "created_utc": "2026-09-28T15:51:16.749196+00:00",
   "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_sss_viability_v2.2",
   "training_git_commit": "dc653ddce3a55d927038c542b9396215e51d2f03",
   "archive_builder": "scripts/build_p1_sss_reviewer_archive.py",
-  "archive_builder_sha256": "11a25597b5433882e1959ca81c2f63df40f7b5eae7998c53368c977f243fc4b5",
+  "archive_builder_sha256": "b68d7d70afb82ac2014420040437e41baecbdb85cc39405313d25020a5c9384c",
   "analysis_script_sha256": "aa185b8abfb1fe53f7b5b9158a739894afa759c5059ed36c09c804e20d2de5ea",
   "source_artifacts_sha256": {
     "candidate_predictions.parquet": "0e0f5ced1fd65feef06292f39f56b79df28af997ef4b885e6dd9a31e131dc29e",
@@ -49,8 +49,19 @@
       "local:candidate_predictions.parquet"
     ]
   },
+  "figure_captions": {
+    "fig01_development_model_comparison.png": "Development-set SSS RMSE for GLORYS and five residual-correction candidates under pooled, cruise-equal, and LME-macro aggregation. Points are means across seeds 100-102 and error bars show one standard deviation; lower is better. Soft experts win the preregistered LME-macro criterion, while CatBoost has the lowest pooled and cruise-equal RMSE.",
+    "fig02_five_fold_cv.png": "Five-fold cruise-grouped cross-validation for the same candidate families. Bars show mean LME-macro RMSE and pooled skill relative to GLORYS across folds; error bars show one standard deviation. CatBoost is the strongest cross-validation sensitivity comparator.",
+    "fig03_lme_skill_sensitivity.png": "Development skill by Large Marine Ecosystem (LME), comparing the selected soft-expert ensemble with CatBoost; positive skill indicates lower MSE than GLORYS. Labels give development record counts. The soft-expert selection advantage is sensitive to sparse LME 55 (n=30).",
+    "fig04_salinity_band_skill.png": "Development skill of the selected soft-expert ensemble across observed-SSS bands, with record counts shown separately. Skill remains positive in every reported band, including low-salinity coastal observations, but the freshest bands have much smaller support.",
+    "fig05_forward_chain.png": "Forward-chain development skill for seeds 100-102: training cruises end by 2018 and evaluation uses cruises assigned to 2019-2021. All seeds retain positive pooled skill relative to GLORYS; the horizontal line marks zero skill.",
+    "fig06_sss_support_distance.png": "Development skill of the selected soft-expert ensemble by distance to the nearest SSS training support, with record counts by bin. Positive skill persists in all populated bins, but distant support bins contain fewer observations and remain an extrapolation risk.",
+    "fig07_observed_vs_predicted.png": "Hexbin density of development observations against GLORYS and the three-seed mean soft-expert prediction on identical 0-40 PSU axes. The white line is 1:1 and color is log10 record count. Displayed RMSE is the row-pooled ensemble RMSE, not the across-seed mean reported in Table 1.",
+    "fig08_absolute_error_calibration.png": "Development absolute-error empirical distributions for GLORYS and the selected soft-expert ensemble. The dashed line is the development-calibrated 90th-percentile error threshold (1.156 PSU); its 0.900 development coverage is not independent calibration evidence."
+  },
   "files_sha256": {
-    "README.md": "d55babe10bc8f9ffe4e7573a214f3b52c19d28b0ae58bc7669042a872d6ce749",
+    "CAPTIONS.md": "4262a83e8971c3c6e75b3c1c3a82d49d054a3ff808ecc8d8f579973d4f90ac2d",
+    "README.md": "d32372f829a681f212ec188a2b39ff398966210a934601e7c69325198a0827a5",
     "REPORT.md": "cffc31f8210a8d6c8cf37be608c8d3041c79371dbaa12e72af6ca02b8db27677",
     "figures/fig01_development_model_comparison.png": "c37d9aefda4587f1dc53b0d4fb12cb37eaf30e5cc8adca278c6b038c9ce9880c",
     "figures/fig02_five_fold_cv.png": "96e75c09c5f82c5f306307e62fc3e5016b3e32da9103036797952e39f2cef35e",

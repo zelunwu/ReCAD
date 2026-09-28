@@ -74,6 +74,7 @@ artifacts:
   reviewer_archive:
     path: docs/experiment_archive/p1_sss_viability_v2.2
     report: docs/experiment_archive/p1_sss_viability_v2.2/REPORT.md
+    captions: docs/experiment_archive/p1_sss_viability_v2.2/CAPTIONS.md
     figures: [docs/experiment_archive/p1_sss_viability_v2.2/figures]
     source_tables: [docs/experiment_archive/p1_sss_viability_v2.2/tables]
     manifest: docs/experiment_archive/p1_sss_viability_v2.2/archive_manifest.json

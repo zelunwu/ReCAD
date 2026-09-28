@@ -13,7 +13,7 @@
 
 共同实验规范在 `experiment_protocol.md`。操作交接和本机路径在 `../HANDOFF.md`。GitHub 任务状态在 Roadmap issue #1；Issue 不是实验结果数据库。
 
-正式实验的 reviewer-ready 证据归档位于 `experiment_archive/<experiment_id>/`。每个归档包含完整报告、可直接回复审稿人的图片、图片源 CSV 和可自动核验的哈希清单；索引见 `experiment_archive/README.md`。
+正式实验的 reviewer-ready 证据归档位于 `experiment_archive/<experiment_id>/`。每个归档包含完整报告、可直接回复审稿人的图片、逐图 caption、图片源 CSV 和可自动核验的哈希清单；索引见 `experiment_archive/README.md`。
 
 ## 当前有效结论
 

@@ -10,7 +10,7 @@ from pathlib import Path
 REQUIRED_MANIFEST_FIELDS = {
     "experiment_id", "training_git_commit", "data_manifest_sha256",
     "locked_test_opened", "external_independent_opened", "evidence_scope",
-    "decision", "figure_source_data", "files_sha256",
+    "decision", "figure_source_data", "figure_captions", "files_sha256",
     "archive_builder_sha256", "analysis_script_sha256", "source_artifacts_sha256",
 }
 REQUIRED_REPORT_HEADINGS = {
@@ -35,7 +35,7 @@ def verify_archive(archive: Path) -> dict[str, object]:
     """Return a machine-readable verification result for one archive."""
     archive = archive.resolve()
     errors: list[str] = []
-    for relative in ("README.md", "REPORT.md", "archive_manifest.json"):
+    for relative in ("README.md", "REPORT.md", "CAPTIONS.md", "archive_manifest.json"):
         if not (archive / relative).is_file():
             errors.append(f"missing required file: {relative}")
 
@@ -76,7 +76,7 @@ def verify_archive(archive: Path) -> dict[str, object]:
         elif sha256(path) != expected:
             errors.append(f"SHA256 mismatch: {relative}")
 
-    expected_tracked = {"README.md", "REPORT.md"}
+    expected_tracked = {"README.md", "REPORT.md", "CAPTIONS.md"}
     expected_tracked.update(str(path.relative_to(archive)).replace("\\", "/") for path in figures)
     expected_tracked.update(str(path.relative_to(archive)).replace("\\", "/") for path in tables)
     for relative in sorted(expected_tracked - set(hashes)):
@@ -101,10 +101,28 @@ def verify_archive(archive: Path) -> dict[str, object]:
             if not (archive / "tables" / str(source)).is_file():
                 errors.append(f"figure source table missing: {figure_name} -> {source}")
 
+    captions = manifest.get("figure_captions", {})
+    if not isinstance(captions, dict):
+        errors.append("manifest figure_captions must be an object")
+        captions = {}
+    for figure_name in sorted(figure_names - set(captions)):
+        errors.append(f"figure has no caption: {figure_name}")
+    for figure_name, caption in captions.items():
+        if figure_name not in figure_names:
+            errors.append(f"caption references missing figure: {figure_name}")
+        if not isinstance(caption, str) or len(caption.strip()) < 40:
+            errors.append(f"figure caption is too short: {figure_name}")
+    captions_path = archive / "CAPTIONS.md"
+    captions_text = captions_path.read_text(encoding="utf-8") if captions_path.is_file() else ""
+    for figure_name, caption in captions.items():
+        if isinstance(caption, str) and (figure_name not in captions_text or caption not in captions_text):
+            errors.append(f"CAPTIONS.md does not match manifest caption: {figure_name}")
+
     return {
         "archive": str(archive),
         "experiment_id": manifest.get("experiment_id"),
         "figures": len(figures),
+        "captions": len(captions),
         "source_tables": len(tables),
         "verified": not errors,
         "errors": errors,
