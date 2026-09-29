@@ -10,11 +10,11 @@ split_column: split
 group_column: group_key
 region_columns: [lme_id, basin_id, regime_id]
 candidates:
-  - {name: seasonal_climatology, family: grouped_mean, groups: [regime_id, mon]}
-  - {name: ridge, family: ridge, alpha_grid: [0.1, 1.0, 10.0, 100.0]}
-  - {name: point_mlp, family: mlp, hidden: [192, 192], dropout: 0.1}
-  - {name: st_transformer, family: STTransformer, embed_dim: 192, spatial_layers: 3, temporal_layers: 3, heads: 6, dropout: 0.1}
-  - {name: soft_experts, family: mixture_of_experts, experts: 8, top_k: 2, hidden: [192, 192], shrinkage: 0.001}
+  - {name: seasonal_trend_climatology, family: shrunk_lme_month_mean, shared_linear_trend: true}
+  - {name: ridge_residual, family: ridge, alpha_grid: [0.1, 1.0, 10.0, 100.0]}
+  - {name: catboost_residual, family: CatBoost, depth: 8, iterations: 1500, learning_rate: 0.05}
+  - {name: point_mlp_residual, family: mlp, hidden: [128, 128], dropout: 0.1}
+  - {name: soft_experts_residual, family: mixture_of_experts, experts: 8, top_k: 2, hidden: [128, 128], shrinkage: 0.001}
 training:
   seeds: [100, 101, 102]
   steps: 5000
@@ -28,5 +28,14 @@ evaluation:
   grouped: [cruise, lme_id, regime_id, forward_split, nearest_carbon_km]
   locked_test_openings: 1
   external_access: forbidden_until_P3
+development_gate:
+  cruise_equal_improvement_vs_climatology: '>= 5%'
+  lme_macro_improvement_vs_climatology: '>= 5%'
+  positive_skill_lme_fraction_n_ge_100: '>= 70%'
+  worst_lme_degradation_vs_climatology: '<= 10%'
+  forward_skill: positive_for_all_selected_model_seeds
+  fco2_band_skill: positive_for_all_bands
+  support_distance_skill: positive_for_all_populated_bins
+  decision_if_passed: nominate_for_issue_11_locked_gate
 
 

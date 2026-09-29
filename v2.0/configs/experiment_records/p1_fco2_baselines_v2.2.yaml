@@ -4,11 +4,11 @@ status: preregistered
 owner: ReCAD
 created_utc: 2026-09-28T05:35:00Z
 science:
-  question: Which model class improves coastal fCO2 beyond climatology and point regression under cruise and region shift?
-  hypothesis: Soft spatial experts improve cruise-grouped and leave-LME-out error without hard regional boundaries.
+  question: Which practical baseline most reliably improves coastal fCO2 beyond a training-only seasonal-trend climatology under cruise, region, and forward-time shift?
+  hypothesis: Environmental residual models provide stable grouped skill; model complexity is accepted only when it improves the preregistered LME-macro criterion.
   product_scope: Global coastal fCO2; North-American grouped cache is the first formal comparison.
-  primary_comparison: Point residual baseline versus shared backbone with soft spatial experts.
-  acceptance_gate: Development LME macro-RMSE improves and locked cruise test is non-inferior across three seeds.
+  primary_comparison: Seasonal-trend climatology versus Ridge, CatBoost, point MLP, and soft-expert residual models.
+  acceptance_gate: Development cruise-equal and LME-macro RMSE improve by at least 5%, at least 70% of supported LMEs have positive skill, worst-LME does not degrade over 10%, and forward/fCO2-band/support-bin skill remain positive.
   stopping_rule: Fixed budget; select only on grouped development metrics.
 data:
   manifest_path: configs/frozen/data_manifest_v2.2.json
@@ -31,10 +31,10 @@ splits:
   external_independent: future SOCAT post-v2026 increment; labels unavailable and sealed
   previously_opened_benchmarks: [2004-2005 legacy split]
 model:
-  family: climatology/ridge/MLP/ST plus soft spatial experts
+  family: seasonal-trend climatology plus Ridge/CatBoost/MLP/soft-expert residual models
   config_path: configs/p1_fco2_baselines_v2.2.yaml
-  config_sha256: 01206efcb40a9e90941b61cc06e28399e712a9814c659f4f9bfbfda0a3603888
-  inputs: [SST, GLORYS_SSS, ADT, wind_speed, atmospheric_pCO2, lon, lat, month]
+  config_sha256: 4c7149b6c5fe5abeb226591b46a2912ce0ab8f1b176b95052c5ae395ea5293e8
+  inputs: [SST, GLORYS_SSS, ADT, wind_speed, atmospheric_pCO2, atmospheric_xCO2, year, lon, lat, month]
   learned_outputs: [fCO2]
   derived_outputs: []
   loss: cruise-balanced robust regression
@@ -45,8 +45,25 @@ evaluation:
   primary_metrics: [RMSE, MAE, bias, R2]
   group_metrics: [LME_macro_RMSE, regime_macro_RMSE, worst_LME_RMSE, forward_chain_RMSE, distance_to_support]
   calibration_metrics: [coverage_90, interval_width]
-  baselines: [monthly_climatology, ridge, point_MLP, STTransformer]
+  baselines: [seasonal_trend_climatology, ridge_residual, catboost_residual, point_MLP_residual]
 reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
-artifacts: {output_directory: outputs/experiments/p1_fco2_baselines_v2.2, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.2.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
+artifacts:
+  output_directory: outputs/experiments/p1_fco2_viability_v2.2
+  protocol: this file
+  data_manifest: configs/frozen/data_manifest_v2.2.json
+  selection: null
+  checkpoints: []
+  predictions: []
+  metrics: []
+  figures: []
+  report: null
+  reviewer_archive:
+    path: docs/experiment_archive/p1_fco2_viability_v2.2
+    report: null
+    captions: null
+    figures: []
+    source_tables: []
+    manifest: null
+    verification_status: null
 outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}
 
