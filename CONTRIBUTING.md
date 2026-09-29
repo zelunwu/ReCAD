@@ -47,3 +47,7 @@ Formal experiments also follow `docs/experiment_protocol.md`. Before merge they 
    `CAPTIONS.md`, figures, source tables, and `archive_manifest.json`;
 4. a pull request description that states the result, allowed claim, failed gates,
    sealed-data status, and validation commands.
+
+Every archived figure must be embedded in `REPORT.md`, with its complete caption placed
+immediately below the image. `CAPTIONS.md` remains a convenient standalone caption index,
+but it does not replace captions in the report.

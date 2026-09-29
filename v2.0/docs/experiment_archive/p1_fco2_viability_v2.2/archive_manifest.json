@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "experiment_id": "p1_fco2_viability_v2.2",
-  "created_utc": "2026-09-29T02:20:36.362562+00:00",
+  "created_utc": "2026-09-29T02:46:48.500978+00:00",
   "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_fco2_viability_v2.2",
   "training_git_commit": "850350e01ddc876f072a57bbd6edc5f014e98fa5",
   "archive_builder": "scripts/build_p1_fco2_reviewer_archive.py",
-  "archive_builder_sha256": "af993d4a679373734dac7dd77f2e498b01d13227f005de142d0466cfc13a8eab",
-  "analysis_script_sha256": "de6230eeb778d364cea59fb59a11cbe1eb97c547b47f64a26e639109f0119f41",
+  "archive_builder_sha256": "7a20b70926abfcc113ae7479080e67cf2bd2cf461a951f0ccad55d5dc27b9ebb",
+  "analysis_script_sha256": "ebfd77fa89cba695324ab6888090df7399b3e5dc2abba2488d7284f54ca0ee35",
   "source_artifacts_sha256": {
     "candidate_predictions.parquet": "4b165275d3a1a3b8251fdc867232464002920b7c9a6b5043c3b8255ec7f7b782",
     "selected_development_predictions.parquet": "18dfd1f75447e8a7c87dff0a30bf2570f80a97928dd019ac8db97e2f6833acd2",
@@ -62,7 +62,7 @@
   "files_sha256": {
     "CAPTIONS.md": "7fcb4174a598701bd82ee76e82b36920dd16fb1f38f6a7cb391537af2dcc2ea8",
     "README.md": "e762f19edefe7accba65961db211806145e60ccd8670b8a0dfed8d02cac2b831",
-    "REPORT.md": "30f5b43ffa88979ca4564152291e1cc5eb1a444777d82dcab8fef65a9f543598",
+    "REPORT.md": "89bccfc9e0ccd302cdaf18f3f90fd84fcf64a19f927848de3bfaf7b783f41955",
     "figures/fig01_development_model_comparison.png": "c1fcdbdba0282984ec53a66e6349df3b9236931f75863358ba7bb43ccdb4a781",
     "figures/fig02_five_fold_cv.png": "3bee5e64549b5ca786b6a7ebf9b2439b0429f95e299c9887b2f52972dba7a1e7",
     "figures/fig03_lme_skill_sensitivity.png": "3ce47069d028f11a44f9a44f7cd518c0923f58f7b7921f61b02ff77fb2f344b8",

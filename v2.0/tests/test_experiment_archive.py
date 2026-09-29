@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import shutil
 from pathlib import Path
 
 import pytest
@@ -23,3 +25,19 @@ def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -
     assert result["figures"] >= 8
     assert result["captions"] == result["figures"]
     assert result["source_tables"] >= 8
+
+
+def test_archive_rejects_caption_missing_from_report(tmp_path: Path) -> None:
+    source = ROOT / "docs/experiment_archive/p1_fco2_viability_v2.2"
+    archive = tmp_path / source.name
+    shutil.copytree(source, archive)
+    manifest = json.loads((archive / "archive_manifest.json").read_text(encoding="utf-8"))
+    figure_name, caption = next(iter(manifest["figure_captions"].items()))
+    report_path = archive / "REPORT.md"
+    report = report_path.read_text(encoding="utf-8").replace(caption, "", 1)
+    report_path.write_text(report, encoding="utf-8")
+
+    result = MODULE.verify_archive(archive)
+
+    assert not result["verified"]
+    assert f"REPORT.md does not place caption with figure: {figure_name}" in result["errors"]

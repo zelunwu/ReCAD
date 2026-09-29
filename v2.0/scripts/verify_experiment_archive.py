@@ -8,10 +8,19 @@ import json
 from pathlib import Path
 
 REQUIRED_MANIFEST_FIELDS = {
-    "experiment_id", "training_git_commit", "data_manifest_sha256",
-    "locked_test_opened", "external_independent_opened", "evidence_scope",
-    "decision", "figure_source_data", "figure_captions", "files_sha256",
-    "archive_builder_sha256", "analysis_script_sha256", "source_artifacts_sha256",
+    "experiment_id",
+    "training_git_commit",
+    "data_manifest_sha256",
+    "locked_test_opened",
+    "external_independent_opened",
+    "evidence_scope",
+    "decision",
+    "figure_source_data",
+    "figure_captions",
+    "files_sha256",
+    "archive_builder_sha256",
+    "analysis_script_sha256",
+    "source_artifacts_sha256",
 }
 REQUIRED_REPORT_HEADINGS = {
     "## Scientific question and permitted claim",
@@ -112,10 +121,16 @@ def verify_archive(archive: Path) -> dict[str, object]:
             errors.append(f"caption references missing figure: {figure_name}")
         if not isinstance(caption, str) or len(caption.strip()) < 40:
             errors.append(f"figure caption is too short: {figure_name}")
+        if report_path.is_file() and f"](figures/{figure_name})" not in report:
+            errors.append(f"REPORT.md does not embed figure: {figure_name}")
+        if report_path.is_file() and isinstance(caption, str) and caption not in report:
+            errors.append(f"REPORT.md does not place caption with figure: {figure_name}")
     captions_path = archive / "CAPTIONS.md"
     captions_text = captions_path.read_text(encoding="utf-8") if captions_path.is_file() else ""
     for figure_name, caption in captions.items():
-        if isinstance(caption, str) and (figure_name not in captions_text or caption not in captions_text):
+        if isinstance(caption, str) and (
+            figure_name not in captions_text or caption not in captions_text
+        ):
             errors.append(f"CAPTIONS.md does not match manifest caption: {figure_name}")
 
     return {

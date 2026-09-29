@@ -1,6 +1,6 @@
 # Reviewer-ready 实验归档
 
-本目录保存可直接用于论文复核和 reviewer 回复的版本化证据。每个支撑科学结论的正式实验必须建立 `docs/experiment_archive/<experiment_id>/`，包含完整报告、图片、逐图 caption、图片源 CSV、复现入口和哈希清单，并通过：
+本目录保存可直接用于论文复核和 reviewer 回复的版本化证据。每个支撑科学结论的正式实验必须建立 `docs/experiment_archive/<experiment_id>/`，包含完整报告、图片、逐图 caption、图片源 CSV、复现入口和哈希清单。每张图片必须嵌入 `REPORT.md`，完整 caption 紧跟在对应图片下方；`CAPTIONS.md` 只作为集中索引。归档必须通过：
 
 ```powershell
 python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_id>

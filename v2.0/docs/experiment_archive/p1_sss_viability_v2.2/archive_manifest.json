@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "experiment_id": "p1_sss_viability_v2.2",
-  "created_utc": "2026-09-29T02:20:57.396118+00:00",
+  "created_utc": "2026-09-29T02:46:45.485050+00:00",
   "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_sss_viability_v2.2",
   "training_git_commit": "dc653ddce3a55d927038c542b9396215e51d2f03",
   "archive_builder": "scripts/build_p1_sss_reviewer_archive.py",
-  "archive_builder_sha256": "45f12d248999f65671d3f3d9c4d30d224c9ee345a8cf32a8b787ff34f8ea377a",
+  "archive_builder_sha256": "4dfbd1baf7dba721edd960283135bf14b26172c18de4fb640e25b6a9920777d0",
   "analysis_script_sha256": "aa185b8abfb1fe53f7b5b9158a739894afa759c5059ed36c09c804e20d2de5ea",
   "source_artifacts_sha256": {
     "candidate_predictions.parquet": "0e0f5ced1fd65feef06292f39f56b79df28af997ef4b885e6dd9a31e131dc29e",
@@ -62,7 +62,7 @@
   "files_sha256": {
     "CAPTIONS.md": "4926d6badbdcf053bdf812af7c5b848402a6f84a487ecef3b0fea73ddcd08d96",
     "README.md": "e762f19edefe7accba65961db211806145e60ccd8670b8a0dfed8d02cac2b831",
-    "REPORT.md": "d6ede100d17113e474850ffaa19ac62b8aee405cb7e9edfe4a1fe8e6d5281ff1",
+    "REPORT.md": "a9ae5b7770493bf2a549a61ff508b9d10721d8c81dd452057540e58e10835015",
     "figures/fig01_development_model_comparison.png": "c37d9aefda4587f1dc53b0d4fb12cb37eaf30e5cc8adca278c6b038c9ce9880c",
     "figures/fig02_five_fold_cv.png": "96e75c09c5f82c5f306307e62fc3e5016b3e32da9103036797952e39f2cef35e",
     "figures/fig03_lme_skill_sensitivity.png": "f531c3eb626157ddd24daf6850e3173e85a4ef0ab7d1ea211a9edec3604ed98f",

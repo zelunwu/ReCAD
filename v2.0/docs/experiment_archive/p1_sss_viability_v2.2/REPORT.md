@@ -34,6 +34,8 @@ All learned models predict a correction added to GLORYS SSS. Candidates were GLO
 
 ![Development model comparison](figures/fig01_development_model_comparison.png)
 
+*Development-set SSS RMSE for GLORYS and five residual-correction candidates under pooled, cruise-equal, and LME-macro aggregation. Points are means across seeds 100-102 and error bars show one standard deviation; lower is better. Soft experts win the preregistered LME-macro criterion, while CatBoost has the lowest pooled and cruise-equal RMSE.*
+
 CatBoost has the lowest pooled and cruise-equal RMSE. Soft experts have the lowest preregistered LME-macro metric among candidate families and were therefore selected. The distinction is scientifically relevant: the soft-expert advantage is strongly influenced by LME 55, which has only 30 development records. CatBoost remains a prespecified sensitivity comparator for the locked evaluation; locked results cannot be used to choose retrospectively between them.
 
 ## Cruise-grouped cross-validation
@@ -49,6 +51,8 @@ CatBoost has the lowest pooled and cruise-equal RMSE. Soft experts have the lowe
 
 ![Five-fold cruise CV](figures/fig02_five_fold_cv.png)
 
+*Five-fold cruise-grouped cross-validation for the same candidate families. Bars show mean LME-macro RMSE and pooled skill relative to GLORYS across folds; error bars show one standard deviation. CatBoost is the strongest cross-validation sensitivity comparator.*
+
 CatBoost is strongest in five-fold CV, while both neural candidates retain large positive skill. This tension with the frozen development selection is reported rather than resolved after observing results.
 
 ## Region, low salinity, and extrapolation stress tests
@@ -57,9 +61,15 @@ All 14/14 LMEs with at least 100 records have positive selected-model skill. The
 
 ![LME sensitivity](figures/fig03_lme_skill_sensitivity.png)
 
+*Development skill by Large Marine Ecosystem (LME), comparing the selected soft-expert ensemble with CatBoost; positive skill indicates lower MSE than GLORYS. Labels give development record counts. The soft-expert selection advantage is sensitive to sparse LME 55 (n=30).*
+
 ![Salinity-band skill](figures/fig04_salinity_band_skill.png)
 
+*Development skill of the selected soft-expert ensemble across observed-SSS bands, with record counts shown separately. Skill remains positive in every reported band, including low-salinity coastal observations, but the freshest bands have much smaller support.*
+
 ![SSS support-distance skill](figures/fig06_sss_support_distance.png)
+
+*Development skill of the selected soft-expert ensemble by distance to the nearest SSS training support, with record counts by bin. Positive skill persists in all populated bins, but distant support bins contain fewer observations and remain an extrapolation risk.*
 
 ## Forward-time evidence
 
@@ -70,13 +80,19 @@ All 14/14 LMEs with at least 100 records have positive selected-model skill. The
 
 ![Forward chain](figures/fig05_forward_chain.png)
 
+*Forward-chain development skill for seeds 100-102: training cruises end by 2018 and evaluation uses cruises assigned to 2019-2021. All seeds retain positive pooled skill relative to GLORYS; the horizontal line marks zero skill.*
+
 Soft experts have mean forward pooled skill 0.596; all three seeds are positive.
 
 ## Fit and uncertainty diagnostics
 
 ![Observed versus predicted](figures/fig07_observed_vs_predicted.png)
 
+*Hexbin density of development observations against GLORYS and the three-seed mean soft-expert prediction on identical 0-40 PSU axes. The white line is 1:1 and color is log10 record count. Displayed RMSE is the row-pooled ensemble RMSE, not the across-seed mean reported in Table 1.*
+
 ![Absolute-error calibration](figures/fig08_absolute_error_calibration.png)
+
+*Development absolute-error empirical distributions for GLORYS and the selected soft-expert ensemble. The dashed line is the development-calibrated 90th-percentile error threshold (1.156 PSU); its 0.900 development coverage is not independent calibration evidence.*
 
 The development absolute-error 90th percentile is 1.156 PSU and gives development coverage 0.900. Because the same development data calibrated this interval, it is a frozen parameter awaiting locked-test coverage evaluation, not independent calibration evidence.
 
