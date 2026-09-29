@@ -185,18 +185,6 @@ def main() -> int:
         figures / "fig08_absolute_error_calibration.png",
     )
 
-    report = build_report(
-        model_table,
-        cv_summary,
-        forward_summary,
-        lme,
-        salinity,
-        support,
-        gate,
-        selection,
-        protocol,
-    )
-    (args.archive / "REPORT.md").write_text(report, encoding="utf-8")
     figure_sources = {
         "fig01_development_model_comparison.png": ["table01_development_model_summary.csv"],
         "fig02_five_fold_cv.png": ["table02_five_fold_cv_summary.csv"],
@@ -253,6 +241,19 @@ def main() -> int:
             "(1.156 PSU); its 0.900 development coverage is not independent calibration evidence."
         ),
     }
+    report = build_report(
+        model_table,
+        cv_summary,
+        forward_summary,
+        lme,
+        salinity,
+        support,
+        gate,
+        selection,
+        protocol,
+        figure_captions,
+    )
+    (args.archive / "REPORT.md").write_text(report, encoding="utf-8")
     captions_text = (
         "# Figure captions\n\n"
         + "\n\n".join(f"## {name}\n\n{figure_captions[name]}" for name in figure_sources)
@@ -560,7 +561,16 @@ def make_calibration_figure(
 
 
 def build_report(
-    model_table, cv_summary, forward_summary, lme, salinity, support, gate, selection, protocol
+    model_table,
+    cv_summary,
+    forward_summary,
+    lme,
+    salinity,
+    support,
+    gate,
+    selection,
+    protocol,
+    figure_captions,
 ) -> str:
     selected = "Soft experts residual"
     development_display = model_table[
@@ -618,6 +628,8 @@ All learned models predict a correction added to GLORYS SSS. Candidates were GLO
 
 ![Development model comparison](figures/fig01_development_model_comparison.png)
 
+*{figure_captions["fig01_development_model_comparison.png"]}*
+
 CatBoost has the lowest pooled and cruise-equal RMSE. Soft experts have the lowest preregistered LME-macro metric among candidate families and were therefore selected. The distinction is scientifically relevant: the soft-expert advantage is strongly influenced by LME 55, which has only 30 development records. CatBoost remains a prespecified sensitivity comparator for the locked evaluation; locked results cannot be used to choose retrospectively between them.
 
 ## Cruise-grouped cross-validation
@@ -625,6 +637,8 @@ CatBoost has the lowest pooled and cruise-equal RMSE. Soft experts have the lowe
 {table_markdown(cv_display)}
 
 ![Five-fold cruise CV](figures/fig02_five_fold_cv.png)
+
+*{figure_captions["fig02_five_fold_cv.png"]}*
 
 CatBoost is strongest in five-fold CV, while both neural candidates retain large positive skill. This tension with the frozen development selection is reported rather than resolved after observing results.
 
@@ -634,9 +648,15 @@ All {len(eligible)}/{len(eligible)} LMEs with at least 100 records have positive
 
 ![LME sensitivity](figures/fig03_lme_skill_sensitivity.png)
 
+*{figure_captions["fig03_lme_skill_sensitivity.png"]}*
+
 ![Salinity-band skill](figures/fig04_salinity_band_skill.png)
 
+*{figure_captions["fig04_salinity_band_skill.png"]}*
+
 ![SSS support-distance skill](figures/fig06_sss_support_distance.png)
+
+*{figure_captions["fig06_sss_support_distance.png"]}*
 
 ## Forward-time evidence
 
@@ -644,13 +664,19 @@ All {len(eligible)}/{len(eligible)} LMEs with at least 100 records have positive
 
 ![Forward chain](figures/fig05_forward_chain.png)
 
+*{figure_captions["fig05_forward_chain.png"]}*
+
 Soft experts have mean forward pooled skill {gate["metrics"]["forward_pooled_skill_mean"]:.3f}; all three seeds are positive.
 
 ## Fit and uncertainty diagnostics
 
 ![Observed versus predicted](figures/fig07_observed_vs_predicted.png)
 
+*{figure_captions["fig07_observed_vs_predicted.png"]}*
+
 ![Absolute-error calibration](figures/fig08_absolute_error_calibration.png)
+
+*{figure_captions["fig08_absolute_error_calibration.png"]}*
 
 The development absolute-error 90th percentile is {selection["conformal_absolute_error_q90"]:.3f} PSU and gives development coverage {selection["development_coverage_90"]:.3f}. Because the same development data calibrated this interval, it is a frozen parameter awaiting locked-test coverage evaluation, not independent calibration evidence.
 
