@@ -21,8 +21,8 @@ ruff check src tests scripts
 ruff format --check <changed-python-files>
 ```
 
-The repository is adopting formatting incrementally; CI checks every Python file changed by
-the pull request. Run `ruff format` and `ruff check --fix` locally when needed. New or changed behavior
+The repository is adopting linting and formatting incrementally; CI checks every Python file
+changed by the pull request. Run `ruff format` and `ruff check --fix` locally when needed. New or changed behavior
 must have a regression test; tests that merely duplicate the implementation are insufficient.
 
 ## Test levels
