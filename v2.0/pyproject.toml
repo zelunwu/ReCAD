@@ -46,6 +46,7 @@ dependencies = [
     "torch>=2.2",
     "PyCO2SYS>=1.8",
     "dask[array]>=2024.1",
+    "shapely>=2.0",
 ]
 
 [project.optional-dependencies]
