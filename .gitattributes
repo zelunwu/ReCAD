@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Reviewer archives are byte-hashed; keep generated text identical on every OS.
+v2.0/docs/experiment_archive/**/*.md text eol=lf
+v2.0/docs/experiment_archive/**/*.csv text eol=lf
+v2.0/docs/experiment_archive/**/*.json text eol=lf

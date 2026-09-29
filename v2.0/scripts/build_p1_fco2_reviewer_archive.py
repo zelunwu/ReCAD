@@ -36,6 +36,15 @@ def digest(path: Path) -> str:
     return h.hexdigest()
 
 
+def normalize_archive_text(archive: Path) -> None:
+    """Write hash-tracked archive text with deterministic LF endings."""
+    for path in archive.rglob("*"):
+        if path.is_file() and path.suffix.lower() in {".csv", ".md"}:
+            content = path.read_text(encoding="utf-8")
+            with path.open("w", encoding="utf-8", newline="\n") as stream:
+                stream.write(content)
+
+
 def save_figure(fig: plt.Figure, path: Path) -> None:
     fig.savefig(path, dpi=220, bbox_inches="tight", facecolor="white")
     plt.close(fig)
@@ -262,6 +271,7 @@ def main() -> int:
         "directory recorded by the manifest.\n",
         encoding="utf-8",
     )
+    normalize_archive_text(args.archive)
     files = {
         str(path.relative_to(args.archive)).replace("\\", "/"): digest(path)
         for path in args.archive.rglob("*")
@@ -299,9 +309,10 @@ def main() -> int:
         "figure_captions": figure_captions,
         "files_sha256": files,
     }
-    (args.archive / "archive_manifest.json").write_text(
-        json.dumps(manifest, indent=2), encoding="utf-8"
-    )
+    with (args.archive / "archive_manifest.json").open(
+        "w", encoding="utf-8", newline="\n"
+    ) as stream:
+        stream.write(json.dumps(manifest, indent=2))
     print(
         json.dumps(
             {
