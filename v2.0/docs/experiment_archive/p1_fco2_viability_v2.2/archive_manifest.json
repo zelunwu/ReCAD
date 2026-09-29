@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p1_fco2_viability_v2.2",
+  "created_utc": "2026-09-29T02:05:13.443156+00:00",
+  "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_fco2_viability_v2.2",
+  "training_git_commit": "850350e01ddc876f072a57bbd6edc5f014e98fa5",
+  "archive_builder": "scripts/build_p1_fco2_reviewer_archive.py",
+  "archive_builder_sha256": "f015e057d51a843e851f336b7ac17854754392d34fcbcf502b24ad253c97f77b",
+  "analysis_script_sha256": "de6230eeb778d364cea59fb59a11cbe1eb97c547b47f64a26e639109f0119f41",
+  "source_artifacts_sha256": {
+    "candidate_predictions.parquet": "4b165275d3a1a3b8251fdc867232464002920b7c9a6b5043c3b8255ec7f7b782",
+    "selected_development_predictions.parquet": "18dfd1f75447e8a7c87dff0a30bf2570f80a97928dd019ac8db97e2f6833acd2",
+    "summary.csv": "9e6a7992b9a9f441726880328edc411d9cacd8a248eaf105471e826b8d67f559",
+    "cv_metrics.csv": "d04fa2cd8e80a89245678edcca03ca2c03ff48539af691ac8feaa63528ebbf9d",
+    "forward_metrics.csv": "abedc50514b51e01d4d6de96fbefb1999ada52b69869689c5a5f07b6a0509fc4",
+    "development_gate.json": "4d9ef6b059fe14f01b80f48de43cb19dc672f1738827155adc4f56ab5d28e714",
+    "protocol.json": "63429559f071bb0cd4b4d2afb2e48e5106929b0bc88062ce248ba0ff06ec7587"
+  },
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "data_hash_mode": "full",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "North-American-adjacent train/development and grouped CV only",
+  "decision": "diagnostic_only_do_not_open_locked_test",
+  "figure_source_data": {
+    "fig01_development_model_comparison.png": [
+      "table01_development_model_summary.csv"
+    ],
+    "fig02_five_fold_cv.png": [
+      "table02_five_fold_cv_summary.csv"
+    ],
+    "fig03_lme_skill_sensitivity.png": [
+      "table04_lme_skill.csv"
+    ],
+    "fig04_fco2_band_skill.png": [
+      "table05_fco2_band_skill.csv"
+    ],
+    "fig05_forward_chain.png": [
+      "table03_forward_summary.csv"
+    ],
+    "fig06_fco2_support_distance.png": [
+      "table06_fco2_support_distance.csv"
+    ],
+    "fig07_observed_vs_predicted.png": [
+      "local:selected_development_predictions.parquet"
+    ],
+    "fig08_absolute_error_calibration.png": [
+      "table08_uncertainty_calibration.csv",
+      "local:candidate_predictions.parquet"
+    ]
+  },
+  "figure_captions": {
+    "fig01_development_model_comparison.png": "Development-set fCO2 RMSE for the seasonal-trend climatology and four residual models under pooled, cruise-equal, and LME-macro aggregation. Bars are means across available seeds and error bars show one standard deviation; lower is better. CatBoost wins the preregistered LME-macro criterion as well as pooled and cruise-equal RMSE.",
+    "fig02_five_fold_cv.png": "Five-fold cruise-grouped cross-validation for the same candidate families. Bars show mean LME-macro RMSE and pooled skill relative to the seasonal-trend climatology across folds; error bars show one standard deviation. CatBoost is also strongest in grouped cross-validation.",
+    "fig03_lme_skill_sensitivity.png": "Development skill by Large Marine Ecosystem (LME), comparing selected CatBoost with soft experts; positive skill indicates lower MSE than the seasonal-trend climatology. Labels give development record counts. CatBoost degrades in LME 55 (n=30), LME 8, and LME 17.",
+    "fig04_fco2_band_skill.png": "Development skill of CatBoost and soft experts across observed fCO2 bands, with record counts. CatBoost retains positive skill in every band; sparse concentration extremes remain less certain.",
+    "fig05_forward_chain.png": "Forward-chain development skill for seeds 100-102: training cruises end by 2018 and evaluation uses cruises assigned to 2019-2021. All CatBoost seeds retain positive pooled skill relative to the seasonal-trend climatology; the horizontal line marks zero skill.",
+    "fig06_fco2_support_distance.png": "Development skill of selected CatBoost by distance to the nearest fCO2 training support, with record counts by bin. Skill turns negative beyond 100 km and is strongly negative beyond 250 km, where only 62 records are available; this failure blocks the development gate.",
+    "fig07_observed_vs_predicted.png": "Hexbin density of development observations against the seasonal-trend climatology and the three-seed mean CatBoost residual prediction on identical 0-1000 \u00b5atm axes. The white line is 1:1 and color is log10 record count. Displayed RMSE is the row-pooled ensemble RMSE, not the across-seed mean reported in Table 1.",
+    "fig08_absolute_error_calibration.png": "Development absolute-error empirical distributions for the seasonal-trend climatology and CatBoost residual. The dotted line is the development-calibrated 90th-percentile error threshold (49.46 \u00b5atm); its 0.900 development coverage is not independent calibration evidence."
+  },
+  "files_sha256": {
+    "CAPTIONS.md": "f5c2a802ebc176bd2ef0c373a284aa4d67c5c5810b6dd91679e005372cc6626f",
+    "README.md": "d32372f829a681f212ec188a2b39ff398966210a934601e7c69325198a0827a5",
+    "REPORT.md": "f55de60dde790a061c0ef143f03952719076eba2176f071e3a45ceec7d0738b8",
+    "figures/fig01_development_model_comparison.png": "c1fcdbdba0282984ec53a66e6349df3b9236931f75863358ba7bb43ccdb4a781",
+    "figures/fig02_five_fold_cv.png": "3bee5e64549b5ca786b6a7ebf9b2439b0429f95e299c9887b2f52972dba7a1e7",
+    "figures/fig03_lme_skill_sensitivity.png": "3ce47069d028f11a44f9a44f7cd518c0923f58f7b7921f61b02ff77fb2f344b8",
+    "figures/fig04_fco2_band_skill.png": "32164506c4874574764836bbe2d2a356e227292061b04b22bdd3a660e79750f1",
+    "figures/fig05_forward_chain.png": "21674d380febd458e336c24332eed399649b96569056637967e9b5bcd3ca1332",
+    "figures/fig06_fco2_support_distance.png": "57632a6815fab017b678df0171e3efae2787a551531bc1917b2eb035ce4780b7",
+    "figures/fig07_observed_vs_predicted.png": "6ba96f3d8d2e0201f03024ad4c3a2bc9832e8ebe7320012940da29f8fa232d4a",
+    "figures/fig08_absolute_error_calibration.png": "f6a797986aabb1b070f4b429ce40ebcf50e456c5d54b6358d61f5fe91e34428e",
+    "tables/table01_development_model_summary.csv": "0d0fad26eec9cdde9699cdcf3da04b2e58c661700bfb44ef9ae867ef18507cf4",
+    "tables/table02_five_fold_cv_summary.csv": "3784b241402baa735fff6e2cf2c41adcee39f6c7bfca2addb5189d5d81180f5c",
+    "tables/table03_forward_summary.csv": "b7103dee4dc784d8455d18dd9dd1476be131b83ae8ed52a431a489ef0b86e42e",
+    "tables/table04_lme_skill.csv": "1cb9e3203fbf54eff9c668c6554eac56141278d95018caf2fbd744ac0103c512",
+    "tables/table05_fco2_band_skill.csv": "3e0f549ca61b93bb681f34b1ffe10ce184557e90d8b45c241798c906d80a374f",
+    "tables/table06_fco2_support_distance.csv": "375b5e588544d788c5c4e0d738e0dac3f4796926ec3ffbf0e7697fadadf87093",
+    "tables/table07_development_gates.csv": "ec11534536bee5cf43b9ba68045768c4aa7f2418acda8309bf566371d2265773",
+    "tables/table08_uncertainty_calibration.csv": "a435d532b1c12be62a007b68e3c400653f295ae9a6becca842a632eb26fdfd9e"
+  }
+}

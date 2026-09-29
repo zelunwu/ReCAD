@@ -1,0 +1,2 @@
+model,absolute_error_q90_uatm,development_coverage,nominal_coverage,calibration_set,independent_coverage_tested
+CatBoost residual,49.464623106444826,0.8999987288512629,0.9,development,False

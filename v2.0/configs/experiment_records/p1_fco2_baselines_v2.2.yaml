@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_fco2_baselines_v2.2
-status: preregistered
+status: complete
 owner: ReCAD
 created_utc: 2026-09-28T05:35:00Z
 science:
@@ -40,30 +40,43 @@ model:
   loss: cruise-balanced robust regression
   sampling: cruise-balanced plus inverse regional density weighting
   parameter_count: null
-training: {seeds: [100, 101, 102], optimizer_steps: 5000 per learned candidate per seed, compute_budget: fixed registered candidate set with no locked-test search, checkpoint_selection: development LME macro-RMSE only, uncertainty_method: ensemble plus conformal calibration}
+training: {seeds: [100, 101, 102], optimizer_steps: 5000 per neural candidate per seed, compute_budget: 740.4 seconds observed for primary plus five-fold CV and forward chain, checkpoint_selection: development LME macro-RMSE only, uncertainty_method: ensemble plus conformal calibration}
 evaluation:
   primary_metrics: [RMSE, MAE, bias, R2]
   group_metrics: [LME_macro_RMSE, regime_macro_RMSE, worst_LME_RMSE, forward_chain_RMSE, distance_to_support]
   calibration_metrics: [coverage_90, interval_width]
   baselines: [seasonal_trend_climatology, ridge_residual, catboost_residual, point_MLP_residual]
-reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
+reproducibility:
+  git_commit: 850350e01ddc876f072a57bbd6edc5f014e98fa5
+  git_worktree_clean: false
+  source_hashes:
+    scripts/run_p1_fco2_viability.py: 335703bdcbc905d5596e21990f3c6679655e72ef3e8f15a5d3ccd156e1196f91
+    scripts/analyze_p1_fco2_results.py: de6230eeb778d364cea59fb59a11cbe1eb97c547b47f64a26e639109f0119f41
+  environment_lock: pyproject.toml
 artifacts:
   output_directory: outputs/experiments/p1_fco2_viability_v2.2
   protocol: this file
   data_manifest: configs/frozen/data_manifest_v2.2.json
-  selection: null
-  checkpoints: []
-  predictions: []
-  metrics: []
-  figures: []
-  report: null
+  selection: outputs/experiments/p1_fco2_viability_v2.2/selection.json
+  checkpoints: [outputs/experiments/p1_fco2_viability_v2.2/checkpoints]
+  predictions: [outputs/experiments/p1_fco2_viability_v2.2/candidate_predictions.parquet, outputs/experiments/p1_fco2_viability_v2.2/selected_development_predictions.parquet]
+  metrics: [outputs/experiments/p1_fco2_viability_v2.2/summary.csv, outputs/experiments/p1_fco2_viability_v2.2/cv_metrics.csv, outputs/experiments/p1_fco2_viability_v2.2/forward_metrics.csv, outputs/experiments/p1_fco2_viability_v2.2/development_gate.json]
+  figures: [docs/experiment_archive/p1_fco2_viability_v2.2/figures]
+  report: docs/experiment_archive/p1_fco2_viability_v2.2/REPORT.md
   reviewer_archive:
     path: docs/experiment_archive/p1_fco2_viability_v2.2
-    report: null
-    captions: null
-    figures: []
-    source_tables: []
-    manifest: null
-    verification_status: null
-outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}
+    report: docs/experiment_archive/p1_fco2_viability_v2.2/REPORT.md
+    captions: docs/experiment_archive/p1_fco2_viability_v2.2/CAPTIONS.md
+    figures: [docs/experiment_archive/p1_fco2_viability_v2.2/figures]
+    source_tables: [docs/experiment_archive/p1_fco2_viability_v2.2/tables]
+    manifest: docs/experiment_archive/p1_fco2_viability_v2.2/archive_manifest.json
+    verification_status: verified
+outcome:
+  completed_utc: 2026-09-29T02:00:31Z
+  primary_result: CatBoost reduced development cruise-equal/LME-macro RMSE by 29.5%/13.1% and retained positive five-fold CV and forward skill, but worst-LME RMSE degraded 17.3% and skill became negative beyond 100 km from training support.
+  acceptance_gate_passed: false
+  deviations: []
+  invalidation_reason: null
+  evidence_grade: A
+  allowed_claims: Grouped development and CV show strong in-support North-American-adjacent fCO2 skill for CatBoost; the preregistered regional/extrapolation gate failed, so the result is diagnostic_only and locked/external labels remain sealed.
 

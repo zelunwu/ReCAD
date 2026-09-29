@@ -1,4 +1,5 @@
 """Run the full P1.2 coastal-fCO2 viability experiment without sealed labels."""
+
 from __future__ import annotations
 
 import argparse
@@ -32,25 +33,55 @@ from recad.evaluate.p1_framework import (
 
 ROOT = Path(__file__).resolve().parents[1]
 FEATURES = [
-    "sss", "sst", "adt", "wspd", "pco2air", "xco2air", "year", "latitude",
-    "longitude", "month", "lme_id", "basin_id", "regime_id",
+    "sss",
+    "sst",
+    "adt",
+    "wspd",
+    "pco2air",
+    "xco2air",
+    "year",
+    "latitude",
+    "longitude",
+    "month",
+    "lme_id",
+    "basin_id",
+    "regime_id",
 ]
 NUMERIC = [
-    "sss", "sst", "adt", "wspd", "pco2air", "xco2air", "year", "latitude",
-    "lon_sin", "lon_cos", "month_sin", "month_cos",
+    "sss",
+    "sst",
+    "adt",
+    "wspd",
+    "pco2air",
+    "xco2air",
+    "year",
+    "latitude",
+    "lon_sin",
+    "lon_cos",
+    "month_sin",
+    "month_cos",
 ]
 CATEGORICAL = ["lme_id", "basin_id", "regime_id"]
 MODELS = [
-    "seasonal_climatology", "ridge_residual", "catboost_residual",
-    "point_mlp_residual", "soft_experts_residual",
+    "seasonal_climatology",
+    "ridge_residual",
+    "catboost_residual",
+    "point_mlp_residual",
+    "soft_experts_residual",
 ]
 
 
 def stable_id(frame: pd.DataFrame) -> pd.Series:
     return (
-        frame.group_key.astype(str) + ":" + frame.year.astype(str) + ":" +
-        frame.month.astype(str) + ":" + frame.latitude.round(4).astype(str) + ":" +
-        frame.longitude.round(4).astype(str)
+        frame.group_key.astype(str)
+        + ":"
+        + frame.year.astype(str)
+        + ":"
+        + frame.month.astype(str)
+        + ":"
+        + frame.latitude.round(4).astype(str)
+        + ":"
+        + frame.longitude.round(4).astype(str)
     )
 
 
@@ -81,7 +112,9 @@ def balanced_weights(frame: pd.DataFrame) -> np.ndarray:
     return weights / weights.sum()
 
 
-def metric_summary(frame: pd.DataFrame, prediction: np.ndarray) -> tuple[pd.DataFrame, dict[str, float]]:
+def metric_summary(
+    frame: pd.DataFrame, prediction: np.ndarray
+) -> tuple[pd.DataFrame, dict[str, float]]:
     scored = frame[["truth", "group_key", "lme_id", "regime_id", "nearest_carbon_km"]].copy()
     scored["prediction"] = prediction
     details = evaluate_predictions(scored)
@@ -92,10 +125,15 @@ def metric_summary(frame: pd.DataFrame, prediction: np.ndarray) -> tuple[pd.Data
     regime = lookup["regime_macro"]
     worst = details.loc[details.aggregation.eq("worst_lme")].iloc[0]
     compact = {
-        "n": int(pooled.n), "pooled_rmse": float(pooled.rmse), "pooled_mae": float(pooled.mae),
-        "pooled_bias": float(pooled.bias), "pooled_r2": float(pooled.r2),
-        "cruise_equal_rmse": float(cruise.rmse), "lme_macro_rmse": float(lme.rmse),
-        "regime_macro_rmse": float(regime.rmse), "worst_lme_rmse": float(worst.rmse),
+        "n": int(pooled.n),
+        "pooled_rmse": float(pooled.rmse),
+        "pooled_mae": float(pooled.mae),
+        "pooled_bias": float(pooled.bias),
+        "pooled_r2": float(pooled.r2),
+        "cruise_equal_rmse": float(cruise.rmse),
+        "lme_macro_rmse": float(lme.rmse),
+        "regime_macro_rmse": float(regime.rmse),
+        "worst_lme_rmse": float(worst.rmse),
         "worst_lme": str(worst.group),
     }
     return details, compact
@@ -151,7 +189,9 @@ class TabularTransform:
         for column, categories in zip(CATEGORICAL, self.categories, strict=True):
             mapping = {value: i for i, value in enumerate(categories)}
             unknown = len(categories) - 1
-            codes = np.array([mapping.get(value, unknown) for value in frame[column].astype(str)], dtype=int)
+            codes = np.array(
+                [mapping.get(value, unknown) for value in frame[column].astype(str)], dtype=int
+            )
             onehot = np.zeros((len(frame), len(categories)), dtype=np.float32)
             onehot[np.arange(len(frame)), codes] = 1
             parts.append(onehot)
@@ -161,8 +201,15 @@ class TabularTransform:
 class MLP(nn.Module):
     def __init__(self, n_features: int):
         super().__init__()
-        self.network = nn.Sequential(nn.Linear(n_features, 128), nn.GELU(), nn.Dropout(0.1),
-                                     nn.Linear(128, 128), nn.GELU(), nn.Dropout(0.1), nn.Linear(128, 1))
+        self.network = nn.Sequential(
+            nn.Linear(n_features, 128),
+            nn.GELU(),
+            nn.Dropout(0.1),
+            nn.Linear(128, 128),
+            nn.GELU(),
+            nn.Dropout(0.1),
+            nn.Linear(128, 1),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.network(x).squeeze(-1)
@@ -172,8 +219,9 @@ class SoftExperts(nn.Module):
     def __init__(self, n_features: int, experts: int = 8, top_k: int = 2):
         super().__init__()
         self.top_k = top_k
-        self.trunk = nn.Sequential(nn.Linear(n_features, 128), nn.GELU(), nn.Dropout(0.1),
-                                   nn.Linear(128, 128), nn.GELU())
+        self.trunk = nn.Sequential(
+            nn.Linear(n_features, 128), nn.GELU(), nn.Dropout(0.1), nn.Linear(128, 128), nn.GELU()
+        )
         self.experts = nn.Linear(128, experts)
         self.gate = nn.Sequential(nn.Linear(n_features, 64), nn.GELU(), nn.Linear(64, experts))
 
@@ -223,7 +271,9 @@ def train_neural(
     x_val = torch.as_tensor(x_val_np, device=device)
     y_val = torch.as_tensor(validation.truth.to_numpy(np.float32), device=device)
     bg_val = torch.as_tensor(validation.baseline.to_numpy(np.float32, copy=True), device=device)
-    model = MLP(x_train.shape[1]) if family == "point_mlp_residual" else SoftExperts(x_train.shape[1])
+    model = (
+        MLP(x_train.shape[1]) if family == "point_mlp_residual" else SoftExperts(x_train.shape[1])
+    )
     model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
     probabilities = torch.as_tensor(balanced_weights(train).astype(np.float32), device=device)
@@ -248,31 +298,47 @@ def train_neural(
                 score = lme_macro_rmse_tensor(y_val, val_prediction, validation.lme_id.to_numpy())
             if score < best_score:
                 best_score, best_step = score, step
-                best_state = {name: value.detach().cpu().clone() for name, value in model.state_dict().items()}
+                best_state = {
+                    name: value.detach().cpu().clone() for name, value in model.state_dict().items()
+                }
             model.train()
     assert best_state is not None
     model.load_state_dict(best_state)
     model.eval()
     with torch.no_grad():
         prediction = (bg_val + model(x_val)).cpu().numpy()
-    state = {"model": best_state, "transform": transform.__dict__, "family": family,
-             "features": NUMERIC + CATEGORICAL, "seed": seed, "best_step": best_step}
+    state = {
+        "model": best_state,
+        "transform": transform.__dict__,
+        "family": family,
+        "features": NUMERIC + CATEGORICAL,
+        "seed": seed,
+        "best_step": best_step,
+    }
     return NeuralResult(prediction, best_step, best_score, state)
 
 
-def ridge_prediction(train: pd.DataFrame, validation: pd.DataFrame, alpha: float, weights: np.ndarray) -> tuple[np.ndarray, object]:
+def ridge_prediction(
+    train: pd.DataFrame, validation: pd.DataFrame, alpha: float, weights: np.ndarray
+) -> tuple[np.ndarray, object]:
     numeric = NUMERIC
     categorical = CATEGORICAL
-    transformer = ColumnTransformer([
-        ("numeric", make_pipeline(SimpleImputer(strategy="median"), StandardScaler()), numeric),
-        ("categorical", OneHotEncoder(handle_unknown="ignore"), categorical),
-    ])
+    transformer = ColumnTransformer(
+        [
+            ("numeric", make_pipeline(SimpleImputer(strategy="median"), StandardScaler()), numeric),
+            ("categorical", OneHotEncoder(handle_unknown="ignore"), categorical),
+        ]
+    )
     model = make_pipeline(transformer, Ridge(alpha=alpha, solver="lsqr"))
-    model.fit(train[numeric + categorical], train.residual, ridge__sample_weight=weights * len(weights))
+    model.fit(
+        train[numeric + categorical], train.residual, ridge__sample_weight=weights * len(weights)
+    )
     return validation.baseline.to_numpy() + model.predict(validation[numeric + categorical]), model
 
 
-def catboost_prediction(train: pd.DataFrame, validation: pd.DataFrame, seed: int, weights: np.ndarray, iterations: int) -> tuple[np.ndarray, CatBoostRegressor]:
+def catboost_prediction(
+    train: pd.DataFrame, validation: pd.DataFrame, seed: int, weights: np.ndarray, iterations: int
+) -> tuple[np.ndarray, CatBoostRegressor]:
     columns = NUMERIC + CATEGORICAL
     x_train, x_val = train[columns].copy(), validation[columns].copy()
     for column in NUMERIC:
@@ -280,25 +346,52 @@ def catboost_prediction(train: pd.DataFrame, validation: pd.DataFrame, seed: int
         x_train[column] = x_train[column].fillna(median)
         x_val[column] = x_val[column].fillna(median)
     cat_indices = [columns.index(column) for column in CATEGORICAL]
-    kwargs = {"iterations": iterations, "depth": 8, "learning_rate": 0.05,
-              "loss_function": "RMSE", "eval_metric": "RMSE", "random_seed": seed,
-              "verbose": False, "random_strength": 0.5, "l2_leaf_reg": 5.0,
-              "allow_writing_files": False}
+    kwargs = {
+        "iterations": iterations,
+        "depth": 8,
+        "learning_rate": 0.05,
+        "loss_function": "RMSE",
+        "eval_metric": "RMSE",
+        "random_seed": seed,
+        "verbose": False,
+        "random_strength": 0.5,
+        "l2_leaf_reg": 5.0,
+        "allow_writing_files": False,
+    }
     try:
         model = CatBoostRegressor(**kwargs, task_type="GPU", devices="0")
-        model.fit(x_train, train.residual, cat_features=cat_indices, sample_weight=weights * len(weights),
-                  eval_set=(x_val, validation.residual), early_stopping_rounds=150, verbose=False)
+        model.fit(
+            x_train,
+            train.residual,
+            cat_features=cat_indices,
+            sample_weight=weights * len(weights),
+            eval_set=(x_val, validation.residual),
+            early_stopping_rounds=150,
+            verbose=False,
+        )
     except Exception as exc:
         print(f"CatBoost GPU unavailable ({exc}); falling back to CPU", flush=True)
         model = CatBoostRegressor(**kwargs, task_type="CPU", thread_count=-1)
-        model.fit(x_train, train.residual, cat_features=cat_indices, sample_weight=weights * len(weights),
-                  eval_set=(x_val, validation.residual), early_stopping_rounds=150, verbose=False)
+        model.fit(
+            x_train,
+            train.residual,
+            cat_features=cat_indices,
+            sample_weight=weights * len(weights),
+            eval_set=(x_val, validation.residual),
+            early_stopping_rounds=150,
+            verbose=False,
+        )
     return validation.baseline.to_numpy() + model.predict(x_val), model
 
 
 def run_model(
-    name: str, train: pd.DataFrame, validation: pd.DataFrame, seed: int, args,
-    model_dir: Path, run_id: str,
+    name: str,
+    train: pd.DataFrame,
+    validation: pd.DataFrame,
+    seed: int,
+    args,
+    model_dir: Path,
+    run_id: str,
 ):
     baseline_model = SeasonalTrendClimatology().fit(train)
     train = train.copy()
@@ -322,14 +415,24 @@ def run_model(
         _, alpha, prediction, model = best
         metadata["alpha"] = alpha
         import joblib
+
         joblib.dump(model, model_dir / f"{run_id}_{name}_seed{seed}.joblib")
     elif name == "catboost_residual":
-        prediction, model = catboost_prediction(train, validation, seed, weights, args.catboost_iterations)
+        prediction, model = catboost_prediction(
+            train, validation, seed, weights, args.catboost_iterations
+        )
         metadata["best_iteration"] = int(model.get_best_iteration())
         model.save_model(model_dir / f"{run_id}_{name}_seed{seed}.cbm")
     else:
-        result = train_neural(name, train, validation, seed=seed, steps=args.steps,
-                              batch_size=args.batch_size, checkpoint_every=args.checkpoint_every)
+        result = train_neural(
+            name,
+            train,
+            validation,
+            seed=seed,
+            steps=args.steps,
+            batch_size=args.batch_size,
+            checkpoint_every=args.checkpoint_every,
+        )
         prediction = result.prediction
         metadata.update(best_step=result.best_step, selection_lme_macro_rmse=result.best_score)
         torch.save(result.state, model_dir / f"{run_id}_{name}_seed{seed}.pt")
@@ -346,15 +449,24 @@ def add_stratified_metrics(frame: pd.DataFrame, prediction: np.ndarray) -> list[
             mask = np.asarray(groups == group)
             model_rmse = float(np.sqrt(np.mean(error[mask] ** 2)))
             background_rmse = float(np.sqrt(np.mean(background_error[mask] ** 2)))
-            result.append({"stratum": kind, "group": str(group), "n": int(mask.sum()),
-                           "model_rmse": model_rmse, "background_rmse": background_rmse,
-                           "skill_vs_background": 1 - model_rmse**2 / background_rmse**2})
+            result.append(
+                {
+                    "stratum": kind,
+                    "group": str(group),
+                    "n": int(mask.sum()),
+                    "model_rmse": model_rmse,
+                    "background_rmse": background_rmse,
+                    "skill_vs_background": 1 - model_rmse**2 / background_rmse**2,
+                }
+            )
     return result
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=ROOT / "outputs/experiments/p1_fco2_viability_v2.2")
+    parser.add_argument(
+        "--output", type=Path, default=ROOT / "outputs/experiments/p1_fco2_viability_v2.2"
+    )
     parser.add_argument("--steps", type=int, default=5000)
     parser.add_argument("--batch-size", type=int, default=2048)
     parser.add_argument("--checkpoint-every", type=int, default=250)
@@ -376,7 +488,11 @@ def main() -> int:
 
     if args.phase in {"primary", "all"}:
         for name in MODELS:
-            run_seeds = seeds if name in {"catboost_residual", "point_mlp_residual", "soft_experts_residual"} else [100]
+            run_seeds = (
+                seeds
+                if name in {"catboost_residual", "point_mlp_residual", "soft_experts_residual"}
+                else [100]
+            )
             for seed in run_seeds:
                 print(f"PRIMARY {name} seed={seed}", flush=True)
                 prediction, metadata = run_model(
@@ -386,15 +502,34 @@ def main() -> int:
                 baseline = SeasonalTrendClimatology().fit(train).predict(development)
                 development_with_baseline = development.assign(baseline=baseline)
                 bg_rmse = float(np.sqrt(np.mean((baseline - development.truth) ** 2)))
-                compact.update(model=name, seed=seed, split_scheme="primary", stage="development",
-                               skill_vs_background=1 - compact["pooled_rmse"] ** 2 / bg_rmse**2, **metadata)
+                compact.update(
+                    model=name,
+                    seed=seed,
+                    split_scheme="primary",
+                    stage="development",
+                    skill_vs_background=1 - compact["pooled_rmse"] ** 2 / bg_rmse**2,
+                    **metadata,
+                )
                 metrics_rows.append(compact)
                 for row in add_stratified_metrics(development_with_baseline, prediction):
-                    stratified_rows.append({"model": name, "seed": seed, "split_scheme": "primary", **row})
-                prediction_rows.append(pd.DataFrame({"record_id": development.record_id, "model": name,
-                                                     "seed": seed, "truth": development.truth,
-                                                     "background": baseline, "prediction": prediction}))
-                details.to_parquet(args.output / f"metrics_detail_{name}_seed{seed}.parquet", index=False)
+                    stratified_rows.append(
+                        {"model": name, "seed": seed, "split_scheme": "primary", **row}
+                    )
+                prediction_rows.append(
+                    pd.DataFrame(
+                        {
+                            "record_id": development.record_id,
+                            "model": name,
+                            "seed": seed,
+                            "truth": development.truth,
+                            "background": baseline,
+                            "prediction": prediction,
+                        }
+                    )
+                )
+                details.to_parquet(
+                    args.output / f"metrics_detail_{name}_seed{seed}.parquet", index=False
+                )
                 pd.DataFrame(metrics_rows).to_csv(args.output / "metrics_by_seed.csv", index=False)
 
     if args.phase in {"cv", "all"}:
@@ -407,46 +542,68 @@ def main() -> int:
             assert set(fit.group_key).isdisjoint(set(held.group_key))
             for name in MODELS:
                 print(f"CV fold={fold} {name}", flush=True)
-                prediction, metadata = run_model(
-                    name, fit, held, 100, args, model_dir, f"cv{fold}"
-                )
+                prediction, metadata = run_model(name, fit, held, 100, args, model_dir, f"cv{fold}")
                 _, compact = metric_summary(held, prediction)
                 baseline = SeasonalTrendClimatology().fit(fit).predict(held)
                 bg_rmse = float(np.sqrt(np.mean((baseline - held.truth) ** 2)))
-                compact.update(model=name, seed=100, fold=fold, split_scheme="cruise_cv",
-                               skill_vs_background=1 - compact["pooled_rmse"] ** 2 / bg_rmse**2, **metadata)
+                compact.update(
+                    model=name,
+                    seed=100,
+                    fold=fold,
+                    split_scheme="cruise_cv",
+                    skill_vs_background=1 - compact["pooled_rmse"] ** 2 / bg_rmse**2,
+                    **metadata,
+                )
                 cv_rows.append(compact)
                 pd.DataFrame(cv_rows).to_csv(args.output / "cv_metrics.csv", index=False)
 
     metrics = pd.DataFrame(metrics_rows)
     cv = pd.DataFrame(cv_rows)
-    predictions = pd.concat(prediction_rows, ignore_index=True) if prediction_rows else pd.DataFrame()
+    predictions = (
+        pd.concat(prediction_rows, ignore_index=True) if prediction_rows else pd.DataFrame()
+    )
     if len(predictions):
         predictions.to_parquet(args.output / "candidate_predictions.parquet", index=False)
         pd.DataFrame(stratified_rows).to_csv(args.output / "stratified_metrics.csv", index=False)
-        summary = metrics.groupby("model").agg(
-            seeds=("seed", "nunique"), pooled_rmse_mean=("pooled_rmse", "mean"),
-            pooled_rmse_std=("pooled_rmse", "std"), cruise_equal_rmse_mean=("cruise_equal_rmse", "mean"),
-            lme_macro_rmse_mean=("lme_macro_rmse", "mean"), worst_lme_rmse_mean=("worst_lme_rmse", "mean"),
-            skill_vs_background_mean=("skill_vs_background", "mean"),
-        ).reset_index()
+        summary = (
+            metrics.groupby("model")
+            .agg(
+                seeds=("seed", "nunique"),
+                pooled_rmse_mean=("pooled_rmse", "mean"),
+                pooled_rmse_std=("pooled_rmse", "std"),
+                cruise_equal_rmse_mean=("cruise_equal_rmse", "mean"),
+                lme_macro_rmse_mean=("lme_macro_rmse", "mean"),
+                worst_lme_rmse_mean=("worst_lme_rmse", "mean"),
+                skill_vs_background_mean=("skill_vs_background", "mean"),
+            )
+            .reset_index()
+        )
         if len(cv):
-            cv_summary = cv.groupby("model").agg(cv_lme_macro_mean=("lme_macro_rmse", "mean"),
-                                                  cv_lme_macro_std=("lme_macro_rmse", "std"),
-                                                  cv_skill_mean=("skill_vs_background", "mean")).reset_index()
+            cv_summary = (
+                cv.groupby("model")
+                .agg(
+                    cv_lme_macro_mean=("lme_macro_rmse", "mean"),
+                    cv_lme_macro_std=("lme_macro_rmse", "std"),
+                    cv_skill_mean=("skill_vs_background", "mean"),
+                )
+                .reset_index()
+            )
             summary = summary.merge(cv_summary, on="model", how="left")
         summary.to_csv(args.output / "summary.csv", index=False)
-        eligible = summary.loc[summary.model.ne("seasonal_climatology")].sort_values("lme_macro_rmse_mean")
+        eligible = summary.loc[summary.model.ne("seasonal_climatology")].sort_values(
+            "lme_macro_rmse_mean"
+        )
         selected = str(eligible.iloc[0].model)
-        forward_train = prepare(gateway.load_labels(
-            "fco2", Purpose.TRAIN, columns=columns, split_scheme="forward"
-        ))
-        forward_dev = prepare(gateway.load_labels(
-            "fco2", Purpose.SELECTION, columns=columns, split_scheme="forward"
-        ))
+        forward_train = prepare(
+            gateway.load_labels("fco2", Purpose.TRAIN, columns=columns, split_scheme="forward")
+        )
+        forward_dev = prepare(
+            gateway.load_labels("fco2", Purpose.SELECTION, columns=columns, split_scheme="forward")
+        )
         for name in ["seasonal_climatology", selected]:
             run_seeds = (
-                seeds if name in {"catboost_residual", "point_mlp_residual", "soft_experts_residual"}
+                seeds
+                if name in {"catboost_residual", "point_mlp_residual", "soft_experts_residual"}
                 else [100]
             )
             for seed in run_seeds:
@@ -458,7 +615,10 @@ def main() -> int:
                 baseline = SeasonalTrendClimatology().fit(forward_train).predict(forward_dev)
                 bg_rmse = float(np.sqrt(np.mean((baseline - forward_dev.truth) ** 2)))
                 compact.update(
-                    model=name, seed=seed, split_scheme="forward", stage="development",
+                    model=name,
+                    seed=seed,
+                    split_scheme="forward",
+                    stage="development",
                     skill_vs_background=1 - compact["pooled_rmse"] ** 2 / bg_rmse**2,
                     **metadata,
                 )
@@ -466,10 +626,16 @@ def main() -> int:
         forward = pd.DataFrame(forward_rows)
         forward.to_csv(args.output / "forward_metrics.csv", index=False)
         selected_predictions = predictions.loc[predictions.model.eq(selected)]
-        ensemble = selected_predictions.groupby("record_id").agg(
-            truth=("truth", "first"), prediction=("prediction", "mean"),
-            uncertainty=("prediction", "std"), seed_count=("seed", "nunique")
-        ).reset_index()
+        ensemble = (
+            selected_predictions.groupby("record_id")
+            .agg(
+                truth=("truth", "first"),
+                prediction=("prediction", "mean"),
+                uncertainty=("prediction", "std"),
+                seed_count=("seed", "nunique"),
+            )
+            .reset_index()
+        )
         ensemble["uncertainty"] = ensemble.uncertainty.fillna(0.0)
         meta = development.drop_duplicates("record_id").set_index("record_id")
         ensemble = ensemble.join(meta, on="record_id", rsuffix="_meta")
@@ -483,30 +649,55 @@ def main() -> int:
         ensemble["seed"] = "ensemble_100_101_102"
         standard = standardize_predictions(ensemble)
         standard.to_parquet(args.output / "selected_development_predictions.parquet", index=False)
-        coverage = float(((ensemble.truth >= ensemble.lower) & (ensemble.truth <= ensemble.upper)).mean())
-        selection = {"selected_model": selected, "criterion": "development LME-macro RMSE",
-                     "conformal_absolute_error_q90": q90, "development_coverage_90": coverage,
-                     "locked_test_opened": False, "external_opened": False}
-        (args.output / "selection.json").write_text(json.dumps(selection, indent=2), encoding="utf-8")
+        coverage = float(
+            ((ensemble.truth >= ensemble.lower) & (ensemble.truth <= ensemble.upper)).mean()
+        )
+        selection = {
+            "selected_model": selected,
+            "criterion": "development LME-macro RMSE",
+            "conformal_absolute_error_q90": q90,
+            "development_coverage_90": coverage,
+            "locked_test_opened": False,
+            "external_opened": False,
+        }
+        (args.output / "selection.json").write_text(
+            json.dumps(selection, indent=2), encoding="utf-8"
+        )
         make_figures(summary, pd.DataFrame(stratified_rows), args.output)
         write_report(summary, cv, forward, pd.DataFrame(stratified_rows), selection, args.output)
 
-    protocol = {"created_utc": datetime.now(timezone.utc).isoformat(), "git_commit": git_head(),
-                "manifest_validation": validation, "steps": args.steps, "batch_size": args.batch_size,
-                "catboost_iterations": args.catboost_iterations, "seeds": seeds, "models": MODELS,
-                "train_rows": len(train), "development_rows": len(development),
-                "train_cruises": int(train.group_key.nunique()),
-                "development_cruises": int(development.group_key.nunique()),
-                "locked_test_opened": False, "external_opened": False,
-                "elapsed_seconds": time.time() - start}
+    protocol = {
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "git_commit": git_head(),
+        "manifest_validation": validation,
+        "steps": args.steps,
+        "batch_size": args.batch_size,
+        "catboost_iterations": args.catboost_iterations,
+        "seeds": seeds,
+        "models": MODELS,
+        "train_rows": len(train),
+        "development_rows": len(development),
+        "train_cruises": int(train.group_key.nunique()),
+        "development_cruises": int(development.group_key.nunique()),
+        "locked_test_opened": False,
+        "external_opened": False,
+        "elapsed_seconds": time.time() - start,
+    }
     (args.output / "protocol.json").write_text(json.dumps(protocol, indent=2), encoding="utf-8")
-    hashes = {str(path.relative_to(args.output)): sha256(path) for path in args.output.rglob("*") if path.is_file()}
-    (args.output / "artifact_hashes.json").write_text(json.dumps(hashes, indent=2), encoding="utf-8")
+    hashes = {
+        str(path.relative_to(args.output)): sha256(path)
+        for path in args.output.rglob("*")
+        if path.is_file()
+    }
+    (args.output / "artifact_hashes.json").write_text(
+        json.dumps(hashes, indent=2), encoding="utf-8"
+    )
     return 0
 
 
 def git_head() -> str:
     import subprocess
+
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
 
 
@@ -521,7 +712,12 @@ def make_figures(summary: pd.DataFrame, strata: pd.DataFrame, output: Path) -> N
     fig.tight_layout()
     fig.savefig(figure_dir / "model_lme_macro_rmse.png", dpi=180)
     plt.close(fig)
-    lme = strata.loc[strata.stratum.eq("lme")].groupby(["model", "group"]).skill_vs_background.mean().reset_index()
+    lme = (
+        strata.loc[strata.stratum.eq("lme")]
+        .groupby(["model", "group"])
+        .skill_vs_background.mean()
+        .reset_index()
+    )
     fig, ax = plt.subplots(figsize=(11, 5))
     for model, part in lme.groupby("model"):
         if model != "seasonal_climatology":
@@ -536,17 +732,29 @@ def make_figures(summary: pd.DataFrame, strata: pd.DataFrame, output: Path) -> N
 
 
 def write_report(
-    summary: pd.DataFrame, cv: pd.DataFrame, forward: pd.DataFrame,
-    strata: pd.DataFrame, selection: dict, output: Path,
+    summary: pd.DataFrame,
+    cv: pd.DataFrame,
+    forward: pd.DataFrame,
+    strata: pd.DataFrame,
+    selection: dict,
+    output: Path,
 ) -> None:
     selected = selection["selected_model"]
     row = summary.loc[summary.model.eq(selected)].iloc[0]
-    lme = strata.loc[(strata.model.eq(selected)) & strata.stratum.eq("lme")].groupby("group").agg(
-        n=("n", "max"), skill=("skill_vs_background", "mean")).reset_index()
+    lme = (
+        strata.loc[(strata.model.eq(selected)) & strata.stratum.eq("lme")]
+        .groupby("group")
+        .agg(n=("n", "max"), skill=("skill_vs_background", "mean"))
+        .reset_index()
+    )
     eligible = lme.loc[lme.n >= 100]
     positive_fraction = float((eligible.skill > 0).mean()) if len(eligible) else float("nan")
-    low = strata.loc[(strata.model.eq(selected)) & strata.stratum.eq("fco2_band")].groupby("group").agg(
-        n=("n", "max"), skill=("skill_vs_background", "mean")).reset_index()
+    low = (
+        strata.loc[(strata.model.eq(selected)) & strata.stratum.eq("fco2_band")]
+        .groupby("group")
+        .agg(n=("n", "max"), skill=("skill_vs_background", "mean"))
+        .reset_index()
+    )
     report = f"""# P1.2 coastal fCO2 viability development report
 
 This report uses only frozen `train` and `development` labels. Locked-test and
@@ -561,7 +769,7 @@ external-independent labels were not opened.
 - Development worst-LME RMSE: {row.worst_lme_rmse_mean:.4f} µatm
 - Pooled skill versus seasonal-trend climatology: {row.skill_vs_background_mean:.3f}
 - Fraction of LMEs with N>=100 and positive skill: {positive_fraction:.3f}
-- Development-calibrated nominal 90% interval coverage: {selection['development_coverage_90']:.3f}
+- Development-calibrated nominal 90% interval coverage: {selection["development_coverage_90"]:.3f}
 
 ## Scope
 
@@ -572,7 +780,7 @@ product status. The final status remains pending the locked evaluation.
 
 ## Five-fold cruise CV
 
-{table_text(cv.groupby('model')[['pooled_rmse','cruise_equal_rmse','lme_macro_rmse','skill_vs_background']].agg(['mean','std']).round(4)) if len(cv) else 'Not run in this phase.'}
+{table_text(cv.groupby("model")[["pooled_rmse", "cruise_equal_rmse", "lme_macro_rmse", "skill_vs_background"]].agg(["mean", "std"]).round(4)) if len(cv) else "Not run in this phase."}
 
 ## Development model comparison
 

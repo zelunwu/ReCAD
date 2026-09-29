@@ -1,0 +1,3 @@
+model,seeds,pooled_rmse_mean,pooled_rmse_sd,lme_macro_rmse_mean,lme_macro_rmse_sd,pooled_skill_mean,pooled_skill_sd
+CatBoost residual,3,51.579506422102746,0.39607381755015275,52.211833908938466,0.5361471865415403,0.3710274023666149,0.009641491531715143
+Seasonal-trend climatology,1,65.03840100300707,,61.6005206997129,,0.0,

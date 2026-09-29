@@ -13,7 +13,7 @@ from recad.model.factory import build_model
 from recad.train.trainer import Trainer
 from recad.utils.native import native_available
 
-pytestmark = pytest.mark.gpu
+pytestmark = [pytest.mark.l3, pytest.mark.gpu]
 
 CUDA = torch.cuda.is_available()
 

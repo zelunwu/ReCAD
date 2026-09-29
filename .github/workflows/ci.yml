@@ -1,0 +1,104 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    name: PEP 8 and static quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install "ruff>=0.4"
+      - name: Ruff lint
+        working-directory: v2.0
+        run: ruff check src tests scripts
+      - name: Ruff format check
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="origin/${{ github.base_ref }}"
+          else
+            base="HEAD^"
+          fi
+          mapfile -t files < <(git diff --name-only --diff-filter=ACMR "$base"...HEAD -- 'v2.0/**/*.py')
+          if (( ${#files[@]} )); then
+            ruff format --config v2.0/pyproject.toml --check "${files[@]}"
+          fi
+
+  l1:
+    name: L1 fast tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package
+        working-directory: v2.0
+        run: |
+          python -m pip install --upgrade pip
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch>=2.2"
+          pip install -e ".[dev]"
+      - name: Run L1
+        working-directory: v2.0
+        run: pytest -m "not l2 and not l3 and not slow and not gpu" -q
+
+  l2:
+    name: L2 integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        working-directory: v2.0
+        run: |
+          python -m pip install --upgrade pip
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch>=2.2"
+          pip install -e ".[dev]"
+      - name: Run L2
+        working-directory: v2.0
+        run: pytest -m "l2 or slow" -q
+
+  l3:
+    name: L3 end-to-end and archive tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        working-directory: v2.0
+        run: |
+          python -m pip install --upgrade pip
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch>=2.2"
+          pip install -e ".[dev]"
+      - name: Run portable L3
+        working-directory: v2.0
+        run: pytest -m "l3 and not gpu" -q
+
+  native:
+    name: Native CPU build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure and test
+        working-directory: v2.0/csrc
+        run: |
+          cmake -S . -B build -DRECAD_HAS_CUDA=OFF
+          cmake --build build
+          ctest --test-dir build --output-on-failure
