@@ -28,8 +28,10 @@ jobs:
           fi
           mapfile -t files < <(git diff --name-only --diff-filter=ACMR "$base"...HEAD -- 'v2.0/**/*.py')
           if (( ${#files[@]} )); then
-            ruff check --config v2.0/pyproject.toml "${files[@]}"
-            ruff format --config v2.0/pyproject.toml --check "${files[@]}"
+            files=("${files[@]#v2.0/}")
+            cd v2.0
+            ruff check "${files[@]}"
+            ruff format --check "${files[@]}"
           fi
 
   l1:
