@@ -46,6 +46,7 @@ dependencies = [
     "torch>=2.2",
     "PyCO2SYS>=1.8",
     "dask[array]>=2024.1",
+    "shapely>=2.0",
 ]
 
 [project.optional-dependencies]
@@ -77,6 +78,9 @@ recad = ["py.typed"]
 testpaths = ["tests"]
 addopts = "-ra"
 markers = [
+    "l1: fast isolated unit/regression tests required for every code change",
+    "l2: CPU integration tests across modules and file interfaces required for pull requests",
+    "l3: end-to-end, experiment-replay, archive, real-data, or GPU validation required when applicable",
     "slow: long-running integration tests (default off)",
     "gpu: tests requiring a CUDA-capable device",
 ]

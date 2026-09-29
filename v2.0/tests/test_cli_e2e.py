@@ -7,6 +7,8 @@ import pytest
 
 from recad.cli import main
 
+pytestmark = pytest.mark.l2
+
 
 @pytest.mark.slow
 def test_e2e_cli(tmp_path):

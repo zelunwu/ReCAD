@@ -1,4 +1,4 @@
-"""Rebuild the reviewer-ready P1.1 SSS archive from hashed local outputs."""
+"""Rebuild the reviewer-ready P1.2 fCO2 archive from hashed local outputs."""
 
 from __future__ import annotations
 
@@ -13,16 +13,19 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPERIMENT_ID = "p1_sss_viability_v2.2"
+EXPERIMENT_ID = "p1_fco2_viability_v2.2"
 MODEL_LABELS = {
-    "background": "GLORYS",
-    "regional_month_bias": "Regional-month bias",
+    "seasonal_climatology": "Seasonal-trend climatology",
     "ridge_residual": "Ridge residual",
     "catboost_residual": "CatBoost residual",
     "point_mlp_residual": "Point MLP residual",
     "soft_experts_residual": "Soft experts residual",
 }
-COLORS = {"GLORYS": "#777777", "CatBoost residual": "#E76F51", "Soft experts residual": "#2A9D8F"}
+COLORS = {
+    "Seasonal-trend climatology": "#777777",
+    "CatBoost residual": "#E76F51",
+    "Soft experts residual": "#2A9D8F",
+}
 
 
 def digest(path: Path) -> str:
@@ -74,7 +77,7 @@ def main() -> int:
     cv = pd.read_csv(args.source / "cv_metrics.csv")
     forward = pd.read_csv(args.source / "forward_metrics.csv")
     strata = pd.read_csv(args.source / "stratified_metrics.csv")
-    support = pd.read_csv(args.source / "sss_support_distance_metrics.csv")
+    support = pd.read_csv(args.source / "fco2_support_distance_metrics.csv")
     predictions = pd.read_parquet(args.source / "candidate_predictions.parquet")
     gate = json.loads((args.source / "development_gate.json").read_text(encoding="utf-8"))
     selection = json.loads((args.source / "selection.json").read_text(encoding="utf-8"))
@@ -128,8 +131,8 @@ def main() -> int:
     )
     lme["model"] = lme.model.map(MODEL_LABELS)
     lme.to_csv(tables / "table04_lme_skill.csv", index=False)
-    salinity = (
-        strata.loc[strata.stratum.eq("salinity_band")]
+    fco2 = (
+        strata.loc[strata.stratum.eq("fco2_band")]
         .groupby(["model", "group"])
         .agg(
             n=("n", "max"),
@@ -140,9 +143,9 @@ def main() -> int:
         )
         .reset_index()
     )
-    salinity["model"] = salinity.model.map(MODEL_LABELS)
-    salinity.to_csv(tables / "table05_salinity_band_skill.csv", index=False)
-    support.to_csv(tables / "table06_sss_support_distance.csv", index=False)
+    fco2["model"] = fco2.model.map(MODEL_LABELS)
+    fco2.to_csv(tables / "table05_fco2_band_skill.csv", index=False)
+    support.to_csv(tables / "table06_fco2_support_distance.csv", index=False)
     gate_table = pd.DataFrame(
         [{"gate": key, "passed": bool(value)} for key, value in gate["checks"].items()]
     )
@@ -151,7 +154,7 @@ def main() -> int:
         [
             {
                 "model": MODEL_LABELS[selected],
-                "absolute_error_q90_psu": selection["conformal_absolute_error_q90"],
+                "absolute_error_q90_uatm": selection["conformal_absolute_error_q90"],
                 "development_coverage": selection["development_coverage_90"],
                 "nominal_coverage": 0.90,
                 "calibration_set": "development",
@@ -164,9 +167,9 @@ def main() -> int:
     make_model_figure(by_seed, figures / "fig01_development_model_comparison.png")
     make_cv_figure(cv, figures / "fig02_five_fold_cv.png")
     make_lme_figure(lme, figures / "fig03_lme_skill_sensitivity.png")
-    make_salinity_figure(salinity, figures / "fig04_salinity_band_skill.png")
-    make_forward_figure(forward, figures / "fig05_forward_chain.png")
-    make_support_figure(support, figures / "fig06_sss_support_distance.png")
+    make_fco2_figure(fco2, figures / "fig04_fco2_band_skill.png")
+    make_forward_figure(forward, selected, figures / "fig05_forward_chain.png")
+    make_support_figure(support, figures / "fig06_fco2_support_distance.png")
     scatter_predictions = (
         predictions.loc[predictions.model.eq(selected)]
         .groupby("record_id")
@@ -190,7 +193,7 @@ def main() -> int:
         cv_summary,
         forward_summary,
         lme,
-        salinity,
+        fco2,
         support,
         gate,
         selection,
@@ -201,56 +204,58 @@ def main() -> int:
         "fig01_development_model_comparison.png": ["table01_development_model_summary.csv"],
         "fig02_five_fold_cv.png": ["table02_five_fold_cv_summary.csv"],
         "fig03_lme_skill_sensitivity.png": ["table04_lme_skill.csv"],
-        "fig04_salinity_band_skill.png": ["table05_salinity_band_skill.csv"],
+        "fig04_fco2_band_skill.png": ["table05_fco2_band_skill.csv"],
         "fig05_forward_chain.png": ["table03_forward_summary.csv"],
-        "fig06_sss_support_distance.png": ["table06_sss_support_distance.csv"],
+        "fig06_fco2_support_distance.png": ["table06_fco2_support_distance.csv"],
         "fig07_observed_vs_predicted.png": ["local:selected_development_predictions.parquet"],
         "fig08_absolute_error_calibration.png": [
             "table08_uncertainty_calibration.csv",
             "local:candidate_predictions.parquet",
         ],
     }
+    selected_label = MODEL_LABELS[selected]
+    q90 = selection["conformal_absolute_error_q90"]
     figure_captions = {
         "fig01_development_model_comparison.png": (
-            "Development-set SSS RMSE for GLORYS and five residual-correction candidates under pooled, "
-            "cruise-equal, and LME-macro aggregation. Points are means across seeds 100-102 and error bars "
-            "show one standard deviation; lower is better. Soft experts win the preregistered LME-macro "
-            "criterion, while CatBoost has the lowest pooled and cruise-equal RMSE."
+            "Development-set fCO2 RMSE for the seasonal-trend climatology and four residual models under "
+            "pooled, cruise-equal, and LME-macro aggregation. Bars are means across available seeds and error "
+            "bars show one standard deviation; lower is better. CatBoost wins the preregistered LME-macro "
+            "criterion as well as pooled and cruise-equal RMSE."
         ),
         "fig02_five_fold_cv.png": (
             "Five-fold cruise-grouped cross-validation for the same candidate families. Bars show mean "
-            "LME-macro RMSE and pooled skill relative to GLORYS across folds; error bars show one standard "
-            "deviation. CatBoost is the strongest cross-validation sensitivity comparator."
+            "LME-macro RMSE and pooled skill relative to the seasonal-trend climatology across folds; error "
+            "bars show one standard deviation. CatBoost is also strongest in grouped cross-validation."
         ),
         "fig03_lme_skill_sensitivity.png": (
-            "Development skill by Large Marine Ecosystem (LME), comparing the selected soft-expert ensemble "
-            "with CatBoost; positive skill indicates lower MSE than GLORYS. Labels give development record "
-            "counts. The soft-expert selection advantage is sensitive to sparse LME 55 (n=30)."
+            "Development skill by Large Marine Ecosystem (LME), comparing selected CatBoost with soft experts; "
+            "positive skill indicates lower MSE than the seasonal-trend climatology. Labels give development "
+            "record counts. CatBoost degrades in LME 55 (n=30), LME 8, and LME 17."
         ),
-        "fig04_salinity_band_skill.png": (
-            "Development skill of the selected soft-expert ensemble across observed-SSS bands, with record "
-            "counts shown separately. Skill remains positive in every reported band, including low-salinity "
-            "coastal observations, but the freshest bands have much smaller support."
+        "fig04_fco2_band_skill.png": (
+            "Development skill of CatBoost and soft experts across observed fCO2 bands, with record counts. "
+            "CatBoost retains positive skill in every band; sparse concentration extremes remain less certain."
         ),
         "fig05_forward_chain.png": (
             "Forward-chain development skill for seeds 100-102: training cruises end by 2018 and evaluation "
-            "uses cruises assigned to 2019-2021. All seeds retain positive pooled skill relative to GLORYS; "
+            "uses cruises assigned to 2019-2021. All CatBoost seeds retain positive pooled skill relative to the "
+            "seasonal-trend climatology; "
             "the horizontal line marks zero skill."
         ),
-        "fig06_sss_support_distance.png": (
-            "Development skill of the selected soft-expert ensemble by distance to the nearest SSS training "
-            "support, with record counts by bin. Positive skill persists in all populated bins, but distant "
-            "support bins contain fewer observations and remain an extrapolation risk."
+        "fig06_fco2_support_distance.png": (
+            "Development skill of selected CatBoost by distance to the nearest fCO2 training support, with "
+            "record counts by bin. Skill turns negative beyond 100 km and is strongly negative beyond 250 km, "
+            "where only 62 records are available; this failure blocks the development gate."
         ),
         "fig07_observed_vs_predicted.png": (
-            "Hexbin density of development observations against GLORYS and the three-seed mean soft-expert "
-            "prediction on identical 0-40 PSU axes. The white line is 1:1 and color is log10 record count. "
+            f"Hexbin density of development observations against the seasonal-trend climatology and the three-seed mean {selected_label} "
+            "prediction on identical 0-1000 µatm axes. The white line is 1:1 and color is log10 record count. "
             "Displayed RMSE is the row-pooled ensemble RMSE, not the across-seed mean reported in Table 1."
         ),
         "fig08_absolute_error_calibration.png": (
-            "Development absolute-error empirical distributions for GLORYS and the selected soft-expert "
-            "ensemble. The dashed line is the development-calibrated 90th-percentile error threshold "
-            "(1.156 PSU); its 0.900 development coverage is not independent calibration evidence."
+            f"Development absolute-error empirical distributions for the seasonal-trend climatology and {selected_label}. "
+            f"The dotted line is the development-calibrated 90th-percentile error threshold ({q90:.2f} µatm); "
+            "its 0.900 development coverage is not independent calibration evidence."
         ),
     }
     captions_text = (
@@ -290,9 +295,9 @@ def main() -> int:
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "source_experiment_directory": str(args.source),
         "training_git_commit": protocol["git_commit"],
-        "archive_builder": "scripts/build_p1_sss_reviewer_archive.py",
+        "archive_builder": "scripts/build_p1_fco2_reviewer_archive.py",
         "archive_builder_sha256": digest(Path(__file__)),
-        "analysis_script_sha256": digest(ROOT / "scripts/analyze_p1_sss_results.py"),
+        "analysis_script_sha256": digest(ROOT / "scripts/analyze_p1_fco2_results.py"),
         "source_artifacts_sha256": source_artifacts,
         "data_manifest_sha256": protocol["manifest_validation"]["manifest_sha256"],
         "data_hash_mode": protocol["manifest_validation"]["hash_mode"],
@@ -329,8 +334,7 @@ def make_model_figure(by_seed: pd.DataFrame, path: Path) -> None:
         ("lme_macro_rmse", "LME-macro RMSE"),
     ]
     order = [
-        "background",
-        "regional_month_bias",
+        "seasonal_climatology",
         "ridge_residual",
         "catboost_residual",
         "point_mlp_residual",
@@ -345,7 +349,7 @@ def make_model_figure(by_seed: pd.DataFrame, path: Path) -> None:
         ax.barh(labels, stats["mean"], xerr=errors, color=colors, alpha=0.9, capsize=3)
         ax.invert_yaxis()
         ax.set_title(title)
-        ax.set_xlabel("PSU (lower is better)")
+        ax.set_xlabel("µatm (lower is better)")
         ax.grid(axis="x", alpha=0.2)
     fig.suptitle("Development performance; error bars show between-seed SD")
     fig.tight_layout()
@@ -367,12 +371,12 @@ def make_cv_figure(cv: pd.DataFrame, path: Path) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
     axes[0].barh(labels, stats.rmse, xerr=stats.sd.fillna(0), color="#457B9D", capsize=3)
     axes[0].invert_yaxis()
-    axes[0].set_xlabel("LME-macro RMSE (PSU)")
+    axes[0].set_xlabel("LME-macro RMSE (µatm)")
     axes[0].grid(axis="x", alpha=0.2)
     axes[1].barh(labels, stats.skill, color="#2A9D8F")
     axes[1].invert_yaxis()
     axes[1].axvline(0, color="black", lw=1)
-    axes[1].set_xlabel("Pooled skill vs GLORYS")
+    axes[1].set_xlabel("Pooled skill vs Seasonal climatology")
     fig.suptitle("Five-fold cruise-grouped cross-validation")
     fig.tight_layout()
     save_figure(fig, path)
@@ -382,7 +386,7 @@ def make_lme_figure(lme: pd.DataFrame, path: Path) -> None:
     keep = lme.loc[lme.model.isin(["CatBoost residual", "Soft experts residual"])].copy()
     pivot = keep.pivot(index="group", columns="model", values="skill_mean")
     counts = keep.groupby("group").n.max()
-    ordered = pivot["Soft experts residual"].sort_values().index
+    ordered = pivot["CatBoost residual"].sort_values().index
     pivot, counts = pivot.loc[ordered], counts.loc[ordered]
     y = np.arange(len(pivot))
     width = 0.38
@@ -404,17 +408,17 @@ def make_lme_figure(lme: pd.DataFrame, path: Path) -> None:
     labels = [f"LME {group} (n={int(counts[group]):,})" for group in pivot.index]
     ax.set_yticks(y, labels)
     ax.axvline(0, color="black", lw=1)
-    ax.set_xlabel("Skill vs GLORYS")
-    ax.set_title("Regional sensitivity; groups ordered by soft-expert skill")
+    ax.set_xlabel("Skill vs Seasonal climatology")
+    ax.set_title("Regional sensitivity; groups ordered by CatBoost skill")
     ax.legend()
     ax.grid(axis="x", alpha=0.2)
     fig.tight_layout()
     save_figure(fig, path)
 
 
-def make_salinity_figure(salinity: pd.DataFrame, path: Path) -> None:
-    keep = salinity.loc[salinity.model.isin(["CatBoost residual", "Soft experts residual"])].copy()
-    order = ["[-inf, 20.0)", "[20.0, 30.0)", "[30.0, 33.0)", "[33.0, 36.0)", "[36.0, inf)"]
+def make_fco2_figure(fco2: pd.DataFrame, path: Path) -> None:
+    keep = fco2.loc[fco2.model.isin(["CatBoost residual", "Soft experts residual"])].copy()
+    order = ["[-inf, 250.0)", "[250.0, 350.0)", "[350.0, 450.0)", "[450.0, 550.0)", "[550.0, inf)"]
     pivot = keep.pivot(index="group", columns="model", values="skill_mean").reindex(order)
     counts = keep.groupby("group").n.max().reindex(order)
     x = np.arange(len(order))
@@ -434,33 +438,36 @@ def make_salinity_figure(salinity: pd.DataFrame, path: Path) -> None:
         label="Soft experts",
         color=COLORS["Soft experts residual"],
     )
-    labels = ["<20", "20-30", "30-33", "33-36", ">=36"]
+    labels = ["<250", "250-350", "350-450", "450-550", ">=550"]
     ax.set_xticks(x, [f"{label}\n(n={int(n):,})" for label, n in zip(labels, counts, strict=True)])
     ax.axhline(0, color="black", lw=1)
-    ax.set_ylabel("Skill vs GLORYS")
-    ax.set_xlabel("Observed SSS (PSU)")
-    ax.set_title("Salinity-regime skill on development cruises")
+    ax.set_ylabel("Skill vs Seasonal climatology")
+    ax.set_xlabel("Observed fCO2 (µatm)")
+    ax.set_title("fCO2-regime skill on development cruises")
     ax.legend()
     ax.grid(axis="y", alpha=0.2)
     fig.tight_layout()
     save_figure(fig, path)
 
 
-def make_forward_figure(forward: pd.DataFrame, path: Path) -> None:
-    candidate = forward.loc[forward.model.eq("soft_experts_residual")]
+def make_forward_figure(forward: pd.DataFrame, selected: str, path: Path) -> None:
+    candidate = forward.loc[forward.model.eq(selected)]
+    selected_label = MODEL_LABELS[selected]
     fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
     for ax, column, title in [
         (axes[0], "pooled_rmse", "Pooled RMSE"),
         (axes[1], "lme_macro_rmse", "LME-macro RMSE"),
     ]:
-        bg = float(forward.loc[forward.model.eq("background"), column].iloc[0])
+        bg = float(forward.loc[forward.model.eq("seasonal_climatology"), column].iloc[0])
         values = candidate[column].to_numpy()
         ax.bar(
-            [0, 1], [bg, values.mean()], color=[COLORS["GLORYS"], COLORS["Soft experts residual"]]
+            [0, 1],
+            [bg, values.mean()],
+            color=[COLORS["Seasonal-trend climatology"], COLORS.get(selected_label, "#2A9D8F")],
         )
         ax.scatter(np.repeat(1, len(values)), values, color="black", zorder=3, label="seeds")
-        ax.set_xticks([0, 1], ["GLORYS", "Soft experts"])
-        ax.set_ylabel("PSU")
+        ax.set_xticks([0, 1], ["Seasonal-trend\nclimatology", selected_label])
+        ax.set_ylabel("µatm")
         ax.set_title(title)
         ax.grid(axis="y", alpha=0.2)
     fig.suptitle("Forward chain: train through 2018, development 2019-2021")
@@ -480,10 +487,12 @@ def make_support_figure(support: pd.DataFrame, path: Path) -> None:
             fontsize=8,
         )
     ax.axhline(0, color="black", lw=1)
-    ax.set_ylim(0, max(0.9, support.skill_vs_background.max() + 0.12))
-    ax.set_ylabel("Skill vs GLORYS")
-    ax.set_xlabel("Nearest SSS training location (km)")
-    ax.set_title("Spatial support-distance stress test for the selected soft experts")
+    lower = min(-1.05, support.skill_vs_background.min() - 0.12)
+    upper = max(0.65, support.skill_vs_background.max() + 0.12)
+    ax.set_ylim(lower, upper)
+    ax.set_ylabel("Skill vs Seasonal climatology")
+    ax.set_xlabel("Nearest fCO2 training location (km)")
+    ax.set_title("Spatial support-distance stress test for selected CatBoost")
     ax.tick_params(axis="x", rotation=25)
     ax.grid(axis="y", alpha=0.2)
     fig.tight_layout()
@@ -496,21 +505,21 @@ def make_scatter_figure(predictions: pd.DataFrame, path: Path) -> None:
     background = predictions.background.to_numpy(float)
     # Keep the full physically relevant range visible.  The tails are sparse, but
     # hiding them would make the fit diagnostic look better than the scored data.
-    limits = [0, 40]
+    limits = [0, 1000]
     fig, axes = plt.subplots(1, 2, figsize=(11, 5), sharex=True, sharey=True)
     for ax, values, title in [
-        (axes[0], background, "GLORYS background"),
-        (axes[1], model, "Soft experts"),
+        (axes[0], background, "Seasonal-trend climatology"),
+        (axes[1], model, "Selected CatBoost ensemble"),
     ]:
         hb = ax.hexbin(truth, values, gridsize=80, bins="log", mincnt=1, cmap="viridis")
         ax.plot(limits, limits, color="white", lw=1.2)
         ax.set_xlim(limits)
         ax.set_ylim(limits)
         rmse = np.sqrt(np.mean((values - truth) ** 2))
-        ax.set_title(f"{title}\nRMSE={rmse:.3f} PSU")
-        ax.set_xlabel("Observed SSS (PSU)")
+        ax.set_title(f"{title}\nRMSE={rmse:.3f} µatm")
+        ax.set_xlabel("Observed fCO2 (µatm)")
         fig.colorbar(hb, ax=ax, label="log10 count")
-    axes[0].set_ylabel("Estimated SSS (PSU)")
+    axes[0].set_ylabel("Estimated fCO2 (µatm)")
     fig.suptitle("Development observations; identical 1:1 axes")
     fig.tight_layout()
     save_figure(fig, path)
@@ -530,11 +539,15 @@ def make_calibration_figure(
     )
     fig, ax = plt.subplots(figsize=(8, 5))
     for values, label, color in [
-        (np.abs(ensemble.background - ensemble.truth), "GLORYS", COLORS["GLORYS"]),
+        (
+            np.abs(ensemble.background - ensemble.truth),
+            "Seasonal-trend climatology",
+            COLORS["Seasonal-trend climatology"],
+        ),
         (
             np.abs(ensemble.prediction - ensemble.truth),
-            "Soft experts",
-            COLORS["Soft experts residual"],
+            "Selected CatBoost",
+            COLORS["CatBoost residual"],
         ),
     ]:
         ordered = np.sort(values.to_numpy(float))
@@ -543,14 +556,15 @@ def make_calibration_figure(
     ax.axhline(0.9, color="black", ls="--", lw=1)
     ax.axvline(
         q90,
-        color=COLORS["Soft experts residual"],
+        color=COLORS["CatBoost residual"],
         ls=":",
         lw=1.5,
-        label=f"development q90={q90:.3f} PSU",
+        label=f"development q90={q90:.3f} µatm",
     )
-    ax.set_xlim(0, 6)
+    upper = max(q90 * 1.8, float(np.quantile(np.abs(ensemble.background - ensemble.truth), 0.98)))
+    ax.set_xlim(0, upper)
     ax.set_ylim(0, 1)
-    ax.set_xlabel("Absolute error (PSU)")
+    ax.set_xlabel("Absolute error (µatm)")
     ax.set_ylabel("Empirical cumulative probability")
     ax.set_title("Development error distribution and calibration threshold")
     ax.legend()
@@ -560,9 +574,9 @@ def make_calibration_figure(
 
 
 def build_report(
-    model_table, cv_summary, forward_summary, lme, salinity, support, gate, selection, protocol
+    model_table, cv_summary, forward_summary, lme, fco2, support, gate, selection, protocol
 ) -> str:
-    selected = "Soft experts residual"
+    selected = MODEL_LABELS[gate["selected_model"]]
     development_display = model_table[
         [
             "model",
@@ -586,22 +600,23 @@ def build_report(
     forward_display = forward_summary.round(3)
     selected_lme = lme.loc[lme.model.eq(selected)]
     eligible = selected_lme.loc[selected_lme.n >= 100]
-    low = salinity.loc[
-        (salinity.model.eq(selected)) & salinity.group.isin(["[-inf, 20.0)", "[20.0, 30.0)"])
-    ]
-    return f"""# Reviewer archive: P1.1 coastal SSS viability
+    selected_bands = fco2.loc[fco2.model.eq(selected)]
+    failed_checks = [name for name, passed in gate["checks"].items() if not passed]
+    supported = support.loc[support.skill_vs_background.gt(0)]
+    unsupported = support.loc[support.skill_vs_background.le(0)]
+    return f"""# Reviewer archive: P1.2 coastal fCO2 viability
 
 ## Executive finding
 
-The preregistered development criterion selected the top-2 soft-expert residual model. Relative to unmodified GLORYS, it reduced cruise-equal RMSE by {gate["metrics"]["cruise_equal_improvement"]:.1%}, LME-macro RMSE by {gate["metrics"]["lme_macro_improvement"]:.1%}, and worst-LME RMSE by {gate["metrics"]["worst_lme_improvement"]:.1%}. All development gates passed. This nominates a regional candidate for the one-time locked test; it does not establish final regional or global product skill.
+The preregistered development criterion selected CatBoost residual. Relative to the training-only seasonal-trend climatology, it reduced cruise-equal RMSE by {gate["metrics"]["cruise_equal_improvement"]:.1%} and LME-macro RMSE by {gate["metrics"]["lme_macro_improvement"]:.1%}, but worst-LME RMSE worsened by {-gate["metrics"]["worst_lme_improvement"]:.1%}. The full development gate failed because `{", ".join(failed_checks)}` did not pass. The result is `diagnostic_only`: it demonstrates substantial in-support skill but does not authorize opening the locked test.
 
 ## Scientific question and permitted claim
 
-The experiment asks whether predictor-only residual correction can improve monthly coastal SSS over GLORYS across unseen cruises, regions, salinity regimes, and forward time. The frozen cache spans North-American-adjacent waters (0-70.125 N, 180-315 E). The allowed claim is restricted to grouped development and cross-validation evidence in this domain. Locked-test and external-independent labels were not opened.
+The experiment asks which practical baseline most reliably improves monthly coastal fCO2 over a seasonal-trend climatology across unseen cruises, regions, fCO2 regimes, and forward time. The frozen cache spans North-American-adjacent waters (0-70.125 N, 180-315 E). The allowed claim is restricted to grouped development and cross-validation evidence in this domain. Locked-test and external-independent labels were not opened.
 
 ## Data, splits, and leakage controls
 
-- SOCAT in-situ salinity is the target; GLORYS SSS is only a predictor and background baseline.
+- SOCAT `fCO2rec` is the target; the seasonal-trend climatology is fitted from training labels only.
 - Train: {protocol["train_rows"]:,} valid records from {protocol["train_cruises"]:,} cruises.
 - Development: {protocol["development_rows"]:,} records from {protocol["development_cruises"]:,} cruises, through 2025.
 - Five-fold CV holds out complete cruises. The forward chain trains on cruise maximum year <=2018 and evaluates development cruises assigned to 2019-2021.
@@ -610,7 +625,7 @@ The experiment asks whether predictor-only residual correction can improve month
 
 ## Candidate models and training
 
-All learned models predict a correction added to GLORYS SSS. Candidates were GLORYS, a shrunk regional-month bias, Ridge, CatBoost, a point MLP, and an eight-way top-2 soft mixture of experts. Neural candidates used 5,000 optimizer steps with batch size 2,048 and seeds 100/101/102. CatBoost used up to 1,500 trees and the same three seeds. Checkpoints were selected only by development LME-macro RMSE.
+All learned models predict a correction added to the seasonal-trend climatology. Candidates were Ridge, CatBoost, a point MLP, and an eight-way top-2 soft mixture of experts. Neural candidates used 5,000 optimizer steps with batch size 2,048 and seeds 100/101/102. CatBoost used up to 1,500 trees and the same three seeds. Checkpoints and the final family were selected only by development LME-macro RMSE.
 
 ## Main development results
 
@@ -618,7 +633,7 @@ All learned models predict a correction added to GLORYS SSS. Candidates were GLO
 
 ![Development model comparison](figures/fig01_development_model_comparison.png)
 
-CatBoost has the lowest pooled and cruise-equal RMSE. Soft experts have the lowest preregistered LME-macro metric among candidate families and were therefore selected. The distinction is scientifically relevant: the soft-expert advantage is strongly influenced by LME 55, which has only 30 development records. CatBoost remains a prespecified sensitivity comparator for the locked evaluation; locked results cannot be used to choose retrospectively between them.
+CatBoost has the lowest pooled, cruise-equal, and LME-macro RMSE and is therefore the selected development model. Its worst-LME RMSE is 102.83 µatm, worse than the climatology's 87.66 µatm, so aggregate improvement does not satisfy the regional safety gate.
 
 ## Cruise-grouped cross-validation
 
@@ -626,17 +641,17 @@ CatBoost has the lowest pooled and cruise-equal RMSE. Soft experts have the lowe
 
 ![Five-fold cruise CV](figures/fig02_five_fold_cv.png)
 
-CatBoost is strongest in five-fold CV, while both neural candidates retain large positive skill. This tension with the frozen development selection is reported rather than resolved after observing results.
+CatBoost is also strongest in five-fold cruise-grouped CV. This agreement supports the model ranking, while the failed worst-region and support-distance gates limit the allowable product claim.
 
-## Region, low salinity, and extrapolation stress tests
+## Region, fCO2 range, and extrapolation stress tests
 
-All {len(eligible)}/{len(eligible)} LMEs with at least 100 records have positive selected-model skill. The <20 PSU and 20-30 PSU strata contain {int(low.n.iloc[0]):,} and {int(low.n.iloc[1]):,} records and both have positive skill. Every SSS support-distance bin is positive, although the >250 km bin contains only {int(support.n.iloc[-1]):,} records and is not strong evidence for remote extrapolation.
+{int((eligible.skill_mean > 0).sum())}/{len(eligible)} LMEs with at least 100 records have positive selected-model skill. All {len(selected_bands)} observed-fCO2 bands have positive skill. Support-distance skill is positive through {supported.support_bin_km.iloc[-1]} but turns negative in {", ".join(unsupported.support_bin_km.astype(str))}; the >250 km bin contains only {int(support.n.iloc[-1]):,} records. LME 55 (n=30) is the worst region and is reported rather than removed after inspection.
 
 ![LME sensitivity](figures/fig03_lme_skill_sensitivity.png)
 
-![Salinity-band skill](figures/fig04_salinity_band_skill.png)
+![fCO2-band skill](figures/fig04_fco2_band_skill.png)
 
-![SSS support-distance skill](figures/fig06_sss_support_distance.png)
+![fCO2 support-distance skill](figures/fig06_fco2_support_distance.png)
 
 ## Forward-time evidence
 
@@ -644,7 +659,7 @@ All {len(eligible)}/{len(eligible)} LMEs with at least 100 records have positive
 
 ![Forward chain](figures/fig05_forward_chain.png)
 
-Soft experts have mean forward pooled skill {gate["metrics"]["forward_pooled_skill_mean"]:.3f}; all three seeds are positive.
+CatBoost has mean forward pooled skill {gate["metrics"]["forward_pooled_skill_mean"]:.3f}; all three seeds are positive.
 
 ## Fit and uncertainty diagnostics
 
@@ -652,20 +667,20 @@ Soft experts have mean forward pooled skill {gate["metrics"]["forward_pooled_ski
 
 ![Absolute-error calibration](figures/fig08_absolute_error_calibration.png)
 
-The development absolute-error 90th percentile is {selection["conformal_absolute_error_q90"]:.3f} PSU and gives development coverage {selection["development_coverage_90"]:.3f}. Because the same development data calibrated this interval, it is a frozen parameter awaiting locked-test coverage evaluation, not independent calibration evidence.
+The development absolute-error 90th percentile is {selection["conformal_absolute_error_q90"]:.3f} µatm and gives development coverage {selection["development_coverage_90"]:.3f}. Because the same development data calibrated this interval, it is a frozen parameter awaiting locked-test coverage evaluation, not independent calibration evidence.
 
 ## Decision and limitations
 
-Decision: `{gate["decision"]}`. The development gate passed, but final status remains pending Issue #11. No global claim is allowed because the frozen evaluation cache is regional. Sparse LMEs, rare extreme fresh water, spatial support beyond 250 km, background-product assimilation dependence, and development-calibrated uncertainty remain limitations. The archive contains the exact source tables for every plotted aggregate; large row-level predictions and checkpoints remain in the hashed local experiment directory.
+Decision: `{gate["decision"]}`. The development gate failed, so Issue #8 closes as `diagnostic_only` and the locked test remains sealed. No global claim is allowed because the frozen evaluation cache is regional. Sparse LMEs, degradation beyond 100 km from training support, background-product assimilation dependence, and development-calibrated uncertainty remain limitations. A future preregistered iteration may introduce a support-domain mask, stronger regional balancing, and process variables, but cannot reinterpret this failed gate. The archive contains the exact source tables for every plotted aggregate; large row-level predictions and checkpoints remain in the hashed local experiment directory.
 
 ## Figure and table index
 
 1. Development comparison: `fig01`; source `table01`.
 2. Five-fold cruise CV: `fig02`; source `table02`.
 3. LME sensitivity: `fig03`; source `table04`.
-4. Salinity bands: `fig04`; source `table05`.
+4. fCO2 bands: `fig04`; source `table05`.
 5. Forward chain: `fig05`; source `table03`.
-6. SSS training support distance: `fig06`; source `table06`.
+6. fCO2 training support distance: `fig06`; source `table06`.
 7. Observation-prediction density: `fig07`; source is the hashed local standard prediction table.
 8. Absolute-error calibration: `fig08`; aggregate source `table08`, row source is the hashed local candidate prediction table.
 

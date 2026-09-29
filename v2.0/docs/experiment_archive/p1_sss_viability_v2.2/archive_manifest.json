@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "experiment_id": "p1_sss_viability_v2.2",
-  "created_utc": "2026-09-28T15:51:16.749196+00:00",
+  "created_utc": "2026-09-29T02:20:57.396118+00:00",
   "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_sss_viability_v2.2",
   "training_git_commit": "dc653ddce3a55d927038c542b9396215e51d2f03",
   "archive_builder": "scripts/build_p1_sss_reviewer_archive.py",
-  "archive_builder_sha256": "b68d7d70afb82ac2014420040437e41baecbdb85cc39405313d25020a5c9384c",
+  "archive_builder_sha256": "45f12d248999f65671d3f3d9c4d30d224c9ee345a8cf32a8b787ff34f8ea377a",
   "analysis_script_sha256": "aa185b8abfb1fe53f7b5b9158a739894afa759c5059ed36c09c804e20d2de5ea",
   "source_artifacts_sha256": {
     "candidate_predictions.parquet": "0e0f5ced1fd65feef06292f39f56b79df28af997ef4b885e6dd9a31e131dc29e",
@@ -60,9 +60,9 @@
     "fig08_absolute_error_calibration.png": "Development absolute-error empirical distributions for GLORYS and the selected soft-expert ensemble. The dashed line is the development-calibrated 90th-percentile error threshold (1.156 PSU); its 0.900 development coverage is not independent calibration evidence."
   },
   "files_sha256": {
-    "CAPTIONS.md": "4262a83e8971c3c6e75b3c1c3a82d49d054a3ff808ecc8d8f579973d4f90ac2d",
-    "README.md": "d32372f829a681f212ec188a2b39ff398966210a934601e7c69325198a0827a5",
-    "REPORT.md": "cffc31f8210a8d6c8cf37be608c8d3041c79371dbaa12e72af6ca02b8db27677",
+    "CAPTIONS.md": "4926d6badbdcf053bdf812af7c5b848402a6f84a487ecef3b0fea73ddcd08d96",
+    "README.md": "e762f19edefe7accba65961db211806145e60ccd8670b8a0dfed8d02cac2b831",
+    "REPORT.md": "d6ede100d17113e474850ffaa19ac62b8aee405cb7e9edfe4a1fe8e6d5281ff1",
     "figures/fig01_development_model_comparison.png": "c37d9aefda4587f1dc53b0d4fb12cb37eaf30e5cc8adca278c6b038c9ce9880c",
     "figures/fig02_five_fold_cv.png": "96e75c09c5f82c5f306307e62fc3e5016b3e32da9103036797952e39f2cef35e",
     "figures/fig03_lme_skill_sensitivity.png": "f531c3eb626157ddd24daf6850e3173e85a4ef0ab7d1ea211a9edec3604ed98f",
@@ -71,13 +71,13 @@
     "figures/fig06_sss_support_distance.png": "e3af9a32ef64a6d37cf9d9254803217e85bf4893a5eea2bf4693b17a45274672",
     "figures/fig07_observed_vs_predicted.png": "3bba163dd3de4d3ed8363ab7aed61ee1cd64c40f63605b134be7ab214ebf7125",
     "figures/fig08_absolute_error_calibration.png": "ebdfc5e45ce4f3b15bc4db89fa9a9ca0a2255b3087fb61e7ccb10dcb6cf34d34",
-    "tables/table01_development_model_summary.csv": "bc8abf2e04572af2bdc08a783a62d7362e58e504e86bf8897c8bad5d7e94a4af",
-    "tables/table02_five_fold_cv_summary.csv": "1ac5c5ebed06072786fc5ce913f160fab4f061be136abf4f81f196e83ac1219b",
-    "tables/table03_forward_summary.csv": "3a5f023443d0cf3a7f2f65a32de09dc74a6a28b3e3051bba83582766e8ed6904",
-    "tables/table04_lme_skill.csv": "c45369b12c30fc177aee9c0c4ff788bc687b54c3d17afeef7e3b03918fba85a1",
-    "tables/table05_salinity_band_skill.csv": "87faae5c892932b269def9821174cb1b4cea922603db81ec2b16b7d5596be075",
-    "tables/table06_sss_support_distance.csv": "88f027ea60631d0e18334b31733281aeb696af6fc8cb6dc9484923172bf0239e",
-    "tables/table07_development_gates.csv": "58b306e4296d9abfbf76097e96913f3e74772adbba3fc91451f91095be7934ed",
-    "tables/table08_uncertainty_calibration.csv": "db12c550746c5366e01a0797bf2b4d3280c25cec9089fa4f7e9b2871e3e9af34"
+    "tables/table01_development_model_summary.csv": "41707b54db7b2e3404a5cd79a7b15a76dca8ff5bc09c38bbedb28f8041df1320",
+    "tables/table02_five_fold_cv_summary.csv": "d9df7478f3bde42a70286c82386ea4238b0997248533c49a118066f11fcd1f1e",
+    "tables/table03_forward_summary.csv": "7a62d083627fc7c1d0867e97f82c24f622f5b7934fadbdba4050671434554274",
+    "tables/table04_lme_skill.csv": "f56f18ea497333049afe796463807bd330498f325664bb5af3fadbb554a4cf79",
+    "tables/table05_salinity_band_skill.csv": "e95d4cb27bb1107bbfbb5385ccfa04df348b49c0d1246f507a0a4d3fda14f544",
+    "tables/table06_sss_support_distance.csv": "cab0d997335e03706c48880b9968a6d95d871e0c7461a9d1479c774d5c33e77b",
+    "tables/table07_development_gates.csv": "19dc908ced7472b530ffffcdefef5d6bcb8ef4d73ffc808dd48ff18560985f17",
+    "tables/table08_uncertainty_calibration.csv": "5230c8fb4dace5d8fe9446fcb048eb0c66d8f767a9f667ff9f961400c5934d98"
   }
 }

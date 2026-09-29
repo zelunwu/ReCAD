@@ -1,0 +1,9 @@
+gate,passed
+cruise_equal_improvement_ge_5pct,True
+lme_macro_improvement_ge_5pct,True
+positive_skill_lme_fraction_ge_70pct,True
+worst_lme_degradation_le_10pct,False
+forward_skill_positive_all_seeds,True
+all_fco2_bands_skill_positive,True
+primary_skill_positive_all_seeds,True
+support_bin_skill_positive,False

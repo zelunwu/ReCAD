@@ -152,6 +152,8 @@ A2–A4 使用相同 fCO2 损失、归一化和采样权重，第一轮采用 MS
 
 任何支撑科学结论的正式实验，包括未通过门槛、负结果和失败实验，只有在 `docs/experiment_archive/<experiment_id>/` 建立可复核归档并通过自动校验后才能标记 `complete` 或关闭对应 Issue。工程 smoke/MVP 若不用于科学结论可以不归档；一旦被报告或用于选择路线，也必须补齐归档。
 
+代码和实验变更同时遵守仓库根目录 `CONTRIBUTING.md`：使用 `feat/`、`bugfix/`、`docs/` 等分支，按 L1/L2/L3 分级测试并通过 PEP 8/Ruff 检查，经 Pull Request 审查后只允许 squash merge；禁止直接提交或推送到 `main`。
+
 每个归档至少包含：
 
 - `REPORT.md`：完整记录科学问题、允许的结论、数据与 split、泄漏控制、模型、训练与选择规则、全部主要指标、分层结果、不确定性、偏离项、负结果和限制；
