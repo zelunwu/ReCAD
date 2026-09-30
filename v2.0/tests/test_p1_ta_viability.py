@@ -93,3 +93,14 @@ def test_stable_id_preserves_distinct_observations_at_same_location() -> None:
         }
     )
     assert MODULE.stable_id(frame).tolist() == ["a", "b"]
+
+
+def test_sparse_populated_support_bin_cannot_be_dropped_from_gate() -> None:
+    strata = pd.DataFrame(
+        {
+            "stratum": ["support_distance", "support_distance"],
+            "n": [100, 1],
+            "skill_vs_carter": [0.5, -0.1],
+        }
+    )
+    assert not MODULE.all_populated_support_bins_positive(strata)

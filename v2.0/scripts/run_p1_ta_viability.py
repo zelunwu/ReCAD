@@ -254,6 +254,11 @@ def skill(model_rmse: float, baseline_rmse: float) -> float:
     return 1.0 - model_rmse**2 / baseline_rmse**2 if baseline_rmse > 0 else math.nan
 
 
+def all_populated_support_bins_positive(strata: pd.DataFrame) -> bool:
+    support = strata.loc[strata.stratum.eq("support_distance")]
+    return bool(len(support) and (support.skill_vs_carter > 0).all())
+
+
 def select_alpha(train: pd.DataFrame, candidates: list[float]) -> tuple[float, pd.DataFrame]:
     rows = []
     for alpha in candidates:
@@ -771,9 +776,7 @@ def main() -> int:
         & (selected_strata.n >= 30)
         & (selected_strata.cruises >= 3)
     ]
-    support_bins = selected_strata.loc[
-        selected_strata.stratum.eq("support_distance") & (selected_strata.n >= 10)
-    ]
+    support_bins = selected_strata.loc[selected_strata.stratum.eq("support_distance")]
     forward_lookup = forward.set_index("model")
     forward_skill = skill(
         float(forward_lookup.loc[selected, "pooled_rmse"]),
@@ -803,7 +806,9 @@ def main() -> int:
         "safe_forward_skill_vs_carter_positive": forward_skill > 0,
         "leave_lme_out_mean_skill_vs_carter_positive": float(leave_skills.mean()) > 0,
         "coverage_90_between_85_and_95pct": 0.85 <= coverage <= 0.95,
-        "support_bin_skill_vs_carter_positive": bool((support_bins.skill_vs_carter > 0).all()),
+        "support_bin_skill_vs_carter_positive": all_populated_support_bins_positive(
+            selected_strata
+        ),
     }
     checks = {name: bool(value) for name, value in checks.items()}
     gate_passed = all(checks.values())
@@ -831,6 +836,7 @@ def main() -> int:
             "leave_lme_out_mean_skill_vs_carter": float(leave_skills.mean()),
             "development_coverage_90": coverage,
             "conformal_absolute_error_q90": q90,
+            "worst_support_bin_skill_vs_carter": float(support_bins.skill_vs_carter.min()),
         },
         "locked_test_opened": False,
         "external_independent_opened": False,
