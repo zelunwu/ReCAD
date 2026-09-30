@@ -40,6 +40,19 @@ DETERMINISTIC_MODELS = [
 ORACLE_MODEL = "carter_esper_oracle_insitu_sss"
 NEURAL_MODEL = "hierarchical_residual"
 EARTH_RADIUS_KM = 6371.0088
+BIGHT_PREREGISTRATION_COMMIT = "3936cc4658cf1d3912fc6611ff6ad4412ad7e44a"
+BIGHT_DEFINITIONS = {
+    "sab": {
+        "source_lme_id": 6,
+        "latitude_edges": [28.45, 30.50, 33.00, 35.30],
+        "subregion_names": ["south", "central", "north"],
+    },
+    "mab": {
+        "source_lme_id": 7,
+        "latitude_edges": [35.20, 38.00, 40.00, 41.75],
+        "subregion_names": ["south", "central", "north"],
+    },
+}
 
 
 def git_head() -> str:
@@ -101,6 +114,33 @@ def prepare(frame: pd.DataFrame) -> pd.DataFrame:
     frame["lon_sin"] = np.sin(longitude)
     frame["lon_cos"] = np.cos(longitude)
     return frame
+
+
+def apply_bight_definition(frame: pd.DataFrame, region: str) -> pd.DataFrame:
+    """Apply the preregistered LME/end-point mask and encode bight subregions."""
+    if region == "all":
+        return frame
+    definition = BIGHT_DEFINITIONS[region]
+    edges = definition["latitude_edges"]
+    mask = frame.lme_id.eq(definition["source_lme_id"])
+    mask &= frame.latitude.ge(edges[0])
+    upper_mask = frame.latitude.lt(edges[-1]) if region == "sab" else frame.latitude.le(edges[-1])
+    mask &= upper_mask
+    selected = frame.loc[mask].copy().reset_index(drop=True)
+    selected["source_lme_id"] = selected.lme_id
+    selected["bight"] = region.upper()
+    selected["subregion"] = pd.cut(
+        selected.latitude,
+        edges,
+        labels=definition["subregion_names"],
+        include_lowest=True,
+        right=region == "mab",
+    ).astype(str)
+    mapping = {name: index for index, name in enumerate(definition["subregion_names"])}
+    selected["lme_id"] = selected.subregion.map(mapping).astype(int)
+    if selected.subregion.eq("nan").any():
+        raise RuntimeError(f"{region} mask produced unassigned subregion rows")
+    return selected
 
 
 def add_carter(frame: pd.DataFrame, estimator: ESPER_LIR_TA) -> pd.DataFrame:
@@ -511,20 +551,33 @@ def main() -> int:
     parser.add_argument("--steps", type=int, default=4000)
     parser.add_argument("--batch-size", type=int, default=512)
     parser.add_argument("--checkpoint-every", type=int, default=200)
+    parser.add_argument("--region", choices=["all", "sab", "mab"], default="all")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     checkpoint_dir = args.output / "checkpoints"
     checkpoint_dir.mkdir(exist_ok=True)
     start = time.time()
 
-    config_path = ROOT / "configs/p1_ta_baselines_v2.2.yaml"
+    config_path = ROOT / (
+        "configs/p1_ta_baselines_v2.2.yaml"
+        if args.region == "all"
+        else "configs/p1_ta_bights_v2.2.yaml"
+    )
+    experiment_id = EXPERIMENT_ID if args.region == "all" else f"p1_ta_{args.region}_viability_v2.2"
+    preregistration_commit = (
+        PREREGISTRATION_COMMIT if args.region == "all" else BIGHT_PREREGISTRATION_COMMIT
+    )
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     manifest = FrozenManifest.load(ROOT / "configs/frozen/data_manifest_v2.2.json")
     validation = manifest.validate(hash_mode="full")
     gateway = P1DataGateway(manifest)
     columns = ["obs_id", "salinity", "sst", "sss", "adt", "wspd", "pco2air", "temperature"]
-    train = prepare(gateway.load_labels("ta", Purpose.TRAIN, columns=columns))
-    development = prepare(gateway.load_labels("ta", Purpose.SELECTION, columns=columns))
+    train = apply_bight_definition(
+        prepare(gateway.load_labels("ta", Purpose.TRAIN, columns=columns)), args.region
+    )
+    development = apply_bight_definition(
+        prepare(gateway.load_labels("ta", Purpose.SELECTION, columns=columns)), args.region
+    )
     estimator = ESPER_LIR_TA.from_mat(args.esper_mat)
     train = add_carter(train, estimator)
     development = add_carter(development, estimator)
@@ -687,29 +740,37 @@ def main() -> int:
     cv_predictions.to_parquet(args.output / "cv_predictions.parquet", index=False)
 
     forward_fit, forward_held = safe_forward_frames(train, development)
-    forward_held["nearest_carbon_km"] = nearest_support_km(forward_fit, forward_held)
     forward_rows = []
-    for name in ["carter_esper_prior", "lme_ta_sss", "hierarchical_ta_sss", selected]:
-        if name == NEURAL_MODEL:
-            predictions_seed = []
-            for seed in seeds:
-                result = train_neural(
-                    forward_fit,
-                    forward_held,
-                    alpha=alpha,
-                    seed=seed,
-                    steps=args.steps,
-                    batch_size=args.batch_size,
-                    checkpoint_every=args.steps,
-                    select_checkpoint=False,
-                )
-                predictions_seed.append(result.prediction)
-            prediction = np.mean(predictions_seed, axis=0)
-        else:
-            prediction, _ = fit_predict(name, forward_fit, forward_held, alpha=alpha)
-        _, compact = metric_summary(forward_held, prediction)
-        compact.update(model=name)
-        forward_rows.append(compact)
+    forward_models = list(
+        dict.fromkeys(["carter_esper_prior", "lme_ta_sss", "hierarchical_ta_sss", selected])
+    )
+    if len(forward_fit) and len(forward_held):
+        forward_held["nearest_carbon_km"] = nearest_support_km(forward_fit, forward_held)
+        for name in forward_models:
+            if name == NEURAL_MODEL:
+                predictions_seed = []
+                for seed in seeds:
+                    result = train_neural(
+                        forward_fit,
+                        forward_held,
+                        alpha=alpha,
+                        seed=seed,
+                        steps=args.steps,
+                        batch_size=args.batch_size,
+                        checkpoint_every=args.steps,
+                        select_checkpoint=False,
+                    )
+                    predictions_seed.append(result.prediction)
+                prediction = np.mean(predictions_seed, axis=0)
+            else:
+                prediction, _ = fit_predict(name, forward_fit, forward_held, alpha=alpha)
+            _, compact = metric_summary(forward_held, prediction)
+            compact.update(model=name)
+            forward_rows.append(compact)
+    else:
+        forward_rows.extend(
+            {"model": name, "n": 0, "pooled_rmse": math.nan} for name in forward_models
+        )
     forward = pd.DataFrame(forward_rows).drop_duplicates("model")
     forward.to_csv(args.output / "forward_metrics.csv", index=False)
 
@@ -782,10 +843,13 @@ def main() -> int:
         float(forward_lookup.loc[selected, "pooled_rmse"]),
         float(forward_lookup.loc["carter_esper_prior", "pooled_rmse"]),
     )
-    leave_pivot = leave_lme.pivot(index="held_lme", columns="model", values="pooled_rmse")
-    leave_skills = 1 - (
-        leave_pivot["hierarchical_ta_sss"] ** 2 / leave_pivot["carter_esper_prior"] ** 2
-    )
+    if len(leave_lme):
+        leave_pivot = leave_lme.pivot(index="held_lme", columns="model", values="pooled_rmse")
+        leave_skills = 1 - (
+            leave_pivot["hierarchical_ta_sss"] ** 2 / leave_pivot["carter_esper_prior"] ** 2
+        )
+    else:
+        leave_skills = pd.Series(dtype=float)
     checks = {
         "lme_macro_improvement_vs_carter_ge_10pct": (
             1 - selected_row.lme_macro_rmse_mean**2 / carter_row.lme_macro_rmse_mean**2
@@ -810,13 +874,23 @@ def main() -> int:
             selected_strata
         ),
     }
+    if args.region != "all":
+        checks.pop("leave_lme_out_mean_skill_vs_carter_positive")
+        checks = {name.replace("lme", "subregion"): value for name, value in checks.items()}
     checks = {name: bool(value) for name, value in checks.items()}
     gate_passed = all(checks.values())
-    decision = (
-        "nominate_for_issue_11_locked_gate"
-        if gate_passed
-        else "diagnostic_only_do_not_open_locked_test"
-    )
+    if args.region == "all":
+        decision = (
+            "nominate_for_issue_11_locked_gate"
+            if gate_passed
+            else "diagnostic_only_do_not_open_locked_test"
+        )
+    elif gate_passed:
+        decision = "pass_regional"
+    elif selected_row.pooled_rmse_mean < carter_row.pooled_rmse_mean:
+        decision = "diagnostic_only"
+    else:
+        decision = "fail"
     gate = {
         "selected_model": selected,
         "development_gate_passed": gate_passed,
@@ -840,6 +914,7 @@ def main() -> int:
         },
         "locked_test_opened": False,
         "external_independent_opened": False,
+        "region": args.region,
     }
     (args.output / "development_gate.json").write_text(json.dumps(gate, indent=2), encoding="utf-8")
     selection = {
@@ -852,12 +927,13 @@ def main() -> int:
         "development_coverage_90": coverage,
         "locked_test_opened": False,
         "external_independent_opened": False,
+        "region": args.region,
     }
     (args.output / "selection.json").write_text(json.dumps(selection, indent=2), encoding="utf-8")
     protocol = {
-        "experiment_id": EXPERIMENT_ID,
+        "experiment_id": experiment_id,
         "created_utc": datetime.now(timezone.utc).isoformat(),
-        "preregistration_commit": PREREGISTRATION_COMMIT,
+        "preregistration_commit": preregistration_commit,
         "run_git_commit": git_head(),
         "config_path": str(config_path),
         "config_sha256": sha256(config_path),
@@ -872,6 +948,8 @@ def main() -> int:
         "development_rows": len(development),
         "train_cruises": int(train.group_key.nunique()),
         "development_cruises": int(development.group_key.nunique()),
+        "region": args.region,
+        "region_definition": BIGHT_DEFINITIONS.get(args.region),
         "safe_forward_train_rows": len(forward_fit),
         "safe_forward_development_rows": len(forward_held),
         "primary_salinity_input": "background sss",
