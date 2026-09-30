@@ -18,7 +18,14 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 
 
-@pytest.mark.parametrize("experiment_id", ["p1_sss_viability_v2.2", "p1_fco2_viability_v2.2"])
+@pytest.mark.parametrize(
+    "experiment_id",
+    [
+        "p1_sss_viability_v2.2",
+        "p1_fco2_viability_v2.2",
+        "p1_ta_viability_v2.2",
+    ],
+)
 def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -> None:
     result = MODULE.verify_archive(ROOT / "docs/experiment_archive" / experiment_id)
     assert result["verified"], result["errors"]

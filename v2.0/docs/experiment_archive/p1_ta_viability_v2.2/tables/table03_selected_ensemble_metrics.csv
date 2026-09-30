@@ -1,0 +1,2 @@
+model,n,pooled_rmse,pooled_mae,pooled_bias,pooled_r2,cruise_equal_rmse,lme_macro_rmse,regime_macro_rmse,worst_lme_rmse,worst_lme
+Hierarchical residual MLP,892,90.13115128532839,51.14398403796184,-1.0053379091858134,0.6041970108739935,101.25448406130145,65.42569777380942,70.897912700332,162.47649071067002,-1

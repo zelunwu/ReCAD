@@ -1,0 +1,2 @@
+model,calibration_source,absolute_error_q90_umol_kg,development_coverage,nominal_coverage,locked_coverage_tested
+Hierarchical residual MLP,five-fold cruise-grouped training OOF residuals,120.61559226228171,0.945067264573991,0.9,False

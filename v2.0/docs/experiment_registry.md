@@ -30,7 +30,7 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 |---|---|---|---|
 | `p1_sss_baselines_v2.2` | SSS 背景订正与软空间专家 | development complete；reviewer archive verified；进入 #11 | soft experts by development LME macro-RMSE |
 | `p1_fco2_baselines_v2.2` | fCO2 季节趋势气候态与残差模型 | development complete；archive verified；`diagnostic_only` | CatBoost by development LME macro-RMSE；gate failed on worst-LME and >100 km support |
-| `p1_ta_baselines_v2.2` | 北美 TA 局地线性/层级部分池化，DIC 结构派生 | preregistered | grouped development LME macro-RMSE |
+| `p1_ta_baselines_v2.2` | 北美 TA 局地线性/层级部分池化，DIC 结构派生 | development complete；archive verified；`diagnostic_only` | hierarchical residual ensemble；gate failed on cruise-equal RMSE and distant-support bins |
 
 41 个 CODAP 2022–2024、未匹配 GLODAP 的完整航次已标记 `external_independent`。未来 SOCAT 相对 v2026 的新增航次是 SSS/fCO2 外部集；P3 前不得查看标签。
 

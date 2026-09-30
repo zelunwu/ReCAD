@@ -8,16 +8,24 @@ prediction_outputs:
   TA: {provenance: model_predicted}
   DIC: {provenance: co2sys_derived_from_predictions, inputs: [T, SSS, fCO2, TA]}
 label_filter: label_ta_ok == true and split != external_independent
-features: [salinity, sss, sst, adt, wspd, pco2air, latitude, longitude, month, lme_id, regime_id]
+primary_salinity_input: sss
+oracle_salinity_input: salinity
+features: [sss, sst, adt, wspd, pco2air, latitude, longitude, month, lme_id, regime_id]
 split_column: split
 group_column: group_key
 region_columns: [lme_id, basin_id, regime_id]
 candidates:
   - {name: carter_esper_prior, family: external_prior}
+  - {name: carter_region_season_corrected, family: partial_pooling_residual}
   - {name: global_ta_sss, family: robust_linear, interactions: [salinity_month]}
   - {name: lme_ta_sss, family: grouped_robust_linear, min_group_cruises: 5, fallback: global_ta_sss}
   - {name: hierarchical_ta_sss, family: partial_pooling, varying: [intercept, salinity_slope], groups: [lme_id, regime_id]}
   - {name: hierarchical_residual, family: partial_pooling_mlp, hidden: [64, 64], dropout: 0.1}
+stopping_rule:
+  run_hierarchical_residual_only_if:
+    - hierarchical_ta_sss development LME-macro RMSE < Carter/ESPER
+    - hierarchical_ta_sss development LME-macro RMSE < LME TA-SSS
+    - hierarchical_ta_sss development cruise-equal RMSE < both comparators
 training:
   seeds: [100, 101, 102]
   steps: 4000
@@ -29,7 +37,20 @@ training:
 evaluation:
   metrics: [RMSE, MAE, bias, R2]
   grouped: [cruise, lme_id, regime_id, salinity_band, nearest_carbon_km]
+  support_distance: recompute_haversine_distance_to_nearest_training_TA_record
+  forward_chain: intersection_of_primary_train_development_with_frozen_forward_groups
+  leave_region_out: [lme_id]
   uncertainty: {method: ensemble_conformal, nominal_coverage: 0.90}
   locked_test_openings: 1
   external_access: forbidden_until_P3
+development_gate:
+  lme_macro_improvement_vs_carter_min: 0.10
+  lme_macro_improvement_vs_lme_linear_min: 0.05
+  cruise_equal_improvement_vs_both_positive: true
+  worst_lme_degradation_vs_best_baseline_max: 0.10
+  supported_lme_positive_skill_fraction_min: 0.80
+  forward_skill_vs_carter_positive: true
+  leave_lme_out_skill_vs_carter_positive: true
+  coverage_90_bounds: [0.85, 0.95]
+  support_bin_skill_vs_carter_positive: true
 

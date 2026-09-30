@@ -14,3 +14,4 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 |---|---|---|
 | `p1_sss_viability_v2.2`（Issue #7） | verified；development evidence | [完整报告](p1_sss_viability_v2.2/REPORT.md) |
 | `p1_fco2_viability_v2.2`（Issue #8） | verified；diagnostic_only | [完整报告](p1_fco2_viability_v2.2/REPORT.md) |
+| `p1_ta_viability_v2.2`（Issue #9） | verified；diagnostic_only | [完整报告](p1_ta_viability_v2.2/REPORT.md) |
