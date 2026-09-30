@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 from pathlib import Path
 
@@ -72,3 +73,9 @@ def test_safe_forward_never_uses_primary_locked_rows() -> None:
     fit, held = MODULE.safe_forward_frames(train, development)
     assert fit.group_key.tolist() == ["train"]
     assert held.group_key.tolist() == ["dev"]
+
+
+def test_numpy_gate_values_can_be_normalized_for_json() -> None:
+    checks = {"passed": np.bool_(True), "failed": np.bool_(False)}
+    normalized = {name: bool(value) for name, value in checks.items()}
+    assert json.loads(json.dumps(normalized)) == {"passed": True, "failed": False}

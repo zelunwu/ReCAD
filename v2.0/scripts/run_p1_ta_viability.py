@@ -801,6 +801,7 @@ def main() -> int:
         "coverage_90_between_85_and_95pct": 0.85 <= coverage <= 0.95,
         "support_bin_skill_vs_carter_positive": bool((support_bins.skill_vs_carter > 0).all()),
     }
+    checks = {name: bool(value) for name, value in checks.items()}
     gate_passed = all(checks.values())
     decision = (
         "nominate_for_issue_11_locked_gate"
@@ -813,10 +814,12 @@ def main() -> int:
         "decision": decision,
         "checks": checks,
         "metrics": {
-            "lme_macro_improvement_vs_carter": 1
-            - selected_row.lme_macro_rmse_mean**2 / carter_row.lme_macro_rmse_mean**2,
-            "lme_macro_improvement_vs_lme_linear": 1
-            - selected_row.lme_macro_rmse_mean**2 / lme_row.lme_macro_rmse_mean**2,
+            "lme_macro_improvement_vs_carter": float(
+                1 - selected_row.lme_macro_rmse_mean**2 / carter_row.lme_macro_rmse_mean**2
+            ),
+            "lme_macro_improvement_vs_lme_linear": float(
+                1 - selected_row.lme_macro_rmse_mean**2 / lme_row.lme_macro_rmse_mean**2
+            ),
             "supported_lme_positive_skill_fraction": float(
                 (supported_lmes.skill_vs_carter > 0).mean()
             ),
