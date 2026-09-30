@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_ta_sab_latitude_sensitivity_v2.2
-status: preregistered
+status: completed_sensitivity_only
 owner: ReCAD
 created_utc: 2026-09-30T04:00:00Z
 science:
@@ -29,6 +29,24 @@ training: {seeds: [100, 101, 102], optimizer_steps: 4000, selection: development
 evaluation:
   primary_metrics: [pooled_RMSE, cruise_equal_RMSE, latitude_band_macro_RMSE, five_fold_CV_band_macro_RMSE]
   leakage_controls: [fixed_boundaries, frozen_cruise_split, train_only_support_distance, locked_labels_unopened, external_labels_unopened]
-reproducibility: {git_commit: null, preregistration_git_commit: null, source_hashes: {}, environment_lock: null}
-artifacts: {output_directory: outputs/experiments/p1_ta_sab_latitude_sensitivity_v2.2, report: null, reviewer_archive: null}
-outcome: {completed_utc: null, primary_result: null, acceptance_gate_changed: false, allowed_claims: null}
+reproducibility:
+  git_commit: 9ff7cfc190b29525153ee308d97b90da8bf31790
+  preregistration_git_commit: 00d19f79ca9d5216238e476be2840e3e8b15c60d
+  source_hashes:
+    scripts/run_p1_ta_viability.py: 5074abc50c520fddc5f8def9a9b5767e06b41f1ec0dcbf28374e315f35c37bd1
+    scripts/build_p1_ta_sab_sensitivity_archive.py: ef5476b21d1259d9ca3fb5de8484d112eb5b9d043c98046285f41c81d2fd5abb
+  environment_lock: pyproject.toml sha256 d2cf34b1b60e4a5eaff10d5c47f27fafb7d25295eecb4ea6bfa69f2a8c93966
+artifacts:
+  output_directory: outputs/experiments/p1_ta_sab_latitude_sensitivity_v2.2
+  report: docs/experiment_archive/p1_ta_sab_latitude_sensitivity_v2.2/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p1_ta_sab_latitude_sensitivity_v2.2
+    verification_status: verified
+outcome:
+  completed_utc: 2026-09-30T04:45:00Z
+  primary_result: The preregistered 27N degradation hypothesis was not supported; adding either 27-28.45N or 26-27N improved grouped-CV latitude-band macro RMSE despite a less than 1 percent development cruise-equal degradation.
+  acceptance_gate_changed: false
+  allowed_claims:
+    - Data south of 27N were not the identified cause of SAB TA degradation under the preregistered rule.
+    - The 28.45-30.5N contrast is hypothesis-generating only because the selected candidate family changes at 30.5N.
+    - No latitude boundary passes the full P1.3 development gate; locked-test and external-independent performance remain unknown.

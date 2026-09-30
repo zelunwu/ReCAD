@@ -1,0 +1,4 @@
+added_band,from_boundary_deg_n,to_boundary_deg_n,development_cruise_equal_change_fraction,cv_band_macro_change_fraction,harmful_by_preregistered_rule,model_family_changed
+26-27°N,27.0,26.0,0.00643753641760747,-0.1068965023091083,False,False
+27-28.45°N,28.45,27.0,0.006491543103233077,-0.2121924240258698,False,False
+28.45-30.5°N,30.5,28.45,0.36953871000196026,0.117254085440198,True,True
