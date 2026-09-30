@@ -8,8 +8,8 @@
   "external_independent_opened": false,
   "evidence_scope": "North America plus SAB/MAB train/development structural diagnostic",
   "decision": "diagnostic_only",
-  "archive_builder_sha256": "6170e3d3d1b47bf3da888e57e01ff6b1164509dc5cd129928bda730b59ad8131",
-  "analysis_script_sha256": "6170e3d3d1b47bf3da888e57e01ff6b1164509dc5cd129928bda730b59ad8131",
+  "archive_builder_sha256": "629bf98662163217936d090ef2866e9af8394ef52a7284f05fc219b735c32263",
+  "analysis_script_sha256": "629bf98662163217936d090ef2866e9af8394ef52a7284f05fc219b735c32263",
   "source_artifacts_sha256": {
     "sss": "fe8eba71a21786ef408ee646e5dfeab2b0ee237d3609837a10dfc7776fa9d988",
     "fco2": "18dfd1f75447e8a7c87dff0a30bf2570f80a97928dd019ac8db97e2f6833acd2",
@@ -53,9 +53,9 @@
     "fig08_carter_comparison.png": "Figure 8. Strict measured-fCO2 DIC RMSE using observed TA versus Carter/ESPER TA where development records overlap. The small overlap makes this an audit rather than a product comparison."
   },
   "files_sha256": {
-    "README.md": "daf083a833e5aae4e920890b6b2019c74cba6caef75cc9e4279edffd0871a9a4",
-    "REPORT.md": "e0aac0d1e03d7007f0a85fa0f0a05dec8857ed97400037101690c41fc4fea339",
-    "CAPTIONS.md": "6ce2c20a5cce784b1d8168630bfcad5f27c7fd62614396a5c37351830ae31a80",
+    "README.md": "652c35474e647b85a3b890402a57c71e4158be37086ed8f1db07336176f72ea7",
+    "REPORT.md": "4947d7732ed545be245d887856cda8e3b2a77cc5876bffb85eb6e642bc787f25",
+    "CAPTIONS.md": "491336975893f01351a1d70288f91ce89565f86cba63ac3cf85fc774587af1b1",
     "figures/fig01_evidence_counts.png": "9bc839d2fe4ea1dabf6b5ce449aac1eaf3144121c9a016d8ae3b0a6c25a0ed5a",
     "figures/fig02_strict_oracle_scatter.png": "2b7fbc308631b170e037be92564fdd31c7921acdd3faa2d4f0314aad4578cc4e",
     "figures/fig03_strict_error_by_source.png": "b2306f0270d6cf71fe93b45f9662a3b24e045d6371c6c0201e9f2e2d3bb7551d",
@@ -64,13 +64,13 @@
     "figures/fig06_interval_width.png": "f012f842a1240bcb058d9543db96c96cb7990d5cddc1ba3b067b1e43056cc67c",
     "figures/fig07_local_sensitivity.png": "06e7cd30cc63fca0d5b812b35b23c54bc0a9d0ce9635f9f12508796ee37eb24f",
     "figures/fig08_carter_comparison.png": "e5274cc9f2c121ce78187ce793cbb28118d1fa9277d3d44b8fcedc911ae4131a",
-    "tables/table01_scope.csv": "8cbdefbe4cf032dc2af63aad916b0dbe6e190b8bce048945044b2624ff09c665",
-    "tables/table02_strict_oracle_metrics.csv": "17024065dd8e02200a51984f87c25da7db42d1ab1db8ce33170bc3a8fed9d905",
-    "tables/table03_exact_roundtrip.csv": "b7a514d130d3a9a194da280f2cb857e46618404f9d9efd5a0143e1af31a580de",
-    "tables/table04_upstream_residual_banks.csv": "f383218acf2a1b1c50c9052465b4944f478909e8687dfce7421e4fdc1cdb75a1",
-    "tables/table05_propagation_metrics.csv": "a562cea342e6b751d295e31c0a3202d98e70097a58b1261bf6ed36d0d4472900",
-    "tables/table06_carter_baseline.csv": "d50aa60690a1098ca107f8c880ec17a5362eda2831a0d860389e21530884a558",
-    "tables/table07_local_sensitivity.csv": "f9ffd81baae20df3118c71b9da0e5c2c55cc4775a0ff018e8780849a2683f2bd",
-    "tables/table08_strict_oracle_rows.csv": "2f2bbfdb9bc299c38b97b97971cbbf474dbd4a7e4cf7cddfef24917d441c82ea"
+    "tables/table01_scope.csv": "c8e5f9b80a74c74ed84633ec9bf19aebfeb37b3c27212b3b311f2cece0bd92d9",
+    "tables/table02_strict_oracle_metrics.csv": "9476a2dde4eb556a348f53d21a4d7f4fdfb6800feec7cb7e87343cc4291ae69d",
+    "tables/table03_exact_roundtrip.csv": "3a076933fa49e8c2133f5e99cd8efc271ff8c7259be67903d0d2f709b5ee5615",
+    "tables/table04_upstream_residual_banks.csv": "7eb540213385cc13b307ce8190892874641404513f91b58931d1d5244a913a38",
+    "tables/table05_propagation_metrics.csv": "d84e1b39800b8c50aecb584297e1d48d53c4a4b9c87bc216e337cae67b06b8bb",
+    "tables/table06_carter_baseline.csv": "b36ebe98ba0479b065508a00cebd122232c0d062aecbbf3be624a170b6b91a87",
+    "tables/table07_local_sensitivity.csv": "271cc408e1f71a09f1ce2096e66de88e10fa7b01041eae246598ac799d78c511",
+    "tables/table08_strict_oracle_rows.csv": "c80f1d292642e686873c2cf3313c62a36634448d73021bf53e0cdcd5c15558a6"
   }
 }
