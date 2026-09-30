@@ -28,7 +28,7 @@ artifacts:
   report: docs/experiment_archive/p1_ta_sss_mab_decadal_trends_v2.2/REPORT.md
 reproducibility:
   source_hashes:
-    scripts/analyze_mab_decadal_trends.py: 87f391312e76998b67ead4c95becfe8e8a03ebecf5bc3aed4fce98ab5f897f29
+    scripts/analyze_mab_decadal_trends.py: 40468603df48d494c0f5bd0b79b1cef1c6703455d2a9d21099ff450978e530b0
     scripts/analyze_sab_decadal_trends.py: 14eff47ffe29dad8e09b2b171d0d5a4ca7737a491d504686df4b790ee0835085
   environment_lock: pyproject.toml sha256 d2cf34b1b60e4a5eaff10d5c47f27fafb7d25295eecb4ea6bfa69f2a8c93966
 outcome:
@@ -40,4 +40,3 @@ outcome:
     - Full-MAB SSS has no stable trend across raw, adjusted, end-year and latitude-band estimates.
     - The positive northern-band SSS estimate is diagnostic and does not establish a basin-wide trend.
     - Locked-test and external-independent labels remain sealed.
-

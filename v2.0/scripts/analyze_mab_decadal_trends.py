@@ -169,9 +169,11 @@ def run_analysis(output: Path, archive: Path) -> dict[str, object]:
     captions = figure_captions()
     report = build_report(scope, trends, robust, cutoffs, bands, source_composition, captions)
     (archive / "REPORT.md").write_text(report, encoding="utf-8", newline="\n")
+    caption_text = "# Figure captions\n\n" + "".join(
+        f"## {name}\n\n{caption}\n\n" for name, caption in captions.items()
+    )
     (archive / "CAPTIONS.md").write_text(
-        "# Figure captions\n\n"
-        + "".join(f"## {name}\n\n{caption}\n\n" for name, caption in captions.items()),
+        caption_text.rstrip() + "\n",
         encoding="utf-8",
         newline="\n",
     )

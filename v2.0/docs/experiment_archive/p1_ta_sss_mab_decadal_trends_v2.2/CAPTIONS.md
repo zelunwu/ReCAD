@@ -31,4 +31,3 @@ Figure 7. Record-weighted and cruise-equal MAB observations by decade. They summ
 ## fig08_sss_latitude_band_trends.png
 
 Figure 8. Adjusted MAB SSS trends by fixed latitude band. Positive central/northern estimates contrast with the weakly negative full-region estimate, exposing spatial-composition confounding.
-
