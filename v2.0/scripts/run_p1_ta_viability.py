@@ -326,6 +326,9 @@ def select_alpha(train: pd.DataFrame, candidates: list[float]) -> tuple[float, p
         for fold in range(5):
             fit = train.loc[train.cv_fold.ne(fold)].reset_index(drop=True)
             held = train.loc[train.cv_fold.eq(fold)].reset_index(drop=True)
+            if held.empty:
+                print(f"alpha={alpha:g} CV fold={fold} empty; skipped", flush=True)
+                continue
             model = RobustPartialPooling(alpha, groups=True).fit(
                 fit, sample_weight=balanced_weights(fit)
             )
@@ -744,6 +747,9 @@ def main() -> int:
     for fold in range(5):
         fit = train.loc[train.cv_fold.ne(fold)].reset_index(drop=True)
         held = train.loc[train.cv_fold.eq(fold)].reset_index(drop=True)
+        if held.empty:
+            print(f"CV fold={fold} empty; skipped", flush=True)
+            continue
         held["nearest_carbon_km"] = nearest_support_km(fit, held)
         for name in cv_models:
             print(f"CV fold={fold} {name}", flush=True)
@@ -991,6 +997,7 @@ def main() -> int:
         "development_rows": len(development),
         "train_cruises": int(train.group_key.nunique()),
         "development_cruises": int(development.group_key.nunique()),
+        "populated_cv_folds": sorted(cv.fold.unique().astype(int).tolist()),
         "region": args.region,
         "region_definition": BIGHT_DEFINITIONS.get(args.region),
         "sab_lat_min": args.sab_lat_min,
