@@ -405,6 +405,7 @@ def make_figures(
     bands: pd.DataFrame,
     cruise_means: pd.DataFrame,
     figures: Path,
+    region_name: str = "SAB",
 ) -> None:
     for variable, prefix, unit in (("TA", "ta", "µmol kg⁻¹"), ("SSS", "sss", "PSU")):
         annual = coverage.loc[coverage.variable.eq(variable)]
@@ -492,7 +493,7 @@ def make_figures(
         capsize=4,
     )
     ax.axhline(0, color="black", lw=1)
-    ax.set_xlabel("SAB latitude band (°N)")
+    ax.set_xlabel(f"{region_name} latitude band (°N)")
     ax.set_ylabel("Adjusted SSS trend (PSU decade⁻¹)")
     fig.tight_layout()
     save_figure(fig, figures / "fig08_sss_latitude_band_trends.png")
