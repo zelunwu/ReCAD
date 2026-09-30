@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p1_ta_sab_latitude_sensitivity_v2.2",
+  "created_utc": "2026-09-30T04:26:02.924930+00:00",
+  "training_git_commit": "9ff7cfc190b29525153ee308d97b90da8bf31790",
+  "preregistration_git_commit": "00d19f79ca9d5216238e476be2840e3e8b15c60d",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "Nested SAB surface-TA development and frozen cruise-grouped-CV latitude sensitivity only",
+  "decision": "27N hypothesis not supported; 28.45-30.5N is hypothesis-generating because model availability changes",
+  "archive_builder": "scripts/build_p1_ta_sab_sensitivity_archive.py",
+  "archive_builder_sha256": "ef5476b21d1259d9ca3fb5de8484d112eb5b9d043c98046285f41c81d2fd5abb",
+  "analysis_script_sha256": "5074abc50c520fddc5f8def9a9b5767e06b41f1ec0dcbf28374e315f35c37bd1",
+  "source_artifacts_sha256": {
+    "26/summary.csv": "e9a39781d3147d0cbe1f327258e1a617df7993f35862e37527184b1744e0d910",
+    "26/cv_metrics.csv": "1588e5cf621be8753f02ddc35cee4a8c1b7d96d9c6cabefcd0e4643b05b5f779",
+    "26/stratified_metrics.csv": "66b094c666d1d0df0b65fccb3303fbd37a4b8a465ed8603d075c048b874b00ce",
+    "26/development_gate.json": "32a7ef8ab7c28c3e79e2de42d7bdb2aa8ee4fc91d3a19b9c7f75f8c12eeb19f1",
+    "26/selection.json": "1cb07b2d3ba2acac538d1ac2c9fcde289d63803f8021c981ef4b6cee35495766",
+    "26/protocol.json": "160294192f32488b2d9492abd78a0b360e45cb72999e4bf54725c8f4841b42d1",
+    "26/selected_development_predictions.parquet": "92162d4832dab1ca281bfafd7294c975c87209e689fd0c093e3378f0444c671c",
+    "27/summary.csv": "6de8e4b4fd65bb1e12df4e6cf7bc562366a0fa4844a96578bacc40204d2a5319",
+    "27/cv_metrics.csv": "bd1a04715b4fc7de03c96105109dea879a04d6277990d4ca2bb95911222a88b3",
+    "27/stratified_metrics.csv": "0e150ee2cf51fdcb56ae09dfd93b6c1bd4ed27846aea5c20378c2df4e40ec7e3",
+    "27/development_gate.json": "86152642a13530bc60ddf4ef4b00a071510f08e3f72c3653e6b54915ba6d955f",
+    "27/selection.json": "79e3f2409b56347335c7dfefdb551dd1d71320d0aa636a67e0f9b3e9a2d5825f",
+    "27/protocol.json": "da7b558709bb56dc4f77ab591d8b738c5c9fc081f5ec61892ceacbff99aad099",
+    "27/selected_development_predictions.parquet": "5cd86bf6984c18b3d4d81795679cc4ef5088c6e6e712376ddbc5de69ce920325",
+    "28p45/summary.csv": "5a47bf3eda0919e50f7fbf355648bc7fb1da0b35491837540417effbdc3b7402",
+    "28p45/cv_metrics.csv": "af9056c2d98d4520f5c44856de25007b18761d216acd99dac372d9d1870e383c",
+    "28p45/stratified_metrics.csv": "c7f327315eb270c7f3f0ec19b0be828ee18dc727d709190d62f4c7e97491aea0",
+    "28p45/development_gate.json": "a48299a67f4a7052a579bbeae785d765fb053a5f119b11a43c7b540cecf2d2bf",
+    "28p45/selection.json": "800320d3c290ddc5377b8e27dac6327de806162b80b109a91ccd6309091c044c",
+    "28p45/protocol.json": "108c8c0a88ad8be1a20208fb569d381c350422a21532b2d355d6b3879896a865",
+    "28p45/selected_development_predictions.parquet": "ac8fa1d14c55c375390dde5316690c17ae78878ddb06a9f5ff97b274aef33084",
+    "30p5/summary.csv": "68e72a61257142af9c02f421a62a684a10ecb356197a8c590e661825d83ac5fc",
+    "30p5/cv_metrics.csv": "57648bcc39047772e5a146a56dfac5d588559f79ba2cc51dc20b39e332abe9b4",
+    "30p5/stratified_metrics.csv": "a4519e698b77c80e3ca9c785decf14f250ad584020f1d67c1b063f3de97a7455",
+    "30p5/development_gate.json": "890e050f0905b34b9b30b4ca5234e55726c4b3158b86d859ca7b54c72596f426",
+    "30p5/selection.json": "a0cf52b3b577885dd858a5adc9da9159900959e298fff0d3fb95883bde1af313",
+    "30p5/protocol.json": "edaf5723bfab39701f3d9d6d4e994813eef65a0cf3aadba227e540f315ecbc7e",
+    "30p5/selected_development_predictions.parquet": "993989bea12eebf5182f57e02ef477ac0e37da176630b75b8c046e61f89b54d6"
+  },
+  "figure_source_data": {
+    "fig01_development_rmse.png": [
+      "table02_selected_development_metrics.csv"
+    ],
+    "fig02_grouped_cv_rmse.png": [
+      "table03_grouped_cv_metrics.csv"
+    ],
+    "fig03_skill_vs_carter.png": [
+      "table02_selected_development_metrics.csv"
+    ],
+    "fig04_nested_contrasts.png": [
+      "table04_nested_boundary_contrasts.csv"
+    ],
+    "fig05_latitude_band_skill.png": [
+      "table05_latitude_band_skill.csv"
+    ],
+    "fig06_support_distance_skill.png": [
+      "table06_support_distance_skill.csv"
+    ],
+    "fig07_salinity_band_skill.png": [
+      "table07_salinity_band_skill.csv"
+    ],
+    "fig08_uncertainty.png": [
+      "table08_uncertainty.csv"
+    ],
+    "fig09_data_support.png": [
+      "table10_data_scope_and_model_availability.csv"
+    ],
+    "fig10_gate_checks.png": [
+      "table09_gate_checks.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_development_rmse.png": "Figure 1. Selected-model development RMSE across nested SAB southern boundaries. The apparent improvement at 30.5\u00b0N coincides with nonlinear-model activation and removal of the 28.45-30.5\u00b0N observations, so it is not a clean water-mass effect.",
+    "fig02_grouped_cv_rmse.png": "Figure 2. Frozen cruise-grouped cross-validation RMSE across boundaries. The 30.5\u00b0N variant has four populated folds because frozen fold 0 contains no eligible cruise; folds were not reassigned.",
+    "fig03_skill_vs_carter.png": "Figure 3. Development skill of each selected model relative to Carter/ESPER, where positive values favor the model. Pooled and cruise-equal skill are negative through 28.45\u00b0N despite positive latitude-band macro skill.",
+    "fig04_nested_contrasts.png": "Figure 4. Percent RMSE change caused by adding each southern latitude band to the next restricted dataset. The preregistered harmful-band rule requires development cruise-equal degradation above 5% and grouped-CV band-macro degradation; only 28.45-30.5\u00b0N meets both, with a model-family change.",
+    "fig05_latitude_band_skill.png": "Figure 5. Selected-model skill versus Carter/ESPER within fixed latitude bands. Sparse bands contain only one or two cruises, and the central 30.5-33\u00b0N band dominates the development sample.",
+    "fig06_support_distance_skill.png": "Figure 6. Skill versus Carter/ESPER by distance from training TA support. Negative worst-bin skill remains for every boundary, showing that boundary restriction does not solve extrapolation risk.",
+    "fig07_salinity_band_skill.png": "Figure 7. Skill versus Carter/ESPER by observed-salinity band, used only for diagnosis. Small low-salinity cells are unstable and must not be treated as evidence for operational coastal-estuarine performance.",
+    "fig08_uncertainty.png": "Figure 8. Conformal interval coverage and out-of-fold absolute-error 90th percentile. The 30.5\u00b0N variant undercovers at 83.4%, outside the frozen 85-95% acceptance range.",
+    "fig09_data_support.png": "Figure 9. Observation and cruise support retained by each nested boundary. All development variants contain only four cruises, while the 30.5\u00b0N training set has eight cruises and one empty frozen CV fold.",
+    "fig10_gate_checks.png": "Figure 10. Frozen development-gate checks by boundary. No variant passes the full gate; safe-forward evaluation is unavailable because no SAB development record satisfies the frozen forward-time intersection."
+  },
+  "files_sha256": {
+    "README.md": "165772e621455062534577192e07962a5935294e45aa4eca2e8cd39330141d7a",
+    "REPORT.md": "1dea2d2c2dfd4430224dc6f5a32d7191f7d797cde525fd273e9f6ceef9b0d410",
+    "CAPTIONS.md": "b2d71c8b8e3ddbdefbdc056d29e24e31af65b7a8e36f2ae32793ea40e12cc03a",
+    "figures/fig01_development_rmse.png": "1b8f541cb3c9411ca727a442b05b2c805897b35395c5ea39c7fde4de0c754538",
+    "figures/fig02_grouped_cv_rmse.png": "c7b5c6455351e204906d3b27b05a52c59202f17721f38400731e8e8c279dda54",
+    "figures/fig03_skill_vs_carter.png": "248bf2385d23b7754106ef006087ff12d6f73adbd9be2b7d5d2fa7903cfce1ff",
+    "figures/fig04_nested_contrasts.png": "fec80765e3276f51538d75567f5d2eaeef14c13b634005be51c7b50011762e6a",
+    "figures/fig05_latitude_band_skill.png": "b672163b9ad71c5fb7e1a150830b87bea913d20b455e489f96dfe4ba7f4c549f",
+    "figures/fig06_support_distance_skill.png": "7425901cd927ce2afa45cad2f56d948eae947b7f015df9338137baa3c8e7135e",
+    "figures/fig07_salinity_band_skill.png": "c8d9ba937e48e0436bfe6e640ec4bb9edb8caa6913c0d33e3d2bf1be35cc5a8b",
+    "figures/fig08_uncertainty.png": "95ca9079fbc3906ded438d93cd42477d008efad401b8b67e2de91c9a8f76dd1b",
+    "figures/fig09_data_support.png": "7487e8591c51a6cc6c98334a6e0c5fa5ad79d43bc9a61f70615c5ef748c7f6ed",
+    "figures/fig10_gate_checks.png": "110050cbd62c0fcbac44f93ad892cf08142092e530c0e284cbbb7643263c65cf",
+    "tables/table01_all_development_models.csv": "7453d6c2f58f84d16d13e8c50f05c25e993273c9fec1dcb8f22bdc32f294f868",
+    "tables/table02_selected_development_metrics.csv": "7ea4ec2087147659e0752bd05c138ffaa57b33e6557055fd5f79fb93e59bb297",
+    "tables/table03_grouped_cv_metrics.csv": "5cc9e62c886e1a9d422b5f171f86afe1a5552aca5da38728f0e9fac6113b3076",
+    "tables/table04_nested_boundary_contrasts.csv": "7780e78906d43923471a7e668bda9688ac2f3843e12bbf005c2560e5cbbb15d4",
+    "tables/table05_latitude_band_skill.csv": "ca045a3fd9f62d4ff2a90582a37a72d612694c32f6da484182b55987e6224835",
+    "tables/table06_support_distance_skill.csv": "f6d9a0422373968821a900743c50fb0bf823306962410489691b2255d787499b",
+    "tables/table07_salinity_band_skill.csv": "d77fe236f2a9246a1e7adb6ef724623602c492084e2cc04edd1613084ab8a47f",
+    "tables/table08_uncertainty.csv": "8ec205dd9564ed81cac5c76028c4b18b3c5a2c78d092647d24ad00153a92199c",
+    "tables/table09_gate_checks.csv": "29cfff73d11635af79b39d568e3ef365602ade855cba76c5333eebc91406db34",
+    "tables/table10_data_scope_and_model_availability.csv": "7cc350be222e6ddd8ed7a8c5fab84c15e941ffbba43aa35ef8ed5381a8a4e4af"
+  }
+}

@@ -32,6 +32,7 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 | `p1_fco2_baselines_v2.2` | fCO2 季节趋势气候态与残差模型 | development complete；archive verified；`diagnostic_only` | CatBoost by development LME macro-RMSE；gate failed on worst-LME and >100 km support |
 | `p1_ta_baselines_v2.2` | 北美 TA 局地线性/层级部分池化，DIC 结构派生 | development complete；archive verified；`diagnostic_only` | hierarchical residual ensemble；gate failed on cruise-equal RMSE and distant-support bins |
 | `p1_ta_bights_v2.2` | SAB 与 MAB 分区独立 TA 可行性 | development complete；archive verified；SAB `fail`，MAB `diagnostic_only` | SAB hierarchical TA-SSS；MAB hierarchical residual ensemble；locked/external sealed |
+| `p1_ta_sab_latitude_sensitivity_v2.2` | SAB TA 南边界敏感性（26/27/28.45/30.5°N） | development/grouped-CV complete；archive verified；无方案通过完整 gate | 不支持“27°N 以南导致退化”；28.45–30.5°N 对比受模型族切换混杂，只生成后续假设 |
 
 41 个 CODAP 2022–2024、未匹配 GLODAP 的完整航次已标记 `external_independent`。未来 SOCAT 相对 v2026 的新增航次是 SSS/fCO2 外部集；P3 前不得查看标签。
 

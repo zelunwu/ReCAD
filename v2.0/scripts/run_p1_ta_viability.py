@@ -41,6 +41,7 @@ ORACLE_MODEL = "carter_esper_oracle_insitu_sss"
 NEURAL_MODEL = "hierarchical_residual"
 EARTH_RADIUS_KM = 6371.0088
 BIGHT_PREREGISTRATION_COMMIT = "3936cc4658cf1d3912fc6611ff6ad4412ad7e44a"
+SAB_SENSITIVITY_PREREGISTRATION_COMMIT = "00d19f79ca9d5216238e476be2840e3e8b15c60d"
 BIGHT_DEFINITIONS = {
     "sab": {
         "source_lme_id": 6,
@@ -116,14 +117,33 @@ def prepare(frame: pd.DataFrame) -> pd.DataFrame:
     return frame
 
 
-def apply_bight_definition(frame: pd.DataFrame, region: str) -> pd.DataFrame:
+def apply_bight_definition(
+    frame: pd.DataFrame,
+    region: str,
+    *,
+    sab_lat_min: float | None = None,
+) -> pd.DataFrame:
     """Apply the preregistered LME/end-point mask and encode bight subregions."""
     if region == "all":
         return frame
     definition = BIGHT_DEFINITIONS[region]
-    edges = definition["latitude_edges"]
+    if region == "sab" and sab_lat_min is not None:
+        edges = [25.50, 26.00, 27.00, 28.45, 30.50, 33.00, 35.30]
+        subregion_names = [
+            "25.5_26",
+            "26_27",
+            "27_28.45",
+            "28.45_30.5",
+            "30.5_33",
+            "33_35.3",
+        ]
+        lower_bound = sab_lat_min
+    else:
+        edges = definition["latitude_edges"]
+        subregion_names = definition["subregion_names"]
+        lower_bound = edges[0]
     mask = frame.lme_id.eq(definition["source_lme_id"])
-    mask &= frame.latitude.ge(edges[0])
+    mask &= frame.latitude.ge(lower_bound)
     upper_mask = frame.latitude.lt(edges[-1]) if region == "sab" else frame.latitude.le(edges[-1])
     mask &= upper_mask
     selected = frame.loc[mask].copy().reset_index(drop=True)
@@ -132,11 +152,11 @@ def apply_bight_definition(frame: pd.DataFrame, region: str) -> pd.DataFrame:
     selected["subregion"] = pd.cut(
         selected.latitude,
         edges,
-        labels=definition["subregion_names"],
+        labels=subregion_names,
         include_lowest=True,
         right=region == "mab",
     ).astype(str)
-    mapping = {name: index for index, name in enumerate(definition["subregion_names"])}
+    mapping = {name: index for index, name in enumerate(subregion_names)}
     selected["lme_id"] = selected.subregion.map(mapping).astype(int)
     if selected.subregion.eq("nan").any():
         raise RuntimeError(f"{region} mask produced unassigned subregion rows")
@@ -306,6 +326,9 @@ def select_alpha(train: pd.DataFrame, candidates: list[float]) -> tuple[float, p
         for fold in range(5):
             fit = train.loc[train.cv_fold.ne(fold)].reset_index(drop=True)
             held = train.loc[train.cv_fold.eq(fold)].reset_index(drop=True)
+            if held.empty:
+                print(f"alpha={alpha:g} CV fold={fold} empty; skipped", flush=True)
+                continue
             model = RobustPartialPooling(alpha, groups=True).fit(
                 fit, sample_weight=balanced_weights(fit)
             )
@@ -552,31 +575,52 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int, default=512)
     parser.add_argument("--checkpoint-every", type=int, default=200)
     parser.add_argument("--region", choices=["all", "sab", "mab"], default="all")
+    parser.add_argument(
+        "--sab-lat-min",
+        type=float,
+        choices=[26.0, 27.0, 28.45, 30.5],
+        default=None,
+        help="Preregistered SAB southern-boundary sensitivity variant.",
+    )
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     checkpoint_dir = args.output / "checkpoints"
     checkpoint_dir.mkdir(exist_ok=True)
     start = time.time()
 
-    config_path = ROOT / (
-        "configs/p1_ta_baselines_v2.2.yaml"
-        if args.region == "all"
-        else "configs/p1_ta_bights_v2.2.yaml"
-    )
-    experiment_id = EXPERIMENT_ID if args.region == "all" else f"p1_ta_{args.region}_viability_v2.2"
-    preregistration_commit = (
-        PREREGISTRATION_COMMIT if args.region == "all" else BIGHT_PREREGISTRATION_COMMIT
-    )
+    if args.sab_lat_min is not None:
+        if args.region != "sab":
+            parser.error("--sab-lat-min requires --region sab")
+        config_path = ROOT / "configs/p1_ta_sab_latitude_sensitivity_v2.2.yaml"
+        boundary_slug = str(args.sab_lat_min).replace(".", "p")
+        experiment_id = f"p1_ta_sab_latmin_{boundary_slug}_v2.2"
+        preregistration_commit = SAB_SENSITIVITY_PREREGISTRATION_COMMIT
+    else:
+        config_path = ROOT / (
+            "configs/p1_ta_baselines_v2.2.yaml"
+            if args.region == "all"
+            else "configs/p1_ta_bights_v2.2.yaml"
+        )
+        experiment_id = (
+            EXPERIMENT_ID if args.region == "all" else f"p1_ta_{args.region}_viability_v2.2"
+        )
+        preregistration_commit = (
+            PREREGISTRATION_COMMIT if args.region == "all" else BIGHT_PREREGISTRATION_COMMIT
+        )
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     manifest = FrozenManifest.load(ROOT / "configs/frozen/data_manifest_v2.2.json")
     validation = manifest.validate(hash_mode="full")
     gateway = P1DataGateway(manifest)
     columns = ["obs_id", "salinity", "sst", "sss", "adt", "wspd", "pco2air", "temperature"]
     train = apply_bight_definition(
-        prepare(gateway.load_labels("ta", Purpose.TRAIN, columns=columns)), args.region
+        prepare(gateway.load_labels("ta", Purpose.TRAIN, columns=columns)),
+        args.region,
+        sab_lat_min=args.sab_lat_min,
     )
     development = apply_bight_definition(
-        prepare(gateway.load_labels("ta", Purpose.SELECTION, columns=columns)), args.region
+        prepare(gateway.load_labels("ta", Purpose.SELECTION, columns=columns)),
+        args.region,
+        sab_lat_min=args.sab_lat_min,
     )
     estimator = ESPER_LIR_TA.from_mat(args.esper_mat)
     train = add_carter(train, estimator)
@@ -703,6 +747,9 @@ def main() -> int:
     for fold in range(5):
         fit = train.loc[train.cv_fold.ne(fold)].reset_index(drop=True)
         held = train.loc[train.cv_fold.eq(fold)].reset_index(drop=True)
+        if held.empty:
+            print(f"CV fold={fold} empty; skipped", flush=True)
+            continue
         held["nearest_carbon_km"] = nearest_support_km(fit, held)
         for name in cv_models:
             print(f"CV fold={fold} {name}", flush=True)
@@ -915,6 +962,7 @@ def main() -> int:
         "locked_test_opened": False,
         "external_independent_opened": False,
         "region": args.region,
+        "sab_lat_min": args.sab_lat_min,
     }
     (args.output / "development_gate.json").write_text(json.dumps(gate, indent=2), encoding="utf-8")
     selection = {
@@ -928,6 +976,7 @@ def main() -> int:
         "locked_test_opened": False,
         "external_independent_opened": False,
         "region": args.region,
+        "sab_lat_min": args.sab_lat_min,
     }
     (args.output / "selection.json").write_text(json.dumps(selection, indent=2), encoding="utf-8")
     protocol = {
@@ -948,8 +997,10 @@ def main() -> int:
         "development_rows": len(development),
         "train_cruises": int(train.group_key.nunique()),
         "development_cruises": int(development.group_key.nunique()),
+        "populated_cv_folds": sorted(cv.fold.unique().astype(int).tolist()),
         "region": args.region,
         "region_definition": BIGHT_DEFINITIONS.get(args.region),
+        "sab_lat_min": args.sab_lat_min,
         "safe_forward_train_rows": len(forward_fit),
         "safe_forward_development_rows": len(forward_held),
         "primary_salinity_input": "background sss",

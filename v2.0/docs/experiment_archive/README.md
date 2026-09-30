@@ -16,3 +16,4 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 | `p1_fco2_viability_v2.2`（Issue #8） | verified；diagnostic_only | [完整报告](p1_fco2_viability_v2.2/REPORT.md) |
 | `p1_ta_viability_v2.2`（Issue #9） | verified；diagnostic_only | [完整报告](p1_ta_viability_v2.2/REPORT.md) |
 | `p1_ta_bights_v2.2`（Issue #15） | verified；SAB fail；MAB diagnostic_only | [完整报告](p1_ta_bights_v2.2/REPORT.md) |
+| `p1_ta_sab_latitude_sensitivity_v2.2`（Issue #17） | verified；27°N 假设未支持；全部方案未通过完整 gate | [完整报告](p1_ta_sab_latitude_sensitivity_v2.2/REPORT.md) |

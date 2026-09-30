@@ -1,0 +1,5 @@
+boundary_deg_n,train_rows,train_cruises,development_rows,development_cruises,populated_cv_folds,safe_forward_development_rows,selected_model,decision,a3_nonlinear_triggered,candidate_count
+26.0,299,15,183,4,5,0,hierarchical_ta_sss,fail,False,6
+27.0,288,13,170,4,5,0,hierarchical_ta_sss,fail,False,6
+28.45,276,10,165,4,5,0,hierarchical_ta_sss,fail,False,6
+30.5,270,8,151,4,4,0,hierarchical_residual,diagnostic_only,True,7

@@ -1,0 +1,52 @@
+schema_version: 1
+experiment_id: p1_ta_sab_latitude_sensitivity_v2.2
+status: completed_sensitivity_only
+owner: ReCAD
+created_utc: 2026-09-30T04:00:00Z
+science:
+  question: Which southern latitude band causes SAB TA reconstruction to degrade?
+  hypothesis: Adding observations south of 27 degrees north mixes Florida Current or Straits water with canonical SAB relations and worsens held-cruise skill.
+  primary_comparison: southern boundary 27.00 versus Cape Canaveral boundary 28.45 degrees north
+  secondary_comparisons: [26.00 versus 27.00, 28.45 versus 30.50]
+  evidence_scope: development and grouped-CV sensitivity only; no product gate change
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  config_path: configs/p1_ta_sab_latitude_sensitivity_v2.2.yaml
+  observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
+  qc_policy: is_primary=1 and TA QC=2 and surface 0-5 m
+splits:
+  grouping: normalized cruise and cross-product duplicate group
+  train: frozen train cruises within each boundary
+  development: frozen development cruises within each boundary
+  locked_test: sealed
+  external_independent: sealed
+model:
+  family: same frozen P1.3 candidates independently refit for each boundary
+  primary_salinity_input: background_SSS
+  oracle_salinity_input: in_situ_SSS_diagnostic_only
+training: {seeds: [100, 101, 102], optimizer_steps: 4000, selection: development latitude-band-macro RMSE}
+evaluation:
+  primary_metrics: [pooled_RMSE, cruise_equal_RMSE, latitude_band_macro_RMSE, five_fold_CV_band_macro_RMSE]
+  leakage_controls: [fixed_boundaries, frozen_cruise_split, train_only_support_distance, locked_labels_unopened, external_labels_unopened]
+reproducibility:
+  git_commit: 9ff7cfc190b29525153ee308d97b90da8bf31790
+  preregistration_git_commit: 00d19f79ca9d5216238e476be2840e3e8b15c60d
+  source_hashes:
+    scripts/run_p1_ta_viability.py: 5074abc50c520fddc5f8def9a9b5767e06b41f1ec0dcbf28374e315f35c37bd1
+    scripts/build_p1_ta_sab_sensitivity_archive.py: ef5476b21d1259d9ca3fb5de8484d112eb5b9d043c98046285f41c81d2fd5abb
+  environment_lock: pyproject.toml sha256 d2cf34b1b60e4a5eaff10d5c47f27fafb7d25295eecb4ea6bfa69f2a8c93966
+artifacts:
+  output_directory: outputs/experiments/p1_ta_sab_latitude_sensitivity_v2.2
+  report: docs/experiment_archive/p1_ta_sab_latitude_sensitivity_v2.2/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p1_ta_sab_latitude_sensitivity_v2.2
+    verification_status: verified
+outcome:
+  completed_utc: 2026-09-30T04:45:00Z
+  primary_result: The preregistered 27N degradation hypothesis was not supported; adding either 27-28.45N or 26-27N improved grouped-CV latitude-band macro RMSE despite a less than 1 percent development cruise-equal degradation.
+  acceptance_gate_changed: false
+  allowed_claims:
+    - Data south of 27N were not the identified cause of SAB TA degradation under the preregistered rule.
+    - The 28.45-30.5N contrast is hypothesis-generating only because the selected candidate family changes at 30.5N.
+    - No latitude boundary passes the full P1.3 development gate; locked-test and external-independent performance remain unknown.
