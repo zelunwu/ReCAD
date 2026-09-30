@@ -19,3 +19,4 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 | `p1_ta_sab_latitude_sensitivity_v2.2`（Issue #17） | verified；27°N 假设未支持；全部方案未通过完整 gate | [完整报告](p1_ta_sab_latitude_sensitivity_v2.2/REPORT.md) |
 | `p1_ta_sss_sab_decadal_trends_v2.2`（Issue #19） | diagnostic；TA not identifiable；SSS diagnostic_only | [完整报告](p1_ta_sss_sab_decadal_trends_v2.2/REPORT.md) |
 | `p1_ta_sss_mab_decadal_trends_v2.2`（Issue #21） | diagnostic；TA not identifiable；SSS diagnostic_only | [完整报告](p1_ta_sss_mab_decadal_trends_v2.2/REPORT.md) |
+| `p1_dic_inverse_co2sys_v2.2`（Issue #10） | diagnostic_only；exact solver pass；upstream/calibration gates fail | [完整报告](p1_dic_inverse_co2sys_v2.2/REPORT.md) |

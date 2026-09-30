@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_dic_inverse_co2sys_v2.2
-status: preregistered
+status: completed
 owner: ReCAD
 created_utc: 2026-09-30T07:00:00Z
 science:
@@ -27,6 +27,18 @@ artifacts:
   output_directory: outputs/experiments/p1_dic_inverse_co2sys_v2.2
   reviewer_archive: docs/experiment_archive/p1_dic_inverse_co2sys_v2.2
 outcome:
-  status: pending
+  status: diagnostic_only
+  exact_roundtrip_rmse_umol_kg: 5.21e-13
+  strict_oracle:
+    north_america: {n: 119, cruises: 8, rmse_umol_kg: 89.52, mae_umol_kg: 30.38, r2: 0.480}
+    sab: {n: 13, cruises: 2, rmse_umol_kg: 4.65, claimable: false}
+    mab: {n: 18, cruises: 2, rmse_umol_kg: 11.58, claimable: false}
+  joint_residual_injection:
+    north_america_rmse_umol_kg: 5.70
+    coverage_50: 1.0
+    coverage_90: 1.0
+    median_width_90_umol_kg: 206.1
+    calibration_gate: fail_overdispersed
+  conclusion: Exact inversion passes, but upstream gates and propagated-uncertainty calibration fail.
   locked_test_opened: false
   external_independent_opened: false
