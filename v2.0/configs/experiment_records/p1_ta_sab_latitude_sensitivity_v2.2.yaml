@@ -1,0 +1,34 @@
+schema_version: 1
+experiment_id: p1_ta_sab_latitude_sensitivity_v2.2
+status: preregistered
+owner: ReCAD
+created_utc: 2026-09-30T04:00:00Z
+science:
+  question: Which southern latitude band causes SAB TA reconstruction to degrade?
+  hypothesis: Adding observations south of 27 degrees north mixes Florida Current or Straits water with canonical SAB relations and worsens held-cruise skill.
+  primary_comparison: southern boundary 27.00 versus Cape Canaveral boundary 28.45 degrees north
+  secondary_comparisons: [26.00 versus 27.00, 28.45 versus 30.50]
+  evidence_scope: development and grouped-CV sensitivity only; no product gate change
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  config_path: configs/p1_ta_sab_latitude_sensitivity_v2.2.yaml
+  observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
+  qc_policy: is_primary=1 and TA QC=2 and surface 0-5 m
+splits:
+  grouping: normalized cruise and cross-product duplicate group
+  train: frozen train cruises within each boundary
+  development: frozen development cruises within each boundary
+  locked_test: sealed
+  external_independent: sealed
+model:
+  family: same frozen P1.3 candidates independently refit for each boundary
+  primary_salinity_input: background_SSS
+  oracle_salinity_input: in_situ_SSS_diagnostic_only
+training: {seeds: [100, 101, 102], optimizer_steps: 4000, selection: development latitude-band-macro RMSE}
+evaluation:
+  primary_metrics: [pooled_RMSE, cruise_equal_RMSE, latitude_band_macro_RMSE, five_fold_CV_band_macro_RMSE]
+  leakage_controls: [fixed_boundaries, frozen_cruise_split, train_only_support_distance, locked_labels_unopened, external_labels_unopened]
+reproducibility: {git_commit: null, preregistration_git_commit: null, source_hashes: {}, environment_lock: null}
+artifacts: {output_directory: outputs/experiments/p1_ta_sab_latitude_sensitivity_v2.2, report: null, reviewer_archive: null}
+outcome: {completed_utc: null, primary_result: null, acceptance_gate_changed: false, allowed_claims: null}

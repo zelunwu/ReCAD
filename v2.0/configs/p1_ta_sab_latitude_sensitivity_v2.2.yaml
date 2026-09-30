@@ -1,0 +1,40 @@
+experiment_id: p1_ta_sab_latitude_sensitivity_v2.2
+parent_experiment: p1_ta_bights_v2.2
+framework: configs/p1_framework_v2.2.yaml
+data_manifest: configs/frozen/data_manifest_v2.2.json
+target: ta
+surface_definition: depth <= 5 m; pressure <= 5 dbar fallback
+region:
+  source_lme_id: 6
+  northern_boundary_deg_n: 35.30
+  southern_boundary_variants_deg_n: [26.00, 27.00, 28.45, 30.50]
+  primary_contrast: 27.00 versus 28.45
+  canonical_boundary_deg_n: 28.45
+  diagnostic_latitude_bands_deg_n: [25.50, 26.00, 27.00, 28.45, 30.50, 33.00, 35.30]
+  labels: [25.5_26, 26_27, 27_28.45, 28.45_30.5, 30.5_33, 33_35.3]
+split:
+  primary: frozen deterministic cruise train/development assignments
+  grouped_cv: five frozen cruise folds
+  locked_test: sealed
+  external_independent: sealed
+models:
+  candidates: [carter_esper_prior, carter_band_season_corrected, sab_ta_sss, latitude_band_ta_sss, hierarchical_band_regime_ta_sss, hierarchical_residual_mlp_if_triggered]
+  independent_fit_per_boundary: true
+training:
+  seeds: [100, 101, 102]
+  steps: 4000
+  batch_size: 512
+  checkpoint_every: 200
+  alpha_grid: [1, 10, 100, 1000]
+  selection: development_latitude_band_macro_rmse
+evaluation:
+  metrics: [RMSE, MAE, bias, R2]
+  aggregation: [pooled, cruise_equal, latitude_band_macro, worst_latitude_band]
+  diagnostics: [five_fold_cruise_cv, band_skill, support_distance, salinity_band, uncertainty]
+interpretation:
+  degradation_threshold:
+    cruise_equal_rmse_increase_fraction: 0.05
+    pooled_rmse_increase_fraction: 0.05
+  primary_claim_rule: A southern band is harmful only if adding it worsens both development cruise-equal RMSE and five-fold CV band-macro RMSE; sample counts and cruise identities must be reported.
+  no_product_gate_change: true
+  depth_sensitivity_out_of_scope: true
