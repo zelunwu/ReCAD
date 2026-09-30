@@ -1,0 +1,3 @@
+region,nominal_coverage,development_coverage,oof_absolute_error_q90
+SAB,0.9,0.8909090909090909,102.49952432293367
+MAB,0.9,0.9854014598540146,102.18027826674866

@@ -1,0 +1,3 @@
+region,train_rows,train_cruises,development_rows,development_cruises,safe_forward_train_rows,safe_forward_development_rows,decision
+SAB,276,10,165,4,275,0,fail
+MAB,344,26,137,7,252,31,diagnostic_only

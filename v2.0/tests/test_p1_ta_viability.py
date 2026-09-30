@@ -104,3 +104,22 @@ def test_sparse_populated_support_bin_cannot_be_dropped_from_gate() -> None:
         }
     )
     assert not MODULE.all_populated_support_bins_positive(strata)
+
+
+def test_bight_definitions_use_frozen_lme_and_endpoint_masks() -> None:
+    frame = pd.DataFrame(
+        {
+            "lme_id": [6, 6, 6, 7, 7, 7],
+            "latitude": [28.45, 33.0, 35.30, 35.20, 40.0, 41.76],
+        }
+    )
+
+    sab = MODULE.apply_bight_definition(frame, "sab")
+    mab = MODULE.apply_bight_definition(frame, "mab")
+
+    assert sab.latitude.tolist() == [28.45, 33.0]
+    assert sab.subregion.tolist() == ["south", "north"]
+    assert mab.latitude.tolist() == [35.20, 40.0]
+    assert mab.subregion.tolist() == ["south", "central"]
+    assert sab.source_lme_id.eq(6).all()
+    assert mab.source_lme_id.eq(7).all()

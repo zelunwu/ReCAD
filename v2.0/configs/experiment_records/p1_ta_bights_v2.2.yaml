@@ -1,0 +1,58 @@
+schema_version: 1
+experiment_id: p1_ta_bights_v2.2
+status: completed_region_split
+owner: ReCAD
+created_utc: 2026-09-30T03:00:00Z
+science:
+  question: Does TA reconstruction pass the frozen P1.3 gate independently in the South Atlantic Bight and Mid-Atlantic Bight?
+  hypothesis: Separate bight models reduce regional averaging bias, but SAB data scarcity and estuarine variability may prevent robust cruise-held-out skill.
+  product_scope: SAB and broad geographic MAB surface TA
+  primary_comparison: independently trained hierarchical model versus Carter/ESPER and fixed subregion TA-SSS in each bight
+  acceptance_gate: Each bight passes or fails independently; locked and external labels remain sealed
+  stopping_rule: Run nonlinear residual MLP only when hierarchical linear beats both frozen baselines on subregion-macro and cruise-equal development RMSE
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
+  qc_policy: is_primary=1 and TA QC=2
+  region_config: configs/p1_ta_bights_v2.2.yaml
+splits:
+  grouping: normalized Expocode/cruise and cross-product duplicate group
+  train: deterministic non-external train cruises within each frozen bight mask
+  development: deterministic non-external development cruises within each frozen bight mask
+  locked_test: sealed
+  external_independent: sealed
+model:
+  family: Carter correction, robust TA-SSS, hierarchical partial pooling, optional residual MLP
+  config_path: configs/p1_ta_bights_v2.2.yaml
+  inputs: [background_SSS, SST, ADT, wind_speed, atmospheric_CO2, lon, lat, month, subregion, environmental_regime, Carter_ESPER_TA_prior]
+  learned_outputs: [TA]
+training:
+  seeds: [100, 101, 102]
+  optimizer_steps: 4000 per nonlinear candidate per seed
+  selection: development subregion-macro RMSE independently by bight
+evaluation:
+  primary_metrics: [RMSE, MAE, bias, R2]
+  group_metrics: [cruise_equal_RMSE, subregion_macro_RMSE, worst_subregion_RMSE, salinity_band_RMSE, distance_to_support]
+  leakage_controls: [train-only support distance, safe-forward intersection, locked labels unopened, external labels unopened]
+reproducibility:
+  git_commit: 61d8dbaf4813680948fce7bf8f903d34a31d6db7
+  preregistration_git_commit: 3936cc4658cf1d3912fc6611ff6ad4412ad7e44a
+  source_hashes:
+    scripts/run_p1_ta_viability.py: 661b17a83419fdd4dab89075ecbfca350a8b9708798759e7097cb0f6f24286bf
+    scripts/build_p1_ta_bights_reviewer_archive.py: b836551d130a9646505a9da6a6059afe055017b3ca65031cf8b003fa42c00815
+  environment_lock: pyproject.toml sha256 d2cf34b1b60e4a5eaff10d5c47f27fafb7d25295eecb4ea6bfa69f2a8c93966
+artifacts:
+  output_directory: outputs/experiments/p1_ta_bights_v2.2
+  report: docs/experiment_archive/p1_ta_bights_v2.2/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p1_ta_bights_v2.2
+    verification_status: verified
+outcome:
+  completed_utc: 2026-09-30T03:14:52Z
+  sab_status: fail
+  mab_status: diagnostic_only
+  allowed_claims:
+    - SAB does not support a TA product under the frozen regional gate.
+    - MAB shows strong development skill relative to Carter and fixed subregion TA-SSS, but uncertainty is overconservative and grouped CV favors the simpler hierarchical relation.
+    - Locked-test and external-independent performance remain unknown because their labels are sealed.
