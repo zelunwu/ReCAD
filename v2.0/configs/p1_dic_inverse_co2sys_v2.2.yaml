@@ -1,0 +1,41 @@
+experiment_id: p1_dic_inverse_co2sys_v2.2
+framework: configs/p1_framework_v2.2.yaml
+data_manifest: configs/frozen/data_manifest_v2.2.json
+target: dic
+surface_definition: depth <= 5 m; pressure <= 5 dbar fallback
+partitions: [train, development]
+locked_test: sealed
+external_independent: sealed
+co2sys:
+  inverse_pair: [TA, fCO2]
+  par1_type: 1
+  par2_type: 5
+  output: DIC
+  opt_pH_scale: 1
+  opt_k_carbonic: 10
+  opt_k_bisulfate: 1
+  opt_total_borate: 1
+  pressure_dbar: 0
+  total_silicate_umol_kg: 0
+  total_phosphate_umol_kg: 0
+stages:
+  oracle_measured_fco2: true
+  paired_carbon_closure_audit_only: true
+  upstream_residual_injection: true
+  carter_esper_baseline: true
+uncertainty:
+  draws: 2000
+  seeds: [100, 101, 102]
+  intervals: [0.50, 0.90]
+  residual_sampling_unit: cruise
+regions:
+  north_america: all frozen LME rows
+  sab: LME 6 and 28.45 <= latitude < 35.30
+  mab: LME 7 and 35.20 <= latitude <= 41.75
+decision:
+  dic_product_requires_upstream_pass: true
+  closure_tolerance_uatm: 0.5
+  coverage_90_range: [0.85, 0.95]
+  coverage_50_range: [0.45, 0.55]
+  oracle_min_cruises: 5
+
