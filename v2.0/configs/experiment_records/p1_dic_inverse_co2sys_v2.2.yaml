@@ -1,0 +1,32 @@
+schema_version: 1
+experiment_id: p1_dic_inverse_co2sys_v2.2
+status: preregistered
+owner: ReCAD
+created_utc: 2026-09-30T07:00:00Z
+science:
+  question: Can DIC be inferred from TA and fCO2 with exact CO2SYS and calibrated propagated uncertainty?
+  role: structural diagnostic; DIC is not an independent free model output
+  acceptance: upstream TA and fCO2 must pass, exact closure must pass, and 50/90 percent intervals must be calibrated
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  config_path: configs/p1_dic_inverse_co2sys_v2.2.yaml
+  dic_truth: primary CODAP-NA/GLODAP observed or adjusted DIC, QC=2, surface 0-5 m
+  measured_fco2_truth: method in [1, 2] and QC=2 only
+splits:
+  included: [train, development]
+  locked_test: sealed
+  external_independent: sealed
+methods:
+  stages: [oracle_measured_fco2, paired_carbon_audit, upstream_residual_injection, carter_baseline]
+  exact_solver: PyCO2SYS
+  inverse_pair: TA + fCO2 -> DIC
+  uncertainty_draws: 2000
+  seeds: [100, 101, 102]
+artifacts:
+  output_directory: outputs/experiments/p1_dic_inverse_co2sys_v2.2
+  reviewer_archive: docs/experiment_archive/p1_dic_inverse_co2sys_v2.2
+outcome:
+  status: pending
+  locked_test_opened: false
+  external_independent_opened: false
