@@ -1,0 +1,40 @@
+schema_version: 1
+experiment_id: p1_ta_bights_v2.2
+status: preregistered
+owner: ReCAD
+created_utc: 2026-09-30T03:00:00Z
+science:
+  question: Does TA reconstruction pass the frozen P1.3 gate independently in the South Atlantic Bight and Mid-Atlantic Bight?
+  hypothesis: Separate bight models reduce regional averaging bias, but SAB data scarcity and estuarine variability may prevent robust cruise-held-out skill.
+  product_scope: SAB and broad geographic MAB surface TA
+  primary_comparison: independently trained hierarchical model versus Carter/ESPER and fixed subregion TA-SSS in each bight
+  acceptance_gate: Each bight passes or fails independently; locked and external labels remain sealed
+  stopping_rule: Run nonlinear residual MLP only when hierarchical linear beats both frozen baselines on subregion-macro and cruise-equal development RMSE
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
+  qc_policy: is_primary=1 and TA QC=2
+  region_config: configs/p1_ta_bights_v2.2.yaml
+splits:
+  grouping: normalized Expocode/cruise and cross-product duplicate group
+  train: deterministic non-external train cruises within each frozen bight mask
+  development: deterministic non-external development cruises within each frozen bight mask
+  locked_test: sealed
+  external_independent: sealed
+model:
+  family: Carter correction, robust TA-SSS, hierarchical partial pooling, optional residual MLP
+  config_path: configs/p1_ta_bights_v2.2.yaml
+  inputs: [background_SSS, SST, ADT, wind_speed, atmospheric_CO2, lon, lat, month, subregion, environmental_regime, Carter_ESPER_TA_prior]
+  learned_outputs: [TA]
+training:
+  seeds: [100, 101, 102]
+  optimizer_steps: 4000 per nonlinear candidate per seed
+  selection: development subregion-macro RMSE independently by bight
+evaluation:
+  primary_metrics: [RMSE, MAE, bias, R2]
+  group_metrics: [cruise_equal_RMSE, subregion_macro_RMSE, worst_subregion_RMSE, salinity_band_RMSE, distance_to_support]
+  leakage_controls: [train-only support distance, safe-forward intersection, locked labels unopened, external labels unopened]
+reproducibility: {git_commit: null, preregistration_git_commit: null, source_hashes: {}, environment_lock: null}
+artifacts: {output_directory: outputs/experiments/p1_ta_bights_v2.2, report: null, reviewer_archive: null}
+outcome: {completed_utc: null, sab_status: null, mab_status: null, allowed_claims: null}

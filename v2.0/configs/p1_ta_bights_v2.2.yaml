@@ -1,0 +1,74 @@
+experiment_id: p1_ta_bights_v2.2
+parent_experiment: p1_ta_baselines_v2.2
+framework: configs/p1_framework_v2.2.yaml
+data_manifest: configs/frozen/data_manifest_v2.2.json
+target: ta
+primary_salinity_input: sss
+oracle_salinity_input: salinity
+region_mask:
+  source: lme_66.geojson assignment frozen in na_carbon_cache_v2.2.parquet
+  sab:
+    source_lme_id: 6
+    latitude_bounds: [28.45, 35.30]
+    latitude_interval: left_closed_right_open
+    endpoints: Cape Canaveral to Cape Hatteras
+    subregions:
+      - {name: south, latitude_bounds: [28.45, 30.50]}
+      - {name: central, latitude_bounds: [30.50, 33.00]}
+      - {name: north, latitude_bounds: [33.00, 35.30]}
+  mab:
+    source_lme_id: 7
+    latitude_bounds: [35.20, 41.75]
+    latitude_interval: closed
+    endpoints: Cape Hatteras to Cape Cod
+    definition: broad geographic MAB including Southern New England
+    subregions:
+      - {name: south, latitude_bounds: [35.20, 38.00]}
+      - {name: central, latitude_bounds: [38.00, 40.00]}
+      - {name: north, latitude_bounds: [40.00, 41.75]}
+  hatteras_transition_diagnostic:
+    latitude_bounds: [34.75, 35.75]
+    source_lme_ids: [6, 7]
+    excluded_from_cross_region_pooling: true
+  limitations:
+    - The frozen cache has no bathymetry column; LME shelf polygons provide the offshore boundary.
+    - Estuary and shelf-depth strata cannot be frozen until a bathymetry/estuary mask is added.
+split:
+  primary: deterministic cruise-grouped train/development assignments from v2.2
+  grouped_cv: five frozen cruise folds
+  forward: safe intersection with frozen forward assignments
+  locked_test: sealed
+  external_independent: sealed
+candidates:
+  - carter_esper_prior
+  - carter_subregion_season_corrected
+  - bight_ta_sss
+  - subregion_ta_sss
+  - hierarchical_subregion_regime_ta_sss
+  - hierarchical_residual_mlp_if_stopping_rule_triggers
+training:
+  independent_by_bight: true
+  seeds: [100, 101, 102]
+  steps: 4000
+  batch_size: 512
+  checkpoint_every: 200
+  alpha_grid: [1, 10, 100, 1000]
+  selection: development_subregion_macro_rmse
+evaluation:
+  metrics: [RMSE, MAE, bias, R2]
+  aggregation: [pooled, cruise_equal, subregion_macro, worst_subregion]
+  diagnostics: [salinity_band, support_distance, safe_forward, leave_subregion_out]
+  uncertainty: five-fold training OOF absolute-residual conformal interval
+development_gate:
+  subregion_macro_improvement_vs_carter_min: 0.10
+  subregion_macro_improvement_vs_subregion_linear_min: 0.05
+  cruise_equal_improvement_vs_both_positive: true
+  worst_subregion_degradation_vs_best_baseline_max: 0.10
+  supported_subregion_positive_skill_fraction_min: 0.80
+  forward_skill_vs_carter_positive: true
+  coverage_90_bounds: [0.85, 0.95]
+  every_populated_support_bin_skill_vs_carter_positive: true
+decision:
+  statuses: [pass_regional, diagnostic_only, fail]
+  independent_decision_by_bight: true
+  failure_in_one_bight_cannot_be_rescued_by_the_other: true
