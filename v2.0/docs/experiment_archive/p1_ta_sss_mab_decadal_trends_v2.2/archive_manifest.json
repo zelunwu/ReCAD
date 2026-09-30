@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p1_ta_sss_mab_decadal_trends_v2.2",
+  "created_utc": "2026-09-30T05:31:39.420692+00:00",
+  "training_git_commit": "not_applicable_observational_diagnostic",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "MAB train/development observational sampling diagnostic",
+  "decision": {
+    "TA": "not_identifiable",
+    "SSS": "diagnostic_only"
+  },
+  "archive_builder_sha256": "87f391312e76998b67ead4c95becfe8e8a03ebecf5bc3aed4fce98ab5f897f29",
+  "analysis_script_sha256": "87f391312e76998b67ead4c95becfe8e8a03ebecf5bc3aed4fce98ab5f897f29",
+  "source_artifacts_sha256": {
+    "carbon_cache": "a7b8c311ac55f80ebf6e17c647d374c0459be0898ba79fdfdc751fe5634bd059",
+    "socat_cache": "8fbf2876308b457d11c5838041c05d6ff44b0f7c9731ac8def31878d73ac5fdb"
+  },
+  "figure_source_data": {
+    "fig01_ta_annual_coverage.png": [
+      "table02_annual_coverage.csv"
+    ],
+    "fig02_ta_cruise_means.png": [
+      "table08_cruise_means.csv"
+    ],
+    "fig03_ta_method_sensitivity.png": [
+      "table04_trend_estimates.csv",
+      "table05_cruise_robust_sensitivity.csv"
+    ],
+    "fig04_sss_annual_coverage.png": [
+      "table02_annual_coverage.csv"
+    ],
+    "fig05_sss_cruise_means.png": [
+      "table08_cruise_means.csv"
+    ],
+    "fig06_sss_end_year_sensitivity.png": [
+      "table06_sss_end_year_sensitivity.csv"
+    ],
+    "fig07_decade_summaries.png": [
+      "table03_decade_summaries.csv"
+    ],
+    "fig08_sss_latitude_band_trends.png": [
+      "table07_sss_latitude_band_trends.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_ta_annual_coverage.png": "Figure 1. Annual MAB surface-TA records and cruises in unsealed train/development. Coverage is broader than SAB but remains temporally uneven.",
+    "fig02_ta_cruise_means.png": "Figure 2. Cruise-mean MAB TA through time, with point area proportional to record count. Spatial and seasonal cruise composition is large relative to temporal change.",
+    "fig03_ta_method_sensitivity.png": "Figure 3. MAB TA trends across adjustment choices and leave-one-cruise raw slopes. Removing the raw decline after spatial/seasonal adjustment diagnoses sampling confounding.",
+    "fig04_sss_annual_coverage.png": "Figure 4. Annual MAB SOCAT in-situ SSS cruise-grid-month coverage. Dense coverage still varies materially by year and cruise.",
+    "fig05_sss_cruise_means.png": "Figure 5. Cruise-mean MAB SOCAT SSS through time. Cross-cruise spatial-regime scatter is much larger than the fitted basin-wide trend.",
+    "fig06_sss_end_year_sensitivity.png": "Figure 6. Adjusted MAB SSS trend under end-year truncation. The estimate changes from weakly positive through 2023 to weakly negative through 2024-2025.",
+    "fig07_decade_summaries.png": "Figure 7. Record-weighted and cruise-equal MAB observations by decade. They summarize sampling and are not spatially complete climatologies.",
+    "fig08_sss_latitude_band_trends.png": "Figure 8. Adjusted MAB SSS trends by fixed latitude band. Positive central/northern estimates contrast with the weakly negative full-region estimate, exposing spatial-composition confounding."
+  },
+  "files_sha256": {
+    "README.md": "21231547fbd2edb2afb58bdc8c007dd919ae5adb7dc6b775b3a5788b8da95700",
+    "REPORT.md": "b0f452f2265944c9f386caf42e39f5dbc4bd0d287f00c6897e88edcd6a68c427",
+    "CAPTIONS.md": "7e3acf844818049c57c06df17394747ae40d70acb7ffdb81fd681dfd67fcfb3c",
+    "figures/fig01_ta_annual_coverage.png": "3106a44228bce04d6b5333c4dc8309ecf904fb9cac027d573156d22213ea75dc",
+    "figures/fig02_ta_cruise_means.png": "ae890334ea024b72d16b31bb829ea9cedd7b25a74daf59a39b3145bdb56b1454",
+    "figures/fig03_ta_method_sensitivity.png": "f7cc11059a5a991076b2615f450e8701175fc9061d05ffb7af4b5ad4025636a6",
+    "figures/fig04_sss_annual_coverage.png": "216cf583718110ca13e7f6d127a9f2faf9eeddf4d174dfbdd9a5222aa6fa60b3",
+    "figures/fig05_sss_cruise_means.png": "e438bb3335db663b316038e906064f1700d17cbd01397895241cf6da409fd9e2",
+    "figures/fig06_sss_end_year_sensitivity.png": "de13994775603c63ae73b7635931f723b514573af40beb2648aecb6100be63db",
+    "figures/fig07_decade_summaries.png": "823df85b2a34a4aa58990a85aff70f95e97194324707fb7d8d0d561f014574e8",
+    "figures/fig08_sss_latitude_band_trends.png": "c9cb86f052cbf9b871d478fa778a89f412a13f088769835658f143d713d6457e",
+    "tables/table01_scope.csv": "78e1ae3cc0a594dac6c708b5a79ac80c126e3b4c9c2edcf6568b64f41122047e",
+    "tables/table02_annual_coverage.csv": "4854c6f3fd045bc4049ffca92312ca76ad992216e0e05685661749083b36a519",
+    "tables/table03_decade_summaries.csv": "2035787e502f093d04032f3c35fc9c9eff19bfa4e4532563b9827b84333d3aa0",
+    "tables/table04_trend_estimates.csv": "b0386b456b6e31a9a822a50b684b9c50c87e0fb86f8c4cfbd29e3702d5fe8eb3",
+    "tables/table05_cruise_robust_sensitivity.csv": "5168bab3ab555d0548e8fcec33d4e17bf69c471fdb7f761d71f5e6d94176aca5",
+    "tables/table06_sss_end_year_sensitivity.csv": "f19c44095cf821223bfa86cf3924f1189026bd93f295635d3c96709e25db6f3f",
+    "tables/table07_sss_latitude_band_trends.csv": "2a88dde97beeff919b3e6bfe193127b6bf170755e2323cfa947e1842d5165fa9",
+    "tables/table08_cruise_means.csv": "a5dd78a926e52b5c3cdb216f61a769c68ae99995869bfa734a8f9cfb60ea66d1",
+    "tables/table09_ta_source_composition.csv": "996f5fdf68c5f62537300bd77d7a7d742f48288f557dfa78431927278195be7d"
+  }
+}
