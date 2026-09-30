@@ -8,8 +8,8 @@ science:
   hypothesis: Hierarchical LME/regime calibration improves cruise-held-out TA while uncertainty expands in non-conservative regimes.
   product_scope: North-American coastal TA only
   primary_comparison: Carter/ESPER prior versus train-cruise-only local linear and hierarchical partial-pooling baselines
-  acceptance_gate: Lower LME macro-RMSE and calibrated 90% coverage on locked cruises; external CODAP cruises remain sealed
-  stopping_rule: Fixed model set and grouped development selection
+  acceptance_gate: Development gates must pass before nomination to the one-time locked gate in Issue 11; external CODAP cruises remain sealed
+  stopping_rule: Run A0-A2 first; run the nonlinear A3 residual only if hierarchical A2 beats Carter and LME-linear on development LME-macro and cruise-equal RMSE
 data:
   manifest_path: configs/frozen/data_manifest_v2.2.json
   manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
@@ -33,8 +33,9 @@ splits:
 model:
   family: global/local linear and hierarchical partial pooling
   config_path: configs/p1_ta_baselines_v2.2.yaml
-  config_sha256: d078a3d42428d72cad94c467bac9d22249e8c8b2d6ca7df00053759cfd915195
-  inputs: [in_situ_or_background_SSS, SST, lon, lat, month, LME, environmental_regime, Carter_ESPER_TA_prior]
+  config_sha256: 6ac2d8d79b707e27ef33f049edddd7b4a626c35ad7869476cd3acceca6c03b50
+  inputs: [background_SSS, SST, lon, lat, month, LME, environmental_regime, Carter_ESPER_TA_prior]
+  oracle_diagnostic_input: in_situ_SSS
   learned_outputs: [TA]
   derived_outputs: [DIC_via_inverse_CO2SYS_from_predicted_T_SSS_fCO2_TA]
   loss: cruise-balanced robust heteroscedastic regression
@@ -46,6 +47,7 @@ evaluation:
   group_metrics: [LME_macro_RMSE, worst_LME_RMSE, salinity_band_RMSE, distance_to_support]
   calibration_metrics: [coverage_90, interval_width]
   baselines: [Carter_ESPER, global_TA_SSS_linear, LME_TA_SSS_linear]
+  leakage_controls: [support_distance_recomputed_from_training_coordinates, safe_forward_intersection_only, locked_and_external_labels_unopened]
 reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
 artifacts: {output_directory: outputs/experiments/p1_ta_baselines_v2.2, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.2.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
 outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}
