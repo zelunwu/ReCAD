@@ -33,6 +33,7 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 | `p1_ta_baselines_v2.2` | 北美 TA 局地线性/层级部分池化，DIC 结构派生 | development complete；archive verified；`diagnostic_only` | hierarchical residual ensemble；gate failed on cruise-equal RMSE and distant-support bins |
 | `p1_ta_bights_v2.2` | SAB 与 MAB 分区独立 TA 可行性 | development complete；archive verified；SAB `fail`，MAB `diagnostic_only` | SAB hierarchical TA-SSS；MAB hierarchical residual ensemble；locked/external sealed |
 | `p1_ta_sab_latitude_sensitivity_v2.2` | SAB TA 南边界敏感性（26/27/28.45/30.5°N） | development/grouped-CV complete；archive verified；无方案通过完整 gate | 不支持“27°N 以南导致退化”；28.45–30.5°N 对比受模型族切换混杂，只生成后续假设 |
+| `p1_ta_sss_sab_decadal_trends_v2.2` | SAB 表层 TA/SSS 观测能否识别年代际趋势 | diagnostic complete；archive verified；locked/external sealed | TA 因航次稀少和 2014 集中而不可识别；SSS 为弱负趋势但对截止年份/区域敏感，只能 diagnostic_only |
 
 41 个 CODAP 2022–2024、未匹配 GLODAP 的完整航次已标记 `external_independent`。未来 SOCAT 相对 v2026 的新增航次是 SSS/fCO2 外部集；P3 前不得查看标签。
 

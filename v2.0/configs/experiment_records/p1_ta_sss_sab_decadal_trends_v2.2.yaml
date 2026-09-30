@@ -1,0 +1,41 @@
+schema_version: 1
+experiment_id: p1_ta_sss_sab_decadal_trends_v2.2
+status: completed_diagnostic
+owner: ReCAD
+created_utc: 2026-09-30T05:00:00Z
+science:
+  question: Can existing surface observations identify decadal TA and SSS trends in the canonical SAB?
+  scope: observational sampling diagnostic; not product validation or causal attribution
+  decision_rule: trend sign must be stable across estimators and cruise/end-year sensitivity with adequate multi-year cruise support
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  region: LME 6, 28.45 <= latitude < 35.3 degrees north
+  ta: CODAP/GLODAP primary QC=2, 0-5 m
+  sss: SOCAT in-situ surface salinity
+splits:
+  included: [train, development]
+  locked_test: sealed
+  external_independent: sealed
+methods:
+  estimators: [cruise_equal_raw, seasonal_spatial_adjusted, Theil-Sen_on_cruise_means]
+  sensitivities: [leave_one_cruise_out, SSS_end_year, SAB_latitude_band, TA_adjusted_for_SSS]
+artifacts:
+  output_directory: outputs/experiments/p1_ta_sss_sab_decadal_trends_v2.2
+  reviewer_archive:
+    path: docs/experiment_archive/p1_ta_sss_sab_decadal_trends_v2.2
+    verification_status: verified
+  report: docs/experiment_archive/p1_ta_sss_sab_decadal_trends_v2.2/REPORT.md
+reproducibility:
+  source_hashes:
+    scripts/analyze_sab_decadal_trends.py: 6a9645560f36fbe83c57b6ad5a1c8f53bef0baff7f64456e5ea211f5c95f2873
+  environment_lock: pyproject.toml sha256 d2cf34b1b60e4a5eaff10d5c47f27fafb7d25295eecb4ea6bfa69f2a8c93966
+outcome:
+  completed_utc: 2026-09-30T05:20:00Z
+  ta_status: not_identifiable
+  sss_status: diagnostic_only
+  allowed_claims:
+    - Existing unsealed SAB TA observations cannot identify a regional decadal trend.
+    - SAB SSS has a weak negative adjusted diagnostic estimate, but its confidence interval includes zero and the signal is not spatially uniform.
+    - Locked-test and external-independent labels remain sealed.
+
