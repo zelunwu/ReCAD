@@ -28,7 +28,7 @@ artifacts:
   report: docs/experiment_archive/p1_ta_sss_sab_decadal_trends_v2.2/REPORT.md
 reproducibility:
   source_hashes:
-    scripts/analyze_sab_decadal_trends.py: 6a9645560f36fbe83c57b6ad5a1c8f53bef0baff7f64456e5ea211f5c95f2873
+    scripts/analyze_sab_decadal_trends.py: 006fcbdfb50dba71b9053c7b117d7f91f24b31658688eccb350844a9a3313b6b
   environment_lock: pyproject.toml sha256 d2cf34b1b60e4a5eaff10d5c47f27fafb7d25295eecb4ea6bfa69f2a8c93966
 outcome:
   completed_utc: 2026-09-30T05:20:00Z

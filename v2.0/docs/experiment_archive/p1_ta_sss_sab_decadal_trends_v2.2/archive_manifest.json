@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "experiment_id": "p1_ta_sss_sab_decadal_trends_v2.2",
-  "created_utc": "2026-09-30T05:03:24.776746+00:00",
+  "created_utc": "2026-09-30T05:07:50.964315+00:00",
   "training_git_commit": "not_applicable_observational_diagnostic",
   "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
   "locked_test_opened": false,
@@ -11,8 +11,8 @@
     "TA": "not_identifiable",
     "SSS": "diagnostic_only"
   },
-  "archive_builder_sha256": "6a9645560f36fbe83c57b6ad5a1c8f53bef0baff7f64456e5ea211f5c95f2873",
-  "analysis_script_sha256": "6a9645560f36fbe83c57b6ad5a1c8f53bef0baff7f64456e5ea211f5c95f2873",
+  "archive_builder_sha256": "006fcbdfb50dba71b9053c7b117d7f91f24b31658688eccb350844a9a3313b6b",
+  "analysis_script_sha256": "006fcbdfb50dba71b9053c7b117d7f91f24b31658688eccb350844a9a3313b6b",
   "source_artifacts_sha256": {
     "carbon_cache": "a7b8c311ac55f80ebf6e17c647d374c0459be0898ba79fdfdc751fe5634bd059",
     "socat_cache": "8fbf2876308b457d11c5838041c05d6ff44b0f7c9731ac8def31878d73ac5fdb"
@@ -60,19 +60,19 @@
     "CAPTIONS.md": "50e789b5e42cfe903d057e677522fbccbf64f526de9f3d574828883fbe3c31c3",
     "figures/fig01_ta_annual_coverage.png": "59970337a220bbc691015ca38ea0cb86e00a272279468ad79282619d8562e390",
     "figures/fig02_ta_cruise_means.png": "ffebd9430c8b3db2d75a7a9364bd735a341fd7cba74898e4adf0bb7bbb8b3108",
-    "figures/fig03_ta_method_sensitivity.png": "c80dba97649e8b4e9731f4de1048eb14631fcce857f3a604dec540966351f23e",
+    "figures/fig03_ta_method_sensitivity.png": "faa2aceaca35c1cfb1c4fbb3953ab00a6945d1dbe615d2e2a585019c22007021",
     "figures/fig04_sss_annual_coverage.png": "092a59dbbbde068c97026a7666972d9d8b1b38a56b3f8b9f76b74833dffd1ee2",
     "figures/fig05_sss_cruise_means.png": "b1bbdffebb53bc3c422c0b0a455c48aa40b29696e57a3c0e4fa69e55333bda7f",
-    "figures/fig06_sss_end_year_sensitivity.png": "a6c26da8658cf19ae7c29e42f533e127eae8b68157e675e405f11222f862d7ff",
+    "figures/fig06_sss_end_year_sensitivity.png": "20b319cb19761adb66b311c5c905260a8fe910b405bc6619ebb5f2c548f5044a",
     "figures/fig07_decade_summaries.png": "f927363215b9d4fd7e2e3090caa004bb60f65c88ddd54f422812b89eb1e2fd08",
     "figures/fig08_sss_latitude_band_trends.png": "0173e6da31d603b485401e1fdf2cdbed76e5ef941a2130d6992380df3abb437a",
     "tables/table01_scope.csv": "07c15a1ff2376215d18e61baa20301faf2416c4f4dc1eac1fe6fe5fd087faea9",
     "tables/table02_annual_coverage.csv": "5ed09adec5e9df12e881ded15893539fa61b058087334b96af1b525fe3a66602",
     "tables/table03_decade_summaries.csv": "d6615264654b6f4f786e0148e28a26bb6933444c83b66659abd65ef3beffc057",
-    "tables/table04_trend_estimates.csv": "ac2094f695b2f901c4b2adb99d4c1a23eacf473f5642d728b2dc382dee65e034",
+    "tables/table04_trend_estimates.csv": "eb5a7d88018b607b2b1bd4f81ab3598d969fa9edcdcfce0162fc127fc4f58e3c",
     "tables/table05_cruise_robust_sensitivity.csv": "96af741028483c5f18f853c892dbcc6ce8759d7717be24d7698dfa8f908bc0f9",
-    "tables/table06_sss_end_year_sensitivity.csv": "576bbac1f923b6684a4bc687239792b7e3c0b960d47b3a02fb9adaf81584aa18",
-    "tables/table07_sss_latitude_band_trends.csv": "4a5e2e0e534f8607a76c64350181146e489609485d4d3fd7a5bbb6f5720a0f19",
+    "tables/table06_sss_end_year_sensitivity.csv": "d1a5cb4e0f13d0292830659df83cfc6517b9bc4ec5b4b421cf3b81242fcf83b9",
+    "tables/table07_sss_latitude_band_trends.csv": "2a6157e2a8add6b6f10ce46412ec469994fe21a0429a59c2774ad93caa928421",
     "tables/table08_cruise_means.csv": "f784172b6b122ec7033045ba16d45230734bd5d0a6f7c52d16797c7180f2cb39"
   }
 }

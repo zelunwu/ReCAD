@@ -11,7 +11,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm
+from scipy.stats import norm
 from sklearn.linear_model import TheilSenRegressor
 
 from recad.evaluate.p1_framework import FrozenManifest, P1DataGateway, Purpose, sha256
@@ -75,7 +75,9 @@ def design_matrix(
         )
     if adjust_sss:
         data["salinity"] = frame.salinity.to_numpy(float) - frame.salinity.mean()
-    return sm.add_constant(pd.DataFrame(data), has_constant="add")
+    design = pd.DataFrame(data)
+    design.insert(0, "const", 1.0)
+    return design
 
 
 def fit_clustered_trend(
@@ -102,25 +104,40 @@ def fit_clustered_trend(
             "p_value": np.nan,
         }
     counts = work.groupby("group_key").truth.transform("size")
-    model = sm.WLS(
-        work.truth.to_numpy(float),
-        design_matrix(
-            work,
-            adjust_season_space=adjust_season_space,
-            adjust_sss=adjust_sss,
-        ),
-        weights=1.0 / counts.to_numpy(float),
-    ).fit(cov_type="cluster", cov_kwds={"groups": work.group_key.to_numpy()})
-    interval = model.conf_int().loc["trend_per_decade"]
+    design = design_matrix(
+        work,
+        adjust_season_space=adjust_season_space,
+        adjust_sss=adjust_sss,
+    )
+    x = design.to_numpy(float)
+    y = work.truth.to_numpy(float)
+    weights = 1.0 / counts.to_numpy(float)
+    bread = np.linalg.pinv(x.T @ (weights[:, None] * x))
+    coefficients = bread @ (x.T @ (weights * y))
+    residuals = y - x @ coefficients
+    groups = work.group_key.to_numpy()
+    meat = np.zeros((x.shape[1], x.shape[1]), dtype=float)
+    for group in pd.unique(groups):
+        selected = groups == group
+        score = x[selected].T @ (weights[selected] * residuals[selected])
+        meat += np.outer(score, score)
+    clusters = work.group_key.nunique()
+    observations, parameters = x.shape
+    correction = (clusters / (clusters - 1)) * ((observations - 1) / (observations - parameters))
+    covariance = correction * bread @ meat @ bread
+    trend_index = design.columns.get_loc("trend_per_decade")
+    slope = coefficients[trend_index]
+    standard_error = np.sqrt(max(covariance[trend_index, trend_index], 0.0))
+    z_score = slope / standard_error if standard_error > 0 else np.inf
     return {
         "method": method,
         "n": len(work),
         "cruises": work.group_key.nunique(),
         "years": work.year.nunique(),
-        "slope_per_decade": model.params.trend_per_decade,
-        "ci_low": interval.iloc[0],
-        "ci_high": interval.iloc[1],
-        "p_value": model.pvalues.trend_per_decade,
+        "slope_per_decade": slope,
+        "ci_low": slope - 1.96 * standard_error,
+        "ci_high": slope + 1.96 * standard_error,
+        "p_value": 2 * norm.sf(abs(z_score)),
     }
 
 
