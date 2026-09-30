@@ -24,6 +24,7 @@ SPEC.loader.exec_module(MODULE)
         "p1_sss_viability_v2.2",
         "p1_fco2_viability_v2.2",
         "p1_ta_viability_v2.2",
+        "p1_ta_bights_v2.2",
     ],
 )
 def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -> None:

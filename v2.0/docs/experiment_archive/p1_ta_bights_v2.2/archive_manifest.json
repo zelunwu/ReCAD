@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p1_ta_bights_v2.2",
+  "created_utc": "2026-09-30T03:22:04.404970+00:00",
+  "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_ta_bights_v2.2",
+  "training_git_commit": "61d8dbaf4813680948fce7bf8f903d34a31d6db7",
+  "preregistration_git_commit": "3936cc4658cf1d3912fc6611ff6ad4412ad7e44a",
+  "archive_builder": "scripts/build_p1_ta_bights_reviewer_archive.py",
+  "archive_builder_sha256": "b836551d130a9646505a9da6a6059afe055017b3ca65031cf8b003fa42c00815",
+  "analysis_script_sha256": "661b17a83419fdd4dab89075ecbfca350a8b9708798759e7097cb0f6f24286bf",
+  "source_artifacts_sha256": {
+    "sab/summary.csv": "5a47bf3eda0919e50f7fbf355648bc7fb1da0b35491837540417effbdc3b7402",
+    "sab/cv_metrics.csv": "07e62c15a31a9e38478d1b445e080d85b06543bbaeb1f60be149fa9430800a69",
+    "sab/stratified_metrics.csv": "3f04db837c23728ebab06825e28a5134d4daf2b0317729f757acc5f0afb35178",
+    "sab/forward_metrics.csv": "32ed3193107504c6eef0462dce38fd1cbb907ca1cff42167fefc4809f90b9993",
+    "sab/leave_lme_out_metrics.csv": "b00e33a8504b542518e9513bbd8fd804f7e04380ee0cd15a08ea49c7e52e2b5b",
+    "sab/selected_development_predictions.parquet": "765a910b8cb289e718baa31b4bef63415390edf37ddb064b08488d961808b5bc",
+    "sab/development_gate.json": "9ceffdf3691d39bede6dc6989f8f6f54e00430fec582e417a24141fad061dae3",
+    "sab/selection.json": "6cb7207d6614077d2de17f9a7ddaff3bcdbc054bf9b30860d9fea003bd446ac3",
+    "sab/protocol.json": "8470d5a6dc2a0ac249a2877200e71fe6f7772bf5c4234267e653c6d276b834df",
+    "mab/summary.csv": "c75f12ed9e7ae072e51533e7f23aa773d23e95f2b8911a113fae95a84905e9f3",
+    "mab/cv_metrics.csv": "61dabd7660ca6352ac21b078e57f8490affcbbe07ed5f99c8bc929a9a3857d38",
+    "mab/stratified_metrics.csv": "5cb2e0b5bb60c346ad43d93d06e8c89e989814fad9fb2eaa1e269df0c2338db5",
+    "mab/forward_metrics.csv": "7ecc50ffeddfb936daacb0b06adfbfe163acf6f968313de28100533d0ecea614",
+    "mab/leave_lme_out_metrics.csv": "90c6d717601a74d819c00a954685ca425a539aaffe2f087dee47599ec529cfb0",
+    "mab/selected_development_predictions.parquet": "2bba80e0e65dd3f8d263ef7b5c49efe4dabbe85a03da2fd94b1109053bd91210",
+    "mab/development_gate.json": "465c14b54a0eb9f76fd299f8892352cdcc7fe12c435219efd58345303b8294bf",
+    "mab/selection.json": "a428227fb5eaad4668082cee049f099fa17326f7390b0134370dffc99f02c5ff",
+    "mab/protocol.json": "645aa414a686d4dc3844d3914f031667a69362387301ea9e14b3c9275471b73c"
+  },
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "Separate SAB and broad-geographic-MAB train/development, grouped CV and safe-forward evidence",
+  "decision": {
+    "sab": "fail",
+    "mab": "diagnostic_only"
+  },
+  "figure_source_data": {
+    "fig01_development_model_comparison.png": [
+      "table01_development_model_summary.csv"
+    ],
+    "fig02_grouped_cv.png": [
+      "table02_grouped_cv_summary.csv"
+    ],
+    "fig03_observed_vs_predicted.png": [
+      "local:sab/selected_development_predictions.parquet",
+      "local:mab/selected_development_predictions.parquet"
+    ],
+    "fig04_subregion_skill.png": [
+      "table03_subregion_skill.csv"
+    ],
+    "fig05_support_distance_skill.png": [
+      "table04_support_distance_skill.csv"
+    ],
+    "fig06_salinity_band_skill.png": [
+      "table05_salinity_band_skill.csv"
+    ],
+    "fig07_safe_forward.png": [
+      "table06_safe_forward_metrics.csv"
+    ],
+    "fig08_leave_subregion_out.png": [
+      "table07_leave_subregion_out.csv"
+    ],
+    "fig09_uncertainty_calibration.png": [
+      "table09_uncertainty_calibration.csv"
+    ],
+    "fig10_development_gates.png": [
+      "table10_development_gates.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_development_model_comparison.png": "Development TA RMSE for independently trained SAB and MAB candidates under pooled, cruise-equal, and frozen subregion-macro aggregation. The in-situ-SSS Carter oracle is diagnostic only and excluded from selection; lower is better.",
+    "fig02_grouped_cv.png": "Five-fold cruise-grouped training cross-validation subregion-macro RMSE. Error bars show one standard deviation across folds. SAB estimates are unstable because one frozen fold contains only one training record, while MAB favors the simpler hierarchical linear relation over the nonlinear residual model in CV.",
+    "fig03_observed_vs_predicted.png": "Development observation-prediction density for Carter/ESPER and each region's selected model. The selected SAB model has RMSE 99.3 \u00b5mol kg\u207b\u00b9 and fails to improve pooled Carter error; the selected MAB ensemble reaches 39.9 \u00b5mol kg\u207b\u00b9.",
+    "fig04_subregion_skill.png": "Development MSE skill relative to Carter/ESPER in the preregistered south, central, and north latitude subregions. Labels give record counts. SAB central skill is negative and dominates the regional sample, whereas all three populated MAB subregions show positive skill.",
+    "fig05_support_distance_skill.png": "Development MSE skill relative to Carter/ESPER by haversine distance to the nearest training TA observation. Every populated bin is retained regardless of sample size; SAB fails in its dominant 0-25 km bin, while all populated MAB bins are positive.",
+    "fig06_salinity_band_skill.png": "Development skill relative to Carter/ESPER stratified by collocated observed salinity, which is used only for evaluation. Sparse low-salinity SAB records have very large errors, and the main 33-36 band also degrades; MAB remains positive but has weak improvement in the 33-36 band.",
+    "fig07_safe_forward.png": "Safe forward-time evaluation uses only primary-train groups assigned to forward train and primary-development groups assigned to forward development. SAB has 0 eligible development records, so no forward claim is possible; MAB has 31 records from one cruise.",
+    "fig08_leave_subregion_out.png": "Leave-one-subregion-out transfer skill for the hierarchical linear TA-SSS relation relative to Carter/ESPER. Only subregions meeting the frozen minimum of 30 rows and three cruises are evaluated; sparse SAB edge subregions cannot support a complete transfer test.",
+    "fig09_uncertainty_calibration.png": "Development coverage of symmetric conformal intervals calibrated from five-fold training OOF absolute residuals. SAB coverage falls inside the frozen 85-95% band, while MAB coverage is 98.5%, showing that its 90% interval is materially overconservative.",
+    "fig10_development_gates.png": "Frozen development gates evaluated separately by bight. SAB fails multiple prediction and evidence gates and is classified fail. MAB passes every skill gate but fails uncertainty calibration, so it remains diagnostic-only and the locked test stays sealed."
+  },
+  "files_sha256": {
+    "README.md": "881783bf582746f835524539725452745c3603d84180d9beeacb5f96980578c6",
+    "REPORT.md": "9af3f2cd42e8c4d895547c81a54c7917cb528ef891d7adcb0e7971b97fb7f439",
+    "CAPTIONS.md": "d48a9d0bd0230d016bd47fdcd7a3d4af66fa344136efb54e333cd12924d7d10f",
+    "figures/fig01_development_model_comparison.png": "d53a198f440d744fb47125bad2e5ac1c14c0085745df7b6d5e816a51eae05390",
+    "figures/fig02_grouped_cv.png": "22730a816238e7547cd9fde8752e919f653ac74bdd381b0f4c62e4bf7840b0d1",
+    "figures/fig03_observed_vs_predicted.png": "439163edfaca751a135a8fadab82b0498c984f400031a7ed1693b26a8bd3653f",
+    "figures/fig04_subregion_skill.png": "a0f0507b25333ef946d4470d7f4e08ae03acaa13386abd69379801c7349e8a51",
+    "figures/fig05_support_distance_skill.png": "bc6e561b1acd3600eee40d7a99307ab631e74d882c368dd28089f96c5c9d8031",
+    "figures/fig06_salinity_band_skill.png": "ceb84f2d44c6d53e82554c240bff1793716d537587253121fedd3f8442a24e41",
+    "figures/fig07_safe_forward.png": "ad67507880ba16187c311e9690ab99e4091e29656ff2470a0ef696faff5271af",
+    "figures/fig08_leave_subregion_out.png": "3acff8ed0910932dfa19f5284b072d0d550c86e83f19180c4ac7df67dfb0c650",
+    "figures/fig09_uncertainty_calibration.png": "628bebf97929333f3539933e7524b5131a7f2cf214dee163a2aa51db3689193a",
+    "figures/fig10_development_gates.png": "3ca13eab7c32057d492102241fcce34542115fd931288616debcc0943ef7ada7",
+    "tables/table01_development_model_summary.csv": "3296a0a62da8b7a081a096b907811bf6e8de49fb92ec8e8b511fc307e45ba46e",
+    "tables/table02_grouped_cv_summary.csv": "8f7bc480132d5293401c4ee62a077a82c81a7a34b78f29ef7f46dc45a64ed8df",
+    "tables/table03_subregion_skill.csv": "a0bd9758c9e58362ebf32979da7de8b725308799d3262d3977f4d69fb82680bd",
+    "tables/table04_support_distance_skill.csv": "77516ea82f40428a4ad345d99974ba9432be2369e403374b35bdac1cced4134c",
+    "tables/table05_salinity_band_skill.csv": "f774a6fffa181f22cba62be3185ce4d726487f23d3afbca3cb86cf0b54b3966d",
+    "tables/table06_safe_forward_metrics.csv": "df5364f5c060232ed472d0a8c19eb06474a7cd5cf439087c81f07a2a104887cc",
+    "tables/table07_leave_subregion_out.csv": "cde837875e756ea7b928cc90a0b76f8214245c9e940ba8e81eea929438370f37",
+    "tables/table08_selected_ensemble_metrics.csv": "02bd0fa198350255072331ccdcdd30a72626b1e5a5f850a9adbe48dbe062d67c",
+    "tables/table09_uncertainty_calibration.csv": "45d36baba1cf2665915a48c205de58ced0e832a1700e489c907574f8762839ad",
+    "tables/table10_development_gates.csv": "f2f3940d8bb455b92a7175cfb75fd8fc3322d97db4137f7549e54d79f92a1695",
+    "tables/table11_data_scope.csv": "bf54ba3c8a1b24f897d2fc13faced598f4adc9af389c1298ff5103956632c966"
+  }
+}
