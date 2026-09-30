@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p1_ta_viability_v2.2",
+  "created_utc": "2026-09-30T02:25:11.389936+00:00",
+  "source_experiment_directory": "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\experiments\\p1_ta_viability_v2.2",
+  "training_git_commit": "db75f7c233ea143aea1769339bfec1e9237f8896",
+  "preregistration_git_commit": "dfeb2f0a2855b3b84630c8dd1a466eff7af2738f",
+  "archive_builder": "scripts/build_p1_ta_reviewer_archive.py",
+  "archive_builder_sha256": "3800a9ee40f23335885c28c2fd4e7ba80046291e86130a23f67e9c4df84f80c5",
+  "analysis_script_sha256": "fb813bea2141eb34f8bf3ed424b86edd1a95b0313d3a8acfcfcaf6c575b0ce47",
+  "source_artifacts_sha256": {
+    "candidate_predictions.parquet": "a8c94cd1eab7d826a346f48d9b16a060dc7b5557380feae4a798698c69e5d40b",
+    "selected_development_predictions.parquet": "ec73817f8d9d1fb1230d3cb5b047d30b278deb87349a8f72780c59247e7a999f",
+    "summary.csv": "33b2fd59cdda234e15ff8e655b87238154e3ba7025f49b55c904e0eb3c730938",
+    "cv_metrics.csv": "4dc84b724d3903102514a189541d9d0f1930dcc89a6d6f2f31c178530b6f467a",
+    "forward_metrics.csv": "8670585698d6242d7bbbe0963e59e91178eb488333163fbf4df2b312388601dc",
+    "leave_lme_out_metrics.csv": "985f800ab61565442a0772ab76e587a89c5668466994d6306357d6d3396778a1",
+    "development_gate.json": "19e677d121459bb05013a9c62b830a5a1f9fee2ababdc8342276fb31c26deaaf",
+    "selection.json": "1c89b03b7488ec8b73b09fd9a4d0c1af454a1c96c9d0b37aafc0ab8a2abb4712",
+    "protocol.json": "57bcc4e85e851877bae76cf56fbca4d76f09d3c0646322aeceebf9e6c6bca781"
+  },
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "data_hash_mode": "full",
+  "esper_mat_sha256": "a1887e209c2b63393bc54eaaa9e90e713e99c1708465403bd4b42ba2aebf1cfc",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "North-American coastal train/development, grouped CV, safe-forward and leave-LME-out only",
+  "decision": "diagnostic_only_do_not_open_locked_test",
+  "figure_source_data": {
+    "fig01_development_model_comparison.png": [
+      "table01_development_model_summary.csv"
+    ],
+    "fig02_five_fold_cv.png": [
+      "table02_five_fold_cv_summary.csv"
+    ],
+    "fig03_lme_skill.png": [
+      "table04_lme_skill.csv"
+    ],
+    "fig04_salinity_band_skill.png": [
+      "table05_salinity_band_skill.csv"
+    ],
+    "fig05_support_distance_skill.png": [
+      "table06_support_distance_skill.csv"
+    ],
+    "fig06_safe_forward.png": [
+      "table07_safe_forward_metrics.csv"
+    ],
+    "fig07_leave_lme_out.png": [
+      "table08_leave_lme_out_metrics.csv"
+    ],
+    "fig08_observed_vs_predicted.png": [
+      "local:candidate_predictions.parquet"
+    ],
+    "fig09_uncertainty_calibration.png": [
+      "table10_uncertainty_calibration.csv",
+      "local:selected_development_predictions.parquet"
+    ],
+    "fig10_development_gates.png": [
+      "table09_development_gates.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_development_model_comparison.png": "Development TA RMSE under pooled, cruise-equal, and LME-macro aggregation. All deployable models use background SSS; the purple Carter oracle uses collocated in-situ salinity only to show the information ceiling and is excluded from selection. Lower is better.",
+    "fig02_five_fold_cv.png": "Five-fold cruise-grouped training cross-validation LME-macro RMSE. Error bars show one standard deviation across folds. Hierarchical TA-SSS is more stable than the nonlinear residual model, which contrasts with the development ranking and limits the nonlinear claim.",
+    "fig03_lme_skill.png": "Development MSE skill of the three-seed hierarchical residual ensemble relative to Carter/ESPER for each LME. Labels show records and cruises. Negative skill in LME 3 and LME 54 is retained; LME 54 has only one development cruise.",
+    "fig04_salinity_band_skill.png": "Development skill relative to Carter/ESPER stratified by collocated observed salinity. Observed salinity is used only for evaluation strata, never as a deployable model input; labels give record counts. Skill is negative in the 33-36 and >=36 bands, showing a high-salinity regime failure.",
+    "fig05_support_distance_skill.png": "Development skill relative to Carter/ESPER by haversine distance to the nearest training TA observation. Skill is negative in the two most distant populated bins; the worst bin skill is -16.33. Sparse counts do not permit removing these preregistered failures.",
+    "fig06_safe_forward.png": "Safe forward-time evidence using only primary-train groups assigned to the frozen <=2018 training period and primary-development groups assigned to 2019-2021. No primary locked groups are materialized.",
+    "fig07_leave_lme_out.png": "Leave-one-LME-out transfer skill for hierarchical TA-SSS relative to Carter/ESPER. Positive mean skill is marginal and several complete held-out LMEs degrade, showing that regional transfer remains weak.",
+    "fig08_observed_vs_predicted.png": "Development observation-prediction density for Carter with background SSS, the selected three-seed ensemble, and the in-situ-SSS Carter oracle. The selected ensemble pooled RMSE is 90.1 \u00b5mol kg\u207b\u00b9. The oracle gap isolates the cost of deployable SSS inputs.",
+    "fig09_uncertainty_calibration.png": "Development absolute-error distributions. The selected interval half-width (120.6 \u00b5mol kg\u207b\u00b9) was calibrated only from five-fold training OOF residuals and attains 0.945 development coverage.",
+    "fig10_development_gates.png": "Frozen P1.3 development gates. Cruise-equal improvement over both comparators and positive skill in every populated support-distance bin fail, so the locked test remains sealed and TA is diagnostic-only."
+  },
+  "files_sha256": {
+    "CAPTIONS.md": "e6a7eefb2d53d06aaa9cee1945040bc9181453cd88d4b0d4742e35fdeeffa9ff",
+    "README.md": "38323eb4168af0a546a1eacb242ff6b5aab4744f7d8401daf621665d6f3958c1",
+    "REPORT.md": "2c9275f8e119574bb638562b2c2d9fce23fd711b553e3c2a4b0db846078b1a75",
+    "figures/fig01_development_model_comparison.png": "809c4dc882a7b7fcfcb615528cf5b1b76f98a67df7390bac7ece53dcaaf19299",
+    "figures/fig02_five_fold_cv.png": "0e16e35f56cbf52b9af94e21a341d90eaf1f7057e06a2e54024ed76f16c60249",
+    "figures/fig03_lme_skill.png": "8c0ae0fd85f2c2c8e30303376a735878895af9eb6bdec9e7d141b24ffa8b66ca",
+    "figures/fig04_salinity_band_skill.png": "be30a983e7a2b9140fe1108c2658bac0207c287d92834e9cce13a82cfd8f2582",
+    "figures/fig05_support_distance_skill.png": "57b72230c72f04995e5c7a1336757817adf8b8884ad7403adc7ba026570a6f76",
+    "figures/fig06_safe_forward.png": "b00fd520b67d4b98fad557f6af858533bdba86abd79b5899636d0925dba984d5",
+    "figures/fig07_leave_lme_out.png": "a785749377ed900776161c15712406f253247c75f72b83bcd3c709511e48359a",
+    "figures/fig08_observed_vs_predicted.png": "bbae2b2b1ea37aa97650bcde373c6d88785dcc65007788960f6b4bba8ef51718",
+    "figures/fig09_uncertainty_calibration.png": "636129db9490a668397a436c265fa539a0466d87c9af97d772b4a334670e05d8",
+    "figures/fig10_development_gates.png": "a1b28e6c9444c657b2711ff7183cff926e1ee5e865314ebe32a7896e231b68f9",
+    "tables/table01_development_model_summary.csv": "6298537ba10d3af1c7965671eb19c004b54c10f3d7c033c3b6f4b6d1da218116",
+    "tables/table02_five_fold_cv_summary.csv": "9e8dd51ec71f1955b343770e7b22a34420a0262c851bf0336d92bbc3c88dbfb9",
+    "tables/table03_selected_ensemble_metrics.csv": "6daeb6d3b9464e822c08600531351f58bd4841c9178507cd116a379eece40709",
+    "tables/table04_lme_skill.csv": "33bed7e6bff5bc0792c71f89eb900b91c6645cb0c4301994ae00b03d53039bdb",
+    "tables/table05_salinity_band_skill.csv": "6ac03390b832f853e7484099a25901027250264c0936e85997638ea5c8db119e",
+    "tables/table06_support_distance_skill.csv": "41fcd924ee5a5edf54bf53e81b8f3478b3f914392ea63e0f0e52f2e932d22fd2",
+    "tables/table07_safe_forward_metrics.csv": "72ce7f8374a6af8809486382d6f9ab644aefecc32b8ad31743f826e0c603e7e1",
+    "tables/table08_leave_lme_out_metrics.csv": "5f0212f7e6eef2c7971ebe5f79884bd9b89df4b0bc53b979c6c559fbefc8ba46",
+    "tables/table09_development_gates.csv": "d9232d6d94b7d3243e88ac8e7fd7c3468c836aa9017eb98f6c8378ad4d935893",
+    "tables/table10_uncertainty_calibration.csv": "1e8df5326af22c73432a9f6d15e005d517c0d559d69c80e427874032ba5ae322",
+    "tables/table11_data_scope.csv": "f67306262c378bb1d535bbb247c6e65f3bbe5a63356a9997d811a2654872fd82"
+  }
+}

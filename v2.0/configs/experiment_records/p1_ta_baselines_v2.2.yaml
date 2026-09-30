@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_ta_baselines_v2.2
-status: preregistered
+status: completed_diagnostic_only
 owner: ReCAD
 created_utc: 2026-09-28T05:35:00Z
 science:
@@ -48,7 +48,45 @@ evaluation:
   calibration_metrics: [coverage_90, interval_width]
   baselines: [Carter_ESPER, global_TA_SSS_linear, LME_TA_SSS_linear]
   leakage_controls: [support_distance_recomputed_from_training_coordinates, safe_forward_intersection_only, locked_and_external_labels_unopened]
-reproducibility: {git_commit: null, git_worktree_clean: false, source_hashes: {}, environment_lock: null}
-artifacts: {output_directory: outputs/experiments/p1_ta_baselines_v2.2, protocol: this file, data_manifest: configs/frozen/data_manifest_v2.2.json, selection: null, checkpoints: [], predictions: [], metrics: [], figures: [], report: null}
-outcome: {completed_utc: null, primary_result: null, acceptance_gate_passed: null, deviations: [], invalidation_reason: null, evidence_grade: null, allowed_claims: null}
+reproducibility:
+  git_commit: db75f7c233ea143aea1769339bfec1e9237f8896
+  preregistration_git_commit: dfeb2f0a2855b3b84630c8dd1a466eff7af2738f
+  git_worktree_clean: false
+  source_hashes:
+    scripts/run_p1_ta_viability.py: fb813bea2141eb34f8bf3ed424b86edd1a95b0313d3a8acfcfcaf6c575b0ce47
+    ESPER_LIR_Files/LIR_files_TA_v3.mat: a1887e209c2b63393bc54eaaa9e90e713e99c1708465403bd4b42ba2aebf1cfc
+  environment_lock: pyproject.toml sha256 d2cf34b1b60e4a5eaff10d5c47f27fafb7d25295eecb4ea6bfa69f2a8c93966
+artifacts:
+  output_directory: outputs/experiments/p1_ta_viability_v2.2
+  protocol: outputs/experiments/p1_ta_viability_v2.2/protocol.json
+  data_manifest: configs/frozen/data_manifest_v2.2.json
+  selection: outputs/experiments/p1_ta_viability_v2.2/selection.json
+  checkpoints: []
+  predictions:
+    - outputs/experiments/p1_ta_viability_v2.2/candidate_predictions.parquet
+    - outputs/experiments/p1_ta_viability_v2.2/selected_development_predictions.parquet
+  metrics:
+    - outputs/experiments/p1_ta_viability_v2.2/summary.csv
+    - outputs/experiments/p1_ta_viability_v2.2/cv_metrics.csv
+    - outputs/experiments/p1_ta_viability_v2.2/forward_metrics.csv
+    - outputs/experiments/p1_ta_viability_v2.2/leave_lme_out_metrics.csv
+    - outputs/experiments/p1_ta_viability_v2.2/development_gate.json
+  figures: docs/experiment_archive/p1_ta_viability_v2.2/figures
+  report: docs/experiment_archive/p1_ta_viability_v2.2/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p1_ta_viability_v2.2
+    verification_status: verified
+outcome:
+  completed_utc: 2026-09-30T02:23:14Z
+  primary_result: hierarchical residual ensemble improved pooled and LME-macro development error over Carter, but failed cruise-equal and every-populated-support-bin gates
+  acceptance_gate_passed: false
+  deviations:
+    - Safe-forward evaluation used the intersection of primary and forward assignments because the legacy forward assignment contains primary locked groups.
+    - Nearest-support distance was recomputed from train-only TA coordinates because the observation-anchor cache distance is zero.
+  invalidation_reason: null
+  evidence_grade: A development evidence; diagnostic-only product decision
+  allowed_claims:
+    - Local and hierarchical calibration can reduce North-American coastal development TA error relative to raw Carter/ESPER where training support is close.
+    - Background-SSS uncertainty and unsupported-distance transfer prevent a production TA claim.
+    - Locked-test and external-independent performance are unknown because their labels remain sealed.
 
