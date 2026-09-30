@@ -123,3 +123,19 @@ def test_bight_definitions_use_frozen_lme_and_endpoint_masks() -> None:
     assert mab.subregion.tolist() == ["south", "central"]
     assert sab.source_lme_id.eq(6).all()
     assert mab.source_lme_id.eq(7).all()
+
+
+def test_sab_sensitivity_changes_only_southern_boundary() -> None:
+    frame = pd.DataFrame(
+        {
+            "lme_id": [6, 6, 6, 6, 7],
+            "latitude": [25.9, 26.5, 27.5, 31.0, 27.5],
+        }
+    )
+
+    lat26 = MODULE.apply_bight_definition(frame, "sab", sab_lat_min=26.0)
+    lat28 = MODULE.apply_bight_definition(frame, "sab", sab_lat_min=28.45)
+
+    assert lat26.latitude.tolist() == [26.5, 27.5, 31.0]
+    assert lat26.subregion.tolist() == ["26_27", "27_28.45", "30.5_33"]
+    assert lat28.latitude.tolist() == [31.0]
