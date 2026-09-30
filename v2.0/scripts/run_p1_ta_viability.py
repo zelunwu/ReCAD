@@ -47,6 +47,10 @@ def git_head() -> str:
 
 
 def stable_id(frame: pd.DataFrame) -> pd.Series:
+    if "obs_id" in frame:
+        identifier = frame.obs_id.astype(str)
+        if identifier.notna().all() and identifier.is_unique:
+            return identifier
     return (
         frame.group_key.astype(str)
         + ":"
@@ -513,7 +517,7 @@ def main() -> int:
     manifest = FrozenManifest.load(ROOT / "configs/frozen/data_manifest_v2.2.json")
     validation = manifest.validate(hash_mode="full")
     gateway = P1DataGateway(manifest)
-    columns = ["salinity", "sst", "sss", "adt", "wspd", "pco2air", "temperature"]
+    columns = ["obs_id", "salinity", "sst", "sss", "adt", "wspd", "pco2air", "temperature"]
     train = prepare(gateway.load_labels("ta", Purpose.TRAIN, columns=columns))
     development = prepare(gateway.load_labels("ta", Purpose.SELECTION, columns=columns))
     estimator = ESPER_LIR_TA.from_mat(args.esper_mat)

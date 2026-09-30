@@ -79,3 +79,17 @@ def test_numpy_gate_values_can_be_normalized_for_json() -> None:
     checks = {"passed": np.bool_(True), "failed": np.bool_(False)}
     normalized = {name: bool(value) for name, value in checks.items()}
     assert json.loads(json.dumps(normalized)) == {"passed": True, "failed": False}
+
+
+def test_stable_id_preserves_distinct_observations_at_same_location() -> None:
+    frame = pd.DataFrame(
+        {
+            "obs_id": ["a", "b"],
+            "group_key": ["cruise", "cruise"],
+            "year": [2020, 2020],
+            "month": [1, 1],
+            "latitude": [40.0, 40.0],
+            "longitude": [-70.0, -70.0],
+        }
+    )
+    assert MODULE.stable_id(frame).tolist() == ["a", "b"]
