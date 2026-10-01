@@ -1,0 +1,5 @@
+target,best_simple,best_simple_mean_aurc,best_complex,best_complex_mean_aurc,complex_relative_improvement,complex_margin_pass,retained_method,retained_mean_aurc,monotonic_method_exists
+dic,region,1.0082938949864957,environment_k8,0.9638050980005716,0.04412284672865141,False,region,1.0082938949864957,False
+fco2,region,0.8405742188543729,environment_k64,0.7467333424206014,0.11163901334217474,True,environment_k64,0.7467333424206014,True
+sss,region,0.8075627894542339,environment_k64,0.7296632369871883,0.09646253329687415,True,environment_k64,0.7296632369871883,True
+ta,region,0.9419934630927201,environment_k64,0.9314249121543412,0.011219346367522198,False,region,0.9419934630927201,False

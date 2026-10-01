@@ -1,0 +1,17 @@
+target,outer_scheme,records,cruises,folds
+dic,cruise,4516,250,5
+dic,forward,969,53,1
+dic,spatial_block,4516,250,5
+dic,whole_lme,4516,250,5
+fco2,cruise,359603,2499,5
+fco2,forward,65923,378,1
+fco2,spatial_block,359603,2499,5
+fco2,whole_lme,359603,2499,5
+sss,cruise,330961,2255,5
+sss,forward,63715,360,1
+sss,spatial_block,330961,2255,5
+sss,whole_lme,330961,2255,5
+ta,cruise,4515,254,5
+ta,forward,945,51,1
+ta,spatial_block,4515,254,5
+ta,whole_lme,4515,254,5

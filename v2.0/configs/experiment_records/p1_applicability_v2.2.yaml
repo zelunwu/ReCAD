@@ -59,9 +59,10 @@ evaluation:
   baselines: [geographic distance, regional support count]
 
 reproducibility:
-  git_commit: set by formal runner from the preregistration commit
-  git_worktree_clean: required before formal run
-  source_hashes: {}
+  git_commit: 835f01d020797e6cfee59e5c15724d91913cbdd2
+  git_worktree_clean: true at formal run start
+  source_hashes:
+    archive_manifest: docs/experiment_archive/p1_applicability_v2.2/archive_manifest.json
   environment_lock: pyproject.toml plus local ReCAD v2 virtual environment
 
 artifacts:
@@ -72,16 +73,22 @@ artifacts:
   checkpoints: []
   predictions: [outer_predictions.parquet]
   metrics: [support_method_metrics.csv, risk_coverage.csv]
-  figures: []
-  report: report.md
+  figures:
+    - docs/experiment_archive/p1_applicability_v2.2/figures/fig01_outer_scope.png
+    - docs/experiment_archive/p1_applicability_v2.2/figures/fig02_method_aurc.png
+    - docs/experiment_archive/p1_applicability_v2.2/figures/fig03_error_association.png
+    - docs/experiment_archive/p1_applicability_v2.2/figures/fig04_retained_risk_coverage.png
+    - docs/experiment_archive/p1_applicability_v2.2/figures/fig05_error_quintiles.png
+    - docs/experiment_archive/p1_applicability_v2.2/figures/fig06_grid_reliability_grades.png
+  report: docs/experiment_archive/p1_applicability_v2.2/REPORT.md
   reviewer_archive:
     path: docs/experiment_archive/p1_applicability_v2.2
     report: REPORT.md
     captions: CAPTIONS.md
-    figures: []
-    source_tables: []
+    figures: [fig01_outer_scope.png, fig02_method_aurc.png, fig03_error_association.png, fig04_retained_risk_coverage.png, fig05_error_quintiles.png, fig06_grid_reliability_grades.png]
+    source_tables: [table01_outer_scope.csv, table02_support_method_metrics.csv, table03_risk_coverage.csv, table04_decisions.csv, table05_grid_grade_counts.csv, table06_nested_selection.csv]
     manifest: archive_manifest.json
-    verification_status: pending
+    verification_status: verified
 
 outcome:
   completed_utc: 2026-10-01T12:30:12+08:00
