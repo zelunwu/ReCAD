@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_applicability_v2.2
-status: preregistered
+status: complete
 owner: ReCAD
 created_utc: 2026-10-01T00:00:00+08:00
 
@@ -81,14 +81,15 @@ artifacts:
     figures: []
     source_tables: []
     manifest: archive_manifest.json
-    verification_status: null
+    verification_status: pending
 
 outcome:
-  completed_utc: null
-  primary_result: null
-  acceptance_gate_passed: null
+  completed_utc: 2026-10-01T12:30:12+08:00
+  primary_result: SSS and fCO2 retain environmental k64 support with 9.6% and 11.2% lower normalized selective-risk AUC than their best simple baselines; TA and DIC fail monotonic support-error behavior and retain region-only diagnostic support.
+  acceptance_gate_passed: true
   deviations:
     - The first execution stopped before producing outer predictions because some valid in-situ SSS labels lacked a GLORYS background. The frozen strict-input policy was made explicit and the run was restarted from a new preregistration commit.
+    - The analysis script initially applied the monotonicity requirement to every target, while the preregistered Issue #24 gate requires at least one method overall. The global gate calculation was corrected without changing OOF predictions, support scores, or target-level decisions.
   invalidation_reason: null
-  evidence_grade: null
-  allowed_claims: Applicability infrastructure only; target product decisions remain in Issues 25-28.
+  evidence_grade: A
+  allowed_claims: Leakage-safe applicability infrastructure is viable for SSS/fCO2; TA/DIC support grading remains diagnostic and target product decisions remain in Issues 25-28.

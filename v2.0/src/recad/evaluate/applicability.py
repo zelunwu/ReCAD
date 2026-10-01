@@ -544,5 +544,13 @@ def validate_reliability_frame(frame: pd.DataFrame) -> None:
         raise ValueError("development records cannot expose independent-validation support")
 
 
+def applicability_gate_passed(decisions: pd.DataFrame) -> bool:
+    """Apply Issue #24's global gate while preserving target-level failures."""
+
+    if "monotonic_method_exists" not in decisions:
+        raise ValueError("decision table lacks monotonic_method_exists")
+    return bool(decisions.monotonic_method_exists.astype(bool).any())
+
+
 def schema_json() -> str:
     return json.dumps(reliability_schema(), indent=2, sort_keys=True)

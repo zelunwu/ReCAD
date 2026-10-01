@@ -10,6 +10,7 @@ from recad.evaluate.applicability import (
     ReasonBit,
     SupportIndex,
     add_label_free_risk_scores,
+    applicability_gate_passed,
     assign_spatial_blocks,
     nested_grouped_ridge,
     outer_splits,
@@ -178,6 +179,14 @@ def test_reliability_schema_keeps_independent_support_sealed() -> None:
     frame["independent_support_km"] = 1.0
     with pytest.raises(ValueError, match="independent-validation"):
         validate_reliability_frame(frame)
+
+
+@pytest.mark.l1
+def test_issue24_gate_requires_one_monotonic_method_not_every_target() -> None:
+    decisions = pd.DataFrame({"target": ["sss", "ta"], "monotonic_method_exists": [True, False]})
+    assert applicability_gate_passed(decisions)
+    decisions["monotonic_method_exists"] = False
+    assert not applicability_gate_passed(decisions)
 
 
 @pytest.mark.l3

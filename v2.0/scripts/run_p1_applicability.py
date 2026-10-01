@@ -24,6 +24,7 @@ from recad.evaluate.applicability import (
     _chord_to_km,
     _unit_sphere,
     add_label_free_risk_scores,
+    applicability_gate_passed,
     nested_grouped_ridge,
     outer_splits,
     reliability_schema,
@@ -606,6 +607,7 @@ def build_archive(
         decision_lines.append(
             f"- **{row.target}:** retained `{row.retained_method}`; {outcome}. Best complex versus simple AURC change: {row.complex_relative_improvement:+.1%}. Monotonic method exists: {row.monotonic_method_exists}."
         )
+    global_gate_passed = applicability_gate_passed(decisions)
     report = f"""# Quantitative applicability infrastructure for ReCAD P1.5
 
 ## Scientific question and permitted claim
@@ -630,7 +632,7 @@ The output contains {len(predictions):,} untouched outer predictions and {int(gr
 
 ## Decision and limitations
 
-The Issue #24 infrastructure gate {"passes" if decisions.monotonic_method_exists.all() else "fails"}: every target {"has" if decisions.monotonic_method_exists.all() else "does not have"} at least one method with the preregistered monotonic outer-error behavior. Complex graph/environment/hybrid metrics are retained target by target only where their AURC margin passes; otherwise the simpler geographic/region baseline is the required operational choice.
+The Issue #24 infrastructure gate {"passes" if global_gate_passed else "fails"} because {"at least one target has" if global_gate_passed else "no target has"} a method with the preregistered monotonic outer-error behavior. SSS and fCO2 satisfy this requirement; TA and DIC do not, so this infrastructure cannot yet assign them empirically calibrated accuracy grades. Complex graph/environment/hybrid metrics are retained target by target only where their AURC margin passes; otherwise the simpler geographic/region baseline is the required operational choice.
 
 The probe model is deliberately not a production model. Chl-a, bathymetry, and explicit coast distance are absent from the frozen v2.2 observation cache and therefore were not silently reconstructed after preregistration. TA/DIC support is North-American evidence even though the schema is globally mappable. A/B/C/D grades quantify demonstrated support, while final target accuracy, interval calibration, and publishability remain the responsibility of Issues #25-#28.
 
@@ -664,7 +666,7 @@ Every figure is backed by CSV source data under `tables/`; hashes and mappings a
         "external_independent_opened": False,
         "evidence_scope": "v2.2 train/development nested outer OOF plus 2025-2026 support index",
         "decision": "applicability_infrastructure_pass"
-        if decisions.monotonic_method_exists.all()
+        if global_gate_passed
         else "applicability_infrastructure_fail",
         "archive_builder_sha256": file_sha256(Path(__file__)),
         "analysis_script_sha256": file_sha256(Path(__file__)),
@@ -690,11 +692,18 @@ def main() -> int:
         "--output", type=Path, default=ROOT / f"outputs/experiments/{EXPERIMENT_ID}"
     )
     parser.add_argument("--reuse-oof", action="store_true")
+    parser.add_argument("--reuse-grid-index", action="store_true")
     parser.add_argument("--skip-grid-index", action="store_true")
     args = parser.parse_args()
     config = yaml.safe_load(args.config.read_text(encoding="utf-8"))
     args.output.mkdir(parents=True, exist_ok=True)
-    training_commit = git_output("rev-parse", "HEAD")
+    current_commit = git_output("rev-parse", "HEAD")
+    prior_protocol = args.output / "protocol.json"
+    training_commit = current_commit
+    if args.reuse_oof and prior_protocol.is_file():
+        training_commit = json.loads(prior_protocol.read_text(encoding="utf-8"))[
+            "training_git_commit"
+        ]
     status = git_output("status", "--porcelain")
     if status and not args.reuse_oof:
         raise RuntimeError("formal applicability run requires a clean preregistered worktree")
@@ -712,7 +721,9 @@ def main() -> int:
     else:
         predictions, inner = run_outer_predictions(gateway, graph, config, args.output)
     metrics, curves, decisions = evaluate_support(predictions, config, args.output)
-    if args.skip_grid_index:
+    if args.reuse_grid_index:
+        grades = pd.read_csv(args.output / "grid_grade_counts.csv")
+    elif args.skip_grid_index:
         grades = pd.DataFrame(
             columns=["target", "year", "month", "grade", "grid_months", "retained_method"]
         )
@@ -727,7 +738,7 @@ def main() -> int:
         "manifest_validation": validation,
         "locked_test_opened": False,
         "external_independent_opened": False,
-        "acceptance_gate_passed": bool(decisions.monotonic_method_exists.all()),
+        "acceptance_gate_passed": applicability_gate_passed(decisions),
         "targets": decisions.to_dict(orient="records"),
     }
     (args.output / "decision.json").write_text(json.dumps(decision, indent=2), encoding="utf-8")
@@ -736,6 +747,7 @@ def main() -> int:
             {
                 "config": config,
                 "training_git_commit": training_commit,
+                "analysis_git_commit": current_commit,
                 "config_sha256": file_sha256(args.config),
                 "script_sha256": file_sha256(Path(__file__)),
                 "prepared_path": str(args.prepared.resolve()),
