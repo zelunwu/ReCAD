@@ -1,0 +1,43 @@
+schema_version: 1
+experiment_id: p1_applicability_v2.2
+parent_issue: 24
+data_manifest: frozen/data_manifest_v2.2.json
+targets: [sss, fco2, ta, dic]
+outer_schemes: [cruise, spatial_block, whole_lme, forward]
+outer_folds: 5
+inner_group_folds: 3
+ridge_alphas: [0.1, 10.0, 1000.0]
+numeric_predictors:
+  - sst
+  - sss
+  - adt
+  - wspd
+  - pco2air
+  - latitude
+  - latitude_sin
+  - longitude_sin
+  - longitude_cos
+  - month_sin
+  - month_cos
+categorical_predictors: [lme_id, regime_id]
+environmental_predictors:
+  - sst
+  - sss
+  - adt
+  - wspd
+  - pco2air
+  - latitude_sin
+  - longitude_sin
+  - longitude_cos
+  - month_sin
+  - month_cos
+k_values: [8, 16, 32, 64]
+radii_km: [25, 50, 100, 200]
+spatial_block_degrees: 5.0
+complex_method_margin_relative_aurc: 0.01
+monotonic_steps_gate: 0.75
+grid_years: [2025, 2026]
+evidence_stage: development
+locked_test_opened: false
+external_independent_opened: false
+

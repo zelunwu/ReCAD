@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p1_applicability_v2.2",
+  "created_utc": "2026-10-01T04:32:36.980402+00:00",
+  "training_git_commit": "835f01d020797e6cfee59e5c15724d91913cbdd2",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "v2.2 train/development nested outer OOF plus 2025-2026 support index",
+  "decision": "applicability_infrastructure_pass",
+  "archive_builder_sha256": "5ca2a766bd5ca12d200ad499c7ef89dff4803e4fd2b748b184b1f338ab5d8f6a",
+  "analysis_script_sha256": "5ca2a766bd5ca12d200ad499c7ef89dff4803e4fd2b748b184b1f338ab5d8f6a",
+  "source_artifacts_sha256": {
+    "applicability_config": "6e8d5e2e6b2396dd9ae0bc6715f9853fad05fd138f94daf6ecdeaab7d5aa5d0b",
+    "coastal_graph": "70b06b411d41b001a74ae46deb059f6a5b0d4897318f6099afdd4aff86fb229b",
+    "spatial_support": "21b6a99195bdd58e05d27eac97ffff70dc3a4cc115ce070eea46ef3055fb5acc"
+  },
+  "figure_source_data": {
+    "fig01_outer_scope.png": [
+      "table01_outer_scope.csv"
+    ],
+    "fig02_method_aurc.png": [
+      "table02_support_method_metrics.csv"
+    ],
+    "fig03_error_association.png": [
+      "table02_support_method_metrics.csv"
+    ],
+    "fig04_retained_risk_coverage.png": [
+      "table03_risk_coverage.csv",
+      "table04_decisions.csv"
+    ],
+    "fig05_error_quintiles.png": [
+      "table02_support_method_metrics.csv",
+      "table04_decisions.csv"
+    ],
+    "fig06_grid_reliability_grades.png": [
+      "table05_grid_grade_counts.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_outer_scope.png": "Figure 1. Untouched outer-prediction counts for cruise, fixed spatial-block, complete-LME, and forward-time evaluation. The logarithmic axis shows the much smaller TA and DIC anchor sets without treating record count as independent evidence.",
+    "fig02_method_aurc.png": "Figure 2. Mean normalized selective-risk area under the risk-coverage curve for each label-free support method. Lower values mean that low-risk records retain lower error as mapped coverage expands.",
+    "fig03_error_association.png": "Figure 3. Mean Spearman association between each support-risk score and untouched outer absolute error. Positive association is desirable but is interpreted together with monotonic strata and selective-risk area.",
+    "fig04_retained_risk_coverage.png": "Figure 4. Outer RMSE versus retained coverage for the method retained by the preregistered simple-versus-complex rule. Each line averages evaluation schemes rather than mixing their records.",
+    "fig05_error_quintiles.png": "Figure 5. Untouched outer RMSE from the lowest to highest support-risk quintile for each retained method. Monotonic increases provide the operational evidence needed for A/B/C/D grading.",
+    "fig06_grid_reliability_grades.png": "Figure 6. Development-stage A/B/C/D support grades across strict-input-ready 2025-2026 coastal grid-months. These are applicability grades, not independent accuracy validation or permission to publish a target product."
+  },
+  "files_sha256": {
+    "README.md": "66e45525e767099fb51e686060345558f4e27b141f83a0542cf6c92bc2070303",
+    "REPORT.md": "ed5e2a4a0fc8774a1f76561fbc160f5ce872b2f68452c2ba8c8419b8ca71a207",
+    "CAPTIONS.md": "59aa1398440c4402e72160c484661f9266051a6e548cbf0341cc89db874cb45f",
+    "figures/fig01_outer_scope.png": "8bba4e40a726b83a9f6c8c02e915a199ddd199fbd38ae63e1a019e09da18e6a6",
+    "figures/fig02_method_aurc.png": "23eba31668e7767d0b877c7560f6609113d15aa5b5b7a29aa0194a1be56591b0",
+    "figures/fig03_error_association.png": "381cca0df2d2e7c5e5112315c980bf9ee75abb522ea696ba1b27e3274505245f",
+    "figures/fig04_retained_risk_coverage.png": "f71658eeb6048c29e5c8ea2b47ce74afacbe3a32b289a4d49a27a025981ef1af",
+    "figures/fig05_error_quintiles.png": "94891fdd1e88b8044ffc6ce697ef6b0ef79e3881c728119e149ac0e47002bbaf",
+    "figures/fig06_grid_reliability_grades.png": "6681055f96238f76523e3874642e00cd39278a4ab49b2bea6b3e623c80b37a0c",
+    "tables/table01_outer_scope.csv": "c281f00e6ba166f581fedbe31aeb6000199a5db8289ff97657921824c1e03f27",
+    "tables/table02_support_method_metrics.csv": "b1a34ddaf14437714f3555e527bce5a97c5f4f94c2121e33e6462bed720ef6ac",
+    "tables/table03_risk_coverage.csv": "c37f24c125bbe0319df2608a2d02549365fa2e3de31cd69a102df08593f77a87",
+    "tables/table04_decisions.csv": "20f3decc9fbeeffb60c7700f1ecb99563fced6ab5c81ca30f8473351430d7da3",
+    "tables/table05_grid_grade_counts.csv": "f8f9bb528d973affb3dad498d9f96d31432f3f9110fd168c0ad7ba6b538980f0",
+    "tables/table06_nested_selection.csv": "74beb41a30782b0958397670eb2dba6e7d6a39a59cdc2e165514d49988313194"
+  }
+}
