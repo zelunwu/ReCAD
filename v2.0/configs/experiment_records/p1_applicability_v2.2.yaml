@@ -1,0 +1,93 @@
+schema_version: 1
+experiment_id: p1_applicability_v2.2
+status: preregistered
+owner: ReCAD
+created_utc: 2026-10-01T00:00:00+08:00
+
+science:
+  question: Which label-free support metrics quantify where SSS, fCO2, TA, and DIC predictions are usable?
+  hypothesis: Simple geographic and regional support will explain most selective risk; graph or environmental distances are retained only if they improve untouched outer-fold risk coverage.
+  product_scope: Applicability infrastructure and 2025-2026 coastal grid-month support indices; no final target product claim.
+  primary_comparison: Best complex graph/environment/hybrid method versus best geographic/region baseline.
+  acceptance_gate: At least one support method is monotonic in outer error; complex methods require at least 1 percent lower normalized AURC than the best simple baseline without using held labels.
+  stopping_rule: Fixed outer schemes, three ridge alphas, k in 8/16/32/64, and radii 25/50/100/200 km; no changes after formal execution begins.
+
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  prepared_path: D:/proj_personal/PhD/ReCAD/v2.0/outputs/prepared_global_p32.nc
+  prepared_sha256: not_rehashed_42GB_asset_already_frozen_by_manifest
+  observation_products: [SOCATv2026, CODAP-NA_v2026, GLODAPv2.2023]
+  time_range: labels through 2025 for SSS/fCO2 and 2024 for TA/DIC; grid support for 2025-2026
+  spatial_domain: frozen global coastal graph; TA/DIC anchors are North American
+  qc_policy: frozen v2.2 target-specific eligibility
+  provenance_policy: predictor-only support features; no held-fold, locked, or external labels in support construction
+  aggregation: cruise-grid-month SOCAT and primary 0-5 m carbon observations
+
+splits:
+  manifest_path: C:/backup/phd/data/processed/recad_v2_2/split_manifest_v2.2.parquet
+  manifest_sha256: frozen in data manifest v2.2
+  grouping: complete cruise/platform groups plus fixed 5-degree blocks and complete LMEs
+  train: inner grouped model selection and outer OOF fitting
+  development: forward outer evaluation and calibration-support coordinates only
+  locked_test: sealed
+  external_independent: sealed
+  previously_opened_benchmarks: []
+
+model:
+  family: nested grouped ridge residual probe
+  config_path: configs/p1_applicability_v2.2.yaml
+  config_sha256: recorded by formal runner
+  inputs: [sst, background_sss, adt, wind, atmospheric_pco2, position, season, LME, regime]
+  learned_outputs: [target-specific outer predictions]
+  derived_outputs: [geographic, regional, graph, environmental, and hybrid support risk]
+  loss: inner cruise-equal RMSE selection; outer labels untouched until prediction is frozen
+  sampling: all eligible frozen records
+  parameter_count: target/fold dependent linear design
+
+training:
+  seeds: [100]
+  optimizer_steps: closed-form iterative LSQR
+  compute_budget: one complete deterministic run
+  checkpoint_selection: three-fold inner GroupKFold chooses ridge alpha
+  uncertainty_method: cross-fitted residual risk and later target-specific conformal calibration
+
+evaluation:
+  primary_metrics: [Spearman absolute-error association, monotonic quintile steps, normalized selective-risk AUC]
+  group_metrics: [cruise outer, 5-degree spatial block outer, whole-LME outer, forward-time outer]
+  calibration_metrics: [risk-coverage curve, retained area]
+  baselines: [geographic distance, regional support count]
+
+reproducibility:
+  git_commit: set by formal runner from the preregistration commit
+  git_worktree_clean: required before formal run
+  source_hashes: {}
+  environment_lock: pyproject.toml plus local ReCAD v2 virtual environment
+
+artifacts:
+  output_directory: outputs/experiments/p1_applicability_v2.2
+  protocol: protocol.json
+  data_manifest: configs/frozen/data_manifest_v2.2.json
+  selection: decision.json
+  checkpoints: []
+  predictions: [outer_predictions.parquet]
+  metrics: [support_method_metrics.csv, risk_coverage.csv]
+  figures: []
+  report: report.md
+  reviewer_archive:
+    path: docs/experiment_archive/p1_applicability_v2.2
+    report: REPORT.md
+    captions: CAPTIONS.md
+    figures: []
+    source_tables: []
+    manifest: archive_manifest.json
+    verification_status: null
+
+outcome:
+  completed_utc: null
+  primary_result: null
+  acceptance_gate_passed: null
+  deviations: []
+  invalidation_reason: null
+  evidence_grade: null
+  allowed_claims: Applicability infrastructure only; target product decisions remain in Issues 25-28.
