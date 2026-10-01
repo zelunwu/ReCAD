@@ -104,6 +104,15 @@ def test_nested_prediction_does_not_read_outer_truth() -> None:
 
 
 @pytest.mark.l1
+def test_residual_probe_requires_finite_background() -> None:
+    frame = synthetic_frame()
+    frame.loc[0, "sss"] = np.nan
+    eligible = frame.loc[frame.sss.notna()]
+    assert len(eligible) == len(frame) - 1
+    assert np.isfinite(eligible.truth.to_numpy() - eligible.sss.to_numpy()).all()
+
+
+@pytest.mark.l1
 def test_coastal_graph_reports_disconnected_component() -> None:
     graph = sparse.csr_matrix(
         np.array(

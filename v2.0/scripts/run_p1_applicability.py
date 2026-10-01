@@ -106,6 +106,12 @@ def load_target_frames(gateway: P1DataGateway, target: str) -> tuple[pd.DataFram
         columns.append("obs_id")
     train = prepare(gateway.load_labels(target, Purpose.TRAIN, columns=columns), target)
     development = prepare(gateway.load_labels(target, Purpose.SELECTION, columns=columns), target)
+    if target == "sss":
+        # This probe predicts observed-minus-GLORYS residuals. A missing
+        # background cannot define that target and is outside P0's strict
+        # input-ready inference domain.
+        train = train.loc[train.sss.notna()].reset_index(drop=True)
+        development = development.loc[development.sss.notna()].reset_index(drop=True)
     return train, development
 
 

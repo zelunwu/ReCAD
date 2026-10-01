@@ -20,7 +20,7 @@ data:
   observation_products: [SOCATv2026, CODAP-NA_v2026, GLODAPv2.2023]
   time_range: labels through 2025 for SSS/fCO2 and 2024 for TA/DIC; grid support for 2025-2026
   spatial_domain: frozen global coastal graph; TA/DIC anchors are North American
-  qc_policy: frozen v2.2 target-specific eligibility
+  qc_policy: frozen v2.2 target-specific eligibility; the SSS residual probe additionally requires finite GLORYS background SSS
   provenance_policy: predictor-only support features; no held-fold, locked, or external labels in support construction
   aggregation: cruise-grid-month SOCAT and primary 0-5 m carbon observations
 
@@ -87,7 +87,8 @@ outcome:
   completed_utc: null
   primary_result: null
   acceptance_gate_passed: null
-  deviations: []
+  deviations:
+    - The first execution stopped before producing outer predictions because some valid in-situ SSS labels lacked a GLORYS background. The frozen strict-input policy was made explicit and the run was restarted from a new preregistration commit.
   invalidation_reason: null
   evidence_grade: null
   allowed_claims: Applicability infrastructure only; target product decisions remain in Issues 25-28.
