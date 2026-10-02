@@ -328,8 +328,10 @@ def run_development(
         curves.append(curve)
     pd.DataFrame(coverage_rows).to_csv(output / "development_interval_coverage.csv", index=False)
     pd.concat(curves).to_csv(output / "development_risk_coverage.csv", index=False)
+    # The spatial and whole-LME stress tests repeat the same observation rows.
+    # Cruise OOF contains each calibration label exactly once.
     final_calibration = BinnedIntervalModel.fit(
-        calibrated.loc[calibrated.outer_scheme.ne("forward")],
+        calibrated.loc[calibrated.outer_scheme.eq("cruise")],
         minimum_cell=int(config["intervals"]["minimum_cell_records"]),
     )
     summary = []
@@ -423,6 +425,11 @@ def run_locked(
     frozen = json.loads(frozen_path.read_text(encoding="utf-8"))
     if frozen.get("locked_test_opened") is not False:
         raise RuntimeError("frozen decision is not pre-locked")
+    # Finish every operation that does not need locked labels before creating
+    # the irreversible one-time grant.
+    train, development = load_development(gateway)
+    evidence = pd.concat([train, development], ignore_index=True)
+    states = final_states(evidence, config, output)
     audit_path = output / "audit" / "locked_sss_opening.json"
     grant = LockedTestGrant.create(
         "Issue #25 one-time scoring of the fully frozen SSS reliability candidate",
@@ -433,9 +440,6 @@ def run_locked(
     locked = prepare(
         gateway.load_labels("sss", Purpose.LOCKED_TEST, columns=MODEL_COLUMNS, grant=grant)
     )
-    train, development = load_development(gateway)
-    evidence = pd.concat([train, development], ignore_index=True)
-    states = final_states(evidence, config, output)
     raw, epistemic = ensemble_prediction(states, locked)
     support = support_for_frame(evidence, locked)
     scored = locked[
@@ -535,7 +539,14 @@ def run_locked(
         "final_status": "pass_regional" if all(checks.values()) else "diagnostic_only",
         "external_independent_opened": False,
     }
-    (output / "locked_decision.json").write_text(json.dumps(decision, indent=2), encoding="utf-8")
+    (output / "locked_decision.json").write_text(
+        json.dumps(
+            decision,
+            indent=2,
+            default=lambda value: value.item() if isinstance(value, np.generic) else str(value),
+        ),
+        encoding="utf-8",
+    )
     print(json.dumps(decision, indent=2, default=str), flush=True)
     return decision
 
@@ -781,67 +792,107 @@ def build_archive(output: Path, config_path: Path) -> None:
         [{"gate": key, "passed": value} for key, value in decision["gate_checks"].items()]
     )
     checks.to_csv(tables / "locked_gate_checks.csv", index=False)
+    captions = {
+        "fig01_shrinkage_comparison.png": "Figure 1. Mean RMSE across cruise, spatial-block, whole-LME, and forward-time outer partitions, normalized by GLORYS RMSE for each preregistered residual-shrinkage rule. Lower is better; the black line is parity with GLORYS. This development-only comparison froze the shrinkage method before locked labels were opened.",
+        "fig02_locked_grade_skill.png": "Figure 2. Internal locked-test RMSE for the frozen SSS candidate and GLORYS within each preregistered A/B/C/D grade. Each locked observation is scored once with the already frozen model and grade rule; lower is better.",
+        "fig03_locked_interval_coverage.png": "Figure 3. Empirical locked coverage of the frozen nominal 50% and 90% SSS intervals by reliability grade. Dashed lines mark nominal coverage; deviations diagnose calibration without retrospective rescaling.",
+        "fig04_atlas_grade_coverage.png": "Figure 4. Fraction of all strict-input-ready 2025 core and available 2026 provisional coastal grid-months assigned to each frozen SSS reliability grade. D values remain in the audit table but are suppressed from the publishable product.",
+        "fig05_global_grade_map_2025_07.png": "Figure 5. Frozen SSS reliability grades for strict-input-ready coastal grid cells in July 2025. The North-American SOCAT development domain dominates demonstrated support; remote global cells become C/D or return toward GLORYS through residual shrinkage. This map is an applicability atlas, not external validation.",
+    }
     report = f"""# P1.5b SSS reliability atlas and one-time locked audit
 
-## Decision
+## Scientific question and permitted claim
 
-The frozen SSS candidate received **`{status}`**. The one-time internal locked set contained {int(overall.n):,} observations. Locked pooled RMSE was {overall.rmse:.3f} PSU versus {overall.background_rmse:.3f} PSU for GLORYS, giving skill {overall.skill_vs_background:.3f}; MAE was {overall.mae:.3f} PSU and R² was {overall.r2:.3f}. The frozen 50% and 90% intervals achieved {interval.coverage50:.3f} and {interval.coverage90:.3f} coverage. The external-independent set remains sealed for P3.
+This experiment asks where and with what error the frozen coastal SSS residual candidate is usable. The permitted claim is an internally locked, North-American-adjacent reliability result plus a global applicability atlas. External-independent validation remains reserved for P3.
 
-## Frozen method
+## Data, splits, and leakage controls
 
-The Issue #7 eight-expert top-two residual architecture was retrained in each Issue #24 cruise, 5° spatial-block, whole-LME, and forward-time outer partition for a fixed 4,000 steps without consulting held-fold labels. `environment_k64` remained the frozen applicability variable. Four correction rules were compared on development OOF evidence; `{decision["selected_shrinkage"]}` was frozen before locked access. Prediction is GLORYS plus the support-weighted learned residual. Intervals use finite-sample 50%/90% absolute-error quantiles in environmental-risk decile x GLORYS-salinity cells, with global fallback for cells below 200 calibration records.
+SOCATv2026 in-situ salinity is the label and GLORYS monthly SSS is the background. Complete-cruise, fixed 5-degree spatial-block, whole-LME, and forward-time outer partitions were inherited from Issue #24. Every fold trained for a fixed 4,000 steps without consulting held-fold labels. Cruise OOF, in which each observation occurs once, calibrated the final interval model. The audited grant opened internal locked SSS labels exactly once after the tracked decision froze all choices.
+
+## Candidate models and training
+
+The Issue #7 eight-expert top-two architecture predicts a residual added to GLORYS. `environment_k64` is the frozen applicability variable. Four correction rules were compared on development OOF evidence; `{decision["selected_shrinkage"]}` was frozen before locked access. Intervals use finite-sample 50%/90% absolute-error quantiles in environmental-risk decile x GLORYS-salinity cells, with global fallback below 200 calibration records.
 
 ![Shrinkage comparison](figures/fig01_shrinkage_comparison.png)
 
-*Figure 1. Mean RMSE across cruise, spatial-block, whole-LME, and forward-time outer partitions, normalized by GLORYS RMSE for each preregistered residual-shrinkage rule. Lower is better; the black line is parity with GLORYS. This development-only comparison froze the shrinkage method before locked labels were opened.*
+*{captions["fig01_shrinkage_comparison.png"]}*
+
+## Main development results
+
+The model retained positive skill in cruise, spatial-block, whole-LME, and forward-time evaluation. The complete values, calibration coverage, salinity/estuary strata, and risk-coverage curve are archived as source tables. Development evidence selected shrinkage and froze uncertainty; it did not use locked labels.
 
 ## One-time locked audit
 
-The audit grant is recorded once in the local output with its SHA256 in `locked_decision.json`. No locked result selected or modified the model, support metric, shrinkage, calibration cells, interval levels, or grade boundaries.
+The frozen SSS candidate received **`{status}`**. The one-time internal locked set contained {int(overall.n):,} observations. Locked pooled RMSE was {overall.rmse:.3f} PSU versus {overall.background_rmse:.3f} PSU for GLORYS, giving skill {overall.skill_vs_background:.3f}; MAE was {overall.mae:.3f} PSU and R² was {overall.r2:.3f}. The frozen 50% and 90% intervals achieved {interval.coverage50:.3f} and {interval.coverage90:.3f} coverage.
 
 ![Locked grade skill](figures/fig02_locked_grade_skill.png)
 
-*Figure 2. Internal locked-test RMSE for the frozen SSS candidate and GLORYS within each preregistered A/B/C/D grade. Each locked observation is scored once with the already frozen model and grade rule; lower is better.*
+*{captions["fig02_locked_grade_skill.png"]}*
 
 ![Locked interval coverage](figures/fig03_locked_interval_coverage.png)
 
-*Figure 3. Empirical locked coverage of the frozen nominal 50% and 90% SSS intervals by reliability grade. Dashed lines mark nominal coverage; deviations diagnose calibration without retrospective rescaling.*
+*{captions["fig03_locked_interval_coverage.png"]}*
 
 ## Reliability atlas
 
-Each strict-input-ready 2025 grid-month and available provisional 2026 grid-month stores prediction, 50%/90% interval, `environment_k64`, evidence counts, A/B/C/D grade, and reason bits. A requires q90 ≤0.5 PSU; B ≤1.0 PSU; C ≤2.0 PSU; D suppresses values with wider error, environmental distance >5, fewer than two nearby cruises, effective groups <1.5, or an unsupported calibration cell. These are declared use limits rather than generic quality adjectives.
+Each strict-input-ready 2025 grid-month and available provisional 2026 grid-month stores prediction, 50%/90% interval, `environment_k64`, evidence counts, A/B/C/D grade, and reason bits. A requires q90 at most 0.5 PSU; B at most 1.0 PSU; C at most 2.0 PSU; D suppresses wider error or inadequate environmental, cruise, group, or calibration support.
 
 ![Atlas grade coverage](figures/fig04_atlas_grade_coverage.png)
 
-*Figure 4. Fraction of all strict-input-ready 2025 core and available 2026 provisional coastal grid-months assigned to each frozen SSS reliability grade. D values remain in the audit table but are suppressed from the publishable product.*
+*{captions["fig04_atlas_grade_coverage.png"]}*
 
 ![Global grade map](figures/fig05_global_grade_map_2025_07.png)
 
-*Figure 5. Frozen SSS reliability grades for strict-input-ready coastal grid cells in July 2025. The North-American SOCAT development domain dominates demonstrated support; remote global cells become C/D or return toward GLORYS through residual shrinkage. This map is an applicability atlas, not external validation.*
+*{captions["fig05_global_grade_map_2025_07.png"]}*
 
-## Gate and evidence boundary
+## Decision and limitations
 
 {checks.to_markdown(index=False)}
 
-The decision is intentionally constrained by the frozen locked gate. A failed check downgrades the product to diagnostic-only; the locked set cannot be reused to redesign the method. Row-level OOF predictions, locked predictions, model checkpoints, and atlas parquet partitions remain in the hashed local output and are excluded from Git. All plotted aggregates are archived under `tables/` and captions sit directly below their figures.
+A failed frozen check downgrades the product to diagnostic-only; the locked set cannot be reused to redesign it. The global atlas measures similarity to the frozen observation domain and does not prove global accuracy. Very fresh water remains difficult even where relative skill over GLORYS is positive. Row-level predictions, checkpoints, and atlas parquet partitions remain in the local hashed output and are excluded from Git.
+
+## Figure and table index
+
+Figures 1-5 correspond to shrinkage selection, locked grade skill, locked interval coverage, atlas grade coverage, and the July 2025 global grade map. Their aggregate sources are under `tables/`; the map source is the hashed local atlas partition. Captions appear directly below every figure and are duplicated in `CAPTIONS.md`.
 """
     (ARCHIVE / "REPORT.md").write_text(report, encoding="utf-8")
+    (ARCHIVE / "README.md").write_text(
+        "# P1.5b reviewer archive\n\nSee `REPORT.md` for the complete result, figures, captions, evidence boundary, and decision. Row-level outputs remain in the local experiment directory.\n",
+        encoding="utf-8",
+    )
+    caption_text = "# Figure captions\n\n" + "\n\n".join(
+        f"## {name}\n\n{caption}" for name, caption in captions.items()
+    )
+    (ARCHIVE / "CAPTIONS.md").write_text(caption_text + "\n", encoding="utf-8")
     mapping = {
-        "fig01_shrinkage_comparison.png": "tables/shrinkage_comparison.csv",
-        "fig02_locked_grade_skill.png": "tables/locked_metrics.csv",
-        "fig03_locked_interval_coverage.png": "tables/locked_interval_coverage.csv",
-        "fig04_atlas_grade_coverage.png": "tables/atlas_grade_counts.csv",
-        "fig05_global_grade_map_2025_07.png": "local atlas year=2025/month=07 parquet",
+        "fig01_shrinkage_comparison.png": ["shrinkage_comparison.csv"],
+        "fig02_locked_grade_skill.png": ["locked_metrics.csv"],
+        "fig03_locked_interval_coverage.png": ["locked_interval_coverage.csv"],
+        "fig04_atlas_grade_coverage.png": ["atlas_grade_counts.csv"],
+        "fig05_global_grade_map_2025_07.png": ["local:sss_reliability_atlas/year=2025/month=07.parquet"],
     }
+    script_path = ROOT / "scripts/run_p1_sss_reliability.py"
     manifest = {
         "experiment_id": EXPERIMENT_ID,
         "created_utc": datetime.now(timezone.utc).isoformat(),
-        "git_commit": git_head(),
+        "training_git_commit": decision["git_commit"],
+        "data_manifest_sha256": sha256(ROOT / "configs/frozen/data_manifest_v2.2.json"),
         "locked_test_opened": True,
         "external_independent_opened": False,
-        "figure_sources": mapping,
+        "evidence_scope": "development outer OOF plus one-time internal locked SSS; external independent sealed",
+        "decision": status,
+        "figure_source_data": mapping,
+        "figure_captions": captions,
+        "archive_builder_sha256": sha256(script_path),
+        "analysis_script_sha256": sha256(script_path),
+        "source_artifacts_sha256": {
+            "frozen_development_decision.json": sha256(output / "frozen_development_decision.json"),
+            "locked_decision.json": sha256(output / "locked_decision.json"),
+            "locked_predictions.parquet": sha256(output / "locked_predictions.parquet"),
+            "development_oof_predictions.parquet": sha256(output / "development_oof_predictions.parquet"),
+        },
         "files_sha256": {
-            str(path.relative_to(ARCHIVE)): sha256(path)
+            str(path.relative_to(ARCHIVE)).replace("\\", "/"): sha256(path)
             for path in ARCHIVE.rglob("*")
             if path.is_file()
         },
@@ -869,6 +920,10 @@ def main() -> int:
     manifest = FrozenManifest.load(ROOT / "configs/frozen/data_manifest_v2.2.json")
     validation = manifest.validate(hash_mode="full")
     gateway = P1DataGateway(manifest)
+    if args.phase in {"locked", "atlas", "archive", "postfreeze"}:
+        frozen_payload = json.loads(args.frozen.read_text(encoding="utf-8"))
+        if frozen_payload["config_sha256"] != sha256(args.config):
+            raise RuntimeError("current config does not match the pre-locked frozen decision")
     if args.phase == "development":
         run_development(gateway, config, args.config, args.output)
     elif args.phase == "locked":

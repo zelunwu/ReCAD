@@ -22,6 +22,7 @@ intervals:
   method: split_conformal_risk_decile_x_background_salinity_band
   coverages: [0.50, 0.90]
   minimum_cell_records: 200
+  final_calibration_source: cruise_outer_oof
   forward_calibration_source: cruise_outer_oof
 grades:
   A_max_q90_psu: 0.50
