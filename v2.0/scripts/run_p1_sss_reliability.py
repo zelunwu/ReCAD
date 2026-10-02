@@ -839,7 +839,9 @@ def build_archive(output: Path, config_path: Path) -> None:
         marker="o",
     )
     for row in retention.loc[valid].itertuples():
-        ax.annotate(f"through {row.maximum_grade}", (row.atlas_area_weighted_fraction, row.locked_rmse))
+        ax.annotate(
+            f"through {row.maximum_grade}", (row.atlas_area_weighted_fraction, row.locked_rmse)
+        )
     ax.set_xlabel("Retained atlas area-weighted grid-month fraction")
     ax.set_ylabel("Cumulative locked RMSE (PSU)")
     save_figure(fig, figures / "fig07_grade_retention.png")
