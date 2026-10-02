@@ -869,7 +869,9 @@ Figures 1-5 correspond to shrinkage selection, locked grade skill, locked interv
         "fig02_locked_grade_skill.png": ["locked_metrics.csv"],
         "fig03_locked_interval_coverage.png": ["locked_interval_coverage.csv"],
         "fig04_atlas_grade_coverage.png": ["atlas_grade_counts.csv"],
-        "fig05_global_grade_map_2025_07.png": ["local:sss_reliability_atlas/year=2025/month=07.parquet"],
+        "fig05_global_grade_map_2025_07.png": [
+            "local:sss_reliability_atlas/year=2025/month=07.parquet"
+        ],
     }
     script_path = ROOT / "scripts/run_p1_sss_reliability.py"
     manifest = {
@@ -889,7 +891,9 @@ Figures 1-5 correspond to shrinkage selection, locked grade skill, locked interv
             "frozen_development_decision.json": sha256(output / "frozen_development_decision.json"),
             "locked_decision.json": sha256(output / "locked_decision.json"),
             "locked_predictions.parquet": sha256(output / "locked_predictions.parquet"),
-            "development_oof_predictions.parquet": sha256(output / "development_oof_predictions.parquet"),
+            "development_oof_predictions.parquet": sha256(
+                output / "development_oof_predictions.parquet"
+            ),
         },
         "files_sha256": {
             str(path.relative_to(ARCHIVE)).replace("\\", "/"): sha256(path)
