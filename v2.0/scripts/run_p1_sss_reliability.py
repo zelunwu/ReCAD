@@ -792,6 +792,9 @@ def build_archive(output: Path, config_path: Path) -> None:
         [{"gate": key, "passed": value} for key, value in decision["gate_checks"].items()]
     )
     checks.to_csv(tables / "locked_gate_checks.csv", index=False)
+    checks_markdown = "| gate | passed |\n|---|---|\n" + "\n".join(
+        f"| {row.gate} | {str(bool(row.passed)).lower()} |" for row in checks.itertuples()
+    )
     captions = {
         "fig01_shrinkage_comparison.png": "Figure 1. Mean RMSE across cruise, spatial-block, whole-LME, and forward-time outer partitions, normalized by GLORYS RMSE for each preregistered residual-shrinkage rule. Lower is better; the black line is parity with GLORYS. This development-only comparison froze the shrinkage method before locked labels were opened.",
         "fig02_locked_grade_skill.png": "Figure 2. Internal locked-test RMSE for the frozen SSS candidate and GLORYS within each preregistered A/B/C/D grade. Each locked observation is scored once with the already frozen model and grade rule; lower is better.",
@@ -847,7 +850,7 @@ Each strict-input-ready 2025 grid-month and available provisional 2026 grid-mont
 
 ## Decision and limitations
 
-{checks.to_markdown(index=False)}
+{checks_markdown}
 
 A failed frozen check downgrades the product to diagnostic-only; the locked set cannot be reused to redesign it. The global atlas measures similarity to the frozen observation domain and does not prove global accuracy. Very fresh water remains difficult even where relative skill over GLORYS is positive. Row-level predictions, checkpoints, and atlas parquet partitions remain in the local hashed output and are excluded from Git.
 
