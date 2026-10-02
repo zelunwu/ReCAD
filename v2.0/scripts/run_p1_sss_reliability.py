@@ -785,6 +785,65 @@ def build_archive(output: Path, config_path: Path) -> None:
     ax.legend(markerscale=8, ncol=4)
     save_figure(fig, figures / "fig05_global_grade_map_2025_07.png")
 
+    risk_curves = pd.read_csv(output / "development_risk_coverage.csv")
+    locked_rows = pd.read_parquet(
+        output / "locked_predictions.parquet",
+        columns=["truth", "prediction", "background", "risk_environment_k64", "grade"],
+    )
+    locked_curve = risk_coverage_curve(
+        locked_rows.truth, locked_rows.prediction, locked_rows.risk_environment_k64
+    )
+    locked_curve.insert(0, "outer_scheme", "locked")
+    risk_curves = pd.concat([risk_curves, locked_curve], ignore_index=True)
+    risk_curves.to_csv(tables / "risk_coverage_all.csv", index=False)
+    fig, ax = plt.subplots(figsize=(8, 4.8))
+    for scheme, part in risk_curves.groupby("outer_scheme"):
+        ax.plot(part.coverage, part.rmse, marker="o", ms=3, label=scheme)
+    ax.set_xlabel("Retained lowest-risk fraction")
+    ax.set_ylabel("SSS RMSE (PSU)")
+    ax.legend(ncol=2)
+    save_figure(fig, figures / "fig06_risk_coverage.png")
+
+    atlas_parts = []
+    for path in sorted((output / "sss_reliability_atlas").rglob("*.parquet")):
+        atlas_parts.append(pd.read_parquet(path, columns=["latitude", "grade"]))
+    atlas_grade_rows = pd.concat(atlas_parts, ignore_index=True)
+    atlas_grade_rows["area_weight"] = np.cos(np.deg2rad(atlas_grade_rows.latitude))
+    grade_order = list("ABCD")
+    retention_rows = []
+    for maximum_grade in grade_order:
+        retained_grades = grade_order[: grade_order.index(maximum_grade) + 1]
+        locked_retained = locked_rows.loc[locked_rows.grade.isin(retained_grades)]
+        atlas_retained = atlas_grade_rows.grade.isin(retained_grades)
+        row = metric_values(locked_retained, "prediction") if len(locked_retained) else {}
+        retention_rows.append(
+            {
+                "maximum_grade": maximum_grade,
+                "locked_records": len(locked_retained),
+                "locked_rmse": row.get("rmse", np.nan),
+                "locked_mae": row.get("mae", np.nan),
+                "atlas_gridmonth_fraction": float(atlas_retained.mean()),
+                "atlas_area_weighted_fraction": float(
+                    atlas_grade_rows.loc[atlas_retained, "area_weight"].sum()
+                    / atlas_grade_rows.area_weight.sum()
+                ),
+            }
+        )
+    retention = pd.DataFrame(retention_rows)
+    retention.to_csv(tables / "selective_grade_retention.csv", index=False)
+    fig, ax = plt.subplots(figsize=(7, 4.8))
+    valid = retention.locked_rmse.notna()
+    ax.plot(
+        retention.loc[valid, "atlas_area_weighted_fraction"],
+        retention.loc[valid, "locked_rmse"],
+        marker="o",
+    )
+    for row in retention.loc[valid].itertuples():
+        ax.annotate(f"through {row.maximum_grade}", (row.atlas_area_weighted_fraction, row.locked_rmse))
+    ax.set_xlabel("Retained atlas area-weighted grid-month fraction")
+    ax.set_ylabel("Cumulative locked RMSE (PSU)")
+    save_figure(fig, figures / "fig07_grade_retention.png")
+
     overall = locked.loc[(locked.scope == "all") & (locked.group == "all")].iloc[0]
     interval = intervals.loc[(intervals.scope == "all") & (intervals.group == "all")].iloc[0]
     status = decision["final_status"]
@@ -801,6 +860,8 @@ def build_archive(output: Path, config_path: Path) -> None:
         "fig03_locked_interval_coverage.png": "Figure 3. Empirical locked coverage of the frozen nominal 50% and 90% SSS intervals by reliability grade. Dashed lines mark nominal coverage; deviations diagnose calibration without retrospective rescaling.",
         "fig04_atlas_grade_coverage.png": "Figure 4. Fraction of all strict-input-ready 2025 core and available 2026 provisional coastal grid-months assigned to each frozen SSS reliability grade. D values remain in the audit table but are suppressed from the publishable product.",
         "fig05_global_grade_map_2025_07.png": "Figure 5. Frozen SSS reliability grades for strict-input-ready coastal grid cells in July 2025. The North-American SOCAT development domain dominates demonstrated support; remote global cells become C/D or return toward GLORYS through residual shrinkage. This map is an applicability atlas, not external validation.",
+        "fig06_risk_coverage.png": "Figure 6. SSS RMSE as progressively higher-risk observations are retained under the frozen environment-k64 ranking. Development outer schemes and the one-time locked audit are shown separately; a rising curve means the applicability score orders error usefully.",
+        "fig07_grade_retention.png": "Figure 7. Cumulative one-time locked RMSE versus the area-weighted fraction of 2025 core and available 2026 provisional atlas grid-months retained through each frozen grade. The curve states the accuracy paid for broader mapped coverage.",
     }
     report = f"""# P1.5b SSS reliability atlas and one-time locked audit
 
@@ -824,9 +885,13 @@ The Issue #7 eight-expert top-two architecture predicts a residual added to GLOR
 
 The model retained positive skill in cruise, spatial-block, whole-LME, and forward-time evaluation. The complete values, calibration coverage, salinity/estuary strata, and risk-coverage curve are archived as source tables. Development evidence selected shrinkage and froze uncertainty; it did not use locked labels.
 
+Cruise, spatial-block, whole-LME, and forward-time RMSE were 1.263, 1.405, 1.719, and 1.408 PSU, with skill over GLORYS of 0.574, 0.472, 0.210, and 0.582. Cross-fitted 90% coverage was 0.898, 0.895, 0.853, and 0.925 in the same order.
+
 ## One-time locked audit
 
 The frozen SSS candidate received **`{status}`**. The one-time internal locked set contained {int(overall.n):,} observations. Locked pooled RMSE was {overall.rmse:.3f} PSU versus {overall.background_rmse:.3f} PSU for GLORYS, giving skill {overall.skill_vs_background:.3f}; MAE was {overall.mae:.3f} PSU and R² was {overall.r2:.3f}. The frozen 50% and 90% intervals achieved {interval.coverage50:.3f} and {interval.coverage90:.3f} coverage.
+
+Seven of eight gates passed. The failure was localized to LME 17, the North Brazil Shelf (n=149): candidate RMSE 3.565 PSU versus GLORYS 2.631 PSU, a ratio of 1.355 and skill -0.835. The preregistered worst-LME limit was 1.10, so strong pooled and A/B results cannot promote this version beyond `diagnostic_only`.
 
 ![Locked grade skill](figures/fig02_locked_grade_skill.png)
 
@@ -848,6 +913,16 @@ Each strict-input-ready 2025 grid-month and available provisional 2026 grid-mont
 
 *{captions["fig05_global_grade_map_2025_07.png"]}*
 
+No grid-month earned A because the narrowest development-calibrated 90% cell width exceeded the fixed 0.5 PSU A boundary. Across 1,840,408 available grid-months, 79,837 (4.3%) were B, 980,998 (53.3%) were C, and 779,573 (42.4%) were D.
+
+![Risk coverage](figures/fig06_risk_coverage.png)
+
+*{captions["fig06_risk_coverage.png"]}*
+
+![Grade retention](figures/fig07_grade_retention.png)
+
+*{captions["fig07_grade_retention.png"]}*
+
 ## Decision and limitations
 
 {checks_markdown}
@@ -856,7 +931,7 @@ A failed frozen check downgrades the product to diagnostic-only; the locked set 
 
 ## Figure and table index
 
-Figures 1-5 correspond to shrinkage selection, locked grade skill, locked interval coverage, atlas grade coverage, and the July 2025 global grade map. Their aggregate sources are under `tables/`; the map source is the hashed local atlas partition. Captions appear directly below every figure and are duplicated in `CAPTIONS.md`.
+Figures 1-7 correspond to shrinkage selection, locked grade skill, locked interval coverage, atlas grade coverage, the July 2025 global grade map, risk-coverage, and cumulative grade retention. Their aggregate sources are under `tables/`; the map source is the hashed local atlas partition. Captions appear directly below every figure and are duplicated in `CAPTIONS.md`.
 """
     (ARCHIVE / "REPORT.md").write_text(report, encoding="utf-8")
     (ARCHIVE / "README.md").write_text(
@@ -875,6 +950,8 @@ Figures 1-5 correspond to shrinkage selection, locked grade skill, locked interv
         "fig05_global_grade_map_2025_07.png": [
             "local:sss_reliability_atlas/year=2025/month=07.parquet"
         ],
+        "fig06_risk_coverage.png": ["risk_coverage_all.csv"],
+        "fig07_grade_retention.png": ["selective_grade_retention.csv"],
     }
     script_path = ROOT / "scripts/run_p1_sss_reliability.py"
     manifest = {
