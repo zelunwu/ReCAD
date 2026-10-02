@@ -956,6 +956,12 @@ Figures 1-7 correspond to shrinkage selection, locked grade skill, locked interv
         "fig07_grade_retention.png": ["selective_grade_retention.csv"],
     }
     script_path = ROOT / "scripts/run_p1_sss_reliability.py"
+    # Git stores text with LF and CI verifies on Linux.  Normalize archive
+    # text before hashing so a Windows formal run remains cross-platform.
+    text_suffixes = {".md", ".json", ".yaml", ".yml", ".csv"}
+    for path in ARCHIVE.rglob("*"):
+        if path.is_file() and path.suffix.lower() in text_suffixes:
+            path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
     manifest = {
         "experiment_id": EXPERIMENT_ID,
         "created_utc": datetime.now(timezone.utc).isoformat(),
