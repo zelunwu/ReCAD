@@ -1,0 +1,61 @@
+schema_version: 1
+experiment_id: p1_sss_reliability_v2.2
+status: preregistered
+owner: ReCAD
+created_utc: 2026-10-02T00:00:00+08:00
+
+science:
+  question: Where and with what calibrated error is the frozen coastal SSS residual candidate usable?
+  hypothesis: Environmental k64 support predicts SSS error, and shrinking the learned correction toward GLORYS outside support avoids uncontrolled extrapolation.
+  product_scope: 2025 core and available 2026 provisional coastal SSS prediction, interval, grade, and reason-bit atlas.
+  primary_comparison: Four prespecified residual-shrinkage rules evaluated on model-matched outer OOF predictions.
+  acceptance_gate: Positive locked skill over GLORYS, grade A/B MAE at most 1 PSU, calibrated 50/90 intervals, positive forward evidence, at least 70 percent positive eligible LMEs, and worst-LME RMSE no more than 1.10 times GLORYS.
+  stopping_rule: Freeze model, 4000 steps, support variable, shrinkage candidates, interval cells, grade boundaries, and gate before opening locked labels once.
+
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  observation_product: SOCATv2026 in-situ salinity
+  background_product: GLORYS monthly SSS
+  time_range: labels through 2025; grid inference through available 2026
+  spatial_domain: global frozen coastal grid; direct calibration evidence is North-American-adjacent
+  qc_policy: frozen v2.2 SOCAT eligibility and finite GLORYS SSS
+
+splits:
+  grouping: complete cruises, fixed 5-degree blocks, complete LMEs, and frozen forward chain
+  development: model-matched untouched outer OOF predictions
+  locked_test: one opening only after tracked frozen decision exists
+  external_independent: sealed until P3
+
+model:
+  family: eight-way top-two soft-expert residual correction over GLORYS
+  config_path: configs/p1_sss_reliability_v2.2.yaml
+  oof_seed: 100
+  final_seeds: [100, 101, 102]
+  optimizer_steps: 4000 fixed; no outer-fold checkpoint selection
+  applicability: raw standardized environmental k-nearest-neighbour distance at k=64
+  shrinkage_candidates: [none, linear_2_5, quadratic_5, hard_4]
+  interval_method: finite-sample split conformal by risk decile and label-free GLORYS salinity band
+  grades: A q90<=0.5 PSU; B<=1; C<=2; D suppress
+
+evaluation:
+  metrics: [RMSE, MAE, bias, R2, skill_vs_GLORYS, interval_coverage]
+  diagnostics: [cruise, spatial_block, whole_LME, forward_time, salinity_band, estuary, support_distance]
+  output_curves: [risk_coverage, retained_grid_month_fraction]
+
+reproducibility:
+  code_branch: feat/issue25-sss-reliability
+  environment_lock: pyproject.toml plus local ReCAD v2 virtual environment
+  frozen_decision: configs/frozen/p1_sss_reliability_decision_v2.2.json
+
+artifacts:
+  output_directory: outputs/experiments/p1_sss_reliability_v2.2
+  reviewer_archive: docs/experiment_archive/p1_sss_reliability_v2.2
+  row_level_outputs_in_git: false
+
+outcome:
+  completed_utc: null
+  primary_result: pending
+  acceptance_gate_passed: null
+  deviations: []
+  evidence_grade: pending

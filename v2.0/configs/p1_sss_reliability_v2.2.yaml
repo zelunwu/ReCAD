@@ -1,0 +1,44 @@
+schema_version: 1
+experiment_id: p1_sss_reliability_v2.2
+parent_issue: 25
+data_manifest: frozen/data_manifest_v2.2.json
+applicability_output: D:/proj_personal/PhD/ReCAD/v2.0/outputs/experiments/p1_applicability_v2.2
+prepared_global: D:/proj_personal/PhD/ReCAD/v2.0/outputs/prepared_global_p32.nc
+model:
+  family: soft_experts_residual
+  experts: 8
+  top_k: 2
+  seeds: [100, 101, 102]
+  oof_seed: 100
+  fixed_steps: 4000
+  batch_size: 2048
+  features: [sss, sst, adt, wspd, latitude, longitude, month, lme_id, basin_id, regime_id]
+outer_schemes: [cruise, spatial_block, whole_lme, forward]
+outer_folds: 5
+applicability_metric: environment_k64
+shrinkage_candidates: [none, linear_2_5, quadratic_5, hard_4]
+shrinkage_selection: lowest_mean_scheme_normalized_rmse
+intervals:
+  method: split_conformal_risk_decile_x_background_salinity_band
+  coverages: [0.50, 0.90]
+  minimum_cell_records: 200
+  forward_calibration_source: cruise_outer_oof
+grades:
+  A_max_q90_psu: 0.50
+  B_max_q90_psu: 1.00
+  C_max_q90_psu: 2.00
+  maximum_environment_k64: 5.0
+  minimum_unique_cruises: 2
+  minimum_effective_groups: 1.5
+  D_policy: suppress_product_value
+locked_gate:
+  overall_skill_vs_glorys_gt: 0.0
+  publishable_grade_skill_gt: 0.0
+  grade_ab_mae_max_psu: 1.0
+  coverage50_range: [0.40, 0.60]
+  coverage90_range: [0.85, 0.95]
+  positive_lme_fraction_minimum: 0.70
+  worst_lme_relative_rmse_maximum: 1.10
+grid_years: [2025, 2026]
+locked_test_openings: 1
+external_independent_access: forbidden_until_P3
