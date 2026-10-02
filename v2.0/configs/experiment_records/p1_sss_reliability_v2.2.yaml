@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_sss_reliability_v2.2
-status: preregistered
+status: complete
 owner: ReCAD
 created_utc: 2026-10-02T00:00:00+08:00
 
@@ -24,7 +24,7 @@ data:
 splits:
   grouping: complete cruises, fixed 5-degree blocks, complete LMEs, and frozen forward chain
   development: model-matched untouched outer OOF predictions
-  locked_test: one opening only after tracked frozen decision exists
+  locked_test: opened exactly once after tracked frozen decision commit 872b8c0; 75627 rows scored
   external_independent: sealed until P3
 
 model:
@@ -52,10 +52,18 @@ artifacts:
   output_directory: outputs/experiments/p1_sss_reliability_v2.2
   reviewer_archive: docs/experiment_archive/p1_sss_reliability_v2.2
   row_level_outputs_in_git: false
+  frozen_decision: configs/frozen/p1_sss_reliability_decision_v2.2.json
+  local_predictions: [development_oof_predictions.parquet, locked_predictions.parquet, sss_reliability_atlas]
+  archive_verification: passed; 7 figures, 7 captions, 11 source tables
 
 outcome:
-  completed_utc: null
-  primary_result: pending
-  acceptance_gate_passed: null
-  deviations: []
-  evidence_grade: pending
+  completed_utc: 2026-10-02T10:30:00+08:00
+  primary_result: Locked pooled RMSE 1.071 PSU versus GLORYS 1.804, skill 0.647; grade B RMSE/MAE 0.857/0.446 and skill 0.710; 50/90 interval coverage 0.484/0.884. Seven of eight gates passed, but North Brazil Shelf LME 17 had RMSE ratio 1.355 versus the frozen maximum 1.10, so final status is diagnostic_only.
+  acceptance_gate_passed: false
+  final_status: diagnostic_only
+  atlas: 1840408 grid-months; B=79837, C=980998, D=779573, A=0; 2026 remains provisional
+  deviations:
+    - The first development attempt stopped before any OOF prediction because Issue #24 and Issue #7 used different longitude sine/cosine aliases; identical-value aliases were added and the complete run restarted.
+    - Final interval fitting was corrected before locked access to use unique cruise OOF rows rather than duplicate observations from three stress-test schemes; all stress schemes remain reported.
+    - Archive rendering initially required the absent optional tabulate package; native Markdown table generation replaced it without changing scientific outputs.
+  evidence_grade: A for the frozen internal locked audit; product claim remains diagnostic_only and external independent labels remain sealed

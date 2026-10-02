@@ -1,0 +1,76 @@
+{
+  "experiment_id": "p1_sss_reliability_v2.2",
+  "created_utc": "2026-10-02T02:30:38.413974+00:00",
+  "training_git_commit": "c7bf1dbd317f6cd8a2110a43a11d81ea0cc6a8f9",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": true,
+  "external_independent_opened": false,
+  "evidence_scope": "development outer OOF plus one-time internal locked SSS; external independent sealed",
+  "decision": "diagnostic_only",
+  "figure_source_data": {
+    "fig01_shrinkage_comparison.png": [
+      "shrinkage_comparison.csv"
+    ],
+    "fig02_locked_grade_skill.png": [
+      "locked_metrics.csv"
+    ],
+    "fig03_locked_interval_coverage.png": [
+      "locked_interval_coverage.csv"
+    ],
+    "fig04_atlas_grade_coverage.png": [
+      "atlas_grade_counts.csv"
+    ],
+    "fig05_global_grade_map_2025_07.png": [
+      "local:sss_reliability_atlas/year=2025/month=07.parquet"
+    ],
+    "fig06_risk_coverage.png": [
+      "risk_coverage_all.csv"
+    ],
+    "fig07_grade_retention.png": [
+      "selective_grade_retention.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_shrinkage_comparison.png": "Figure 1. Mean RMSE across cruise, spatial-block, whole-LME, and forward-time outer partitions, normalized by GLORYS RMSE for each preregistered residual-shrinkage rule. Lower is better; the black line is parity with GLORYS. This development-only comparison froze the shrinkage method before locked labels were opened.",
+    "fig02_locked_grade_skill.png": "Figure 2. Internal locked-test RMSE for the frozen SSS candidate and GLORYS within each preregistered A/B/C/D grade. Each locked observation is scored once with the already frozen model and grade rule; lower is better.",
+    "fig03_locked_interval_coverage.png": "Figure 3. Empirical locked coverage of the frozen nominal 50% and 90% SSS intervals by reliability grade. Dashed lines mark nominal coverage; deviations diagnose calibration without retrospective rescaling.",
+    "fig04_atlas_grade_coverage.png": "Figure 4. Fraction of all strict-input-ready 2025 core and available 2026 provisional coastal grid-months assigned to each frozen SSS reliability grade. D values remain in the audit table but are suppressed from the publishable product.",
+    "fig05_global_grade_map_2025_07.png": "Figure 5. Frozen SSS reliability grades for strict-input-ready coastal grid cells in July 2025. The North-American SOCAT development domain dominates demonstrated support; remote global cells become C/D or return toward GLORYS through residual shrinkage. This map is an applicability atlas, not external validation.",
+    "fig06_risk_coverage.png": "Figure 6. SSS RMSE as progressively higher-risk observations are retained under the frozen environment-k64 ranking. Development outer schemes and the one-time locked audit are shown separately; a rising curve means the applicability score orders error usefully.",
+    "fig07_grade_retention.png": "Figure 7. Cumulative one-time locked RMSE versus the area-weighted fraction of 2025 core and available 2026 provisional atlas grid-months retained through each frozen grade. The curve states the accuracy paid for broader mapped coverage."
+  },
+  "archive_builder_sha256": "f41289d560a7e932053398d94d80aa491b37b5288d37a291fe669de04baba20c",
+  "analysis_script_sha256": "f41289d560a7e932053398d94d80aa491b37b5288d37a291fe669de04baba20c",
+  "source_artifacts_sha256": {
+    "frozen_development_decision.json": "cb06aadd36d52088df2eaf0339997e8f1181f5e90be80d02905e7393c197da3b",
+    "locked_decision.json": "e3f1caf1bdf0bdf8a2baae02f2c59e2fa3fda739cbc1b1a246d63da46bcad82a",
+    "locked_predictions.parquet": "cc7a0909e3748c0d8c0888c8d57e52aa53060e4aab4bfb8b5bf02b2c9fbd62ed",
+    "development_oof_predictions.parquet": "02c5288235ed696001e8bb78549ca8ced44edbfc45a1df5ebcb73afc42ed6b52"
+  },
+  "files_sha256": {
+    "CAPTIONS.md": "ff41a1781c98d4c874849d1b150d425b33e18f394134e962b843eced656460b3",
+    "frozen_development_decision.json": "cb06aadd36d52088df2eaf0339997e8f1181f5e90be80d02905e7393c197da3b",
+    "locked_decision.json": "e3f1caf1bdf0bdf8a2baae02f2c59e2fa3fda739cbc1b1a246d63da46bcad82a",
+    "p1_sss_reliability_v2.2.yaml": "a4291d88342be60408d2f082def994dc6c2905b93e7e9d489e4ae96e40cde3c9",
+    "README.md": "7f66ed2b39adb3a43374bb34fb594bfd8301badb3bc964661880b017112ba5ec",
+    "REPORT.md": "f464b7540555edea590d39ac8fa7283e408e567cd66d585953d185073c428fe1",
+    "figures/fig01_shrinkage_comparison.png": "841c4e8d6a5c74aa7e13b11b37ac74c946eb4de89ea1fbd14a5229846ee32657",
+    "figures/fig02_locked_grade_skill.png": "48661c4fc7aad66d3f5c322726af6039167645ff3b8452f99fcd4d6d94140dba",
+    "figures/fig03_locked_interval_coverage.png": "b501075d45add7343e4d30d828b05dde964cf3ba34313f42eeb70e05bae47035",
+    "figures/fig04_atlas_grade_coverage.png": "1afb920b6d2ec882cf57aa7030bb70b9248aebb60d60072c96ed6cf5e9067b51",
+    "figures/fig05_global_grade_map_2025_07.png": "75330fd2158ba4eb285fc375886b4cbd9f9e37a294a6de2fa538b9935c59a4af",
+    "figures/fig06_risk_coverage.png": "111983fed39e1ce793bbe23cf5b50c59d655a094be11ab8cdbf22678e8e545bf",
+    "figures/fig07_grade_retention.png": "8bdae7a727b3586ab59c13ac78d0497b45335aa017dac123b8b3d4bd46cca9bf",
+    "tables/atlas_grade_counts.csv": "b29b3f70dee69d819a2457d151d5c0dee57402155875182940a4c3f99857529e",
+    "tables/development_interval_coverage.csv": "51e440e9dc0751264f4989b761dd3468b61e25ae825d49dabdc0a209df93ba3e",
+    "tables/development_metrics.csv": "d0f34193eb1bb798b3f734975dd78585960c2cf71e6660a0ca791de97701fbbe",
+    "tables/development_risk_coverage.csv": "758eb3bcb1fe4d59a1f589e6f9c55bb9a77445a43dda6123a8db158e2481f5fc",
+    "tables/development_strata.csv": "24dd8c22cb52abeb39541c7d99b600353e157a0388d74f344b0e53628b8a3f9a",
+    "tables/locked_gate_checks.csv": "86ca8642e2f5e520e0c096fc552b404a101caf310f18670d31fc644a713df2f8",
+    "tables/locked_interval_coverage.csv": "ff97f6484fa3e4b127d70bcedd2fea358963d40fb8c54ea1d44bd8a6d168c916",
+    "tables/locked_metrics.csv": "f02785c77851aee95e205aee68b4fbdbdf89dc4294554ba59aec82d7d9b60507",
+    "tables/risk_coverage_all.csv": "99524b4a8ae14ed86e716385ad1a181e5fb5d487106f230b0a02011fac926209",
+    "tables/selective_grade_retention.csv": "919a62f305c3e954772044e624970fbba3f31b16bda9d651645ce8eb2865188d",
+    "tables/shrinkage_comparison.csv": "7d93cf5aca2eaf182eee2b7bbd7ac23ee286304b488a3cb058e3723db0b69ebe"
+  }
+}

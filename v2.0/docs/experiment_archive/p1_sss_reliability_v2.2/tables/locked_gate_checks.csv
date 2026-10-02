@@ -1,0 +1,9 @@
+gate,passed
+overall_positive_skill,True
+grade_ab_positive_skill,True
+grade_ab_mae,True
+coverage50,True
+coverage90,True
+positive_lme_fraction,True
+worst_lme_no_collapse,False
+forward_evidence,True
