@@ -36,6 +36,7 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 | `p1_ta_sss_sab_decadal_trends_v2.2` | SAB 表层 TA/SSS 观测能否识别年代际趋势 | diagnostic complete；archive verified；locked/external sealed | TA 因航次稀少和 2014 集中而不可识别；SSS 为弱负趋势但对截止年份/区域敏感，只能 diagnostic_only |
 | `p1_ta_sss_mab_decadal_trends_v2.2` | MAB 表层 TA/SSS 观测能否识别年代际趋势 | diagnostic complete；archive verified；locked/external sealed | TA 原始负趋势经空间季节校正后消失；SSS 全区与纬带方向冲突，只能 diagnostic_only |
 | `p1_applicability_v2.2` | SSS/fCO2/TA/DIC 无泄漏外层残差与定量适用域 | complete；2,230,337 条 nested outer predictions；7,361,632 条 2025–2026 grid-month support records；archive verified；locked/external sealed | SSS/fCO2 保留 environmental-k64，选择性风险 AUC 相对最佳简单基线改善 9.6%/11.2%；TA/DIC 不满足单调误差要求，只保留区域级 diagnostic support |
+| `p1_sss_reliability_v2.2` | SSS 支持度收缩、校准区间、A/B/C/D atlas 与一次性 locked audit | complete；75,627 条 locked；1,840,408 条 2025–2026 grid-month；archive verified；external sealed；`diagnostic_only` | locked RMSE 1.071 PSU vs GLORYS 1.804，skill 0.647；B 级 MAE 0.446；50/90 coverage 0.484/0.884；North Brazil Shelf 最差 LME 比值 1.355 超过冻结 1.10 门槛，故不得升级为正式产品 |
 
 41 个 CODAP 2022–2024、未匹配 GLODAP 的完整航次已标记 `external_independent`。未来 SOCAT 相对 v2026 的新增航次是 SSS/fCO2 外部集；P3 前不得查看标签。
 
