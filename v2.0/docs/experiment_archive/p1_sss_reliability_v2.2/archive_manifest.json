@@ -1,6 +1,6 @@
 {
   "experiment_id": "p1_sss_reliability_v2.2",
-  "created_utc": "2026-10-02T02:30:38.413974+00:00",
+  "created_utc": "2026-10-02T02:34:10.080303+00:00",
   "training_git_commit": "c7bf1dbd317f6cd8a2110a43a11d81ea0cc6a8f9",
   "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
   "locked_test_opened": true,
@@ -39,8 +39,8 @@
     "fig06_risk_coverage.png": "Figure 6. SSS RMSE as progressively higher-risk observations are retained under the frozen environment-k64 ranking. Development outer schemes and the one-time locked audit are shown separately; a rising curve means the applicability score orders error usefully.",
     "fig07_grade_retention.png": "Figure 7. Cumulative one-time locked RMSE versus the area-weighted fraction of 2025 core and available 2026 provisional atlas grid-months retained through each frozen grade. The curve states the accuracy paid for broader mapped coverage."
   },
-  "archive_builder_sha256": "f41289d560a7e932053398d94d80aa491b37b5288d37a291fe669de04baba20c",
-  "analysis_script_sha256": "f41289d560a7e932053398d94d80aa491b37b5288d37a291fe669de04baba20c",
+  "archive_builder_sha256": "a3dbb77ca94349f29e962f8207a212cc8164bd2f9aec7cc85cf602eb73ef9642",
+  "analysis_script_sha256": "a3dbb77ca94349f29e962f8207a212cc8164bd2f9aec7cc85cf602eb73ef9642",
   "source_artifacts_sha256": {
     "frozen_development_decision.json": "cb06aadd36d52088df2eaf0339997e8f1181f5e90be80d02905e7393c197da3b",
     "locked_decision.json": "e3f1caf1bdf0bdf8a2baae02f2c59e2fa3fda739cbc1b1a246d63da46bcad82a",
@@ -48,12 +48,12 @@
     "development_oof_predictions.parquet": "02c5288235ed696001e8bb78549ca8ced44edbfc45a1df5ebcb73afc42ed6b52"
   },
   "files_sha256": {
-    "CAPTIONS.md": "ff41a1781c98d4c874849d1b150d425b33e18f394134e962b843eced656460b3",
-    "frozen_development_decision.json": "cb06aadd36d52088df2eaf0339997e8f1181f5e90be80d02905e7393c197da3b",
-    "locked_decision.json": "e3f1caf1bdf0bdf8a2baae02f2c59e2fa3fda739cbc1b1a246d63da46bcad82a",
+    "CAPTIONS.md": "a61625a2ffcefc13aa6ab02c0e3ae336f6575666474dc9064ed3f4aefe8550f1",
+    "frozen_development_decision.json": "300a375ff1cab5adc5cef2a74cb4be405a491fcd63d22bca5682da338bc3e68c",
+    "locked_decision.json": "3ef9e0830264cebe960f2d23a01ae6e48ddb1bbdc00e3fc8df2488564cbc621d",
     "p1_sss_reliability_v2.2.yaml": "a4291d88342be60408d2f082def994dc6c2905b93e7e9d489e4ae96e40cde3c9",
-    "README.md": "7f66ed2b39adb3a43374bb34fb594bfd8301badb3bc964661880b017112ba5ec",
-    "REPORT.md": "f464b7540555edea590d39ac8fa7283e408e567cd66d585953d185073c428fe1",
+    "README.md": "13225875cc6bdccb27b4585f2c0d28487d6e8a841111daacf643ed610fb7f142",
+    "REPORT.md": "e4ab83bbb8f04cade515c12225a812e717f1fd7d0309c5531f3ada491e9d33d2",
     "figures/fig01_shrinkage_comparison.png": "841c4e8d6a5c74aa7e13b11b37ac74c946eb4de89ea1fbd14a5229846ee32657",
     "figures/fig02_locked_grade_skill.png": "48661c4fc7aad66d3f5c322726af6039167645ff3b8452f99fcd4d6d94140dba",
     "figures/fig03_locked_interval_coverage.png": "b501075d45add7343e4d30d828b05dde964cf3ba34313f42eeb70e05bae47035",
@@ -61,16 +61,16 @@
     "figures/fig05_global_grade_map_2025_07.png": "75330fd2158ba4eb285fc375886b4cbd9f9e37a294a6de2fa538b9935c59a4af",
     "figures/fig06_risk_coverage.png": "111983fed39e1ce793bbe23cf5b50c59d655a094be11ab8cdbf22678e8e545bf",
     "figures/fig07_grade_retention.png": "8bdae7a727b3586ab59c13ac78d0497b45335aa017dac123b8b3d4bd46cca9bf",
-    "tables/atlas_grade_counts.csv": "b29b3f70dee69d819a2457d151d5c0dee57402155875182940a4c3f99857529e",
-    "tables/development_interval_coverage.csv": "51e440e9dc0751264f4989b761dd3468b61e25ae825d49dabdc0a209df93ba3e",
-    "tables/development_metrics.csv": "d0f34193eb1bb798b3f734975dd78585960c2cf71e6660a0ca791de97701fbbe",
-    "tables/development_risk_coverage.csv": "758eb3bcb1fe4d59a1f589e6f9c55bb9a77445a43dda6123a8db158e2481f5fc",
-    "tables/development_strata.csv": "24dd8c22cb52abeb39541c7d99b600353e157a0388d74f344b0e53628b8a3f9a",
-    "tables/locked_gate_checks.csv": "86ca8642e2f5e520e0c096fc552b404a101caf310f18670d31fc644a713df2f8",
-    "tables/locked_interval_coverage.csv": "ff97f6484fa3e4b127d70bcedd2fea358963d40fb8c54ea1d44bd8a6d168c916",
-    "tables/locked_metrics.csv": "f02785c77851aee95e205aee68b4fbdbdf89dc4294554ba59aec82d7d9b60507",
-    "tables/risk_coverage_all.csv": "99524b4a8ae14ed86e716385ad1a181e5fb5d487106f230b0a02011fac926209",
-    "tables/selective_grade_retention.csv": "919a62f305c3e954772044e624970fbba3f31b16bda9d651645ce8eb2865188d",
-    "tables/shrinkage_comparison.csv": "7d93cf5aca2eaf182eee2b7bbd7ac23ee286304b488a3cb058e3723db0b69ebe"
+    "tables/atlas_grade_counts.csv": "bc8c55470bbf9c0eb5dddee6e506c868d4aeb93e47c2bc267860b26acae8d252",
+    "tables/development_interval_coverage.csv": "0b9bd1e7389c9655ad0f1a9a439fd841936a590289398549d98f5cac3c2e8ab5",
+    "tables/development_metrics.csv": "86787b875a94fd5e90b89ca12dd9655d5a86333312b922a4138659768d5226bf",
+    "tables/development_risk_coverage.csv": "41538029f9246fe4b063acd067a8acc66f31c4d9ff0c9b82087c53077d1576eb",
+    "tables/development_strata.csv": "831fa30e3b5a7aa24f4d0f5568f09df552e6e5eadc814f4a6d1286bb99d8b836",
+    "tables/locked_gate_checks.csv": "9294849906c3ae7df27d0cd4c27e7084f59881b7b9e5c350b111c6d936e073a9",
+    "tables/locked_interval_coverage.csv": "4e817be4bb9da905233a1e5ea78c3f3c8995d42523be121ae3323d8d342b8293",
+    "tables/locked_metrics.csv": "04bba4bc5b2279c9e5640195ec13ebaf2892fa952a26d660d3713c60c4f92128",
+    "tables/risk_coverage_all.csv": "16e450b87518f926a2f7a250f56a0b949a53daaf1de487b928d02c461a81b466",
+    "tables/selective_grade_retention.csv": "852b79b56fd645b09c4301159e520393c93f5998ffaf4192e678e77a7f9e50a1",
+    "tables/shrinkage_comparison.csv": "85d6fc0158d3dbf5298e97922153014dbb980cccc1acaf77c0880c2ae0ece7b0"
   }
 }
