@@ -70,6 +70,8 @@ def prepare(frame: pd.DataFrame) -> pd.DataFrame:
     result["latitude_sin"] = np.sin(np.deg2rad(result.latitude))
     result["longitude_sin"] = np.sin(np.deg2rad(result.longitude))
     result["longitude_cos"] = np.cos(np.deg2rad(result.longitude))
+    result["lon_sin"] = result.longitude_sin
+    result["lon_cos"] = result.longitude_cos
     phase = 2.0 * np.pi * (result.month.to_numpy(float) - 1.0) / 12.0
     result["month_sin"] = np.sin(phase)
     result["month_cos"] = np.cos(phase)
@@ -563,6 +565,8 @@ def grid_query(
         latitude_sin=np.sin(np.deg2rad(latitude)),
         longitude_sin=np.sin(np.deg2rad(longitude)),
         longitude_cos=np.cos(np.deg2rad(longitude)),
+        lon_sin=np.sin(np.deg2rad(longitude)),
+        lon_cos=np.cos(np.deg2rad(longitude)),
         month_sin=np.full(len(nodes), np.sin(phase)),
         month_cos=np.full(len(nodes), np.cos(phase)),
         year=np.full(len(nodes), year),
