@@ -1,0 +1,31 @@
+schema_version: 1
+experiment_id: p1_fco2_reliability_v2.2
+status: preregistered
+owner: ReCAD
+created_utc: 2026-10-04T00:00:00+08:00
+science:
+  question: Where can coastal fCO2 be reconstructed with calibrated error after support-aware shrinkage?
+  hypothesis: Environmental-support shrinkage converts the strong in-support residual model into a defensible regional selective product.
+  product_scope: 2025 core and available 2026 provisional global coastal atlas with explicit suppression outside publishable support.
+  primary_comparison: Fixed CatBoost residual, standardized MLP MSE, standardized MLP physical 30-u-atm Huber, and CatBoost using strictly cross-fitted SSS.
+  acceptance_gate: Grade A/B rows must pass every outer stress scheme, interval calibration, absolute-error, positive-LME, worst-LME, and retained-area gates.
+  stopping_rule: All candidates, budgets, shrinkage rules, intervals, grades, and gates are frozen before training. Locked and external labels remain sealed.
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  observation_product: SOCATv2026 fCO2
+  background_product: training-only LME-month seasonal trend
+  spatial_domain: frozen North-American-adjacent evaluation evidence; global coastal inference grid
+splits:
+  development: untouched model-matched outer OOF predictions
+  grouping: complete cruises, fixed 5-degree blocks, complete LMEs, and safe forward chain
+  locked_test: sealed
+  external_independent: sealed until P3
+model:
+  config_path: configs/p1_fco2_reliability_v2.2.yaml
+  applicability: raw standardized environmental k-nearest-neighbour distance at k=64
+  interval_method: finite-sample split conformal by risk decile and label-free background fCO2 band
+  grades: A q90<=20; B<=35; C<=60 u-atm; D suppress
+artifacts:
+  output_directory: outputs/experiments/p1_fco2_reliability_v2.2
+  reviewer_archive: docs/experiment_archive/p1_fco2_reliability_v2.2
+  row_level_outputs_in_git: false

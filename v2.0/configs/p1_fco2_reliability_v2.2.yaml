@@ -1,0 +1,51 @@
+schema_version: 1
+experiment_id: p1_fco2_reliability_v2.2
+parent_issue: 26
+data_manifest: frozen/data_manifest_v2.2.json
+applicability_output: D:/proj_personal/PhD/ReCAD/v2.0/outputs/experiments/p1_applicability_v2.2
+sss_reliability_output: D:/proj_personal/PhD/ReCAD/v2.0/outputs/experiments/p1_sss_reliability_v2.2
+chla_path: D:/proj_personal/PhD/ReCAD/v2.0/outputs/cache_naccom/chla.nc
+prepared_global: D:/proj_personal/PhD/ReCAD/v2.0/outputs/prepared_global_p32.nc
+models:
+  candidates: [catboost, mlp_mse_standardized, mlp_huber_30uatm, catboost_sss_oof]
+  catboost_iterations: 1500
+  neural_steps: 4000
+  batch_size: 2048
+  oof_seed: 100
+  final_seeds: [100, 101, 102]
+  features: [sss, sst, adt, wspd, pco2air, xco2air, year, latitude, longitude, month, lme_id, basin_id, regime_id]
+outer_schemes: [cruise, spatial_block, whole_lme, forward]
+outer_folds: 5
+applicability_metric: environment_k64
+shrinkage_candidates: [none, linear_2_5, quadratic_5, hard_4]
+selection: lowest_mean_outer_scheme_normalized_rmse
+intervals:
+  method: split_conformal_risk_decile_x_background_fco2_band
+  coverages: [0.50, 0.90]
+  minimum_cell_records: 200
+grades:
+  A_max_q90_uatm: 20
+  B_max_q90_uatm: 35
+  C_max_q90_uatm: 60
+  maximum_environment_k64: 5
+  minimum_unique_cruises: 2
+  minimum_effective_groups: 1.5
+  D_policy: suppress_product_value
+development_gate:
+  publishable_grades: [A, B]
+  skill_vs_background_gt: 0
+  grade_ab_mae_max_uatm: 25
+  coverage50_range: [0.40, 0.60]
+  coverage90_range: [0.85, 0.95]
+  positive_lme_fraction_minimum: 0.70
+  worst_lme_relative_rmse_maximum: 1.10
+  minimum_retained_fraction: 0.10
+  required_schemes: [cruise, spatial_block, whole_lme, forward]
+ablation_policy:
+  chla: compare_on_identical_finite_chla_rows_only
+  bathymetry_distance: unavailable_in_frozen_v2.2_no_posthoc_ingestion
+  graph: not_triggered_issue24_selected_environment_k64
+  regional_experts: trigger_only_if_support_selective_core_fails
+locked_test_access: forbidden_for_issue_26
+external_independent_access: forbidden_until_P3
+
