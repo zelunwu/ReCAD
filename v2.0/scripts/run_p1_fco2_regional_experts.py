@@ -155,6 +155,89 @@ def crossfit_region_intervals(predictions: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def temporal_inflation(
+    predictions: pd.DataFrame,
+    config: dict[str, object],
+    gateway: P1DataGateway,
+) -> pd.DataFrame:
+    """Estimate interval inflation from a nested, training-only forward split."""
+
+    stage = config["regional_expert_stage"]
+    nomination = stage["nomination_rules"]
+    cruise = predictions.loc[
+        predictions.outer_scheme.eq("cruise") & predictions.expert_available
+    ].copy()
+    cruise["absolute_error"] = np.abs(cruise.prediction - cruise.truth)
+    summary = cruise.groupby("lme_id").absolute_error.agg(
+        n="size", q90=lambda values: np.quantile(values, 0.90)
+    )
+    skill_rows = []
+    for lme, part in cruise.groupby("lme_id"):
+        skill_rows.append((lme, metric_values(part, "prediction")["skill_vs_background"]))
+    skill = dict(skill_rows)
+    nominated = [
+        int(lme)
+        for lme, row in summary.iterrows()
+        if row["n"] >= nomination["minimum_rows"]
+        and row.q90 <= nomination["q90_absolute_error_max_uatm"]
+        and skill[lme] > nomination["skill_vs_background_gt"]
+    ]
+    train = prepare(gateway.load_labels("fco2", Purpose.TRAIN, columns=MODEL_COLUMNS))
+    train = add_crossfit_sss(
+        train,
+        Path(config["sss_reliability_output"]) / "development_oof_predictions.parquet",
+        "cruise",
+    )
+    max_year = train.groupby("group_key").year.max()
+    train["cruise_max_year"] = train.group_key.map(max_year)
+    temporal = stage["temporal_interval_calibration"]
+    lower, upper = temporal["calibration_cruise_max_year_range"]
+    rows = []
+    for lme in nominated:
+        fit = train.loc[
+            train.lme_id.eq(lme) & train.cruise_max_year.le(temporal["fit_cruise_max_year_lte"])
+        ].copy()
+        held = train.loc[train.lme_id.eq(lme) & train.cruise_max_year.between(lower, upper)].copy()
+        if len(fit) < 2000 or len(held) < 200:
+            continue
+        background = SeasonalTrendClimatology().fit(fit)
+        for frame in (fit, held):
+            frame["background"] = background.predict(frame)
+            frame["residual"] = frame.truth - frame.background
+        prediction = train_predict_catboost(
+            fit,
+            held,
+            seed=int(config["models"]["oof_seed"]),
+            iterations=int(stage["iterations"]),
+        )
+        pseudo_error = np.abs(prediction - held.truth.to_numpy(float))
+        reference = cruise.loc[cruise.lme_id.eq(lme)].absolute_error
+        q50_ratio = finite_quantile(pseudo_error, 0.50) / finite_quantile(reference, 0.50)
+        q90_ratio = finite_quantile(pseudo_error, 0.90) / finite_quantile(reference, 0.90)
+        rows.append(
+            {
+                "lme_id": lme,
+                "fit_n": len(fit),
+                "calibration_n": len(held),
+                "q50_inflation": max(1.0, q50_ratio),
+                "q90_inflation": max(1.0, q90_ratio),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def apply_temporal_inflation(predictions: pd.DataFrame, factors: pd.DataFrame) -> pd.DataFrame:
+    """Inflate forward intervals without changing any point prediction."""
+
+    result = predictions.copy()
+    lookup50 = factors.set_index("lme_id").q50_inflation.to_dict()
+    lookup90 = factors.set_index("lme_id").q90_inflation.to_dict()
+    forward = result.outer_scheme.eq("forward")
+    result.loc[forward, "width50"] *= result.loc[forward, "lme_id"].map(lookup50).fillna(1.0)
+    result.loc[forward, "width90"] *= result.loc[forward, "lme_id"].map(lookup90).fillna(1.0)
+    return result
+
+
 def region_metrics(frame: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for (scheme, lme), part in frame.groupby(["outer_scheme", "lme_id"]):
@@ -236,10 +319,13 @@ def main() -> int:
     gateway = P1DataGateway(manifest)
     predictions = run_outer(config, gateway, args.output)
     calibrated = crossfit_region_intervals(predictions)
+    factors = temporal_inflation(calibrated, config, gateway)
+    calibrated = apply_temporal_inflation(calibrated, factors)
     metrics = region_metrics(calibrated)
     decision = decide(metrics, config)
     calibrated.to_parquet(args.output / "regional_expert_predictions.parquet", index=False)
     metrics.to_csv(args.output / "regional_expert_metrics.csv", index=False)
+    factors.to_csv(args.output / "temporal_interval_inflation.csv", index=False)
     (args.output / "regional_decision.json").write_text(
         json.dumps(decision, indent=2), encoding="utf-8"
     )

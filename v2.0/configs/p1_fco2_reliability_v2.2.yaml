@@ -71,4 +71,10 @@ regional_expert_stage:
     coverage50_range: [0.40, 0.60]
     coverage90_range: [0.85, 0.95]
   whole_lme_policy: unseen_lme_fallback_background_grade_D
+  temporal_interval_calibration:
+    method: nested_pseudo_forward_inflation
+    fit_cruise_max_year_lte: 2015
+    calibration_cruise_max_year_range: [2016, 2018]
+    factors: per_lme_q50_and_q90_ratio_to_cruise_oof_minimum_one
+    point_predictions_unchanged: true
 
