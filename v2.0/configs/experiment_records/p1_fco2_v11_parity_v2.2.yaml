@@ -1,0 +1,22 @@
+schema_version: 1
+experiment_id: p1_fco2_v11_parity_v2.2
+status: preregistered
+owner: ReCAD
+created_utc: 2026-10-04T20:15:00+08:00
+science:
+  question: Does the v2 support-aware fCO2 design outperform published ReCAD v1.1 in the original NAACOM domain under both historical and strict validation?
+  hypothesis: Regional balancing and support-aware residual learning beat the published random-forest product without relying on random-split leakage.
+  primary_comparison: Frozen v2 CatBoost residual architecture versus the tracked v1.1 reference table.
+  stopping_rule: Historical reference, period, region masks, split mapping, seeds, budgets, and gates are frozen before training.
+data:
+  published_reference: v1/figures_chapter3/model_summary_chapter3.csv
+  historical_prepared: local ignored prepared_naccom.nc
+  historical_masks: local ignored masks_naccom.nc
+  historical_scope: 1993-2021, exact v1.1 geometric region definitions and protocol-aligned random/test-year masks
+  strict_scope: Issue 26 untouched cruise, spatial-block, and forward outer predictions
+  locked_test: sealed
+  external_independent: sealed until P3
+artifacts:
+  output_directory: outputs/experiments/p1_fco2_v11_parity_v2.2
+  reviewer_archive: docs/experiment_archive/p1_fco2_v11_parity_v2.2
+  row_level_outputs_in_git: false

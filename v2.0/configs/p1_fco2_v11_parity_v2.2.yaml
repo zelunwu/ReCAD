@@ -1,0 +1,37 @@
+schema_version: 1
+experiment_id: p1_fco2_v11_parity_v2.2
+parent_issue: 32
+published_reference: ../v1/figures_chapter3/model_summary_chapter3.csv
+historical_prepared: D:/proj_personal/PhD/ReCAD/v2.0/outputs/prepared_naccom.nc
+historical_masks: D:/proj_personal/PhD/ReCAD/v2.0/outputs/masks_naccom.nc
+issue26_output: D:/proj_personal/PhD/ReCAD/v2.0/outputs/experiments/p1_fco2_reliability_v2.2
+historical_evidence_boundary: repeatedly_viewed_comparison_only
+historical_period_end: 2021
+historical_split_mapping:
+  Train: train
+  Test: val
+  Validation: test
+model:
+  family: catboost_residual
+  seeds: [100, 101, 102]
+  iterations: 1500
+  depth: 8
+  learning_rate: 0.05
+  features: [sss, sst, adt, wspd, pco2air, xco2air, year, latitude, longitude, month, legacy_region]
+historical_gate:
+  minimum_parity:
+    naacom_test_rmse_lt: 17.641706522771837
+    naacom_validation_rmse_lt: 28.974568004074396
+  strong_product_target:
+    naacom_test_rmse_lte: 15.877535870494654
+    naacom_validation_rmse_lte: 26.077111203666956
+strict_gate:
+  required_schemes: [cruise, spatial_block, forward]
+  positive_skill: true
+  mae_max_uatm: 15
+  q90_absolute_error_max_uatm: 35
+  coverage90_range: [0.85, 0.95]
+  region_rmse_no_worse_than_v11_validation: true
+locked_fco2_access: forbidden
+external_independent_access: forbidden_until_P3
+
