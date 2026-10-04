@@ -55,8 +55,8 @@ def legacy_frame(prepared_path: Path, masks_path: Path, period_end: int) -> pd.D
     with xr.open_dataset(prepared_path) as prepared, xr.open_dataset(masks_path) as masks:
         years = prepared.year.to_numpy().astype(int)
         months = prepared.month.to_numpy().astype(int)
-        latitude = prepared.lat.to_numpy(float)
-        longitude = prepared.lon.to_numpy(float)
+        latitude = prepared.lat.to_numpy().astype(float)
+        longitude = prepared.lon.to_numpy().astype(float)
         shapes = (len(years), len(months), len(latitude), len(longitude))
         active = np.zeros(shapes, dtype=bool)
         split_code = np.full(shapes, -1, dtype=np.int8)
