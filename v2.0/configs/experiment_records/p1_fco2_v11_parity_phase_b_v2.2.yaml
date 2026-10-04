@@ -30,4 +30,3 @@ result:
   direct_catboost_test_rmse_uatm: 19.793084163096772
   direct_catboost_validation_rmse_uatm: 30.455544397561418
   dual_parity_passed: false
-

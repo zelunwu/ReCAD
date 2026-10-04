@@ -34,4 +34,3 @@ strict_gate:
   region_rmse_no_worse_than_v11_validation: true
 locked_fco2_access: forbidden
 external_independent_access: forbidden_until_P3
-
