@@ -1,0 +1,18 @@
+{
+  "source": "https://zenodo.org/records/14038561",
+  "filename": "ReCAD-NAC-pCO2_with_err_v1.1.nc",
+  "bytes": 955486384,
+  "official_md5": "0d414d5c84698059f04f0ff2ad2e69ca",
+  "verified_local_md5": "0d414d5c84698059f04f0ff2ad2e69ca",
+  "dimensions": {
+    "time": 348,
+    "lat": 220,
+    "lon": 520
+  },
+  "variables": [
+    "err",
+    "fco2_product",
+    "pco2_product"
+  ],
+  "contains_observation_labels_or_split_masks": false
+}

@@ -244,6 +244,19 @@ def main() -> int:
         "published_v11_reference.csv",
     ):
         shutil.copy2(OUTPUT / name, tables / name)
+    product_provenance = {
+        "source": "https://zenodo.org/records/14038561",
+        "filename": "ReCAD-NAC-pCO2_with_err_v1.1.nc",
+        "bytes": 955486384,
+        "official_md5": "0d414d5c84698059f04f0ff2ad2e69ca",
+        "verified_local_md5": "0d414d5c84698059f04f0ff2ad2e69ca",
+        "dimensions": {"time": 348, "lat": 220, "lon": 520},
+        "variables": ["err", "fco2_product", "pco2_product"],
+        "contains_observation_labels_or_split_masks": False,
+    }
+    (tables / "v11_product_provenance.json").write_text(
+        json.dumps(product_provenance, indent=2), encoding="utf-8"
+    )
 
     captions = {
         "fig01_historical_aggregate.png": "Figure 1. Aggregate historical comparison on the original v1.1 random Test and 2004-2005 Validation masks. The exact RF replica wins the random split but fails temporal transfer; the global balanced residual model nearly reproduces the published Validation value but misses the random Test threshold.",
@@ -311,6 +324,8 @@ Issue #32 closes as a negative but decisive benchmark. The exact old RF is retai
 ## Reproducibility
 
 Aggregate source tables, decisions, protocol hashes, and figure captions are stored with this report. Row-level predictions and checkpoints remain in the ignored experiment output and are referenced by hashes in `archive_manifest.json`.
+
+The official Zenodo v1.1 product was retrieved through the remote staging server and verified locally against the published MD5 (`0d414d5c84698059f04f0ff2ad2e69ca`). It contains the reconstructed fCO2/pCO2 fields and uncertainty, but no SOCAT labels or split masks; its metadata is archived in `tables/v11_product_provenance.json`.
 """
     (ARCHIVE / "REPORT.md").write_text(report, encoding="utf-8")
 

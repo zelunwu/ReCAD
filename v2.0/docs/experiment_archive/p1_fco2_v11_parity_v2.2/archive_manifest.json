@@ -4,17 +4,18 @@
   "locked_fco2_opened": false,
   "external_independent_opened": false,
   "figures": {
-    "fig01_historical_aggregate.png": "Figure 1. Aggregate historical comparison on the original v1.1 random Test and 2004\u20132005 Validation masks. The exact RF replica wins the random split but fails temporal transfer; the global balanced residual model nearly reproduces the published Validation value but misses the random Test threshold.",
-    "fig02_historical_regions.png": "Figure 2. Historical 2004\u20132005 RMSE by the six published regions. No Stage-A architecture uniformly improves the published table. The table is comparison-only because the v1.1 local calibration used SOCAT labels across the full period.",
-    "fig03_random_temporal_tradeoff.png": "Figure 3. Random-split and 2004\u20132005 errors for each honest candidate. Dashed lines show the published v1.1 values; the shaded lower-left quadrant is the preregistered dual-parity region. No candidate enters it without label-informed post-calibration.",
+    "fig01_historical_aggregate.png": "Figure 1. Aggregate historical comparison on the original v1.1 random Test and 2004-2005 Validation masks. The exact RF replica wins the random split but fails temporal transfer; the global balanced residual model nearly reproduces the published Validation value but misses the random Test threshold.",
+    "fig02_historical_regions.png": "Figure 2. Historical 2004-2005 RMSE by the six published regions. No Stage-A architecture uniformly improves the published table. The table is comparison-only because the v1.1 local calibration used SOCAT labels across the full period.",
+    "fig03_random_temporal_tradeoff.png": "Figure 3. Random-split and 2004-2005 errors for each honest candidate. Dashed lines show the published v1.1 values; the shaded lower-left quadrant is the preregistered dual-parity region. No candidate enters it without label-informed post-calibration.",
     "fig04_strict_outer_skill.png": "Figure 4. Skill versus the training-only seasonal-trend background on grade A/B rows under untouched cruise, spatial-block, and forward outer folds, remapped to the original v1.1 regions. Missing forward cells mean no A/B observations survived the support rule. No region passes all required schemes and error gates."
   },
   "tracked_files": {
-    "CAPTIONS.md": "9658ec571099fc731474ebc0a10bfc9675d5ee785ef7511eca80de0eab62b08d",
-    "REPORT.md": "01fcbd3da0b6b274895a2cff09fb635d3cd4dc019da3c6ae7bd3ff681201fb13",
-    "figures\\fig01_historical_aggregate.png": "e5cd8cff236d6866215d0ad548dad10a0511d1f8557e379e09bb7e9ff62ccc0c",
-    "figures\\fig02_historical_regions.png": "7a1dc0bc5207c44df0713e37565f7470bc1001909cdfad20f7bd6b93989bdbb2",
-    "figures\\fig03_random_temporal_tradeoff.png": "288b0eac6bb0b5b60c4a9234c02b7b0cc0115ac58422a4c09b1079dfd97ddede",
+    "archive_manifest.json": "43e922d2f994c2bd5997325cd92e0424153507b39122fe0fcd7a84239178a716",
+    "CAPTIONS.md": "65d8c3f8b6d354871b912d7fa56e7715725797eb698c63091a38a91228b0a99d",
+    "REPORT.md": "a0028d89967392df68bd340b5a957995bfabd7c806de5d738d72c0c754cf3dd0",
+    "figures\\fig01_historical_aggregate.png": "aa2d217b3d3b98fdf36101850b7677e8366963a5ecd78f240d4cb40d11b23f75",
+    "figures\\fig02_historical_regions.png": "8f1678fc43b4664305620ac7bb87508bcc75b798da2e33d26f00417412a04efc",
+    "figures\\fig03_random_temporal_tradeoff.png": "f0ba8c056570dfabf4c30117254dceddf63cec9a4481b1d87408e76c1f0dd888",
     "figures\\fig04_strict_outer_skill.png": "69b1e3f0e6926ea0be03e3918c6e9f8db317db25002f3d2a8d7f404904e461f6",
     "tables\\historical_decision.json": "144c466d9997a49c4ee43df5cad2a22ee9e32d68698b29c7b9e086e48ddd210b",
     "tables\\historical_metrics_combined.csv": "61750ee1f36b9d59a43a1d11545b87b39f154a49d82c102d33293aba1a76c152",
@@ -22,7 +23,8 @@
     "tables\\protocol.json": "55149db14eb19cbeab2ba87e73546ab1f1d0f51911740ffe6caad2d92899bb34",
     "tables\\published_v11_reference.csv": "cb6e2030972bc5a07ad119e5b54c7c6b70a4b749ec19b0034fb243f6d09faebf",
     "tables\\strict_outer_metrics_by_v11_region.csv": "0bf07a7e437e20a85291361f32998c2b1bae5631eace6eedc59b6660f5a8ff0b",
-    "tables\\strict_region_gate.csv": "08e203d27f2642f3269b4b63e83de12b6cd18f11fe9c27c165770320b51035d1"
+    "tables\\strict_region_gate.csv": "08e203d27f2642f3269b4b63e83de12b6cd18f11fe9c27c165770320b51035d1",
+    "tables\\v11_product_provenance.json": "b765f46ba52d154328b127d19bcba000ec09bc21a644c3d104454e1a60efdcf1"
   },
   "ignored_source_files": {
     "C:\\Users\\zelun\\.codex\\worktrees\\issue32-v11-parity\\ReCAD\\v2.0\\outputs\\experiments\\p1_fco2_v11_parity_v2.2\\historical_predictions.parquet": {
