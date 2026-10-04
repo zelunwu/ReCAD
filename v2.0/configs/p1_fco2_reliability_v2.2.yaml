@@ -48,4 +48,27 @@ ablation_policy:
   regional_experts: trigger_only_if_support_selective_core_fails
 locked_test_access: forbidden_for_issue_26
 external_independent_access: forbidden_until_P3
+regional_expert_stage:
+  trigger: core_support_selective_gate_failed_on_2026-10-04
+  architecture: independent_lme_catboost_residual_with_background_fallback
+  eligibility_from_training_metadata:
+    minimum_records: 5000
+    minimum_cruises: 50
+    minimum_years: 10
+    minimum_months: 8
+  iterations: 1500
+  nomination_source: cruise_outer_oof_only
+  nomination_rules:
+    minimum_rows: 1000
+    q90_absolute_error_max_uatm: 35
+    skill_vs_background_gt: 0
+  confirmation_sources: [spatial_block, forward]
+  confirmation_rules:
+    minimum_rows: 200
+    q90_absolute_error_max_uatm: 35
+    skill_vs_background_gt: 0
+    rmse_ratio_maximum: 1.10
+    coverage50_range: [0.40, 0.60]
+    coverage90_range: [0.85, 0.95]
+  whole_lme_policy: unseen_lme_fallback_background_grade_D
 

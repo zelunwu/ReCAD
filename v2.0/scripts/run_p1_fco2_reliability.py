@@ -270,6 +270,7 @@ def join_support(frame: pd.DataFrame, source: Path, scheme: str, fold: int) -> p
     result = frame.merge(support, on="record_id", how="left", validate="one_to_one")
     if result.environment_k64.isna().any():
         raise RuntimeError(f"Issue #24 support join failed for {scheme}/{fold}")
+    result["risk_environment_k64"] = result.environment_k64
     return result
 
 
@@ -512,6 +513,8 @@ def main() -> int:
     validation = manifest.validate(hash_mode="full")
     gateway = P1DataGateway(manifest)
     predictions = run_outer(config, gateway, args.output)
+    if "risk_environment_k64" not in predictions:
+        predictions["risk_environment_k64"] = predictions.environment_k64
     candidate, shrinkage, comparison = select_candidate(predictions, config)
     selected = predictions.loc[predictions.candidate.eq(candidate)].copy()
     selected["prediction"] = apply_shrinkage(
