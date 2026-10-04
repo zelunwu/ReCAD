@@ -1,0 +1,27 @@
+schema_version: 1
+experiment_id: p1_fco2_v11_parity_phase_b_v2.2
+status: preregistered_after_stage_a
+parent_experiment: p1_fco2_v11_parity_v2.2
+created_utc: 2026-10-04T20:31:00+08:00
+reason: Stage A missed the historical gate; code archaeology recovered the exact seven v1 predictors and exposed label-informed post-calibration.
+question: Can an honest direct model match the uncalibrated v1 random-forest architecture and exceed the published aggregate metrics without label-informed calibration?
+data:
+  period: 1993-2021
+  rows: exact legacy masks restricted to the six published regions
+  complete_case_features: [longitude, latitude, month, sss, sst, adt, pco2air]
+models:
+  v1_rf_replica:
+    estimators: 300
+    min_samples_leaf: 1
+    max_features: 1.0
+    bootstrap: true
+    seed: 100
+  direct_catboost:
+    seeds: [100, 101, 102]
+    iterations: 2500
+    depth: 10
+    learning_rate: 0.04
+selection: No model selection; both fixed candidates are reported.
+leakage_rule: No local calibration may use Test or Validation labels.
+locked_fco2_access: forbidden
+
