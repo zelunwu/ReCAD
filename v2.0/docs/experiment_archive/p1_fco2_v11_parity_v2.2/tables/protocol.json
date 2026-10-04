@@ -1,0 +1,14 @@
+{
+  "git_commit": "67b547ff931b23eef766eed5716defecd97f7ce6",
+  "config_sha256": "de04fa663ec19c38c01eebda7e83d4086c5fb36a440c83b46715f9043a081ebb",
+  "published_reference_sha256": "f256c50d6bd95f0df599420c320c93b403cb7a9800da8abb311ac50064624fd5",
+  "prepared_sha256": "f9bd57d008038e409efc1a35348e7622e28eb63e91ef598410b62a170464208e",
+  "masks_sha256": "47a1e09996aaf1263aee43faf604860fb5a81051bdec6466d55ceb8f4647d305",
+  "rows": 118427,
+  "split_counts": {
+    "Train": 89949,
+    "Test": 22410,
+    "Validation": 6068
+  },
+  "locked_fco2_opened": false
+}

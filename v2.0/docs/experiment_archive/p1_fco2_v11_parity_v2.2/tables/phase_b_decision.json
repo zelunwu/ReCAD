@@ -1,0 +1,67 @@
+{
+  "aggregate_metrics": [
+    {
+      "candidate": "direct_catboost",
+      "Region": "NAACOM",
+      "Type": "Test",
+      "n": 22410,
+      "R2": 0.8450620972894285,
+      "RMSE": 19.793084163096772,
+      "MAE": 12.61618799947732,
+      "MBE": -0.02551344084858257
+    },
+    {
+      "candidate": "direct_catboost",
+      "Region": "NAACOM",
+      "Type": "Train",
+      "n": 89949,
+      "R2": 0.8928197160041828,
+      "RMSE": 16.51291812904557,
+      "MAE": 10.979722730177029,
+      "MBE": -0.0001322294229477729
+    },
+    {
+      "candidate": "direct_catboost",
+      "Region": "NAACOM",
+      "Type": "Validation",
+      "n": 6068,
+      "R2": 0.6261631510235155,
+      "RMSE": 30.455544397561418,
+      "MAE": 20.942876775049847,
+      "MBE": -0.26049763295207484
+    },
+    {
+      "candidate": "v1_rf_replica",
+      "Region": "NAACOM",
+      "Type": "Test",
+      "n": 22410,
+      "R2": 0.8992056797171979,
+      "RMSE": 15.964402364055731,
+      "MAE": 8.675072107095191,
+      "MBE": -0.06194227497736907
+    },
+    {
+      "candidate": "v1_rf_replica",
+      "Region": "NAACOM",
+      "Type": "Train",
+      "n": 89949,
+      "R2": 0.985914364071642,
+      "RMSE": 5.986246628300513,
+      "MAE": 3.2397288853525943,
+      "MBE": -0.013828202127434436
+    },
+    {
+      "candidate": "v1_rf_replica",
+      "Region": "NAACOM",
+      "Type": "Validation",
+      "n": 6068,
+      "R2": 0.4918578661071533,
+      "RMSE": 35.50732185358211,
+      "MAE": 24.745506414871535,
+      "MBE": 4.147455143917003
+    }
+  ],
+  "post_stage_a_amendment": true,
+  "label_informed_calibration_used": false,
+  "locked_fco2_opened": false
+}

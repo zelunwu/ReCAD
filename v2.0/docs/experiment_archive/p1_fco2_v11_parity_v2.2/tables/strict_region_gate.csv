@@ -1,0 +1,7 @@
+Region,required_schemes_present,passed
+GStL & GB,False,False
+SS,False,False
+GoME,False,False
+MAB,False,False
+SAB,False,False
+GoMX,True,False
