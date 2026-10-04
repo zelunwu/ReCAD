@@ -1,0 +1,31 @@
+{
+  "candidates": {
+    "global_balanced": {
+      "minimum_parity_passed": false,
+      "strong_product_target_passed": false,
+      "checks": {
+        "test_better_than_v11": false,
+        "validation_better_than_v11": false,
+        "test_ten_percent_better": false,
+        "validation_ten_percent_better": false
+      },
+      "naacom_test_rmse": 22.536066133283857,
+      "naacom_validation_rmse": 29.3529206720802
+    },
+    "regional_experts": {
+      "minimum_parity_passed": false,
+      "strong_product_target_passed": false,
+      "checks": {
+        "test_better_than_v11": false,
+        "validation_better_than_v11": false,
+        "test_ten_percent_better": false,
+        "validation_ten_percent_better": false
+      },
+      "naacom_test_rmse": 20.36478050093792,
+      "naacom_validation_rmse": 30.94960396177543
+    }
+  },
+  "historical_evidence_only": true,
+  "locked_fco2_opened": false,
+  "external_independent_opened": false
+}

@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_fco2_v11_parity_v2.2
-status: preregistered
+status: completed
 owner: ReCAD
 created_utc: 2026-10-04T20:15:00+08:00
 science:
@@ -20,3 +20,9 @@ artifacts:
   output_directory: outputs/experiments/p1_fco2_v11_parity_v2.2
   reviewer_archive: docs/experiment_archive/p1_fco2_v11_parity_v2.2
   row_level_outputs_in_git: false
+result:
+  decision: fail_global_parity
+  historical_dual_parity_passed: false
+  strict_regions_passed: []
+  locked_fco2_opened: false
+  external_independent_opened: false
