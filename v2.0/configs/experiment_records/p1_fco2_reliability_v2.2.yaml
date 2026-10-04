@@ -1,0 +1,43 @@
+schema_version: 1
+experiment_id: p1_fco2_reliability_v2.2
+status: complete
+owner: ReCAD
+created_utc: 2026-10-04T00:00:00+08:00
+science:
+  question: Where can coastal fCO2 be reconstructed with calibrated error after support-aware shrinkage?
+  hypothesis: Environmental-support shrinkage converts the strong in-support residual model into a defensible regional selective product.
+  product_scope: 2025 core and available 2026 provisional global coastal atlas with explicit suppression outside publishable support.
+  primary_comparison: Fixed CatBoost residual, standardized MLP MSE, standardized MLP physical 30-u-atm Huber, and CatBoost using strictly cross-fitted SSS.
+  acceptance_gate: Grade A/B rows must pass every outer stress scheme, interval calibration, absolute-error, positive-LME, worst-LME, and retained-area gates.
+  stopping_rule: All candidates, budgets, shrinkage rules, intervals, grades, and gates are frozen before training. Locked and external labels remain sealed.
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  observation_product: SOCATv2026 fCO2
+  background_product: training-only LME-month seasonal trend
+  spatial_domain: frozen North-American-adjacent evaluation evidence; global coastal inference grid
+splits:
+  development: untouched model-matched outer OOF predictions
+  grouping: complete cruises, fixed 5-degree blocks, complete LMEs, and safe forward chain
+  locked_test: sealed
+  external_independent: sealed until P3
+model:
+  config_path: configs/p1_fco2_reliability_v2.2.yaml
+  applicability: raw standardized environmental k-nearest-neighbour distance at k=64
+  interval_method: finite-sample split conformal by risk decile and label-free background fCO2 band
+  grades: A q90<=20; B<=35; C<=60 u-atm; D suppress
+artifacts:
+  output_directory: outputs/experiments/p1_fco2_reliability_v2.2
+  reviewer_archive: docs/experiment_archive/p1_fco2_reliability_v2.2
+  row_level_outputs_in_git: false
+  archive_verification: passed; 8 figures, 8 captions, 9 source tables
+outcome:
+  completed_utc: 2026-10-04T12:00:00+08:00
+  selected_global_candidate: CatBoost residual with strict OOF-corrected SSS and linear 2-5 environmental shrinkage
+  regional_status: pass_regional
+  confirmed_region: LME 12 Caribbean Sea
+  primary_result: LME 12 cruise, spatial-block, and forward RMSE are 9.538, 10.033, and 13.571 u-atm; skills versus the training-only background are 0.364, 0.295, and 0.161. Nested training-era temporal inflation gives forward 50/90 coverage 0.523/0.850.
+  excluded_region: LME 6 failed spatial-block skill and q90 gates; every nonconfirmed LME is grade D background fallback.
+  atlas: 85501 grade-A and 1754907 grade-D grid-months across 2025 core plus available 2026 provisional inputs.
+  chla: Common-support Chl-a reduces RMSE by 1.75 to 5.53 percent across the four outer schemes, but the cache ends in 2020 and is excluded from the 2025 product.
+  sealed_data: Locked fCO2 and external-independent labels were not opened.
+  evidence_grade: B development evidence; nominated for a future one-time locked fCO2 audit

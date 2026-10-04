@@ -1,0 +1,79 @@
+{
+  "experiment_id": "p1_fco2_reliability_v2.2",
+  "created_utc": "2026-10-04T10:37:32.609793+00:00",
+  "training_git_commit": "8692591f519266e05bedebd2f9b9ff2bb98bb3f5",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "development outer OOF only; locked and external-independent fCO2 labels sealed",
+  "decision": "pass_regional_lme12",
+  "figure_source_data": {
+    "fig01_candidate_comparison.png": [
+      "candidate_summary.csv"
+    ],
+    "fig02_core_selective_gate.png": [
+      "development_gate_by_scheme.csv"
+    ],
+    "fig03_regional_lme_comparison.png": [
+      "regional_expert_metrics.csv"
+    ],
+    "fig04_lme12_interval_coverage.png": [
+      "regional_expert_metrics.csv",
+      "temporal_interval_inflation.csv"
+    ],
+    "fig05_chla_ablation.png": [
+      "chla_summary.csv"
+    ],
+    "fig06_atlas_grade_coverage.png": [
+      "atlas_grade_counts.csv"
+    ],
+    "fig07_atlas_map_2025_07.png": [
+      "local:fco2_reliability_atlas/year=2025/month=07.parquet"
+    ],
+    "fig08_lme12_risk_coverage.png": [
+      "regional_risk_coverage.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_candidate_comparison.png": "Figure 1. Mean outer-scheme RMSE normalized by the training-only seasonal-trend background for every preregistered model and support-shrinkage pair. Lower is better; the dashed line is background parity. CatBoost with strictly cross-fitted SSS and linear 2-5 environmental shrinkage ranked first before regional specialization.",
+    "fig02_core_selective_gate.png": "Figure 2. RMSE and retained fraction for the global support-selective candidate within grade A/B development rows. Cruise and spatial-block subsets are accurate, while whole-LME has no retained A/B rows and forward retention is too small, motivating the preregistered regional-expert branch rather than a global claim.",
+    "fig03_regional_lme_comparison.png": "Figure 3. Regional-expert RMSE against the seasonal-trend background for the two LMEs nominated using cruise OOF only. Caribbean Sea (LME 12) improves cruise, spatial-block, and forward partitions; Southeast U.S. Continental Shelf (LME 6) fails spatial confirmation and is excluded.",
+    "fig04_lme12_interval_coverage.png": "Figure 4. Empirical 50% and 90% interval coverage for Caribbean Sea (LME 12). Cruise OOF supplies base conformal widths; a nested 2016-2018 pseudo-forward calibration fitted only inside the training era inflates future intervals, bringing the untouched 2019-2021 forward coverage to the preregistered acceptance range.",
+    "fig05_chla_ablation.png": "Figure 5. CatBoost RMSE with and without log10 MODIS chlorophyll-a on exactly the same finite-Chl-a observations. Chl-a improves all four outer schemes, but the local cache ends in December 2020, so it is evidence for a future refreshed input rather than a valid 2025 product feature.",
+    "fig06_atlas_grade_coverage.png": "Figure 6. Grid-month counts in the 2025 core and available 2026 provisional atlas. Only confirmed Caribbean Sea cells with adequate environmental, cruise, effective-group, and SSS support receive grade A; every other grid-month is retained as an auditable grade-D background fallback and is excluded from publication claims.",
+    "fig07_atlas_map_2025_07.png": "Figure 7. July 2025 selective fCO2 atlas status. Blue points are grade-A Caribbean Sea regional predictions; light-gray points are grade-D background fallbacks outside the confirmed regional domain or without required support. The map is a development applicability product, not independent validation.",
+    "fig08_lme12_risk_coverage.png": "Figure 8. Caribbean Sea RMSE as progressively higher environmental-k64 risk observations are retained. Curves are shown for cruise, spatial-block, and forward partitions; the ordering diagnoses support sensitivity while the formal regional gate remains based on the frozen grade and interval rules."
+  },
+  "archive_builder_sha256": "2f854d7374d95e0de64f838b02d3779f2ebdcddc7abb1e6ffaf06febf725bf14",
+  "analysis_script_sha256": "2f854d7374d95e0de64f838b02d3779f2ebdcddc7abb1e6ffaf06febf725bf14",
+  "source_artifacts_sha256": {
+    "development_oof_predictions.parquet": "4eb2cd7b8494ca398044fe8937549f7d6c33501a50826dd26cd065b269276d6a",
+    "regional_expert_predictions.parquet": "78c90d0d6e27896d2e10ba900aff8e42b8fb5f7ab3145bded3d189dbe51c17df",
+    "chla_ablation_predictions.parquet": "2f4c22551cea1b2ce86ef27f5b0046e59e3deff1dfd2049638bd2409f2d97b1d",
+    "regional_decision.json": "607fc2df810d6edaaa00e292f9440d7d610d07a535a6117ab10210c95c490948",
+    "atlas_metadata.json": "dc0cae9c23515e6e21b93125f2ef89d7d3cecb978b63d5eeed5c509117b6e7cd"
+  },
+  "files_sha256": {
+    "CAPTIONS.md": "fca487ff098c8ed2dd78ccb1c0581144405784bd88e76c2bb0be8e701ad2bb6d",
+    "figures/fig01_candidate_comparison.png": "529d8e39bc0e62bee82a81ad5e3c1793667c57a1b13f7d72c590abb175f1acb5",
+    "figures/fig02_core_selective_gate.png": "cbd26438e9dc48f3d427c4a6cd8192c37755babf28b1b75f229ea957a3c5ca8e",
+    "figures/fig03_regional_lme_comparison.png": "3d6de7f08989491164c34aeff1fcb9f010047dbcde45fa155ff0565cbb684a85",
+    "figures/fig04_lme12_interval_coverage.png": "2869a8222a7e600f4e5a885a462f0aba33d558afd9e4cca1323cb63072a83700",
+    "figures/fig05_chla_ablation.png": "b1525cb0b7fe2774d8fab869bddbb81cc0c32d76b3a035400d240b311ac45684",
+    "figures/fig06_atlas_grade_coverage.png": "5342f47572d664973d71d82278512ee143dc5d10e74dc1c43108303d9e380415",
+    "figures/fig07_atlas_map_2025_07.png": "be7e298426088ab39203b2b7ded5864320a0775743e07e2bfc57c5c78a1906a4",
+    "figures/fig08_lme12_risk_coverage.png": "ba278ad1b1ea7f3c6b8d870c0ef0b132581c7d81ff6499f496178b362c3cb95e",
+    "p1_fco2_reliability_v2.2.yaml": "86cb8f6b59e74b70a01e735568d2d96963c6b63c8bff976c5b337ef210438961",
+    "README.md": "6f2c8a9aa75047a852703d3fc439a2e3e1c67cedf6d53058fed168bfb7379860",
+    "REPORT.md": "cc1791f08b46f47b027ba19ceab76a1e49799f919e054ea92926950bbd3031ae",
+    "tables/atlas_grade_counts.csv": "2c77323dfc058a5bcfcbaa67fd33bb3c60256a4c2d708e6e5a1ea779d40bddac",
+    "tables/candidate_shrinkage_comparison.csv": "9404d19d65f66c0b7247026d5ce6203541b22fbedfa88600ec3c803669a2c90e",
+    "tables/candidate_summary.csv": "1097d48ea773122f91ebcfeeab153905d78b481893f28a4769a55f96d63293cc",
+    "tables/chla_summary.csv": "b619171889f0ca09d47ee90c3f298ca36e8a78dc3c8b0b4cb14c2cee561ebdcd",
+    "tables/development_gate_by_scheme.csv": "f949ced8f34147b788f7f0cc3368ccfcc52b7b9378dde3b217c1d3382a7d4420",
+    "tables/regional_expert_metrics.csv": "af67179f6220414fa7939773f3e791694bf41fb3c298e160bc1a7691707fb055",
+    "tables/regional_risk_coverage.csv": "eac32bcd237eabc84170b84522148ba1da07f1301c77a5cc29dc49c5fdc55e92",
+    "tables/regional_strata.csv": "b393140b264f6ab9dfcab1388d99f54e223129473862ae4df41ed1a8c618bb4d",
+    "tables/temporal_interval_inflation.csv": "8658a5372cb7de4a6c16b44bb8ede3b88fdb63782a7645455fcb54c2842db339"
+  }
+}
