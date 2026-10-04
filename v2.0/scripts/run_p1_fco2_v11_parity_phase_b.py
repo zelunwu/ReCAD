@@ -12,7 +12,6 @@ from sklearn.ensemble import RandomForestRegressor
 
 from recad.evaluate.v11_parity import KEY_TO_DISPLAY, regression_metrics
 from recad.viz.regions import v11_region_keys
-
 from run_p1_fco2_v11_parity import legacy_frame
 
 ROOT = Path(__file__).resolve().parents[1]
