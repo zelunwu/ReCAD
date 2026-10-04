@@ -167,3 +167,15 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 - 失败、偏离预登记、测试开启时间和结论可信范围。
 
 实验完成后更新本总账。正式实验必须先通过 `python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_id>` 才能标记完成或关闭 Issue。探索运行不得事后补写成“预登记”；必须标为 C。任何输入错误保留原目录并降为 X，修复后使用新的 experiment ID。
+
+## P1.5c fCO2 支持感知区域产品（Issue #26）
+
+`p1_fco2_reliability_v2.2` 比较了 CatBoost、标准化 MSE MLP、30 µatm Huber MLP、严格 OOF-SSS CatBoost 和四种支持收缩。全局阶段选择 OOF-SSS CatBoost + linear 2–5，但整 LME 留出没有 A/B 区域，因此不支持全球声明。预登记的条件区域专家分支用 cruise OOF 提名 LME 6/12，再由空间块和前向时间确认；最终只有 Caribbean Sea（LME 12）通过：
+
+| 外层验证 | N | RMSE (µatm) | MAE (µatm) | q90 absolute error | skill vs background | 50/90 coverage |
+|---|---:|---:|---:|---:|---:|---:|
+| cruise | 78,059 | 9.538 | 6.140 | 12.561 | 0.364 | 0.500 / 0.900 |
+| spatial block | 78,059 | 10.033 | 6.249 | 12.894 | 0.295 | 0.498 / 0.894 |
+| forward 2019–2021 | 15,252 | 13.571 | 9.038 | 20.094 | 0.161 | 0.523 / 0.850 |
+
+状态为 **B / `pass_regional`**，只允许提名未来一次性 locked fCO2 audit；locked 与外部独立标签均未开启。2025 core + available-2026 provisional atlas 含 85,501 个 A 和 1,754,907 个 D grid-month；非 LME 12 或支持不足位置均为背景回退。Chl-a 在完全相同历史支持集上使四种外层 RMSE 改善 1.75–5.53%，但缓存止于 2020-12，未进入 2025 产品。完整报告、8 张图及逐图 caption、9 个源表见 `docs/experiment_archive/p1_fco2_reliability_v2.2/`；大文件位于本地忽略目录 `outputs/experiments/p1_fco2_reliability_v2.2/`。

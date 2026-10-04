@@ -48,7 +48,7 @@ def add_chla(frame: pd.DataFrame, path: Path) -> pd.DataFrame:
             )
             if not inside.any():
                 continue
-            field = dataset.chla.sel(time=f"{int(year)}-{int(month):02d}").to_numpy()
+            field = dataset.chla.sel(time=f"{int(year)}-{int(month):02d}-15").to_numpy()
             values = np.full(len(index), np.nan)
             values[inside] = field[lat_index[inside], lon_index[inside]]
             values = np.where(values > 0, np.log10(values), np.nan)

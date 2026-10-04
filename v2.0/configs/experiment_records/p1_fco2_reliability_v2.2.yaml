@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p1_fco2_reliability_v2.2
-status: preregistered
+status: complete
 owner: ReCAD
 created_utc: 2026-10-04T00:00:00+08:00
 science:
@@ -29,3 +29,15 @@ artifacts:
   output_directory: outputs/experiments/p1_fco2_reliability_v2.2
   reviewer_archive: docs/experiment_archive/p1_fco2_reliability_v2.2
   row_level_outputs_in_git: false
+  archive_verification: passed; 8 figures, 8 captions, 9 source tables
+outcome:
+  completed_utc: 2026-10-04T12:00:00+08:00
+  selected_global_candidate: CatBoost residual with strict OOF-corrected SSS and linear 2-5 environmental shrinkage
+  regional_status: pass_regional
+  confirmed_region: LME 12 Caribbean Sea
+  primary_result: LME 12 cruise, spatial-block, and forward RMSE are 9.538, 10.033, and 13.571 u-atm; skills versus the training-only background are 0.364, 0.295, and 0.161. Nested training-era temporal inflation gives forward 50/90 coverage 0.523/0.850.
+  excluded_region: LME 6 failed spatial-block skill and q90 gates; every nonconfirmed LME is grade D background fallback.
+  atlas: 85501 grade-A and 1754907 grade-D grid-months across 2025 core plus available 2026 provisional inputs.
+  chla: Common-support Chl-a reduces RMSE by 1.75 to 5.53 percent across the four outer schemes, but the cache ends in 2020 and is excluded from the 2025 product.
+  sealed_data: Locked fCO2 and external-independent labels were not opened.
+  evidence_grade: B development evidence; nominated for a future one-time locked fCO2 audit
