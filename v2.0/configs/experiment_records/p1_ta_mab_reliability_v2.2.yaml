@@ -28,7 +28,7 @@ reproducibility:
   preregistration_git_commit: 6a8c549a8207e57bab6f0aa468424bee726d7478
   manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
   source_hashes:
-    scripts/run_p1_ta_mab_reliability.py: 93882c6e26af15003fa7297e456d8ab10c8d1f86d612a6735313f00cbb9006b1
+    scripts/run_p1_ta_mab_reliability.py: 4655e11b68a0204f67d9d218588d90cfc5226fb60f38489b4dfe5c8aa7b106c3
     src/recad/evaluate/ta_mab_reliability.py: aea478c88fc3de351901e84f7709e42a70fe28b18d6206459f7cb547369771c5
 artifacts:
   output_directory: outputs/experiments/p1_ta_mab_reliability_v2.2

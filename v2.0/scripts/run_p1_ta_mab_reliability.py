@@ -74,6 +74,18 @@ def file_hash(path: Path) -> str:
     return digest.hexdigest()
 
 
+def write_text_lf(path: Path, text: str) -> None:
+    """Write reproducible UTF-8/LF text on every operating system."""
+
+    path.write_bytes(text.replace("\r\n", "\n").encode("utf-8"))
+
+
+def write_csv_lf(frame: pd.DataFrame, path: Path) -> None:
+    """Write a reproducible UTF-8/LF CSV."""
+
+    write_text_lf(path, frame.to_csv(index=False, lineterminator="\n"))
+
+
 def prepare_sss_query(frame: pd.DataFrame) -> pd.DataFrame:
     result = frame.copy()
     result["longitude"] = np.mod(result.longitude.to_numpy(float), 360.0)
@@ -619,7 +631,7 @@ The source tables are `outer_metrics.csv`, `outer_fold_metrics.csv`, `diagnostic
 
 Machine-readable outer predictions are intentionally kept outside Git. The archive contains aggregate source tables, captions, protocol, source hashes, and artifact hashes. `tables/unavailable_diagnostics.csv` records diagnostics that cannot be computed from frozen inputs. Generated row-level data live under `outputs/experiments/{EXPERIMENT_ID}`.
 """
-    (archive / "REPORT.md").write_text(report, encoding="utf-8")
+    write_text_lf(archive / "REPORT.md", report)
 
 
 def main() -> int:
@@ -715,21 +727,23 @@ def main() -> int:
     figure_dir = args.archive / "figures"
     table_dir.mkdir(parents=True, exist_ok=True)
     figure_dir.mkdir(parents=True, exist_ok=True)
-    metrics.to_csv(table_dir / "outer_metrics.csv", index=False)
-    fold_metrics.to_csv(table_dir / "outer_fold_metrics.csv", index=False)
-    diagnostics.to_csv(table_dir / "diagnostic_metrics.csv", index=False)
-    grade_evidence.to_csv(table_dir / "grade_evidence.csv", index=False)
-    area.to_csv(table_dir / "retained_area.csv", index=False)
-    pd.DataFrame(
+    write_csv_lf(metrics, table_dir / "outer_metrics.csv")
+    write_csv_lf(fold_metrics, table_dir / "outer_fold_metrics.csv")
+    write_csv_lf(diagnostics, table_dir / "diagnostic_metrics.csv")
+    write_csv_lf(grade_evidence, table_dir / "grade_evidence.csv")
+    write_csv_lf(area, table_dir / "retained_area.csv")
+    unavailable = pd.DataFrame(
         {
             "diagnostic": ["bathymetry", "shelf_zone", "estuary_mask", "coast_distance"],
             "status": ["unavailable_in_frozen_cache"] * 4,
         }
-    ).to_csv(table_dir / "unavailable_diagnostics.csv", index=False)
-    pd.DataFrame(
+    )
+    write_csv_lf(unavailable, table_dir / "unavailable_diagnostics.csv")
+    decision_table = pd.DataFrame(
         [{"gate": key, "passed": value} for key, value in decision["checks"].items()]
-    ).to_csv(table_dir / "decision_checks.csv", index=False)
-    metrics[
+    )
+    write_csv_lf(decision_table, table_dir / "decision_checks.csv")
+    interval_table = metrics[
         [
             "outer_scheme",
             "candidate",
@@ -738,8 +752,9 @@ def main() -> int:
             "median_width50",
             "median_width90",
         ]
-    ].to_csv(table_dir / "interval_metrics.csv", index=False)
-    pd.DataFrame(
+    ]
+    write_csv_lf(interval_table, table_dir / "interval_metrics.csv")
+    source_table = pd.DataFrame(
         [
             {"artifact": key, "sha256": value}
             for key, value in {
@@ -747,22 +762,23 @@ def main() -> int:
                 **protocol["upstream_checkpoint_hashes"],
             }.items()
         ]
-    ).to_csv(table_dir / "source_hashes.csv", index=False)
+    )
+    write_csv_lf(source_table, table_dir / "source_hashes.csv")
     for path in (args.output / "figures").glob("*.png"):
         (figure_dir / path.name).write_bytes(path.read_bytes())
-    (args.archive / "captions.json").write_text(json.dumps(captions, indent=2), encoding="utf-8")
-    (args.archive / "protocol.json").write_text(json.dumps(protocol, indent=2), encoding="utf-8")
+    write_text_lf(args.archive / "captions.json", json.dumps(captions, indent=2))
+    write_text_lf(args.archive / "protocol.json", json.dumps(protocol, indent=2))
     write_report(metrics, diagnostics, grade_evidence, area, decision, captions, args.archive)
-    (args.archive / "README.md").write_text(
+    write_text_lf(
+        args.archive / "README.md",
         "# MAB TA reliability reviewer archive\n\n"
         "Issue #27 aggregate evidence, figures, captions, hashes, and frozen decision. "
         "Row-level predictions are excluded from Git. See REPORT.md for interpretation.\n",
-        encoding="utf-8",
     )
     caption_text = "# Figure captions\n\n" + "\n\n".join(
         f"## {name}\n\n{caption}" for name, caption in captions.items()
     )
-    (args.archive / "CAPTIONS.md").write_text(caption_text + "\n", encoding="utf-8")
+    write_text_lf(args.archive / "CAPTIONS.md", caption_text + "\n")
     figure_sources = {
         "fig01_outer_rmse.png": ["outer_metrics.csv"],
         "fig02_interval_coverage.png": ["interval_metrics.csv"],
@@ -799,13 +815,9 @@ def main() -> int:
             **protocol["upstream_checkpoint_hashes"],
         },
     }
-    (args.archive / "archive_manifest.json").write_text(
-        json.dumps(archive_manifest, indent=2), encoding="utf-8"
-    )
+    write_text_lf(args.archive / "archive_manifest.json", json.dumps(archive_manifest, indent=2))
     hashes["archive_manifest.json"] = file_hash(args.archive / "archive_manifest.json")
-    (args.archive / "artifact_hashes.json").write_text(
-        json.dumps(hashes, indent=2), encoding="utf-8"
-    )
+    write_text_lf(args.archive / "artifact_hashes.json", json.dumps(hashes, indent=2))
     print(
         json.dumps({"decision": decision, "metrics": metrics.to_dict("records")}, indent=2),
         flush=True,

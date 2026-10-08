@@ -1,7 +1,7 @@
 {
   "experiment_id": "p1_ta_mab_reliability_v2.2",
-  "created_utc": "2026-10-08T03:27:22.188179+00:00",
-  "git_commit": "6a8c549a8207e57bab6f0aa468424bee726d7478",
+  "created_utc": "2026-10-08T03:30:57.573107+00:00",
+  "git_commit": "0781e715d3f1a7f082523804b16da3a7361674ca",
   "config_sha256": "6f65c22561d5836f0305b5bc19b04814e4c9dd2ded1a101e189f1a63e82fb1c8",
   "manifest_validation": {
     "status": "pass",
@@ -17,7 +17,7 @@
   "locked_test_opened": false,
   "external_independent_opened": false,
   "source_hashes": {
-    "runner": "93882c6e26af15003fa7297e456d8ab10c8d1f86d612a6735313f00cbb9006b1",
+    "runner": "4655e11b68a0204f67d9d218588d90cfc5226fb60f38489b4dfe5c8aa7b106c3",
     "utility": "aea478c88fc3de351901e84f7709e42a70fe28b18d6206459f7cb547369771c5",
     "config": "6f65c22561d5836f0305b5bc19b04814e4c9dd2ded1a101e189f1a63e82fb1c8",
     "manifest": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f"
