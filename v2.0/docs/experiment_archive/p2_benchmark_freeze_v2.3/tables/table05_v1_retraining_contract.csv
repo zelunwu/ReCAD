@@ -1,0 +1,6 @@
+field,value
+inputs,"[""longitude"", ""latitude"", ""month"", ""SSS"", ""SST"", ""ADT"", ""pCO2air""]"
+model,300-tree bagged random forest replica
+calibration,training fold only
+required_splits,"[""cruise"", ""spatial"", ""forward""]"
+primary_role,strict common-data method baseline

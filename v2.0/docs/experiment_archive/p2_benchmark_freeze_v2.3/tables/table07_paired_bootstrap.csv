@@ -1,0 +1,7 @@
+field,value
+replicates,2000
+confidence,0.95
+unit,cruise
+spatial_variant_unit,spatial_block
+stratify_by,macro-region
+success_rule,upper confidence bound of paired RMSE difference below zero and point improvement meets tier

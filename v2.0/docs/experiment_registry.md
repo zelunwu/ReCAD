@@ -212,3 +212,9 @@ DIC 等级不得高于 SSS、fCO2、TA 中最弱的等级。locked DIC/TA 与 41
 | DIC，MAB | `diagnostic_only` | direct DIC development anchors | 上游未同时合格，产品全部 suppress |
 
 产品层级冻结为全球沿海 SSS/fCO2 核心研究线与北美 TA/DIC 非阻断扩展。全局 covariate/atlas 只能证明可计算的投影域，不能证明直接观测覆盖、locked 证据或独立验证。9 个源表、8 张带 caption 的图、上游 SHA256 和机器可读 label-exposure ledger 见 `docs/experiment_archive/p2_scope_reconciliation_v2.3/`。
+
+## P2.1 文献基准与 v1.x 改进合同（Issue #37）
+
+`p2_benchmark_freeze_v2.3` 核对了 ReCAD v1.1、ULB-SOM-FFN-coastal v2、CMEMS-LSCE、RFR-LMEs、区域高分辨率 pCO2、2026 transfer learning、GLORYS、ESA CCI、SMAP 与近期区域 SSS 研究。原生论文指标的目标定义、分辨率、时期、观测支持和验证 split 不同，因此不能直接用于模型选择。
+
+冻结四层面板：publication-native context、0.25° monthly all-support、0.25° monthly common-support，以及相同数据/split/训练折内校准的 strict-method panel。fCO2 的 minimum cruise/spatial/forward ceiling 为 30/40/40 µatm，SSS 为 1.0/1.2/1.2 PSU；competitive 分别为 25/35/35 与 0.8/1.0/1.0，ideal 为 20/30/30 与 0.6/0.8/0.8。每一级还要求相对 strict v1.x/最强 same-split baseline 改善 5%/10%/15%、所有 scheme 正 skill、worst supported-LME 比值≤1.10、校准覆盖率和固定覆盖风险通过。2004–2005 继续只作历史描述。完整报告、11 个源表和 8 张带 caption 的图见 `docs/experiment_archive/p2_benchmark_freeze_v2.3/`。

@@ -4,6 +4,8 @@
 
 > **2026-10-08 P2.0 范围冻结**：全球沿海 SSS/fCO2 是 P2 核心研究目标，但当前均未取得全球产品资格。SSS 正式状态为 `diagnostic_only`：#25 已使用一次 locked set，虽然通过 7/8 门槛，但 LME 17 失败，该集合永久不得再次称为 blind。fCO2 仅 Caribbean LME 12 为开发证据上的 `pass_regional`。MAB TA/DIC 为 `diagnostic_only`，SAB TA 为 `fail`；TA/DIC 只作为预算不超过 P2 10% 的北美可选扩展，失败不阻断核心产品。全球 atlas 只代表投影域，不代表全球观测验证。完整证据总账见 `docs/experiment_archive/p2_scope_reconciliation_v2.3/`。
 
+> **2026-10-08 P2.1 基准冻结**：#37 已冻结 `configs/frozen/benchmark_contract_v2.3.json`。论文原生 RMSE 只作背景；产品比较必须统一到 0.25° 月尺度并报告 all-support 与 common-support，模型选择只允许使用相同观测、相同 cruise/spatial/forward split、训练折内校准的 strict-method panel。最低门槛同时要求相对最强基线至少改善 5%、满足 SSS 1.0/1.2/1.2 PSU 或 fCO2 30/40/40 µatm 的 cruise/spatial/forward ceiling、所有 scheme 正 skill、worst supported-LME 比值不超过 1.10，并通过覆盖率与 WIS/CRPS。详见 `docs/experiment_archive/p2_benchmark_freeze_v2.3/`。
+
 > **2026-09-28 P0 v2.2 闭环**：数据轴保留 1993–2026；SSS/fCO2 核心期到 2025；TA/DIC 观测到 2024，但 TA 可前向预测、DIC 可由 inverse CO2SYS 推理到 2026。当前入口为 `configs/frozen/data_manifest_v2.2.json` 和 `docs/p0_freeze_report_v2.2.md`；v2.1 已替代。
 
 > **2026-10-08 P1.5 闭环**：#24–#28 已完成。SSS 为带适用域标记的全球沿海候选；fCO2 只在 Caribbean Sea（LME 12）通过区域开发门槛；MAB TA 和派生 DIC 均为 `diagnostic_only`。#28 的完整 DIC 链 cruise/spatial/subregion/forward RMSE 为 49.61/58.90/51.06/39.53 µmol kg-1，2025 MAB 14,220 个 grid-month 因上游资格全部标 D 并 suppress。权威数值、图和限制见 `docs/experiment_registry.md` 与 `docs/experiment_archive/p1_dic_reliability_v2.2/`；locked TA/DIC 和外部 41 航次继续封存。
@@ -22,7 +24,7 @@
 
 ## 0. 当前一句话
 
-ReCAD v2.0 当前进入 P2：用真正全球的沿海观测证据分别建立并验证 SSS 偏差订正与 fCO2 重建；北美 TA 和由 `T+SSS+fCO2+TA` 经 inverse CO2SYS 派生的 DIC 是非阻断可选扩展。下一步依次执行 #37 文献与 v1.x 改进合同和 #38 全球观测缓存；任何全球 atlas 在通过目标专属验证前都只属于诊断投影。
+ReCAD v2.0 当前进入 P2：产品范围和改进合同已经由 #36/#37 冻结，下一步执行 #38 全球观测缓存；随后 #39–#41 在同一全球 cruise/spatial/forward 证据上比较输入与 SSS/fCO2 模型。北美 TA 和由 `T+SSS+fCO2+TA` 经 inverse CO2SYS 派生的 DIC 是非阻断可选扩展。
 
 ---
 

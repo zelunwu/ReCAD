@@ -1,0 +1,5 @@
+id,resolution,support,purpose,can_select_model,identical_splits
+native_context,product native,publication native,scientific context only,False,False
+common_grid,0.25 degree monthly,all available per product,product comparison with explicit sample counts,False,False
+common_support,0.25 degree monthly,intersection of product-valid observation matchups,paired product skill comparison,False,True
+strict_method,native ReCAD observation rows and common 0.25 degree supplement,identical train and held groups,causal method improvement against retrained v1.x and strongest baselines,True,True
