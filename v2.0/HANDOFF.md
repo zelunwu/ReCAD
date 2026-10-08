@@ -4,6 +4,8 @@
 
 > **2026-09-28 P0 v2.2 闭环**：数据轴保留 1993–2026；SSS/fCO2 核心期到 2025；TA/DIC 观测到 2024，但 TA 可前向预测、DIC 可由 inverse CO2SYS 推理到 2026。当前入口为 `configs/frozen/data_manifest_v2.2.json` 和 `docs/p0_freeze_report_v2.2.md`；v2.1 已替代。
 
+> **2026-10-08 P1.5 闭环**：#24–#28 已完成。SSS 为带适用域标记的全球沿海候选；fCO2 只在 Caribbean Sea（LME 12）通过区域开发门槛；MAB TA 和派生 DIC 均为 `diagnostic_only`。#28 的完整 DIC 链 cruise/spatial/subregion/forward RMSE 为 49.61/58.90/51.06/39.53 µmol kg-1，2025 MAB 14,220 个 grid-month 因上游资格全部标 D 并 suppress。权威数值、图和限制见 `docs/experiment_registry.md` 与 `docs/experiment_archive/p1_dic_reliability_v2.2/`；locked TA/DIC 和外部 41 航次继续封存。
+
 > **2026-09-05 更新**：模型选择进入独立验证优先的实验设计阶段，见
 > [`docs/experiment_protocol.md`](docs/experiment_protocol.md)。尚未冻结正式 split 或运行模型比较。
 > NACCOM 时间轴已修复；发现并修复 `build_standardized.py` 将 NOAA `average_unc`

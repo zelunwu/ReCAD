@@ -180,8 +180,21 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 
 状态为 **B / `pass_regional`**，只允许提名未来一次性 locked fCO2 audit；locked 与外部独立标签均未开启。2025 core + available-2026 provisional atlas 含 85,501 个 A 和 1,754,907 个 D grid-month；非 LME 12 或支持不足位置均为背景回退。Chl-a 在完全相同历史支持集上使四种外层 RMSE 改善 1.75–5.53%，但缓存止于 2020-12，未进入 2025 产品。完整报告、8 张图及逐图 caption、9 个源表见 `docs/experiment_archive/p1_fco2_reliability_v2.2/`；大文件位于本地忽略目录 `outputs/experiments/p1_fco2_reliability_v2.2/`。
 
-## P1.5e DIC 派生可靠性（Issue #28，预登记）
+## P1.5e DIC 派生可靠性（Issue #28）
 
 `p1_dic_reliability_v2.2` 只在 MAB 直接 DIC 锚点上检验无 DIC 标签泄漏的派生链。主链使用 Issue #25 外层交叉拟合 SSS、与相同外层划分匹配的 fCO2 模型、Issue #27 冻结的层次 TA 预测，再由 PyCO2SYS 反演 DIC。比较独立误差、±0.5 有界相关和共享 SSS 扰动的协方差传播；稳定状态用 PyCO2SYS 有限差分 Jacobian，低盐或 Jacobian 无效状态用 2,048 次分块精确 Monte Carlo。256/512/1,024/2,048 draws 的收敛阈值、化学有效范围、A/B/C/D 区间宽度及直接观测门槛均冻结在 `configs/p1_dic_reliability_v2.2.yaml`。
 
 DIC 等级不得高于 SSS、fCO2、TA 中最弱的等级。locked DIC/TA 与 41 个外部 CODAP 航次保持封存；数值闭合只作为工程检查，不能替代直接 DIC 验证。
+
+正式运行匹配到 397 条直接 DIC 锚点、31 个航次、12 年；forward 子集为 113 条、5 个航次、2 年。完整预测链的结果为：
+
+| 外层验证 | RMSE (µmol kg-1) | MAE | bias | R² | common-SSS 90% coverage | 90% width |
+|---|---:|---:|---:|---:|---:|---:|
+| cruise | 49.61 | 37.70 | -12.78 | 0.180 | 0.912 | 216.2 |
+| spatial block | 58.90 | 46.43 | -18.79 | -0.156 | 0.819 | 172.8 |
+| subregion | 51.06 | 38.21 | -4.43 | 0.131 | 0.877 | 214.1 |
+| forward | 39.53 | 31.57 | -10.37 | 0.265 | 0.956 | 180.6 |
+
+观测 TA oracle 将合并外层 RMSE 从 52.30 降至 28.28；观测 SSS oracle 反而为 58.13，说明 TA 仍是首要瓶颈，且用预测 SSS 训练出的 TA/fCO2 链不能通过事后替换单个盐度输入来改善。54 条、2 个航次的全部观测输入 oracle RMSE 为 11.58，但证据不足以授权产品。稳定域 Jacobian 与低盐/边界精确 Monte Carlo 均完成；最终 1,024→2,048 draws 的中位宽度变化 0.19%，端点变化 1.79 µmol kg-1。数值闭合通过，但空间 R²、覆盖率、区间宽度、A/B 保留面积和上游资格失败。
+
+最终状态为 **`diagnostic_only`**。2025 MAB 共 14,220 个 grid-month，因 Issue #26 的 MAB fCO2 未获区域资格且 Issue #27 TA 为 D，DIC 全部继承为 D 并 suppress；locked 与外部独立标签仍未开启。完整报告、8 张带 caption 的图和 10 个源表见 `docs/experiment_archive/p1_dic_reliability_v2.2/`。

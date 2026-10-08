@@ -1,0 +1,13 @@
+reason,bit,records
+missing_input,1,0
+salinity_outside,2,0
+temperature_outside,4,0
+ta_outside,8,0
+fco2_outside,16,0
+solver_nonfinite,32,0
+upstream_sss_d,64,0
+upstream_fco2_d,128,1304
+upstream_ta_d,256,554
+exact_mc_domain,512,60
+covariance_unidentified,1024,1304
+interval_too_wide,2048,1304
