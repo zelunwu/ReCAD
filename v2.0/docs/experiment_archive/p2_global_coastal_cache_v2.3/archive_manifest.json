@@ -1,0 +1,95 @@
+{
+  "experiment_id": "p2_global_coastal_cache_v2.3",
+  "training_git_commit": "6f2a481abc8afc3277214683a3d4acd37656d922",
+  "data_manifest_sha256": "fbaf4b0b41d9b655fdc1ca414d50e1a173f3eba42650342f18a60f30722e60e1",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "global SOCATv2026 observation coverage and development split integrity",
+  "decision": "pass_data_freeze",
+  "figure_source_data": {
+    "fig01_global_observation_map.png": [
+      "table13_global_map_2degree.csv"
+    ],
+    "fig02_processing_funnel.png": [
+      "table01_processing_funnel.csv"
+    ],
+    "fig03_basin_coverage.png": [
+      "table02_basin_coverage.csv"
+    ],
+    "fig04_lme_support_status.png": [
+      "table03_lme_coverage.csv"
+    ],
+    "fig05_season_coverage.png": [
+      "table04_season_coverage.csv"
+    ],
+    "fig06_decade_coverage.png": [
+      "table05_decade_coverage.csv"
+    ],
+    "fig07_platform_coverage.png": [
+      "table06_platform_coverage.csv"
+    ],
+    "fig08_split_balance.png": [
+      "table07_split_summary.csv"
+    ],
+    "fig09_nearest_support.png": [
+      "table12_support_distance_bins.csv"
+    ],
+    "fig10_non_na_split_coverage.png": [
+      "table08_non_na_split_coverage.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_global_observation_map.png": "Figure 1. Global two-degree audit view of SOCATv2026 Coastal cruise-node-month observations on the complete configured 1/8-degree grid; color and marker size encode retained density, and the map is evidence of observation coverage rather than model skill.",
+    "fig02_processing_funnel.png": "Figure 2. Row counts at each ordered processing stage, from source observations through identity/time validation, exact duplicate removal, target QC, complete-grid matching, and cruise-node-month aggregation; the legacy v2.2 mask row is a diagnostic subset rather than a filter.",
+    "fig03_basin_coverage.png": "Figure 3. Retained fCO2 and in-situ SSS cruise-node-month coverage across the six frozen coarse basins; this exposes geographic imbalance that later macro-region scoring must prevent from being hidden by observation-weighted metrics.",
+    "fig04_lme_support_status.png": "Figure 4. Counts of the 66 LMEs classified as supported, under-supported, or empty for each target using the frozen audit thresholds; empty categories remain explicit and cannot inherit a global validation claim from covariate availability.",
+    "fig05_season_coverage.png": "Figure 5. Seasonal target coverage after global QC and coastal matching; the counts diagnose temporal sampling imbalance and define strata required in later model evaluation rather than constituting a performance result.",
+    "fig06_decade_coverage.png": "Figure 6. Retained target coverage by decade, including the partial 2020s represented in SOCATv2026; the temporal expansion motivates forward-development evaluation and prevents random splits from being the sole evidence.",
+    "fig07_platform_coverage.png": "Figure 7. The fifteen platforms contributing the most compact grid-month rows; concentration in a small platform subset motivates platform and cruise grouped uncertainty analyses in subsequent issues.",
+    "fig08_split_balance.png": "Figure 8. Cruise counts in the five deterministic cruise-grouped outer folds; every normalized Expocode belongs to exactly one fold, and balance is descriptive rather than optimized using target values.",
+    "fig09_nearest_support.png": "Figure 9. Distance from every occupied observation node to its nearest training-role fCO2 or SSS support node, binned in kilometres; long-distance tails quantify where grouped development depends on spatial transfer and may require abstention.",
+    "fig10_non_na_split_coverage.png": "Figure 10. Retained rows inside and outside the exact P1 North-American-adjacent window, separated into train and grouped-development roles; non-NA observations occur in both roles, satisfying the central global-cache acceptance gate."
+  },
+  "files_sha256": {
+    "README.md": "23045754206b7688191f520ce56d09fa5e95977b81da292ab9b85bf1a161dcc1",
+    "REPORT.md": "4066447e511fe4b0ea3b237df76f58b1428d4651529a7894232e2eff94f03a99",
+    "CAPTIONS.md": "09f77ba448eb7d63c1c628f4c559eb9331c890a957a0577a9dab4c22dbbd9bbe",
+    "figures/fig01_global_observation_map.png": "b7f98a82352eb6183b2715510671ee0f04f34eefbd4ddc7746fe87baf0a67134",
+    "figures/fig02_processing_funnel.png": "978265ecbabe63f6dd3ccb4daa354c0fc3a1c7e416f297c69c95ab665c52ef78",
+    "figures/fig03_basin_coverage.png": "36c1566cb02f26e3d461709cde3e97274ada023f5ba574ce3abf81e89002f14c",
+    "figures/fig04_lme_support_status.png": "d92bdf9739f38a51a6f7c07f52700e352698184c523f7baf16f88f06256cdea6",
+    "figures/fig05_season_coverage.png": "8bba2e09f384f4ca89e3cd4b9f866559ebeee6e57c42ed1740813d9f3389bc04",
+    "figures/fig06_decade_coverage.png": "c0faab94196eb8a925593b8793066725858979fb18cbb45f9966db53e8c59a69",
+    "figures/fig07_platform_coverage.png": "7e7cfd7cd91f898fe399a86b77de51f1f70590e5c15b155244ce651e75adb26f",
+    "figures/fig08_split_balance.png": "8b5eda0a3d32fcbb9b2f19c3ab400ecded5708ea44f4bc49c0a1e0accaec1122",
+    "figures/fig09_nearest_support.png": "139f164e240184dedf02c7ce4dc07a85866cb0d671760283b25bb1b68bd7505f",
+    "figures/fig10_non_na_split_coverage.png": "8fceedb790853aa49728476e8c258c2a0ab6a79602736a960301d388bd1bb552",
+    "tables/table01_processing_funnel.csv": "d62451adeeb684c410e8e460401630bdd1f38331dcc5b0ac99d49478468d68da",
+    "tables/table02_basin_coverage.csv": "4f646ef4d3c26f809786421ac487afafa59180b9e288f397ae732f5b595ad43d",
+    "tables/table03_lme_coverage.csv": "c323274a9c81f854885b4699650826e51a0b5205a14f972816881f4b7a2f95d5",
+    "tables/table04_season_coverage.csv": "2c49147027f5a6c0ecf84434780b489545edb91d0b4ddeb837d99c4a24ee28e6",
+    "tables/table05_decade_coverage.csv": "80f72cf9639d536bdd0986738c04b503b06b969d6d4b965234c4c04b545aabfc",
+    "tables/table06_platform_coverage.csv": "fe2f84cf883cc30cfcd8ca43ff6255e6ecc4fe5378028ba4da23e757fc28ebcd",
+    "tables/table07_split_summary.csv": "15fac50fea2f1f55500fc0f66d1f917a895d6686630dba4cac2a6ea616a1e0e4",
+    "tables/table08_non_na_split_coverage.csv": "67bffa33cc24be76d12a5e2d81c53383ae140d6ab08ce9890d84beac0a0161c3",
+    "tables/table09_leakage_checks.csv": "1fade3a90c9dc59087f92e9c51b2356aa1be1863353eac08492bc61d71de2cb5",
+    "tables/table10_mask_definition.csv": "03914d50f89848036948e3d2f3d5790a1e9dfdea4334b4edbf4771d0390ad9fa",
+    "tables/table11_provenance_audit.csv": "8b15453281a347f42f4592130d2adc16d4945c87e6b0b2fa10b08019bf56fac2",
+    "tables/table12_support_distance_bins.csv": "b0c2937cf8ee7e7505f9e9e22f4c9667aec0490fcea9be8787b5ce88e20ac601",
+    "tables/table13_global_map_2degree.csv": "1c76502ddda74098550e7ccb1449cd0adeb696a74bb18d44749324381ef8485a",
+    "tables/table14_neutral_region_coverage.csv": "944ff806c78d21f9d5593bbdf69f84539983dc552bad36bd083fd29274494dff"
+  },
+  "archive_builder_sha256": "94b8b984e9f9b2301e459d72172f0c07ab3c72f606b2c48a1b36a95d073f931f",
+  "analysis_script_sha256": "94b8b984e9f9b2301e459d72172f0c07ab3c72f606b2c48a1b36a95d073f931f",
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\raw\\socat\\SOCATv2026_Coastal.tsv": "e28bde997226a07164feb4b374e6f25eb4ffa613d1942ac92fab82a1aa66ab34",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\prepared_global_p32.nc": "13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\spatial_support_v2.2.nc": "21b6a99195bdd58e05d27eac97ffff70dc3a4cc115ce070eea46ef3055fb5acc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\lme_66.geojson": "25ce65db770f20cac1d254c5fdd5e15366c738c89c959245ce9324f7a4df1444",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_group_split_manifest_v2.3.parquet": "a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_node_support_v2.3.parquet": "df3f22ea1a0a358be6c8a132e71132eccad9c97f893aa1345ab90ce9218d6fcb",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_processing_funnel_v2.3.parquet": "668c1195d2e37f41655300369a315a63388117052d8514d6f6139dcad1bd77a0",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_cache_audit_v2.3.json": "8c3be088a02186819763b60e84c12ce13af65fba4d2f4aacef1f7073b5b0400a"
+  }
+}

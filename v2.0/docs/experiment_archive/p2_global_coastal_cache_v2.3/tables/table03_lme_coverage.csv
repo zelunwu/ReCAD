@@ -1,0 +1,67 @@
+lme_id,lme_name,coastal_nodes,grid_month_rows,cruises,platforms,fco2_gridmonths,sss_gridmonths,fco2_status,sss_status
+1,East Bering Sea,5472,24209,218,29,24209,22777,supported,supported
+2,Gulf of Alaska,8606,46090,471,34,46079,45093,supported,supported
+3,California Current,7219,37178,548,45,37172,36924,supported,supported
+4,Gulf of California,127,128,3,3,128,128,under_supported,under_supported
+5,Gulf of Mexico,4963,37236,363,23,37233,37199,supported,supported
+6,Southeast U.S. Continental Shelf,1615,26210,952,27,26209,25698,supported,supported
+7,Northeast U.S. Continental Shelf,1976,58300,821,32,58296,57961,supported,supported
+8,Scotian Shelf,1148,7774,142,17,7774,7774,supported,supported
+9,Labrador - Newfoundland,2630,10744,153,21,10744,10714,supported,supported
+10,Insular Pacific-Hawaiian,0,0,0,0,0,0,empty,empty
+11,Pacific Central-American Coastal,5564,28524,192,19,28524,28086,supported,supported
+12,Caribbean Sea,6890,123545,1084,33,123545,121495,supported,supported
+13,Humboldt Current,735,854,18,6,854,844,supported,supported
+14,Patagonian Shelf,0,0,0,0,0,0,empty,empty
+15,South Brazil Shelf,1102,2865,75,17,2865,2773,supported,supported
+16,East Brazil Shelf,3001,12289,89,18,12289,12031,supported,supported
+17,North Brazil Shelf,1379,2632,61,13,2604,2591,supported,supported
+18,Canadian Eastern Arctic - West Greenland,2731,36043,350,13,36043,5383,supported,supported
+19,Greenland Sea,2640,10375,330,15,10375,3667,supported,supported
+20,Barents Sea,610,4122,122,8,4122,3916,supported,supported
+21,Norwegian Sea,5215,22956,199,18,22956,21897,supported,supported
+22,North Sea,5733,91355,984,39,91343,42014,supported,supported
+23,Baltic Sea,1705,89102,233,5,89095,87341,supported,supported
+24,Celtic-Biscay Shelf,5474,49821,788,51,49821,44868,supported,supported
+25,Iberian Coastal,1551,8649,150,36,8649,8290,supported,supported
+26,Mediterranean Sea,4579,16920,113,21,16920,16779,supported,supported
+27,Canary Current,3582,18798,148,35,18798,18046,supported,supported
+28,Guinea Current,933,2241,18,6,2241,2010,supported,supported
+29,Benguela Current,454,1711,39,10,1710,1546,supported,supported
+30,Agulhas Current,1341,1674,21,6,1674,1670,supported,supported
+31,Somali Coastal Current,162,190,7,3,190,190,under_supported,under_supported
+32,Arabian Sea,1915,3005,19,7,3005,2982,supported,supported
+33,Red Sea,192,192,1,1,192,192,under_supported,under_supported
+34,Bay of Bengal,428,475,13,6,475,475,supported,supported
+35,Gulf of Thailand,0,0,0,0,0,0,empty,empty
+36,South China Sea,164,212,6,3,212,212,under_supported,under_supported
+37,Sulu-Celebes Sea,517,608,7,5,608,608,under_supported,under_supported
+38,Indonesian Sea,215,346,5,3,346,346,under_supported,under_supported
+39,North Australian Shelf,497,1283,26,5,1283,1283,supported,supported
+40,Northeast Australian Shelf,1395,7531,201,12,7531,7505,supported,supported
+41,East Central Australian Shelf,916,9687,314,11,9687,9531,supported,supported
+42,Southeast Australian Shelf,0,0,0,0,0,0,empty,empty
+43,South West Australian Shelf,0,0,0,0,0,0,empty,empty
+44,West Central Australian Shelf,928,1524,20,10,1524,1366,supported,supported
+45,Northwest Australian Shelf,1078,1467,18,8,1467,1455,supported,supported
+46,New Zealand Shelf,0,0,0,0,0,0,empty,empty
+47,East China Sea,1257,4317,89,13,4317,4305,supported,supported
+48,Yellow Sea,27,45,4,1,45,44,under_supported,under_supported
+49,Kuroshio Current,5025,88438,1356,26,88438,85915,supported,supported
+50,Sea of Japan,2196,8070,132,12,8070,7960,supported,supported
+51,Oyashio Current,2149,11425,201,17,11425,11074,supported,supported
+52,Sea of Okhotsk,244,544,8,4,544,544,under_supported,under_supported
+53,West Bering Sea,1070,2687,68,10,2687,2687,supported,supported
+54,Northern Bering - Chukchi Seas,1917,10793,111,21,10793,9773,supported,supported
+55,Beaufort Sea,32,39,2,2,39,39,under_supported,under_supported
+56,East Siberian Sea,0,0,0,0,0,0,empty,empty
+57,Laptev Sea,0,0,0,0,0,0,empty,empty
+58,Kara Sea,0,0,0,0,0,0,empty,empty
+59,Iceland Shelf and Sea,4758,40409,353,19,40409,19132,supported,supported
+60,Faroe Plateau,769,6688,266,9,6688,2427,supported,supported
+61,Antarctica,0,0,0,0,0,0,empty,empty
+62,Black Sea,0,0,0,0,0,0,empty,empty
+63,Hudson Bay Complex,1343,1507,3,3,1507,1507,under_supported,under_supported
+64,Central Arctic,0,0,0,0,0,0,empty,empty
+65,Aleutian Islands,474,1332,70,11,1332,1329,supported,supported
+66,Canadian High Arctic - North Greenland,0,0,0,0,0,0,empty,empty

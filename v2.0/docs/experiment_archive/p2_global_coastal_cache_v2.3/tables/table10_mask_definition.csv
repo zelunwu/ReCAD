@@ -1,0 +1,3 @@
+mask_role,mask_source,resolution_degrees,nodes,latitude_min,latitude_max,matching_rule,used_to_filter_cache
+v2.3_global_observation_cache,SOCATv2026 official Coastal synthesis classification,0.125,148376,-30.125,70.125,all QC SOCAT Coastal records inside configured -78..84 grid,True
+legacy_v2.2_product_mask_audit,D:\proj_personal\PhD\ReCAD\v2.0\outputs\prepared_global_p32.nc,0.125,148795,-30.125,70.25,legacy label-derived fallback; retained only as an audit flag,False

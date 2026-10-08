@@ -22,3 +22,4 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 | `p1_dic_inverse_co2sys_v2.2`（Issue #10） | diagnostic_only；exact solver pass；upstream/calibration gates fail | [完整报告](p1_dic_inverse_co2sys_v2.2/REPORT.md) |
 | `p2_scope_reconciliation_v2.3`（Issue #36） | verified；scope_reconciled；no new labels opened | [完整报告](p2_scope_reconciliation_v2.3/REPORT.md) |
 | `p2_benchmark_freeze_v2.3`（Issue #37） | verified；benchmark_contract_frozen；no new labels opened | [完整报告](p2_benchmark_freeze_v2.3/REPORT.md) |
+| `p2_global_coastal_cache_v2.3`（Issue #38） | verified；pass_data_freeze；global observation cache；legacy product-mask defect exposed | [完整报告](p2_global_coastal_cache_v2.3/REPORT.md) |

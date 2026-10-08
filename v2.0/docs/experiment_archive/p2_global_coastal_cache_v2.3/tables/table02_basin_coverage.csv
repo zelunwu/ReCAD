@@ -1,0 +1,7 @@
+basin_id,basin,grid_month_rows,cruises,platforms,observed_nodes,fco2_gridmonths,sss_gridmonths
+0,Arctic,39834,578,37,9120,39834,21957
+1,Southern,0,0,0,0,0,0
+2,Atlantic,504912,3134,113,55321,504818,361580
+3,Pacific,467466,3761,139,59234,467408,458301
+4,Indian,155494,1687,43,19554,155488,151289
+5,Mediterranean,18537,154,29,5147,18537,18390

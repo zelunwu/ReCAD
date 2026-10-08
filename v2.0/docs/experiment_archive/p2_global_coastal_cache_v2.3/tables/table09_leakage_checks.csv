@@ -1,0 +1,6 @@
+scheme,group_cross_partition_violations,unique_groups,status
+development,0,6536,pass
+cruise_5fold,0,6536,pass
+spatial_block_5fold,0,6536,pass
+forward,0,6536,pass
+whole_LME,0,6536,pass_by_excluding_all_cruises_touching_held_LME

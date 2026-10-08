@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.3",
+  "experiment_id": "p2_global_coastal_cache_v2.3",
+  "generated_utc": "2026-10-08T09:34:28.463483+00:00",
+  "decision": "pass_data_freeze",
+  "domain": {
+    "observation_mask": "occupied cells from official SOCATv2026 Coastal synthesis",
+    "resolution_degrees": 0.125,
+    "latitude_bounds": [
+      -78.0,
+      84.0
+    ],
+    "observed_latitude_bounds": [
+      -30.125,
+      70.125
+    ],
+    "observation_nodes": 148376,
+    "matching": "nearest cell on complete configured global grid",
+    "legacy_v2_2_product_mask": {
+      "latitude_bounds": [
+        -30.125,
+        70.25
+      ],
+      "role": "audit flag only; forbidden as global cache filter",
+      "required_follow_up": "replace with observation-independent global coastal mask in #39"
+    }
+  },
+  "period": {
+    "core": "1993-2025",
+    "provisional": "2026"
+  },
+  "targets": {
+    "SSS": "SOCAT in-situ sal, 0..50",
+    "fCO2": "SOCAT recommended fCO2rec, 1..1000 uatm, flag <=2"
+  },
+  "grouping": "normalized Expocode before QC and aggregation",
+  "splits": {
+    "development": "whole-cruise salted 80/20 train/grouped-development",
+    "cruise": "five whole-cruise salted folds",
+    "spatial": "five salted dominant-5-degree-block folds, whole cruise moves together",
+    "whole_lme": "hold LME rows and exclude all cruises touching held LME from train",
+    "forward": "cruise max year <=2018 / 2019-2021 / 2022-2025 / 2026"
+  },
+  "label_exposure": {
+    "SOCATv2026": "development_accessible; not a new blind test",
+    "future_external": "metadata-only rule for later SOCAT release; labels absent"
+  },
+  "inputs_sha256": {
+    "C:\\backup\\phd\\data\\raw\\socat\\SOCATv2026_Coastal.tsv": "e28bde997226a07164feb4b374e6f25eb4ffa613d1942ac92fab82a1aa66ab34",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\prepared_global_p32.nc": "13ac840c3bbce0a0f8c51cf787cb54310a7065b0fd0b07aeaa9925d15ac47719",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\spatial_support_v2.2.nc": "21b6a99195bdd58e05d27eac97ffff70dc3a4cc115ce070eea46ef3055fb5acc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_2\\lme_66.geojson": "25ce65db770f20cac1d254c5fdd5e15366c738c89c959245ce9324f7a4df1444"
+  },
+  "artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_group_split_manifest_v2.3.parquet": "a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_node_support_v2.3.parquet": "df3f22ea1a0a358be6c8a132e71132eccad9c97f893aa1345ab90ce9218d6fcb",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_processing_funnel_v2.3.parquet": "668c1195d2e37f41655300369a315a63388117052d8514d6f6139dcad1bd77a0",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_cache_audit_v2.3.json": "8c3be088a02186819763b60e84c12ce13af65fba4d2f4aacef1f7073b5b0400a"
+  },
+  "audit": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_cache_audit_v2.3.json"
+}
