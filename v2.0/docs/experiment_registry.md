@@ -179,3 +179,9 @@ P0 当前以 `configs/frozen/data_manifest_v2.2.json` 为准：数据轴保留�
 | forward 2019–2021 | 15,252 | 13.571 | 9.038 | 20.094 | 0.161 | 0.523 / 0.850 |
 
 状态为 **B / `pass_regional`**，只允许提名未来一次性 locked fCO2 audit；locked 与外部独立标签均未开启。2025 core + available-2026 provisional atlas 含 85,501 个 A 和 1,754,907 个 D grid-month；非 LME 12 或支持不足位置均为背景回退。Chl-a 在完全相同历史支持集上使四种外层 RMSE 改善 1.75–5.53%，但缓存止于 2020-12，未进入 2025 产品。完整报告、8 张图及逐图 caption、9 个源表见 `docs/experiment_archive/p1_fco2_reliability_v2.2/`；大文件位于本地忽略目录 `outputs/experiments/p1_fco2_reliability_v2.2/`。
+
+## P1.5e DIC 派生可靠性（Issue #28，预登记）
+
+`p1_dic_reliability_v2.2` 只在 MAB 直接 DIC 锚点上检验无 DIC 标签泄漏的派生链。主链使用 Issue #25 外层交叉拟合 SSS、与相同外层划分匹配的 fCO2 模型、Issue #27 冻结的层次 TA 预测，再由 PyCO2SYS 反演 DIC。比较独立误差、±0.5 有界相关和共享 SSS 扰动的协方差传播；稳定状态用 PyCO2SYS 有限差分 Jacobian，低盐或 Jacobian 无效状态用 2,048 次分块精确 Monte Carlo。256/512/1,024/2,048 draws 的收敛阈值、化学有效范围、A/B/C/D 区间宽度及直接观测门槛均冻结在 `configs/p1_dic_reliability_v2.2.yaml`。
+
+DIC 等级不得高于 SSS、fCO2、TA 中最弱的等级。locked DIC/TA 与 41 个外部 CODAP 航次保持封存；数值闭合只作为工程检查，不能替代直接 DIC 验证。

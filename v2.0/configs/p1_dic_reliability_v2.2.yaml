@@ -1,0 +1,58 @@
+schema_version: 1
+experiment_id: p1_dic_reliability_v2.2
+parent_issue: 28
+data_manifest: configs/frozen/data_manifest_v2.2.json
+scope:
+  region: MAB
+  lme_id: 7
+  latitude_bounds: [35.20, 41.75]
+  direct_dic_sources: [CODAP-NA, GLODAP]
+  direct_dic_parameter_methods: [1, 2]
+upstream:
+  sss_experiment: p1_sss_reliability_v2.2
+  fco2_experiment: p1_fco2_reliability_v2.2
+  ta_experiment: p1_ta_mab_reliability_v2.2
+  ta_candidate: hierarchical_subregion_regime_ta_sss
+outer_evaluation:
+  schemes: [cruise, spatial_block, subregion, forward]
+  folds: 5
+  fco2_catboost_iterations: 1500
+  fco2_calibration_group_fraction: 0.20
+chemistry:
+  salinity_range: [0.1, 45.0]
+  temperature_c_range: [-2.5, 40.0]
+  ta_umol_kg_range: [500.0, 3000.0]
+  fco2_uatm_range: [50.0, 1500.0]
+  nutrients_umol_kg: {silicate: 0.0, phosphate: 0.0}
+  pressure_dbar: 0.0
+  pyco2sys_options: {pH_scale: 1, k_carbonic: 10, k_bisulfate: 1, total_borate: 1}
+uncertainty:
+  scenarios: [independent, bounded_negative, bounded_positive, common_sss_covariance]
+  bounded_correlation: 0.50
+  monte_carlo_draws: 2048
+  monte_carlo_chunk_size: 128
+  convergence_draws: [256, 512, 1024, 2048]
+  convergence_width_relative_max: 0.02
+  convergence_endpoint_absolute_max_umol_kg: 2.0
+  jacobian_step: {ta: 1.0, fco2: 1.0, sss: 0.01}
+  exact_mc_domain: salinity_below_30_or_invalid_jacobian
+grades:
+  inheritance: cannot_exceed_weakest_of_sss_fco2_ta
+  A: {maximum_width90_umol_kg: 100, minimum_cruises: 10, minimum_years: 5}
+  B: {maximum_width90_umol_kg: 150, minimum_cruises: 5, minimum_years: 3}
+  C: {maximum_width90_umol_kg: 220, minimum_cruises: 3, minimum_years: 2}
+  D_policy: suppress_product_value
+acceptance:
+  coverage50_range: [0.45, 0.55]
+  coverage90_range: [0.85, 0.95]
+  median_width90_max_umol_kg: 200.0
+  minimum_direct_dic_cruises: 5
+  minimum_direct_dic_years: 3
+  maximum_absolute_source_bias_umol_kg: 25.0
+  closure_max_abs_uatm: 0.5
+  minimum_grade_ab_retained_fraction: 0.10
+  require_positive_r2: true
+sealed_labels:
+  locked_test: forbidden
+  external_independent: forbidden
+decision_values: [pass_regional, diagnostic_only, fail]
