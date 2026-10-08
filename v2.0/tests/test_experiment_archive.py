@@ -25,6 +25,7 @@ SPEC.loader.exec_module(MODULE)
         "p1_fco2_viability_v2.2",
         "p1_ta_viability_v2.2",
         "p1_ta_bights_v2.2",
+        "p1_ta_mab_reliability_v2.2",
         "p1_ta_sab_latitude_sensitivity_v2.2",
         "p1_ta_sss_sab_decadal_trends_v2.2",
         "p1_ta_sss_mab_decadal_trends_v2.2",

@@ -1,0 +1,10 @@
+outer_scheme,grade,n,cruises,years
+cruise,B,120,8,6
+cruise,D,361,25,11
+forward,C,123,6,2
+spatial_block,B,39,16,10
+spatial_block,C,334,30,11
+spatial_block,D,108,24,11
+subregion,B,53,19,9
+subregion,C,187,29,11
+subregion,D,241,30,12

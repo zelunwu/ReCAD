@@ -1,0 +1,5 @@
+diagnostic,status
+bathymetry,unavailable_in_frozen_cache
+shelf_zone,unavailable_in_frozen_cache
+estuary_mask,unavailable_in_frozen_cache
+coast_distance,unavailable_in_frozen_cache
