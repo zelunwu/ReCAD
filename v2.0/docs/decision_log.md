@@ -17,6 +17,7 @@
 | D011 | 2026-09-28 | GitHub #1 为父 Roadmap；#2–#5 分别管理 P0–P3 并作为正式 sub-issues；实验方法/数据/结果由仓库总账记录 | 防止任务和独立验证口径漂移 | 当前治理规则 |
 | D012 | 2026-10-04 | fCO2 当前只作为 Caribbean Sea（LME 12）区域产品候选；其他 LME 输出背景回退并标 D，锁定集继续封存 | #26 中 LME 12 的 cruise/空间块/前向 RMSE 为 9.54/10.03/13.57 µatm 且全部正 skill；LME 6 空间确认失败，整 LME 转移不成立 | `pass_regional`；待未来一次性 locked fCO2 audit |
 | D013 | 2026-10-08 | MAB DIC 保持派生诊断，不发布 2025 产品值；只有 fCO2 与 TA 在同一网格月均获资格后才重新开启 DIC 产品门槛 | #28 完整链 cruise/spatial/subregion/forward RMSE 为 49.61/58.90/51.06/39.53 µmol kg-1；空间 R²=-0.156，区间门槛失败，观测 TA oracle 将合并 RMSE 从 52.30 降至 28.28；14,220 个 2025 MAB grid-month 全部继承 D | `diagnostic_only`；locked/external 继续封存 |
+| D014 | 2026-10-08 | P2 冻结为全球沿海 SSS/fCO2 核心研究线；北美 TA/DIC 是预算不超过 10% 的非阻断可选扩展；atlas 投影域与直接观测验证域必须分开陈述 | #25 正式 SSS 决定为 `diagnostic_only`，已用 locked audit 失败 LME 17；#26 仅 LME 12 为 `pass_regional`；#27/#28 MAB TA/DIC 均为 `diagnostic_only`；Issue #36 证据与标签暴露审计 | 当前有效；旧 SSS locked 永久不得再次作为 blind，全球资格只能由新全球观测和新盲测取得 |
 
 ## 被明确否定或限制的旧做法
 

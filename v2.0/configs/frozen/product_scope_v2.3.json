@@ -1,0 +1,182 @@
+{
+  "schema_version": "2.3",
+  "experiment_id": "p2_scope_reconciliation_v2.3",
+  "issue": 36,
+  "parent_issue": 4,
+  "product_hierarchy": {
+    "core_targets": ["SSS", "fCO2"],
+    "core_aspiration": "global coastal monthly product",
+    "optional_targets": ["TA", "DIC"],
+    "optional_region": "North American coastal waters",
+    "optional_non_blocking": true,
+    "optional_budget_fraction_max": 0.10
+  },
+  "target_region_status": [
+    {
+      "target": "SSS",
+      "region": "North-American-adjacent P1 evaluation domain",
+      "status": "diagnostic_only",
+      "evidence_level": "development OOF plus used internal locked",
+      "direct_observation_domain": "North-American-adjacent SOCAT matchups",
+      "projection_domain": "global coastal atlas",
+      "direct_global_evidence": false,
+      "global_qualified": false,
+      "reason": "Used locked audit passed 7 of 8 gates but LME 17 error ratio was 1.355, above 1.10.",
+      "report": "docs/experiment_archive/p1_sss_reliability_v2.2/REPORT.md",
+      "manifest": "docs/experiment_archive/p1_sss_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "target": "fCO2",
+      "region": "Caribbean Sea LME 12",
+      "status": "pass_regional",
+      "evidence_level": "development outer OOF only",
+      "direct_observation_domain": "Caribbean SOCAT development matchups",
+      "projection_domain": "global coastal atlas",
+      "direct_global_evidence": false,
+      "global_qualified": false,
+      "reason": "Cruise, spatial-block, and forward skill gates passed in LME 12; locked and external labels remain sealed.",
+      "report": "docs/experiment_archive/p1_fco2_reliability_v2.2/REPORT.md",
+      "manifest": "docs/experiment_archive/p1_fco2_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "target": "fCO2",
+      "region": "all other evaluated LMEs",
+      "status": "diagnostic_only",
+      "evidence_level": "development outer OOF only",
+      "direct_observation_domain": "North-American-adjacent SOCAT development matchups",
+      "projection_domain": "global coastal atlas",
+      "direct_global_evidence": false,
+      "global_qualified": false,
+      "reason": "No other whole LME passed the frozen regional gate.",
+      "report": "docs/experiment_archive/p1_fco2_reliability_v2.2/REPORT.md",
+      "manifest": "docs/experiment_archive/p1_fco2_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "target": "TA",
+      "region": "Mid-Atlantic Bight LME 7",
+      "status": "diagnostic_only",
+      "evidence_level": "development grouped validation",
+      "direct_observation_domain": "surface CODAP-NA/GLODAP MAB observations",
+      "projection_domain": "MAB 2025 atlas",
+      "direct_global_evidence": false,
+      "global_qualified": false,
+      "reason": "Spatial and interval gates failed; all 2025 MAB cells were grade D.",
+      "report": "docs/experiment_archive/p1_ta_mab_reliability_v2.2/REPORT.md",
+      "manifest": "docs/experiment_archive/p1_ta_mab_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "target": "TA",
+      "region": "South Atlantic Bight LME 6",
+      "status": "fail",
+      "evidence_level": "development grouped validation",
+      "direct_observation_domain": "surface CODAP-NA/GLODAP SAB observations",
+      "projection_domain": "none qualified",
+      "direct_global_evidence": false,
+      "global_qualified": false,
+      "reason": "No SAB candidate passed grouped reliability gates.",
+      "report": "docs/experiment_archive/p1_ta_bights_v2.2/REPORT.md",
+      "manifest": "docs/experiment_archive/p1_ta_bights_v2.2/archive_manifest.json"
+    },
+    {
+      "target": "DIC",
+      "region": "Mid-Atlantic Bight LME 7",
+      "status": "diagnostic_only",
+      "evidence_level": "direct DIC development anchors with derived chain",
+      "direct_observation_domain": "surface CODAP-NA/GLODAP MAB observations",
+      "projection_domain": "MAB 2025 suppressed atlas",
+      "direct_global_evidence": false,
+      "global_qualified": false,
+      "reason": "Spatial R2 was negative and upstream fCO2/TA qualification failed; all 2025 cells were suppressed.",
+      "report": "docs/experiment_archive/p1_dic_reliability_v2.2/REPORT.md",
+      "manifest": "docs/experiment_archive/p1_dic_reliability_v2.2/archive_manifest.json"
+    }
+  ],
+  "label_exposure_ledger": [
+    {
+      "dataset": "P1 target-specific outer OOF folds",
+      "target": "SSS/fCO2/TA/DIC",
+      "exposure": "development",
+      "labels_opened": true,
+      "reusable_as_blind": false,
+      "permitted_use": "training, model selection, calibration, and diagnostic comparison",
+      "evidence": "docs/experiment_archive/p1_applicability_v2.2/archive_manifest.json"
+    },
+    {
+      "dataset": "2004-2005 fCO2 benchmark",
+      "target": "fCO2",
+      "exposure": "historical",
+      "labels_opened": true,
+      "reusable_as_blind": false,
+      "permitted_use": "historical product comparison only",
+      "evidence": "docs/experiment_archive/p1_fco2_v11_parity_v2.2/archive_manifest.json"
+    },
+    {
+      "dataset": "Issue 25 internal SSS locked audit",
+      "target": "SSS",
+      "exposure": "used_locked",
+      "labels_opened": true,
+      "reusable_as_blind": false,
+      "permitted_use": "audit record only; permanently spent for future blind testing",
+      "evidence": "docs/experiment_archive/p1_sss_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "dataset": "P1 fCO2 locked set",
+      "target": "fCO2",
+      "exposure": "sealed_locked",
+      "labels_opened": false,
+      "reusable_as_blind": true,
+      "permitted_use": "one-time P3 audit after candidate freeze",
+      "evidence": "docs/experiment_archive/p1_fco2_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "dataset": "P1 TA locked set",
+      "target": "TA",
+      "exposure": "sealed_locked",
+      "labels_opened": false,
+      "reusable_as_blind": true,
+      "permitted_use": "optional one-time regional audit after candidate freeze",
+      "evidence": "docs/experiment_archive/p1_ta_mab_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "dataset": "P1 DIC locked set",
+      "target": "DIC",
+      "exposure": "sealed_locked",
+      "labels_opened": false,
+      "reusable_as_blind": true,
+      "permitted_use": "optional one-time regional audit after all upstreams qualify",
+      "evidence": "docs/experiment_archive/p1_dic_reliability_v2.2/archive_manifest.json"
+    },
+    {
+      "dataset": "future SOCAT records newer than frozen v2026 snapshot",
+      "target": "SSS/fCO2",
+      "exposure": "external",
+      "labels_opened": false,
+      "reusable_as_blind": true,
+      "permitted_use": "external-independent audit after candidate freeze",
+      "evidence": "configs/frozen/data_manifest_v2.2.json"
+    },
+    {
+      "dataset": "41 CODAP 2022-2024 cruises unmatched to GLODAP",
+      "target": "TA/DIC",
+      "exposure": "external",
+      "labels_opened": false,
+      "reusable_as_blind": true,
+      "permitted_use": "optional external-independent North-American audit",
+      "evidence": "docs/experiment_archive/p1_dic_reliability_v2.2/REPORT.md"
+    }
+  ],
+  "domain_semantics": [
+    {"term": "direct observation domain", "definition": "Locations and times represented by labels used in a stated out-of-sample evaluation.", "authorizes": "claims only inside the evaluated support and split design"},
+    {"term": "global coastal atlas projection", "definition": "Model covariates and predictions evaluated over a global coastal grid.", "authorizes": "applicability visualization, never global validation by itself"},
+    {"term": "development OOF", "definition": "Grouped out-of-fold predictions whose labels may guide selection.", "authorizes": "development comparison, not locked or independent claims"},
+    {"term": "used locked", "definition": "A preregistered holdout opened once after candidate freeze.", "authorizes": "the recorded audit only; it is spent afterward"},
+    {"term": "sealed locked", "definition": "A reserved internal holdout whose labels remain inaccessible.", "authorizes": "no result claim before the one-time audit"},
+    {"term": "external independent", "definition": "Labels acquired and kept sealed outside model development.", "authorizes": "independent evidence only after provenance and non-use are audited"}
+  ],
+  "release_rules": [
+    {"target": "SSS", "current_release_eligible": false, "next_gate": "new global observation cache and new blind/external audit", "old_locked_reusable": false},
+    {"target": "fCO2", "current_release_eligible": false, "next_gate": "global bake-off; LME 12 may be nominated for future locked audit", "old_locked_reusable": true},
+    {"target": "TA", "current_release_eligible": false, "next_gate": "optional bounded North-American rescue only", "old_locked_reusable": true},
+    {"target": "DIC", "current_release_eligible": false, "next_gate": "all upstreams must first qualify in the same region", "old_locked_reusable": true}
+  ]
+}

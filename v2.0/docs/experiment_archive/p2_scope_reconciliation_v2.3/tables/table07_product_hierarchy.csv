@@ -1,0 +1,5 @@
+tier,target,intended_domain,blocks_core_release,budget_cap
+core,SSS,global coastal monthly product,True,none
+core,fCO2,global coastal monthly product,True,none
+optional extension,TA,North American coastal waters,False,10% of P2 compute/time
+optional extension,DIC,North American coastal waters,False,10% of P2 compute/time

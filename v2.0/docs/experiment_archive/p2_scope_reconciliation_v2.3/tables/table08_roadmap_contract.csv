@@ -1,0 +1,12 @@
+issue,stage,depends_on,blocks,role
+36,scope,P1 evidence,"37,38",freeze scope and exposure
+37,benchmark,36,"40,41",freeze literature and v1.x contract
+38,data,36,39,global observation cache
+39,features,38,"40,41",process predictors and ablation
+40,model,"37,39","42,43,44",SSS bake-off
+41,model,"37,39","42,43,44",fCO2 bake-off
+42,structure,"40,41",44,temporal/connectivity challenge
+43,conditional,"40,41",44,pretraining/probabilistic challenge
+44,qualification,40-43,"5,46",global reliability contract
+45,optional,qualified regional upstreams,none,bounded TA/DIC rescue
+46,release,44 and P3,release,product packaging

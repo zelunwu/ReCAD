@@ -198,3 +198,17 @@ DIC 等级不得高于 SSS、fCO2、TA 中最弱的等级。locked DIC/TA 与 41
 观测 TA oracle 将合并外层 RMSE 从 52.30 降至 28.28；观测 SSS oracle 反而为 58.13，说明 TA 仍是首要瓶颈，且用预测 SSS 训练出的 TA/fCO2 链不能通过事后替换单个盐度输入来改善。54 条、2 个航次的全部观测输入 oracle RMSE 为 11.58，但证据不足以授权产品。稳定域 Jacobian 与低盐/边界精确 Monte Carlo 均完成；最终 1,024→2,048 draws 的中位宽度变化 0.19%，端点变化 1.79 µmol kg-1。数值闭合通过，但空间 R²、覆盖率、区间宽度、A/B 保留面积和上游资格失败。
 
 最终状态为 **`diagnostic_only`**。2025 MAB 共 14,220 个 grid-month，因 Issue #26 的 MAB fCO2 未获区域资格且 Issue #27 TA 为 D，DIC 全部继承为 D 并 suppress；locked 与外部独立标签仍未开启。完整报告、8 张带 caption 的图和 10 个源表见 `docs/experiment_archive/p1_dic_reliability_v2.2/`。
+
+## P2.0 产品范围与证据审计（Issue #36）
+
+`p2_scope_reconciliation_v2.3` 对 #25–#28、#32 的不可变报告和 manifest 做治理审计，没有读取行级标签，也没有打开新的 locked 或 external-independent 数据。冻结结果如下：
+
+| 目标与区域 | 正式状态 | 最高已打开证据 | P2 含义 |
+|---|---|---|---|
+| SSS，北美相邻 P1 评价域 | `diagnostic_only` | development OOF + 已使用 internal locked | locked 通过 7/8 门槛但 LME 17 失败；旧 locked 已耗尽，全球目标必须建立新盲测 |
+| fCO2，Caribbean LME 12 | `pass_regional` | development outer OOF | 只允许区域候选；locked/external 继续封存 |
+| fCO2，其他评价 LME | `diagnostic_only` | development outer OOF | 全球 atlas 不构成全球验证 |
+| TA，MAB / SAB | `diagnostic_only` / `fail` | development grouped validation | 仅北美可选扩展，预算不超过 P2 的 10% |
+| DIC，MAB | `diagnostic_only` | direct DIC development anchors | 上游未同时合格，产品全部 suppress |
+
+产品层级冻结为全球沿海 SSS/fCO2 核心研究线与北美 TA/DIC 非阻断扩展。全局 covariate/atlas 只能证明可计算的投影域，不能证明直接观测覆盖、locked 证据或独立验证。9 个源表、8 张带 caption 的图、上游 SHA256 和机器可读 label-exposure ledger 见 `docs/experiment_archive/p2_scope_reconciliation_v2.3/`。

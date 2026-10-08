@@ -1,0 +1,9 @@
+check,passed,evidence
+formal status linked to immutable report and manifest,True,table04_evidence_sources.csv
+SSS diagnostic_only conflict corrected,True,table01_target_region_status.csv
+all evidence classes in exposure ledger,True,table02_label_exposure_ledger.csv
+direct domain separated from atlas projection,True,table03_domain_semantics.csv
+SSS/fCO2 core and optional NA TA/DIC frozen,True,table07_product_hierarchy.csv
+old SSS locked set marked spent,True,table02_label_exposure_ledger.csv
+governance authorities reconciled,True,table05_authority_consistency.csv
+no new locked or external labels opened,True,archive_manifest.json
