@@ -1,0 +1,92 @@
+{
+  "experiment_id": "p1_ta_mab_reliability_v2.2",
+  "training_git_commit": "0781e715d3f1a7f082523804b16da3a7361674ca",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "MAB unsealed train/development outer stress tests and label-free 2025 grid",
+  "decision": "diagnostic_only",
+  "figure_source_data": {
+    "fig01_outer_rmse.png": [
+      "outer_metrics.csv"
+    ],
+    "fig02_interval_coverage.png": [
+      "interval_metrics.csv"
+    ],
+    "fig03_interval_width.png": [
+      "interval_metrics.csv"
+    ],
+    "fig04_observed_predicted.png": [
+      "local:outer_predictions.parquet"
+    ],
+    "fig05_support_error.png": [
+      "local:outer_predictions.parquet"
+    ],
+    "fig06_subregion_rmse.png": [
+      "diagnostic_metrics.csv"
+    ],
+    "fig07_salinity_rmse.png": [
+      "diagnostic_metrics.csv"
+    ],
+    "fig08_july_atlas_grade.png": [
+      "local:p1_sss_reliability_v2.2/sss_reliability_atlas",
+      "retained_area.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_outer_rmse.png": "Figure 1. TA RMSE under untouched cruise, 5\u00b0 spatial-block, complete-subregion, and forward outer tests. Every bar uses nested cruise calibration and the matching cross-fitted upstream SSS prediction.",
+    "fig02_interval_coverage.png": "Figure 2. Empirical 50% and 90% coverage for the frozen hierarchical candidate. The green band is the preregistered acceptable range for the nominal 90% interval.",
+    "fig03_interval_width.png": "Figure 3. Median nested split-conformal 90% interval width. The dashed line is the frozen 160 \u00b5mol kg\u207b\u00b9 utility ceiling.",
+    "fig04_observed_predicted.png": "Figure 4. Cruise-outer cross-fitted hierarchical TA versus observed TA, colored by preregistered reliability grade. No locked or external label appears.",
+    "fig05_support_error.png": "Figure 5. Cruise-outer absolute TA error against geographic support, colored by upstream SSS environmental risk. This separates sparse TA support from uncertain SSS input.",
+    "fig06_subregion_rmse.png": "Figure 6. Cruise-outer hierarchical RMSE for southern, central, and northern MAB subregions. The plot exposes regional averaging that pooled RMSE can hide.",
+    "fig07_salinity_rmse.png": "Figure 7. Cruise-outer hierarchical RMSE by predicted-SSS band. Low-salinity performance is the principal diagnostic for nonconservative and estuarine influence because no frozen estuary mask exists.",
+    "fig08_july_atlas_grade.png": "Figure 8. July 2025 MAB grid eligibility from nested TA interval width, TA support distance, and Issue #25 SSS risk. It is a label-free retained-area diagnostic, not independent accuracy evidence."
+  },
+  "files_sha256": {
+    "captions.json": "a708cccc412270b067bf1b4ca16225479db0df578b0b1bf95a6de70678a95d47",
+    "CAPTIONS.md": "3dc0cf6241351817287fda4112f446a5213c6fa6f58f3d1987d91f4260eb3c3f",
+    "figures/fig01_outer_rmse.png": "edd6227669d1b93240d0ed838629a930045d2496203c782693ac20660c8e4d69",
+    "figures/fig02_interval_coverage.png": "e670791f00bcb6047b6538302cc5d6fb19478ab7ee6190ab73b7d5ea978bc121",
+    "figures/fig03_interval_width.png": "2834a6299059045153f4a34e52a76e4bb3aa22196dccdac26d850bf47ff02360",
+    "figures/fig04_observed_predicted.png": "b2de21da331306ec309826dd002fbf4996293290e9f1fc9508886120677aaf8b",
+    "figures/fig05_support_error.png": "0ecc5609ec0dc3222a0bcc11ea9e9e47f9ba4c13866fab469ae45ccb8daecd09",
+    "figures/fig06_subregion_rmse.png": "1b07fadc1a6f27a54538345f90c2778b73bd58c0acdde45e54018c6d94a5f28c",
+    "figures/fig07_salinity_rmse.png": "1aee41001eca423955b211a19172510d769c8b249a1f87a745d9c742dda5c47c",
+    "figures/fig08_july_atlas_grade.png": "882b3551082711ff95b1b923d6e925e2868ad4911425f1fe0a9a1e426f0c99f6",
+    "protocol.json": "3e00e2e46dd6e390369e4c69274a908b3b04d8f340156d3a857f57626229aeec",
+    "README.md": "0f5893718c340e067177806d14b94339e93134861aef90eca631db8812a069b7",
+    "REPORT.md": "cd02f9728ef8eba1d191c17f1a65898501d1563c540c65df65835d5d87b1b6d5",
+    "tables/decision_checks.csv": "708e55097fe6d6bf42368c8c7da021ceddbe9e1dbdedef53e5592b6b43639df5",
+    "tables/diagnostic_metrics.csv": "d217cf0862df8589b0777b23a523e3125aaff1796775e927311ec4d5ad67d469",
+    "tables/grade_evidence.csv": "ef24fb8befab7dad366774f9fb4add741c50dd16ee69a937ed708d6e46bb691a",
+    "tables/interval_metrics.csv": "f79c675f840f02d4f62e107dc71a560cc46ff85fb95761e65adc5e64a66c2086",
+    "tables/outer_fold_metrics.csv": "4b8a09193c76e251ab1bdf04ec4abef37a7da859b9aadbdf7be161f28a65d108",
+    "tables/outer_metrics.csv": "bf4ad4f68687c9a089fc00e2439d99a9efa5ac8f42bbec24a57d4d016860d70e",
+    "tables/retained_area.csv": "80ddec75183bd55de57f8477234fa6a69639d616bab0feab7a7d3b1732feddb5",
+    "tables/source_hashes.csv": "caf64c22bc6b05ca0c31b1ee205207fb7d89459678219a5f3510649d634dba55",
+    "tables/unavailable_diagnostics.csv": "e481b644f2cf9967c02a19673ac8da1829b32577b7be17cf1aa79aab18b4e004"
+  },
+  "archive_builder_sha256": "4655e11b68a0204f67d9d218588d90cfc5226fb60f38489b4dfe5c8aa7b106c3",
+  "analysis_script_sha256": "aea478c88fc3de351901e84f7709e42a70fe28b18d6206459f7cb547369771c5",
+  "source_artifacts_sha256": {
+    "config": "6f65c22561d5836f0305b5bc19b04814e4c9dd2ded1a101e189f1a63e82fb1c8",
+    "manifest": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+    "oof_cruise_0_seed100.pt": "adaf31b23ba735de2260b39646d8dcde9e6fd33af2e6d9de24b81c95d44f78b5",
+    "oof_cruise_1_seed100.pt": "fd2d69550b1184f62526a36cefdb928504b0eb9a6324ee83cc35a8840f36feff",
+    "oof_cruise_2_seed100.pt": "fad0fdcd1d522040c334b43e41b61cd282ded78d783d6a11453f12962000ee91",
+    "oof_cruise_3_seed100.pt": "95be38edc92f7012190b20b312620725317c28b63ca7cd9c235c55e5362f15f2",
+    "oof_cruise_4_seed100.pt": "e25400312742b6e3808e62e90ba0b400e2dc90c57203fd76c3f0f4b1fd674694",
+    "oof_forward_0_seed100.pt": "34fb06805ecb83100f89caed63f72dec0a66717b8d800384e46d6d0e1c917433",
+    "oof_spatial_block_0_seed100.pt": "a76fe9c779655254fa901dede9ab18052279b6b62cd7ecc675360876c062eedf",
+    "oof_spatial_block_1_seed100.pt": "3879a49f60240adc42e731fc28180bb832cac82345df7420170d256ab3c2d362",
+    "oof_spatial_block_2_seed100.pt": "b6d6412d342ff37a9e7bd585ab1390327af09cdd4a6999f38dd9e4caac6d26c4",
+    "oof_spatial_block_3_seed100.pt": "c36a9c6dd4801878da170bcd21318edc3cf1ba78061725e3fbc243ec35efc806",
+    "oof_spatial_block_4_seed100.pt": "e8ba554df314b1ef136b0637670248aa489ce7ff05fffd8cfcc46f3a4e327767",
+    "oof_whole_lme_0_seed100.pt": "97cce1483f2589560be5ba0c6bdf0e1c62cd7c06bcde7240ba223948306f97ef",
+    "oof_whole_lme_1_seed100.pt": "e5780e60add3b0128a7cf1f3e173b65f21e50d21ca29f988501600b11f767127",
+    "oof_whole_lme_2_seed100.pt": "017cfffa1645454b653f8f4128644dc55422c9bc8a338f07a5b968f25f79a570",
+    "oof_whole_lme_3_seed100.pt": "83b4a5dad39fe6a0d7e428d1e597c57eb06f7181441df645c87960484ada1e60",
+    "oof_whole_lme_4_seed100.pt": "37c045adf780852afcb42b6904827dab259d41d0c10f0104a4e407346fa2419d"
+  }
+}

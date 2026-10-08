@@ -1,0 +1,33 @@
+# Figure captions
+
+## fig01_outer_rmse.png
+
+Figure 1. TA RMSE under untouched cruise, 5° spatial-block, complete-subregion, and forward outer tests. Every bar uses nested cruise calibration and the matching cross-fitted upstream SSS prediction.
+
+## fig02_interval_coverage.png
+
+Figure 2. Empirical 50% and 90% coverage for the frozen hierarchical candidate. The green band is the preregistered acceptable range for the nominal 90% interval.
+
+## fig03_interval_width.png
+
+Figure 3. Median nested split-conformal 90% interval width. The dashed line is the frozen 160 µmol kg⁻¹ utility ceiling.
+
+## fig04_observed_predicted.png
+
+Figure 4. Cruise-outer cross-fitted hierarchical TA versus observed TA, colored by preregistered reliability grade. No locked or external label appears.
+
+## fig05_support_error.png
+
+Figure 5. Cruise-outer absolute TA error against geographic support, colored by upstream SSS environmental risk. This separates sparse TA support from uncertain SSS input.
+
+## fig06_subregion_rmse.png
+
+Figure 6. Cruise-outer hierarchical RMSE for southern, central, and northern MAB subregions. The plot exposes regional averaging that pooled RMSE can hide.
+
+## fig07_salinity_rmse.png
+
+Figure 7. Cruise-outer hierarchical RMSE by predicted-SSS band. Low-salinity performance is the principal diagnostic for nonconservative and estuarine influence because no frozen estuary mask exists.
+
+## fig08_july_atlas_grade.png
+
+Figure 8. July 2025 MAB grid eligibility from nested TA interval width, TA support distance, and Issue #25 SSS risk. It is a label-free retained-area diagnostic, not independent accuracy evidence.

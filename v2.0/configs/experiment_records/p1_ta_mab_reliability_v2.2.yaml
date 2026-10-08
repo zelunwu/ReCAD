@@ -1,0 +1,64 @@
+schema_version: 1
+experiment_id: p1_ta_mab_reliability_v2.2
+status: completed_diagnostic_only
+owner: ReCAD
+science:
+  question: Can MAB surface TA support a regional product after strict outer stress tests and independently calibrated uncertainty?
+  product_scope: MAB-only surface TA; SAB remains failed.
+  primary_candidate: hierarchical subregion/regime TA-SSS with cross-fitted predicted SSS.
+  oracle: observed in-situ salinity is diagnostic only.
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
+  upstream_sss_experiment: p1_sss_reliability_v2.2
+splits:
+  outer: [cruise, spatial_block, subregion, forward]
+  interval_calibration: nested cruise-group split inside each outer training partition
+  locked_test: sealed
+  external_independent: sealed
+evaluation:
+  metrics: [RMSE, MAE, bias, R2, skill, coverage_50, coverage_90, interval_width, retained_area]
+  diagnostics: [subregion, season, salinity, environmental_OOD, support_distance]
+  unavailable_frozen_covariates: [bathymetry, shelf_zone, estuary_mask, coast_distance]
+decision:
+  statuses: [pass_regional, diagnostic_only, fail]
+  config_path: configs/p1_ta_mab_reliability_v2.2.yaml
+  no_posthoc_threshold_changes: true
+reproducibility:
+  preregistration_git_commit: 6a8c549a8207e57bab6f0aa468424bee726d7478
+  manifest_sha256: 46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f
+  source_hashes:
+    scripts/run_p1_ta_mab_reliability.py: 4655e11b68a0204f67d9d218588d90cfc5226fb60f38489b4dfe5c8aa7b106c3
+    src/recad/evaluate/ta_mab_reliability.py: aea478c88fc3de351901e84f7709e42a70fe28b18d6206459f7cb547369771c5
+artifacts:
+  output_directory: outputs/experiments/p1_ta_mab_reliability_v2.2
+  report: docs/experiment_archive/p1_ta_mab_reliability_v2.2/REPORT.md
+outcome:
+  completed_utc: 2026-10-08T03:25:33Z
+  decision: diagnostic_only
+  primary_outer_rmse_umol_kg:
+    cruise: 65.926
+    spatial_block: 75.221
+    subregion: 66.150
+    forward: 58.835
+  primary_outer_r2:
+    cruise: 0.052
+    spatial_block: -0.235
+    subregion: 0.045
+    forward: 0.246
+  oracle_outer_rmse_umol_kg:
+    cruise: 20.842
+    spatial_block: 26.590
+    subregion: 24.176
+    forward: 15.188
+  failed_gates:
+    - primary does not beat robust regional TA-SSS in spatial-block evaluation
+    - only one spatial fold beats both baselines
+    - 90 percent coverage is outside bounds in at least one outer scheme
+    - all median 90 percent intervals exceed the 160 umol kg-1 utility ceiling
+    - 2025 MAB retained grade-A/B area is zero
+  allowed_claims:
+    - MAB TA with cross-fitted predicted SSS improves on Carter in every pooled outer scheme.
+    - Predicted-SSS MAB TA is not publication-ready because spatial transfer and uncertainty gates fail.
+    - In-situ SSS oracle skill shows salinity reconstruction is the dominant upstream limitation.
+    - SAB remains failed and locked/external TA labels remain sealed.

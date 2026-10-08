@@ -1,0 +1,57 @@
+experiment_id: p1_ta_mab_reliability_v2.2
+parent_experiment: p1_ta_bights_v2.2
+framework: configs/p1_framework_v2.2.yaml
+data_manifest: configs/frozen/data_manifest_v2.2.json
+region:
+  name: MAB
+  source_lme_id: 7
+  latitude_bounds: [35.20, 41.75]
+  subregions:
+    - {name: south, latitude_bounds: [35.20, 38.00]}
+    - {name: central, latitude_bounds: [38.00, 40.00]}
+    - {name: north, latitude_bounds: [40.00, 41.75]}
+salinity:
+  primary: issue25_outer_cross_fitted_prediction
+  upstream_output: outputs/experiments/p1_sss_reliability_v2.2
+  shrinkage: quadratic_5
+  oracle: observed_in_situ_salinity
+outer_evaluation:
+  schemes: [cruise, spatial_block, subregion, forward]
+  folds: 5
+  forward_start_year: 2018
+  calibration_group_fraction: 0.20
+  minimum_calibration_cruises: 3
+candidates:
+  - carter_esper_predicted_sss
+  - robust_mab_ta_sss
+  - hierarchical_subregion_regime_ta_sss
+  - nonlinear_residual_gradient_boosting
+  - hierarchical_oracle_insitu_sss
+selection:
+  primary_candidate: hierarchical_subregion_regime_ta_sss
+  no_posthoc_candidate_switching: true
+uncertainty:
+  method: nested_cruise_split_conformal
+  levels: [0.50, 0.90]
+  calibration_independent_of_outer_evaluation: true
+grades:
+  A: {maximum_q90_umol_kg: 50, maximum_support_km: 100, minimum_training_cruises: 8}
+  B: {maximum_q90_umol_kg: 80, maximum_support_km: 200, minimum_training_cruises: 5}
+  C: {maximum_q90_umol_kg: 120, maximum_support_km: 500, minimum_training_cruises: 3}
+  D_policy: suppress_product_value
+acceptance:
+  primary_must_beat_carter_in: [cruise, spatial_block, subregion, forward]
+  primary_must_beat_robust_mab_ta_sss_in: [cruise, spatial_block, subregion, forward]
+  coverage_90_bounds: [0.85, 0.95]
+  median_interval_width_90_max_umol_kg: 160
+  minimum_forward_cruises: 3
+  minimum_forward_years: 2
+  minimum_supported_outer_folds_per_scheme: 2
+  minimum_grade_ab_retained_area_fraction: 0.50
+sealed_labels:
+  locked_test: forbidden
+  external_independent: forbidden
+limitations:
+  - Frozen v2.2 cache has no bathymetry, coast-distance, or estuary mask.
+  - Shelf-zone and estuary diagnostics are reported as unavailable rather than reconstructed after preregistration.
+  - SAB failure from p1_ta_bights_v2.2 is inherited and cannot be rescued by MAB results.

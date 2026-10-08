@@ -1,0 +1,9 @@
+gate,passed
+beats_carter_all_outer_schemes,True
+beats_robust_regional_all_outer_schemes,False
+coverage90_all_schemes_85_to_95pct,False
+median_width90_all_schemes_le_160,False
+forward_has_at_least_3_cruises,True
+forward_has_at_least_2_years,True
+at_least_2_supported_folds_per_repeated_scheme,False
+grade_ab_retained_area_ge_50pct,False
