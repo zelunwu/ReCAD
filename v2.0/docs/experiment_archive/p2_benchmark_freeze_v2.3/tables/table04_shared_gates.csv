@@ -1,0 +1,9 @@
+gate,value
+positive_skill_each_scheme,True
+max_supported_lme_rmse_ratio,1.1
+max_major_scheme_regression_fraction,0.02
+macro_region_improvement_required,True
+fixed_coverage_retention,0.8
+coverage_50_bounds,"[0.45, 0.55]"
+coverage_90_bounds,"[0.85, 0.95]"
+interval_score,WIS for both targets; CRPS when full predictive samples are retained

@@ -1,0 +1,3 @@
+field,value
+canonical_fco2_unit,uatm
+published_pco2_policy,convert prediction and observation consistently at matched in-situ SST/SSS with frozen PyCO2SYS settings; never compare pCO2 and fCO2 columns directly

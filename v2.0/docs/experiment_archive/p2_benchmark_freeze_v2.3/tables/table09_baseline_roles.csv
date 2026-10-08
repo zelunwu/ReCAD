@@ -1,0 +1,7 @@
+target,baseline,role,must_recompute
+fCO2,training-fold seasonal-trend background,minimum positive-skill reference,True
+fCO2,strict retrained v1.x RF,primary causal method comparison,True
+fCO2,CatBoost/GBDT residual,strong same-split point baseline,True
+SSS,GLORYS12V1,operational background reference,True
+SSS,CatBoost/GBDT residual correction,strong same-split point baseline,True
+SSS,ESA CCI and SMAP,common-support external product context,True

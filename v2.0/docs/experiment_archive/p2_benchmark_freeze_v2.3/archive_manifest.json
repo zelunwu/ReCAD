@@ -1,0 +1,79 @@
+{
+  "experiment_id": "p2_benchmark_freeze_v2.3",
+  "training_git_commit": "be7186485a0c28066b7384a5b65ee022ffb6c97c",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "primary literature, official product metadata, and immutable ReCAD governance archives; no labels opened",
+  "decision": "benchmark_contract_frozen",
+  "figure_source_data": {
+    "fig01_fco2_literature_context.png": [
+      "table01_literature_benchmarks.csv"
+    ],
+    "fig02_sss_literature_context.png": [
+      "table01_literature_benchmarks.csv"
+    ],
+    "fig03_panel_comparability.png": [
+      "table08_panel_comparability.csv"
+    ],
+    "fig04_fco2_targets.png": [
+      "table03_performance_targets.csv"
+    ],
+    "fig05_sss_targets.png": [
+      "table03_performance_targets.csv"
+    ],
+    "fig06_panel_hierarchy.png": [
+      "table02_comparison_panels.csv"
+    ],
+    "fig07_baseline_roles.png": [
+      "table09_baseline_roles.csv"
+    ],
+    "fig08_acceptance_dimensions.png": [
+      "table03_performance_targets.csv",
+      "table04_shared_gates.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_fco2_literature_context.png": "Figure 1. Published fCO2 or pCO2 errors collected as scientific context. Bars are not a ranking because domains, target basis, observation support, calibration, and validation designs differ.",
+    "fig02_sss_literature_context.png": "Figure 2. Regional coastal SSS errors reported for recent machine-learning studies. These satellite-era regional values motivate the tiers but cannot substitute for global cruise, spatial, and forward evaluation.",
+    "fig03_panel_comparability.png": "Figure 3. Controlled dimensions in the four frozen panels. Only the strict-method panel controls target, grid, period, support, split, calibration, and uncertainty well enough to select a model.",
+    "fig04_fco2_targets.png": "Figure 4. Frozen absolute fCO2 RMSE ceilings for minimum, competitive, and ideal evidence under cruise, spatial-block, and forward-time outer evaluation.",
+    "fig05_sss_targets.png": "Figure 5. Frozen absolute SSS RMSE ceilings for minimum, competitive, and ideal evidence; spatial and forward transfer receive looser ceilings than new-cruise interpolation.",
+    "fig06_panel_hierarchy.png": "Figure 6. Benchmark evidence hierarchy from native publication context through a common format and paired product comparison to the identical-data strict method comparison.",
+    "fig07_baseline_roles.png": "Figure 7. Required decision baselines for SSS and fCO2. Every baseline must be recomputed on the same held observations rather than copied from a publication table.",
+    "fig08_acceptance_dimensions.png": "Figure 8. The minimum advancement gate requires paired improvement, absolute accuracy, regional robustness, calibrated uncertainty, and fixed-coverage risk simultaneously."
+  },
+  "files_sha256": {
+    "README.md": "bc51e5566e2dd42f413567dd45f321fb5b964b5a54c8480d4cbf209511e5a07c",
+    "REPORT.md": "cc7a88cf3de9843688fe8745639af11afc9ca154fd3a200c1b39985069c384b1",
+    "CAPTIONS.md": "b3dae8063e379bd77bb55b5deb1f5ef696ddb8f359c9354b1ccd6c882e7358af",
+    "tables/table01_literature_benchmarks.csv": "f9878560b736a7f47286b88e589c6b94ade47fdd9902834671d1754babf560d6",
+    "tables/table02_comparison_panels.csv": "1cffce844b509eaf16947abaecad23262d7837cf1194b625a59feeb8ad07257b",
+    "tables/table03_performance_targets.csv": "32ba6bfed2274dfb5c4a19dd863a048ef26a8edacdb27bc9d948576e8592a45b",
+    "tables/table04_shared_gates.csv": "aa911be3e2c08f441b0cdcd97e19738c9d197fb7e297e515d7f149b0ba241eea",
+    "tables/table05_v1_retraining_contract.csv": "7417e3b1c84e1eea1ba4f18934b5e87f57d8b999ca2e7286dbc6dac6d5d6c804",
+    "tables/table06_target_conversion.csv": "3567227996af295a3f2478e4f93b1abd04070435fd2b2c4a5109fa083e1b1d2c",
+    "tables/table07_paired_bootstrap.csv": "c826a65e561bd98a272abc4a4bc578d14a326234100ba510f9472f2aef97c64c",
+    "tables/table08_panel_comparability.csv": "bae2e699f1fd80972127e1f9243402920e526b05fa33aca1b35af23cf09003c1",
+    "tables/table09_baseline_roles.csv": "7b55f065c2616aba24fef5b904a60d457437d7f6789cea42b4af4f2e217ae3ea",
+    "tables/table10_acceptance_checks.csv": "255edcef4951803218434909e10dae093cfff0179d2d4f61ddfa658402bbd37e",
+    "tables/table11_source_catalog.csv": "02e59041cd192bff82e3aa5639490d40717d7d80969ec85eb6e159a6ad089968",
+    "figures/fig01_fco2_literature_context.png": "d9c0529cb40fa832be469a4b362db48b78583adbb20b66984bb50acec18b267f",
+    "figures/fig02_sss_literature_context.png": "839407127d4c79d06c976179af22f5d3e4d566a24dfcce90ad18a002677e710a",
+    "figures/fig03_panel_comparability.png": "eca5eeacabfb3ce3f28e35d56a28aca666db7c9173908dc27da01fa20c7d9322",
+    "figures/fig04_fco2_targets.png": "1299482a232c6e2806224c43ec12f1e7e0f0524150d91f523b74d190c3980d62",
+    "figures/fig05_sss_targets.png": "9076fda0c44b9f4cf94eb711239761b446443ada168a7ecd563e626d415a09be",
+    "figures/fig06_panel_hierarchy.png": "98b81688b7840282c4123e4f3bd82f8569542da53ec6c44dbaff5205b33237f8",
+    "figures/fig07_baseline_roles.png": "30d95845dad79c451c5e67f4a34df99bde21bf650136145063901013e4de4878",
+    "figures/fig08_acceptance_dimensions.png": "b335e1517d46993035854c3e3618179b9954f359d2b9c54b4c7c63ab64d96a56"
+  },
+  "archive_builder_sha256": "fdaa035fb3727228224c8d2e7c0bcd89035afda8356cc9480ce2a9f58dae4d13",
+  "analysis_script_sha256": "fdaa035fb3727228224c8d2e7c0bcd89035afda8356cc9480ce2a9f58dae4d13",
+  "source_artifacts_sha256": {
+    "configs/frozen/benchmark_contract_v2.3.json": "6034b89db52c004e8fd4e93f88d77eca4918f75ce81b811229150d5c1c053c50",
+    "configs/frozen/product_scope_v2.3.json": "80871df149767dc4679234655210961cc7707fbdb0c882c1c1666464bf788a9d",
+    "docs/experiment_archive/p1_fco2_v11_parity_v2.2/REPORT.md": "1d98b9a417bbc0c4f25986789e4712dcf6bf30d737f8995c4d12d7088b617b18",
+    "docs/experiment_archive/p1_fco2_v11_parity_v2.2/archive_manifest.json": "28c2ed37d3fab7515c503325b80ef096389697f67e24f43b7ded8498f6175fcb",
+    "docs/experiment_archive/p2_scope_reconciliation_v2.3/REPORT.md": "45270105c57163fdb91eb92a47da9885a15b366085533b10c6a9189d9ac53c81"
+  }
+}

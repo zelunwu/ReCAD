@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.3",
+  "experiment_id": "p2_benchmark_freeze_v2.3",
+  "issue": 37,
+  "parent_issue": 4,
+  "frozen_on": "2026-10-08",
+  "comparison_panels": [
+    {"id": "native_context", "resolution": "product native", "support": "publication native", "purpose": "scientific context only", "can_select_model": false, "identical_splits": false},
+    {"id": "common_grid", "resolution": "0.25 degree monthly", "support": "all available per product", "purpose": "product comparison with explicit sample counts", "can_select_model": false, "identical_splits": false},
+    {"id": "common_support", "resolution": "0.25 degree monthly", "support": "intersection of product-valid observation matchups", "purpose": "paired product skill comparison", "can_select_model": false, "identical_splits": true},
+    {"id": "strict_method", "resolution": "native ReCAD observation rows and common 0.25 degree supplement", "support": "identical train and held groups", "purpose": "causal method improvement against retrained v1.x and strongest baselines", "can_select_model": true, "identical_splits": true}
+  ],
+  "literature_benchmarks": [
+    {"product": "ReCAD v1.1 published", "target": "fCO2", "target_basis": "fCO2", "metric": "RMSE", "value": 17.642, "unit": "uatm", "domain": "North-American Atlantic random test", "resolution": "0.25 degree monthly", "period": "1993-2021", "validation_design": "random observation split plus full-period local calibration", "primary_gate": false, "conversion_required": false, "source": "local Issue #32 archive", "url": "https://doi.org/10.5194/essd-2024-309"},
+    {"product": "ReCAD v1.1 published 2004-2005", "target": "fCO2", "target_basis": "fCO2", "metric": "RMSE", "value": 28.975, "unit": "uatm", "domain": "North-American Atlantic historical years", "resolution": "0.25 degree monthly", "period": "2004-2005", "validation_design": "historical years exposed to final local calibration", "primary_gate": false, "conversion_required": false, "source": "local Issue #32 archive", "url": "https://doi.org/10.5194/essd-2024-309"},
+    {"product": "ULB-SOM-FFN-coastal v2", "target": "fCO2", "target_basis": "pCO2", "metric": "RMSE", "value": 29.0, "unit": "uatm", "domain": "global coastal", "resolution": "0.25 degree monthly", "period": "1982-2020", "validation_design": "publication native reconstruction evaluation", "primary_gate": false, "conversion_required": true, "source": "Roobaert et al. 2024", "url": "https://doi.org/10.5194/essd-16-421-2024"},
+    {"product": "CMEMS-LSCE r025", "target": "fCO2", "target_basis": "pCO2", "metric": "RMSD", "value": 27.6, "unit": "uatm", "domain": "global coastal within 400 km", "resolution": "0.25 degree monthly", "period": "1985-2021", "validation_design": "reconstruction-month SOCAT exclusion", "primary_gate": false, "conversion_required": true, "source": "Chau et al. 2024", "url": "https://doi.org/10.5194/essd-16-121-2024"},
+    {"product": "RFR-LMEs", "target": "fCO2", "target_basis": "pCO2", "metric": "regional errors", "value": null, "unit": "uatm", "domain": "11 United States LMEs", "resolution": "0.25 degree monthly", "period": "1998-2022", "validation_design": "random five-fold grid-cell validation plus external comparisons", "primary_gate": false, "conversion_required": true, "source": "Sharp et al. 2024", "url": "https://doi.org/10.1038/s41597-024-03530-7"},
+    {"product": "Northeast Pacific high-resolution NN", "target": "fCO2", "target_basis": "pCO2", "metric": "RMSE", "value": 42.9, "unit": "uatm", "domain": "Northeast Pacific coastal", "resolution": "1/12 degree", "period": "publication domain", "validation_design": "EXPOCODE-grouped withholding", "primary_gate": false, "conversion_required": true, "source": "Duke et al. 2024", "url": "https://doi.org/10.1029/2024JC021134"},
+    {"product": "SNU-pCO2", "target": "fCO2", "target_basis": "pCO2", "metric": "RMSE", "value": 13.57, "unit": "uatm", "domain": "global ocean", "resolution": "publication native", "period": "publication domain", "validation_design": "SOCAT 10-fold cross-validation", "primary_gate": false, "conversion_required": true, "source": "Cho et al. 2026", "url": "https://doi.org/10.1016/j.apor.2026.105210"},
+    {"product": "MAIN Amazon", "target": "SSS", "target_basis": "SSS", "metric": "RMSE", "value": 0.71, "unit": "PSU", "domain": "Amazon low-salinity region", "resolution": "daily regional", "period": "satellite era", "validation_design": "regional in-situ validation", "primary_gate": false, "conversion_required": false, "source": "Jung et al. 2025", "url": "https://doi.org/10.1016/j.marpolbul.2025.118462"},
+    {"product": "MAIN East Asia", "target": "SSS", "target_basis": "SSS", "metric": "RMSE", "value": 0.51, "unit": "PSU", "domain": "East Asian low-salinity region", "resolution": "daily regional", "period": "satellite era", "validation_design": "regional in-situ validation", "primary_gate": false, "conversion_required": false, "source": "Jung et al. 2025", "url": "https://doi.org/10.1016/j.marpolbul.2025.118462"},
+    {"product": "East Asia multisource MLP", "target": "SSS", "target_basis": "SSS", "metric": "RMSE", "value": 0.92, "unit": "PSU", "domain": "East Asia coastal and open ocean", "resolution": "regional high resolution", "period": "satellite era", "validation_design": "in-situ validation", "primary_gate": false, "conversion_required": false, "source": "Sung et al. 2025", "url": "https://doi.org/10.1016/j.jag.2025.104427"},
+    {"product": "GLORYS12V1", "target": "SSS", "target_basis": "SSS", "metric": "must be recomputed", "value": null, "unit": "PSU", "domain": "global ocean", "resolution": "1/12 degree daily/monthly", "period": "1993 onward", "validation_design": "reanalysis with in-situ T/S assimilation", "primary_gate": true, "conversion_required": false, "source": "Copernicus Marine", "url": "https://doi.org/10.48670/moi-00021"},
+    {"product": "ESA CCI SSS v4.x", "target": "SSS", "target_basis": "SSS", "metric": "must be recomputed", "value": null, "unit": "PSU", "domain": "global satellite ocean", "resolution": "50 km resampled to 0.25 degree; monthly/15-day sampling", "period": "satellite era", "validation_design": "official product validation; coastal matchup required", "primary_gate": false, "conversion_required": false, "source": "ESA CCI Product User Guide", "url": "https://climate.esa.int/en/projects/sea-surface-salinity/"},
+    {"product": "JPL SMAP CAP v5", "target": "SSS", "target_basis": "SSS", "metric": "must be recomputed", "value": null, "unit": "PSU", "domain": "global satellite ocean", "resolution": "8-day/monthly mapped", "period": "2015 onward", "validation_design": "official validated product; coastal matchup required", "primary_gate": false, "conversion_required": false, "source": "NASA PO.DAAC", "url": "https://podaac.jpl.nasa.gov/dataset/SMAP_JPL_L3_SSS_CAP_8DAY-RUNNINGMEAN_V5"}
+  ],
+  "performance_targets": [
+    {"target": "fCO2", "scheme": "cruise", "tier": "minimum", "rmse_ceiling": 30.0, "min_improvement_fraction": 0.05},
+    {"target": "fCO2", "scheme": "cruise", "tier": "competitive", "rmse_ceiling": 25.0, "min_improvement_fraction": 0.10},
+    {"target": "fCO2", "scheme": "cruise", "tier": "ideal", "rmse_ceiling": 20.0, "min_improvement_fraction": 0.15},
+    {"target": "fCO2", "scheme": "spatial", "tier": "minimum", "rmse_ceiling": 40.0, "min_improvement_fraction": 0.05},
+    {"target": "fCO2", "scheme": "spatial", "tier": "competitive", "rmse_ceiling": 35.0, "min_improvement_fraction": 0.10},
+    {"target": "fCO2", "scheme": "spatial", "tier": "ideal", "rmse_ceiling": 30.0, "min_improvement_fraction": 0.15},
+    {"target": "fCO2", "scheme": "forward", "tier": "minimum", "rmse_ceiling": 40.0, "min_improvement_fraction": 0.05},
+    {"target": "fCO2", "scheme": "forward", "tier": "competitive", "rmse_ceiling": 35.0, "min_improvement_fraction": 0.10},
+    {"target": "fCO2", "scheme": "forward", "tier": "ideal", "rmse_ceiling": 30.0, "min_improvement_fraction": 0.15},
+    {"target": "SSS", "scheme": "cruise", "tier": "minimum", "rmse_ceiling": 1.0, "min_improvement_fraction": 0.05},
+    {"target": "SSS", "scheme": "cruise", "tier": "competitive", "rmse_ceiling": 0.8, "min_improvement_fraction": 0.10},
+    {"target": "SSS", "scheme": "cruise", "tier": "ideal", "rmse_ceiling": 0.6, "min_improvement_fraction": 0.15},
+    {"target": "SSS", "scheme": "spatial", "tier": "minimum", "rmse_ceiling": 1.2, "min_improvement_fraction": 0.05},
+    {"target": "SSS", "scheme": "spatial", "tier": "competitive", "rmse_ceiling": 1.0, "min_improvement_fraction": 0.10},
+    {"target": "SSS", "scheme": "spatial", "tier": "ideal", "rmse_ceiling": 0.8, "min_improvement_fraction": 0.15},
+    {"target": "SSS", "scheme": "forward", "tier": "minimum", "rmse_ceiling": 1.2, "min_improvement_fraction": 0.05},
+    {"target": "SSS", "scheme": "forward", "tier": "competitive", "rmse_ceiling": 1.0, "min_improvement_fraction": 0.10},
+    {"target": "SSS", "scheme": "forward", "tier": "ideal", "rmse_ceiling": 0.8, "min_improvement_fraction": 0.15}
+  ],
+  "shared_gates": {
+    "positive_skill_each_scheme": true,
+    "max_supported_lme_rmse_ratio": 1.10,
+    "max_major_scheme_regression_fraction": 0.02,
+    "macro_region_improvement_required": true,
+    "fixed_coverage_retention": 0.80,
+    "coverage_50_bounds": [0.45, 0.55],
+    "coverage_90_bounds": [0.85, 0.95],
+    "interval_score": "WIS for both targets; CRPS when full predictive samples are retained"
+  },
+  "paired_bootstrap": {"replicates": 2000, "confidence": 0.95, "unit": "cruise", "spatial_variant_unit": "spatial_block", "stratify_by": "macro-region", "success_rule": "upper confidence bound of paired RMSE difference below zero and point improvement meets tier"},
+  "historical_2004_2005": {"role": "descriptive historical product parity only", "can_select_model": false, "can_claim_independence": false},
+  "v1_retraining": {"inputs": ["longitude", "latitude", "month", "SSS", "SST", "ADT", "pCO2air"], "model": "300-tree bagged random forest replica", "calibration": "training fold only", "required_splits": ["cruise", "spatial", "forward"], "primary_role": "strict common-data method baseline"},
+  "target_conversion": {"canonical_fco2_unit": "uatm", "published_pco2_policy": "convert prediction and observation consistently at matched in-situ SST/SSS with frozen PyCO2SYS settings; never compare pCO2 and fCO2 columns directly"}
+}
