@@ -1,0 +1,29 @@
+schema_version: 1
+experiment_id: p1_ta_mab_reliability_v2.2
+status: preregistered
+owner: ReCAD
+science:
+  question: Can MAB surface TA support a regional product after strict outer stress tests and independently calibrated uncertainty?
+  product_scope: MAB-only surface TA; SAB remains failed.
+  primary_candidate: hierarchical subregion/regime TA-SSS with cross-fitted predicted SSS.
+  oracle: observed in-situ salinity is diagnostic only.
+data:
+  manifest_path: configs/frozen/data_manifest_v2.2.json
+  observation_products: [CODAP-NA_v2026, GLODAPv2.2023]
+  upstream_sss_experiment: p1_sss_reliability_v2.2
+splits:
+  outer: [cruise, spatial_block, subregion, forward]
+  interval_calibration: nested cruise-group split inside each outer training partition
+  locked_test: sealed
+  external_independent: sealed
+evaluation:
+  metrics: [RMSE, MAE, bias, R2, skill, coverage_50, coverage_90, interval_width, retained_area]
+  diagnostics: [subregion, season, salinity, environmental_OOD, support_distance]
+  unavailable_frozen_covariates: [bathymetry, shelf_zone, estuary_mask, coast_distance]
+decision:
+  statuses: [pass_regional, diagnostic_only, fail]
+  config_path: configs/p1_ta_mab_reliability_v2.2.yaml
+  no_posthoc_threshold_changes: true
+artifacts:
+  output_directory: outputs/experiments/p1_ta_mab_reliability_v2.2
+  report: docs/experiment_archive/p1_ta_mab_reliability_v2.2/REPORT.md
