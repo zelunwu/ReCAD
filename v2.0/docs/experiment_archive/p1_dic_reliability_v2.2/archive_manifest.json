@@ -1,0 +1,75 @@
+{
+  "experiment_id": "p1_dic_reliability_v2.2",
+  "created_utc": "2026-10-08T06:41:11.177510+00:00",
+  "training_git_commit": "157e6a2b8cbf78cd2f77609ad9593c243b2e4a8f",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "MAB direct DIC development anchors; no DIC label used in upstream fitting",
+  "decision": "diagnostic_only",
+  "figure_source_data": {
+    "fig01_chain_rmse.png": [
+      "table02_direct_chain_metrics.csv"
+    ],
+    "fig02_interval_coverage.png": [
+      "table03_propagation_scenarios.csv"
+    ],
+    "fig03_covariance_width.png": [
+      "table03_propagation_scenarios.csv"
+    ],
+    "fig04_observed_predicted.png": [
+      "local:direct_predictions.parquet"
+    ],
+    "fig05_oracle_ablation.png": [
+      "table04_oracle_ablation.csv"
+    ],
+    "fig06_source_bias.png": [
+      "table06_source_bias.csv"
+    ],
+    "fig07_mc_convergence.png": [
+      "table05_mc_convergence.csv"
+    ],
+    "fig08_atlas_grade.png": [
+      "table10_2025_atlas_counts.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_chain_rmse.png": "Figure 1. Direct-observation DIC RMSE for the complete predicted SSS-fCO2-TA chain under cruise, spatial-block, subregion, and forward outer exclusions; no DIC label trained any upstream model.",
+    "fig02_interval_coverage.png": "Figure 2. Empirical 50% and 90% coverage from 2,048-draw exact PyCO2SYS Monte Carlo intervals using the shared-SSS covariance construction, compared across untouched outer schemes.",
+    "fig03_covariance_width.png": "Figure 3. Median propagated 90% DIC interval width under independent errors, bounded negative and positive correlations, and a common-SSS structural covariance factor.",
+    "fig04_observed_predicted.png": "Figure 4. Cruise-outer derived DIC against direct CODAP-NA/GLODAP observations in MAB; dispersion around the identity line is predictive error rather than numerical closure error.",
+    "fig05_oracle_ablation.png": "Figure 5. RMSE after replacing one or all upstream quantities with observations; the comparison separates TA, fCO2, and SSS representation limits from carbonate-solver behavior.",
+    "fig06_source_bias.png": "Figure 6. Mean DIC prediction error separated by source and outer scheme; small GLODAP strata are retained visibly and are not pooled away into the CODAP-NA majority.",
+    "fig07_mc_convergence.png": "Figure 7. Preregistered 256-2,048 draw convergence diagnostic on a fixed cruise-outer anchor subset; the final run uses the frozen 2,048-draw budget.",
+    "fig08_atlas_grade.png": "Figure 8. Grid-month count of inherited 2025 MAB DIC grades; Issue #26 fCO2 and Issue #27 TA statuses force suppression even where SSS itself has support."
+  },
+  "files_sha256": {
+    "README.md": "68ec7870a34c17fe931fe398d11a78326c675014767efb6670bb3bb7d93a502b",
+    "REPORT.md": "8253a4ef004d4505c4c2b4fa823f9de5f46b7f81a1fa2076b2610f217cd2572f",
+    "CAPTIONS.md": "75fb1109228b8bd4163f40159f45ab68ad2076510311ff8c6806236a33e4c5e5",
+    "tables/table01_source_audit.csv": "2413f1f101fb9ffbe121626df493594bb3af95fb9d13899f6c53b3924ec3ddbe",
+    "tables/table02_direct_chain_metrics.csv": "a4a9bf0c022605a8efd159fa4e3d168261d3a93e70c93a5341fe2adf253ad9d0",
+    "tables/table03_propagation_scenarios.csv": "d33d70646bf774319eb160a1a4ced0872ae26a373c33311c9a8364152ded05bf",
+    "tables/table04_oracle_ablation.csv": "20b0204fb81d8c8ebf6c3c7238d23985f96d721c09112bd6fade9ab679c718ad",
+    "tables/table05_mc_convergence.csv": "ab3b63df987c067dd7b6256715e6eec56ac5aac068cd30e0c06f89082555cb13",
+    "tables/table06_source_bias.csv": "d7a248fab3971896ca56daa6bb08b1a41efafc965a1660ab65ff03b8b889f490",
+    "tables/table07_reason_bits.csv": "8909c2d5299c25464c22cddf7f137d78f5b656d83a5b6da81f045a081c980bca",
+    "tables/table08_chemistry_and_closure.csv": "992e084216b35d51a50230a9e60d55ea7a4e39a642cf2019c4f4a3eb0b640a3a",
+    "tables/table09_grade_counts.csv": "6258661ad36e44cbf1e206a2a11b9d3e02ff91c414941c957c0e684e161252dc",
+    "tables/table10_2025_atlas_counts.csv": "138ce352ee22b433fd904f3f684904c07e7741ed92f1043143919718708be242",
+    "figures/fig01_chain_rmse.png": "eb3f11f94a3575756a418540c87e63aa1455cd078a3cc94a9e96278172deb2df",
+    "figures/fig02_interval_coverage.png": "fd3c527c9f057f94577b4afebbb5be2d3d4a99f26f52b2620ac8899fd438aa4d",
+    "figures/fig03_covariance_width.png": "9c006c80a1c4298887cff195e8ac83674bfbae9873ac407f9c2597d9c83863c9",
+    "figures/fig04_observed_predicted.png": "1d667a56f425b7366dc51325d311e6045ea0187d612ce27d64c32d7f66eedf76",
+    "figures/fig05_oracle_ablation.png": "46c27918e6dbbec03ae3f2312ba8f15d70be7a0affcd0f2b7c3891bd14ebade6",
+    "figures/fig06_source_bias.png": "e185a15d7b978a2a8e29021a19d670cc019a06a47ab3500564bc6194cefef0a9",
+    "figures/fig07_mc_convergence.png": "9293457f0f4b4f16c6d9f04e506431dc38c3a8ff5dca079edf083ea1d31e6e6c",
+    "figures/fig08_atlas_grade.png": "141555c950e0b58c0bc2be05dd47995059217cf80f92fcae5b397e6d88228f40"
+  },
+  "archive_builder_sha256": "5d935df08f8207d645ea75f10a3ad810f91ebdb6d852c55fa5e12b31fa2df7c7",
+  "analysis_script_sha256": "5d935df08f8207d645ea75f10a3ad810f91ebdb6d852c55fa5e12b31fa2df7c7",
+  "source_artifacts_sha256": {
+    "config": "0c295796d705306e24fd90472a90a17e450e298a95d507ea99c7cdae1ebbafec",
+    "ta_predictions": "884476bd963b6ba3b24f64442c86ec7abf937bfc96be07755e683cf45ce03264"
+  }
+}
