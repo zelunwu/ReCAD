@@ -47,6 +47,13 @@ def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
+def write_markdown(path: Path, text: str) -> None:
+    """Write reviewer text with stable LF endings on every platform."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
+
+
 def write_table(frame: pd.DataFrame, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     frame.to_csv(path, index=False, lineterminator="\n")
@@ -473,9 +480,7 @@ def make_report(
     )
     core = cache[cache["record_status"] == "core_1993_2025"]
     captions = "\n\n".join(f"### {name}\n\n{caption}" for name, caption in CAPTIONS.items())
-    (archive / "CAPTIONS.md").write_text(
-        "# Figure captions\n\n" + captions + "\n", encoding="utf-8"
-    )
+    write_markdown(archive / "CAPTIONS.md", "# Figure captions\n\n" + captions + "\n")
     figure_blocks = "\n\n".join(
         f"![{name}](figures/{name})\n\n{caption}" for name, caption in CAPTIONS.items()
     )
@@ -526,13 +531,13 @@ Limitations: SOCAT sampling is opportunistic and platform-imbalanced; SSS is ava
 
 Figures 1-10 are embedded above with their reviewer-ready captions. Tables 1-14 in `tables/` are the exact source data for the figures and audit statements. `archive_manifest.json` maps every figure to its source table and hashes every tracked artifact. Generated row-level Parquet and JSON artifacts are referenced by path and SHA256 in the frozen repository manifest.
 """
-    (archive / "REPORT.md").write_text(report, encoding="utf-8")
-    (archive / "README.md").write_text(
+    write_markdown(archive / "REPORT.md", report)
+    write_markdown(
+        archive / "README.md",
         "# P2 global coastal cache v2.3\n\n"
         "Reviewer-ready data audit for Issue #38. Rebuild with "
         "`python scripts/build_global_coastal_cache_v2_3.py`; generated scientific data remain "
         "outside Git. See [REPORT.md](REPORT.md).\n",
-        encoding="utf-8",
     )
 
 

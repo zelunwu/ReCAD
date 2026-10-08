@@ -1,7 +1,7 @@
 {
   "schema_version": "2.3",
   "experiment_id": "p2_global_coastal_cache_v2.3",
-  "generated_utc": "2026-10-08T09:34:28.463483+00:00",
+  "generated_utc": "2026-10-08T09:39:04.667745+00:00",
   "decision": "pass_data_freeze",
   "domain": {
     "observation_mask": "occupied cells from official SOCATv2026 Coastal synthesis",
@@ -56,7 +56,7 @@
     "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_group_split_manifest_v2.3.parquet": "a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748",
     "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_node_support_v2.3.parquet": "df3f22ea1a0a358be6c8a132e71132eccad9c97f893aa1345ab90ce9218d6fcb",
     "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_processing_funnel_v2.3.parquet": "668c1195d2e37f41655300369a315a63388117052d8514d6f6139dcad1bd77a0",
-    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_cache_audit_v2.3.json": "8c3be088a02186819763b60e84c12ce13af65fba4d2f4aacef1f7073b5b0400a"
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_cache_audit_v2.3.json": "08f8ef87f8870ceef26458d2f815dbf122150c66c3f33cc65d5bfe482064a355"
   },
   "audit": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_cache_audit_v2.3.json"
 }
