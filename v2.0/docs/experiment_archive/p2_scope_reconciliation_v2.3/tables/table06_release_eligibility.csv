@@ -1,0 +1,5 @@
+target,current_release_eligible,next_gate,old_locked_reusable
+SSS,False,new global observation cache and new blind/external audit,False
+fCO2,False,global bake-off; LME 12 may be nominated for future locked audit,True
+TA,False,optional bounded North-American rescue only,True
+DIC,False,all upstreams must first qualify in the same region,True

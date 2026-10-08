@@ -31,6 +31,7 @@ SPEC.loader.exec_module(MODULE)
         "p1_ta_sss_mab_decadal_trends_v2.2",
         "p1_dic_inverse_co2sys_v2.2",
         "p1_dic_reliability_v2.2",
+        "p2_scope_reconciliation_v2.3",
     ],
 )
 def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -> None:

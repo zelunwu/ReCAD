@@ -1,0 +1,84 @@
+{
+  "experiment_id": "p2_scope_reconciliation_v2.3",
+  "training_git_commit": "39286b7332cc091d4a1ccaacd012bca8292ad9e9",
+  "data_manifest_sha256": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "governance audit of immutable P1 reports/manifests; no row-level labels opened",
+  "decision": "scope_reconciled",
+  "figure_source_data": {
+    "fig01_product_hierarchy.png": [
+      "table07_product_hierarchy.csv"
+    ],
+    "fig02_target_region_status.png": [
+      "table01_target_region_status.csv"
+    ],
+    "fig03_label_exposure.png": [
+      "table02_label_exposure_ledger.csv"
+    ],
+    "fig04_direct_vs_projection.png": [
+      "table01_target_region_status.csv",
+      "table03_domain_semantics.csv"
+    ],
+    "fig05_evidence_ladder.png": [
+      "table02_label_exposure_ledger.csv"
+    ],
+    "fig06_release_eligibility.png": [
+      "table06_release_eligibility.csv"
+    ],
+    "fig07_authority_consistency.png": [
+      "table05_authority_consistency.csv"
+    ],
+    "fig08_roadmap_dependencies.png": [
+      "table08_roadmap_contract.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_product_hierarchy.png": "Figure 1. Frozen product hierarchy: global coastal SSS and fCO2 are the two core targets; TA and DIC are an optional, non-blocking North-American extension capped at ten percent of the P2 budget.",
+    "fig02_target_region_status.png": "Figure 2. Formal status by target and evaluated region. SSS remains diagnostic-only, fCO2 passes only regionally in Caribbean LME 12, MAB TA/DIC remain diagnostic-only, and SAB TA fails.",
+    "fig03_label_exposure.png": "Figure 3. Label-exposure ledger separating development and historical labels, the spent SSS locked audit, and still-sealed locked or external candidates; green entries remain unopened.",
+    "fig04_direct_vs_projection.png": "Figure 4. Conceptual comparison of directly evaluated observation support and atlas projection extent. A global covariate grid expands where predictions can be computed, not where accuracy has been validated.",
+    "fig05_evidence_ladder.png": "Figure 5. Highest opened evidence stage by target. Only SSS reached a used internal locked audit, while current fCO2, TA, and DIC decisions rely on development evidence.",
+    "fig06_release_eligibility.png": "Figure 6. No current target is release-eligible. Each bar records the next target-specific evidence gate rather than treating one target's success as qualification of another.",
+    "fig07_authority_consistency.png": "Figure 7. Consistency audit after reconciliation across GitHub roadmap issues and repository governance documents; all seven named authorities now express the same scope and evidence status.",
+    "fig08_roadmap_dependencies.png": "Figure 8. Frozen P2 dependency graph. Scope reconciliation unlocks benchmark and data work; target-specific models then feed reliability qualification, while TA/DIC remains a bounded side path."
+  },
+  "files_sha256": {
+    "README.md": "5e20bfd904422e3933038aeac3d9deaff75b0d7a4731da397633cb4ce8cff447",
+    "REPORT.md": "45270105c57163fdb91eb92a47da9885a15b366085533b10c6a9189d9ac53c81",
+    "CAPTIONS.md": "290ee9e7752ce9bb65740a0c00f267b51b0a6467b16cc43f5bd7469af466b281",
+    "tables/table01_target_region_status.csv": "29c88b8b6f753411a6688afd4ed506f073ca27bc6697c156bd1f1d1c6a411433",
+    "tables/table02_label_exposure_ledger.csv": "c8c2720c66adcf93e336b62a3ca472a2f02f8dfb32d658524e501bb5ab304cff",
+    "tables/table03_domain_semantics.csv": "25a3c28a54ca93366cf3edd504a3517ac5e76a83202c72f6af460c8dcf4b556d",
+    "tables/table04_evidence_sources.csv": "1de6580611f3830879129b82f356a9585454d0b94aaf9fe4d69d1a5c753666d6",
+    "tables/table05_authority_consistency.csv": "b5e44b8b4a7fe27b2469d10e24b5278ae6c33da9f5bd37414c75ffd70127954f",
+    "tables/table06_release_eligibility.csv": "7f2b756f8bfdbaad7b62db119e62c36b6f675241611892dd2f95161c2b36a30b",
+    "tables/table07_product_hierarchy.csv": "1034d5b7158c77b2a15a06ba2c7b89dbd3901850e1dd950337039c2667e494ee",
+    "tables/table08_roadmap_contract.csv": "b1b6ce02dadc32beb060baea7fffeff5f726be1a2dc63625313e3a6095548679",
+    "tables/table09_acceptance_checks.csv": "72a73f35efbcf617ce2c0bee96912115d42bf2e132aa2543724e6c311d84bb7e",
+    "figures/fig01_product_hierarchy.png": "fd0b516467b1916153d8ce3bcac65b186b71b7780ef46c525dbe406ecda64bcf",
+    "figures/fig02_target_region_status.png": "0a705aeea2a71a9cd3d4352180b27baa429efbd0c7927cb5cf7b8840ad37f22b",
+    "figures/fig03_label_exposure.png": "ec42c24172784a3625cdab60443b343deb4a6f810f40bb80cffa47508b53e48a",
+    "figures/fig04_direct_vs_projection.png": "4c96ba0c69eb5020475829c2a12dee2ea7e602ce43a280ffd96564d64cc495b0",
+    "figures/fig05_evidence_ladder.png": "73041a3ba45c038777e6876189c648b555d73a5624d3c23ab920763feb2b91c2",
+    "figures/fig06_release_eligibility.png": "0bf5df56b83d80dd0b205463cd183f91229f98d7c66e5c4ca2be8157ac5bb1d0",
+    "figures/fig07_authority_consistency.png": "6b926f7cdbe77135188a7412818609b69e1e68908f1c429e946b028894bfd6ec",
+    "figures/fig08_roadmap_dependencies.png": "19db3fdbf28d5855a49b16c9614f30ea090c7cb3fb946df702ef65009fb0f46e"
+  },
+  "archive_builder_sha256": "3025f26b269a3ef2413680364ce8ce866ca8e4e3889a63125d748261ba055af3",
+  "analysis_script_sha256": "3025f26b269a3ef2413680364ce8ce866ca8e4e3889a63125d748261ba055af3",
+  "source_artifacts_sha256": {
+    "configs/frozen/data_manifest_v2.2.json": "46b01085fbb577b24dbb62b6ff7b7a53a5d402d6ab93d4c076d67f37f32e9e9f",
+    "configs/frozen/product_scope_v2.3.json": "6ca5299328634e15a7a400ab66f7e16115aa2329b74ab00b73465d27e6d5c985",
+    "docs/experiment_archive/p1_dic_reliability_v2.2/REPORT.md": "8253a4ef004d4505c4c2b4fa823f9de5f46b7f81a1fa2076b2610f217cd2572f",
+    "docs/experiment_archive/p1_dic_reliability_v2.2/archive_manifest.json": "97b20b97eb11ec0b2d6c9dcea334b6501acfe662a4884befc6255c58ba76e20f",
+    "docs/experiment_archive/p1_fco2_reliability_v2.2/REPORT.md": "3fd5d9757d2dc5b9eff9e73a6aa685e4092dc60a4fff95b2896f28ea95bca0c4",
+    "docs/experiment_archive/p1_fco2_reliability_v2.2/archive_manifest.json": "1071b156200ce97fa824fd837d44e2250fdc97185b154f22dc1f55dbf5c5d61a",
+    "docs/experiment_archive/p1_sss_reliability_v2.2/REPORT.md": "e4ab83bbb8f04cade515c12225a812e717f1fd7d0309c5531f3ada491e9d33d2",
+    "docs/experiment_archive/p1_sss_reliability_v2.2/archive_manifest.json": "87c9baf1d4dc4318e2b0a1f066563eeaab936a9dc63d1bd38510a3a267aea01c",
+    "docs/experiment_archive/p1_ta_bights_v2.2/REPORT.md": "9af3f2cd42e8c4d895547c81a54c7917cb528ef891d7adcb0e7971b97fb7f439",
+    "docs/experiment_archive/p1_ta_bights_v2.2/archive_manifest.json": "384011c87afa3b970985e8c48c024962f9851d063a3ea6e3c509faa4ddd214e2",
+    "docs/experiment_archive/p1_ta_mab_reliability_v2.2/REPORT.md": "cd02f9728ef8eba1d191c17f1a65898501d1563c540c65df65835d5d87b1b6d5",
+    "docs/experiment_archive/p1_ta_mab_reliability_v2.2/archive_manifest.json": "92c6085a1a4d9eff95d7ceac15f702f17c81133caae61fd95803d1f2490eff19"
+  }
+}

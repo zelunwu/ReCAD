@@ -1,0 +1,9 @@
+dataset,target,exposure,labels_opened,reusable_as_blind,permitted_use,evidence
+P1 target-specific outer OOF folds,SSS/fCO2/TA/DIC,development,True,False,"training, model selection, calibration, and diagnostic comparison",docs/experiment_archive/p1_applicability_v2.2/archive_manifest.json
+2004-2005 fCO2 benchmark,fCO2,historical,True,False,historical product comparison only,docs/experiment_archive/p1_fco2_v11_parity_v2.2/archive_manifest.json
+Issue 25 internal SSS locked audit,SSS,used_locked,True,False,audit record only; permanently spent for future blind testing,docs/experiment_archive/p1_sss_reliability_v2.2/archive_manifest.json
+P1 fCO2 locked set,fCO2,sealed_locked,False,True,one-time P3 audit after candidate freeze,docs/experiment_archive/p1_fco2_reliability_v2.2/archive_manifest.json
+P1 TA locked set,TA,sealed_locked,False,True,optional one-time regional audit after candidate freeze,docs/experiment_archive/p1_ta_mab_reliability_v2.2/archive_manifest.json
+P1 DIC locked set,DIC,sealed_locked,False,True,optional one-time regional audit after all upstreams qualify,docs/experiment_archive/p1_dic_reliability_v2.2/archive_manifest.json
+future SOCAT records newer than frozen v2026 snapshot,SSS/fCO2,external,False,True,external-independent audit after candidate freeze,configs/frozen/data_manifest_v2.2.json
+41 CODAP 2022-2024 cruises unmatched to GLODAP,TA/DIC,external,False,True,optional external-independent North-American audit,docs/experiment_archive/p1_dic_reliability_v2.2/REPORT.md

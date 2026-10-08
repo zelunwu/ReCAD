@@ -1,0 +1,7 @@
+term,definition,authorizes
+direct observation domain,Locations and times represented by labels used in a stated out-of-sample evaluation.,claims only inside the evaluated support and split design
+global coastal atlas projection,Model covariates and predictions evaluated over a global coastal grid.,"applicability visualization, never global validation by itself"
+development OOF,Grouped out-of-fold predictions whose labels may guide selection.,"development comparison, not locked or independent claims"
+used locked,A preregistered holdout opened once after candidate freeze.,the recorded audit only; it is spent afterward
+sealed locked,A reserved internal holdout whose labels remain inaccessible.,no result claim before the one-time audit
+external independent,Labels acquired and kept sealed outside model development.,independent evidence only after provenance and non-use are audited

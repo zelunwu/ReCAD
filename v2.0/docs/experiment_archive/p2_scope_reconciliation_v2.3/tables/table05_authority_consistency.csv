@@ -1,0 +1,8 @@
+authority,required_statement,reconciled
+GitHub #1,SSS/fCO2 core; TA/DIC optional,True
+GitHub #4,P2 global evidence and target-specific gates,True
+GitHub #5,old SSS locked spent; one-time target audits,True
+decision_log.md,D014 freezes scope and exposure,True
+experiment_registry.md,formal P1 statuses and P2.0 entry,True
+HANDOFF.md,"formal scope, status, and exposure at top",True
+current_status_and_roadmap_20260928.md,historical content marked superseded,True

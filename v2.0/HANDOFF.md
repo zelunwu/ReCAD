@@ -1,6 +1,8 @@
 # ReCAD v2.0 — Agent Handoff
 
-> **当前权威入口（2026-09-28）**：数据版本与路径见 `docs/data_registry.md`；实验方法、结果和证据等级见 `docs/experiment_registry.md`；研究方向变化见 `docs/decision_log.md`；当前 P0–P3 路线见 `docs/current_status_and_roadmap_20260928.md` 和 GitHub issue #1。下方早期章节保留工程历史，若与四个权威入口冲突，以权威入口为准。
+> **当前权威入口（2026-10-08）**：数据版本与路径见 `docs/data_registry.md`；实验方法、结果和证据等级见 `docs/experiment_registry.md`；研究方向变化见 `docs/decision_log.md`；当前执行路线以 GitHub #1、#4、#5 和 `configs/frozen/product_scope_v2.3.json` 为准。下方早期章节保留工程历史，若与这些入口冲突，以当前权威入口为准。
+
+> **2026-10-08 P2.0 范围冻结**：全球沿海 SSS/fCO2 是 P2 核心研究目标，但当前均未取得全球产品资格。SSS 正式状态为 `diagnostic_only`：#25 已使用一次 locked set，虽然通过 7/8 门槛，但 LME 17 失败，该集合永久不得再次称为 blind。fCO2 仅 Caribbean LME 12 为开发证据上的 `pass_regional`。MAB TA/DIC 为 `diagnostic_only`，SAB TA 为 `fail`；TA/DIC 只作为预算不超过 P2 10% 的北美可选扩展，失败不阻断核心产品。全球 atlas 只代表投影域，不代表全球观测验证。完整证据总账见 `docs/experiment_archive/p2_scope_reconciliation_v2.3/`。
 
 > **2026-09-28 P0 v2.2 闭环**：数据轴保留 1993–2026；SSS/fCO2 核心期到 2025；TA/DIC 观测到 2024，但 TA 可前向预测、DIC 可由 inverse CO2SYS 推理到 2026。当前入口为 `configs/frozen/data_manifest_v2.2.json` 和 `docs/p0_freeze_report_v2.2.md`；v2.1 已替代。
 
@@ -20,7 +22,7 @@
 
 ## 0. 当前一句话
 
-ReCAD v2.0 当前定义为：全球 1/8°月尺度 SSS 偏差订正与 fCO2 重建，加北美沿岸 TA 扩展；DIC 在 TA 适用域内由 `T+SSS+fCO2+TA` 经 inverse CO2SYS 派生。P0 v2.2 已完成，下一步按 v2.2 预登记运行 P1；尚未启动正式候选训练。
+ReCAD v2.0 当前进入 P2：用真正全球的沿海观测证据分别建立并验证 SSS 偏差订正与 fCO2 重建；北美 TA 和由 `T+SSS+fCO2+TA` 经 inverse CO2SYS 派生的 DIC 是非阻断可选扩展。下一步依次执行 #37 文献与 v1.x 改进合同和 #38 全球观测缓存；任何全球 atlas 在通过目标专属验证前都只属于诊断投影。
 
 ---
 

@@ -1,5 +1,7 @@
 # ReCAD 当前状态与下一阶段实验路线（2026-09-28）
 
+> **历史快照 / 已被替代（2026-10-08）**：本文保留 2026-09-28 时点的推理与数据盘点，不再作为 P2 执行权威。当前产品范围、证据状态与标签暴露以 `configs/frozen/product_scope_v2.3.json`、`docs/experiment_archive/p2_scope_reconciliation_v2.3/REPORT.md` 及 GitHub #1/#4/#5 为准：SSS/fCO2 是全球沿海核心研究目标；SSS 当前 `diagnostic_only` 且旧 locked set 已用尽；fCO2 仅 LME 12 `pass_regional`；TA/DIC 是北美非阻断可选扩展。
+
 GitHub 执行层级：父 Roadmap [#1](https://github.com/zelunwu/ReCAD/issues/1)；P0 数据与验证冻结 [#2](https://github.com/zelunwu/ReCAD/issues/2)；P1 单任务产品可行性 [#3](https://github.com/zelunwu/ReCAD/issues/3)；P2 空间自适应与结构化碳系统 [#4](https://github.com/zelunwu/ReCAD/issues/4)；P3 冻结候选与盲测 [#5](https://github.com/zelunwu/ReCAD/issues/5)。#2–#5 已通过 GitHub sub-issue 关系挂到 #1。
 
 ## 1. 产品范围决定
