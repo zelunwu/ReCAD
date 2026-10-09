@@ -1,0 +1,5 @@
+parameter,selected_value,reason
+outer_distance_km,400.0,project release boundary
+significant_land_area_km2,1400.0,retains major island systems
+shelf_depth_m,200.0,bathymetric shelf core
+grid_resolution_deg,0.125,native ReCAD grid

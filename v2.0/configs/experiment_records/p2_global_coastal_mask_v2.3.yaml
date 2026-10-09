@@ -1,0 +1,24 @@
+experiment_id: p2_global_coastal_mask_v2.3
+issue: 50
+parent_issue: 39
+stage: P2.3a
+question: Freeze an observation-independent global coastal product geometry.
+decision: pass_geometry_freeze
+grid:
+  resolution_deg: 0.125
+  longitude: [0.0, 359.875]
+  latitude: [-78.0, 84.0]
+geometry:
+  maximum_distance_km: 400.0
+  significant_island_area_km2: 1400.0
+  land_source: landmetrics-v1.0.0-GSHHG-levels-1-and-5
+shelf_core:
+  depth_range_m: [-200.0, 0.0]
+  source: GEBCO-2025-ice-surface-elevation
+controls:
+  target_observations_define_geometry: false
+  observation_support_is_separate: true
+  predictor_availability_is_separate: true
+  release_eligibility_is_separate: true
+archive: docs/experiment_archive/p2_global_coastal_mask_v2.3
+generated_product: C:/backup/phd/data/processed/recad_v2_3/global_coastal_mask_v2.3.nc
