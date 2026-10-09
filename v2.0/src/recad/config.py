@@ -90,15 +90,22 @@ class CoastalMaskConfig:
     """Definition of the 'coastal ocean' domain.
 
     - ``distance_km``: keep every ocean cell whose centre is within this
-      distance of the coastline (GSHHG-derived, reproducible).
+      distance of significant land (GSHHG-derived, reproducible).
+    - ``significant_island_area_km2``: ignore smaller islands only when
+      determining the product's outer distance boundary. The all-island
+      distance sign still determines land versus ocean.
+    - ``shelf_depth_m``: define the shelf-core diagnostic by bathymetry,
+      independently of distance to coast.
     - ``source_file``: optional precomputed NetCDF mask (lat, lon) of 1/0.
     - ``socat_coastal_flag``: if True, intersect with the SOCAT coastal flag.
     """
 
     method: str = "distance"  # distance | file | socat_flag
-    distance_km: float = 200.0
+    distance_km: float = 400.0
+    significant_island_area_km2: float = 1400.0
+    shelf_depth_m: float = 200.0
     source_file: str | None = None
-    socat_coastal_flag: bool = True
+    socat_coastal_flag: bool = False
 
     def __post_init__(self) -> None:
         if self.method not in {"distance", "file", "socat_flag"}:
@@ -107,6 +114,10 @@ class CoastalMaskConfig:
             raise ConfigError("mask method 'file' requires source_file")
         if self.distance_km <= 0:
             raise ConfigError("coastal distance_km must be positive")
+        if self.significant_island_area_km2 < 0:
+            raise ConfigError("significant_island_area_km2 cannot be negative")
+        if self.shelf_depth_m <= 0:
+            raise ConfigError("shelf_depth_m must be positive")
 
 
 # ---------------------------------------------------------------------------

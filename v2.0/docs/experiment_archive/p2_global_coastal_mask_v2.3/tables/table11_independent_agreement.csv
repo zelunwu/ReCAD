@@ -1,0 +1,7 @@
+tolerance_km,sample_fraction_within_tolerance
+2.5,0.643
+5.0,0.7375
+10.0,0.8145
+25.0,0.882
+50.0,0.928
+100.0,0.9675

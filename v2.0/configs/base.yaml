@@ -11,10 +11,12 @@ grid:
   patch_size_cells: 16           # 2 deg x 2 deg spatial patches at 1/8 deg
 
 coastal_mask:
-  method: distance              # GSHHG coastline distance, see data_sources.md
-  distance_km: 200.0
+  method: distance              # observation-independent GSHHG geometry
+  distance_km: 400.0            # SOCAT Coastal outer-distance convention
+  significant_island_area_km2: 1400.0
+  shelf_depth_m: 200.0          # bathymetric shelf core; not a distance core
   source_file: null
-  socat_coastal_flag: true
+  socat_coastal_flag: false     # observations support the mask; they never define it
 
 data:
   root: data/raw

@@ -1,0 +1,31 @@
+{
+  "product": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_mask_v2.3.nc",
+  "sha256": "0e99ca53398a3f4c29d5058b3307857535c78195bcbabdadf06c59b0ee4957cf",
+  "grid": {
+    "resolution_deg": 0.125,
+    "latitude_nodes": 1297,
+    "longitude_nodes": 2880
+  },
+  "geometry": {
+    "maximum_distance_km": 400,
+    "significant_island_area_km2": 1400
+  },
+  "shelf_core": {
+    "minimum_depth_m": 0,
+    "maximum_depth_m": 200
+  },
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\raw\\landmetrics\\v1.0.0\\distance_to_land_0.05deg_gt0km2.nc": "80b22f10459de534be73b2d7615c1412327fc7465ba3d275e746dee070c08b14",
+    "C:\\backup\\phd\\data\\raw\\landmetrics\\v1.0.0\\distance_to_land_0.05deg_gt1400km2.nc": "4701f662280f3f7648eaddcc4ac362d25f093ea57802c1255b4887c2b6c96817",
+    "C:\\backup\\phd\\data\\raw\\landmetrics\\v1.0.0\\distance_to_land_0.05deg_gt4748km2.nc": "7eb4cd4343c1b083555e5f86c106182e929a21b197312971651912e48cd8e9b6",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n0.0_s-90.0_w-180.0_e-90.0.npz": "0df5b704e63068c3f21e14705fc4f910d0454e34fd02d6798c305cb81e3ce59f",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n0.0_s-90.0_w-90.0_e0.0.npz": "fc543dd641398462fb8b7f059f86ab15608c2bcec3e6eade80e6b3e807734ef1",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n0.0_s-90.0_w0.0_e90.0.npz": "5477f3bfb0da6d78381a304114fce719f794e8cb13f7c3792254c02cb9696a1d",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n0.0_s-90.0_w90.0_e180.0.npz": "9e9c5e28672902cd277c18918bf3813dc8904e5f8046ccf5779a31f90d2cacfd",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n90.0_s0.0_w-180.0_e-90.0.npz": "2359c5059295f2d78feb8be9c90e1a96fb5251332090b01e4ffa3d7f01ab8f4c",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n90.0_s0.0_w-90.0_e0.0.npz": "7fc8a0054bf2de13d71b1960c6f5388cac696c74dc61c7cb236d3ebfb3071487",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n90.0_s0.0_w0.0_e90.0.npz": "fc16482f046c8e7c567347618d4bfe2bec9faad580848944782439286508c803",
+    "C:\\backup\\phd\\data\\raw\\gebco\\gebco_2025_regrid\\gebco_2025_n90.0_s0.0_w90.0_e180.0.npz": "ac138f4c8f6900a6b830e60191a53342e0ce8781b8ba7bf7b346fa048c8b6728",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc"
+  }
+}

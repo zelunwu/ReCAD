@@ -34,6 +34,7 @@ SPEC.loader.exec_module(MODULE)
         "p2_scope_reconciliation_v2.3",
         "p2_benchmark_freeze_v2.3",
         "p2_global_coastal_cache_v2.3",
+        "p2_global_coastal_mask_v2.3",
     ],
 )
 def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -> None:

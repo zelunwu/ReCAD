@@ -64,6 +64,7 @@ viz = [
 ]
 # Copernicus Marine Toolbox (GLORYS / sea-level downloads; needs free account)
 cmems = ["copernicusmarine>=2.4"]
+coastal-mask = ["landmetrics==1.0.0", "rasterio>=1.4"]
 
 [project.scripts]
 recad = "recad.cli:main"
