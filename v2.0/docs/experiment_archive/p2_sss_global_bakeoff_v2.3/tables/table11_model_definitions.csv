@@ -1,0 +1,7 @@
+model,definition
+raw_glorys,Uncorrected GLORYS SSS background
+robust_regional,Fold-fitted robust region/season affine residual correction
+catboost_global,Frozen Issue #54 global CatBoost residual baseline
+gmm_experts,"Eight probabilistic environmental experts, shrunk 0.5 toward global CatBoost"
+top2_experts,Eight environmental experts with top-two soft gating
+st96,Single-target grouped-token ST96 transformer residual model

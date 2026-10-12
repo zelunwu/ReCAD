@@ -1,0 +1,4 @@
+artifact,count,location
+prediction_partitions,96,C:\backup\phd\data\processed\recad_v2_3\p2_sss_global_bakeoff_v2.3\partitions
+model_checkpoints,32,C:\backup\phd\data\processed\recad_v2_3\p2_sss_global_bakeoff_v2.3\checkpoints
+training_log,1,C:\backup\phd\data\processed\recad_v2_3\p2_sss_global_bakeoff_v2.3\training_log.csv

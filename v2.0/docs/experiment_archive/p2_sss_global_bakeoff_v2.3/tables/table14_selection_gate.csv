@@ -1,0 +1,12 @@
+gate,passed,candidate
+median cruise-equal improvement >= 5%,False,gmm_experts
+cruise-equal improvement >= 5%,False,gmm_experts
+spatial cruise-equal improvement >= 5%,True,gmm_experts
+whole-LME cruise-equal does not degrade,False,gmm_experts
+forward cruise-equal does not degrade,True,gmm_experts
+low-salinity cruise strata do not degrade,True,gmm_experts
+LME 17 does not degrade in any scheme,False,gmm_experts
+cruise paired bootstrap upper CI < 0,True,gmm_experts
+spatial paired bootstrap upper CI < 0,True,gmm_experts
+50% interval coverage in frozen range,True,gmm_experts
+90% interval coverage in frozen range,True,gmm_experts

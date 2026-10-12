@@ -1,0 +1,7 @@
+scheme,candidate,reference,cruises,mean_delta_mse,ci_low_delta_mse,ci_high_delta_mse,probability_improved
+cruise,gmm_experts,catboost_global,4615,-0.09904412,-0.1321682684123516,-0.07124137748032812,1.0
+cruise,top2_experts,catboost_global,4615,0.49990356,0.3805354416370392,0.643214114010334,0.0
+cruise,st96,catboost_global,4615,0.21518064,0.12379195485264063,0.31972232609987256,0.0
+spatial,gmm_experts,catboost_global,4615,-0.1320565,-0.16520267128944396,-0.10008191000670197,1.0
+spatial,top2_experts,catboost_global,4615,0.4523826,0.3456901550292969,0.5677090972661972,0.0
+spatial,st96,catboost_global,4615,0.15460302,0.08803770933300256,0.22626372091472133,0.0

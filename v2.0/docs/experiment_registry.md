@@ -242,3 +242,11 @@ SST、风速和大气 xCO2 的 396 个月覆盖均为 100%；GLORYS SSS 的全�
 SSS 的背景场必须按残差订正使用：有 GLORYS SSS 时预测 `SSSobs-SSSbg`，缺失时回退到同折 A2 direct 模型。该分支相对 A2 将 cruise/spatial/whole-LME/2019–2021 forward/2022–2025 forward RMSE 从 0.962/1.058/8.334/1.760/1.956 降至 0.907/0.973/2.470/1.227/1.580 PSU，并通过共同支持与 2,000 次航次级 bootstrap 门槛。ADT 与额外 missing-field dropout 均未通过。
 
 fCO2 的背景 SSS 将 pooled cruise/spatial RMSE 从 36.484/39.001 降至 36.070/38.469 µatm，但 cruise bootstrap 置信区间跨零，不能冻结为生产输入；ADT 同样失败。因此 #40 SSS 冻结为 A2 + masked background-SSS residual/fallback，#41 fCO2 冻结为 A2（时空、沿岸几何、SST、风速、大气 xCO2）。当前点模型仍未满足 Issue #37 的全部最低目标，尤其是 late-forward 和 whole-LME 尾部。完整报告、12 张带 caption 的图和 15 个源表见 `docs/experiment_archive/p2_predictor_ablation_v2.3/`；匹配表和 224 份逐折预测保存在 Git 外目录。
+
+## P2.4 全球沿岸 SSS 模型族比较（Issue #40）
+
+`p2_sss_global_bakeoff_v2.3` 在相同 750,040 条 SOCAT SSS、4,615 个航次、54 个 LME 和 Issue #54 的 16 个冻结输入上比较 raw GLORYS、稳健区域订正、global CatBoost、8 个概率环境/GMM experts、top-2 experts 与单目标 ST96。全部候选使用相同 cruise、空间块、整 LME和前向时间外层 split，共生成 96 份预测分区和 32 个模型 checkpoint；旧 #25 locked、2026 provisional 与 external-independent 标签均未开启。
+
+GMM experts 的 pooled cruise/spatial/forward RMSE 为 0.864/0.918/1.422 PSU，优于 CatBoost 的 0.907/0.973/1.446，且两种普通外层 split 的 2,000 次航次 bootstrap MSE 差均显著低于零。冻结的主指标 cruise-equal RMSE 从 1.049 降至 1.000 PSU，改善 4.61%，未达到 5% 门槛；whole-LME 从 2.470 恶化到 2.620 PSU，2022–2025 forward 仍为 1.560 PSU。LME 17 的 spatial/whole-LME/forward RMSE 为 5.584/6.136/7.104 PSU，均未改善。ST96 与 top-2 experts 在普通 split 和 whole-LME 上均不支持升级。
+
+最终状态为 **`diagnostic_only` / no promotion**：保留 global CatBoost 作为可重复基线，GMM 只作为显式观测支持域内的 challenger；不授权无条件全球 SSS 订正产品。经验区间的 forward 90% coverage 为 CatBoost 0.876、GMM 0.873，仍不足以替代新盲测和外部独立验证。完整报告、12 张带 caption 的图和 15 个源表见 `docs/experiment_archive/p2_sss_global_bakeoff_v2.3/`；预测、checkpoint 和分析中间表保存在 Git 外目录。
