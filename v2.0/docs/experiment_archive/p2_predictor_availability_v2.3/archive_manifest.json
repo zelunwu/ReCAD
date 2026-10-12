@@ -1,0 +1,100 @@
+{
+  "experiment_id": "p2_predictor_availability_v2.3",
+  "training_git_commit": "a123313446ffe5ba4f3d5e25dbf91de5875fad63",
+  "data_manifest_sha256": "96c5a172cb530611a9c92a829bd8469b8f3f5b26862ebaa8d0c9821c4cb04016",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "predictor availability on frozen global coastal geometry",
+  "decision": "pass_availability_audit",
+  "figure_source_data": {
+    "fig01_minimum_global_coverage.png": [
+      "table01_field_summary.csv"
+    ],
+    "fig02_monthly_global_coverage.png": [
+      "table02_monthly_coverage.csv"
+    ],
+    "fig03_time_block_minima.png": [
+      "table03_time_block_coverage.csv"
+    ],
+    "fig04_shelf_vs_product.png": [
+      "table01_field_summary.csv"
+    ],
+    "fig05_latitude_minima.png": [
+      "table04_latitude_coverage.csv"
+    ],
+    "fig06_spatial_minimum_fraction.png": [
+      "table04_latitude_coverage.csv",
+      "local:predictor_availability_grid_v2.3.nc"
+    ],
+    "fig07_socat_row_availability.png": [
+      "table06_socat_summary.csv"
+    ],
+    "fig08_inventory_classification.png": [
+      "table07_predictor_inventory.csv"
+    ],
+    "fig09_source_timeline.png": [
+      "table08_source_timeline.csv"
+    ],
+    "fig10_repair_priority.png": [
+      "table09_repair_priority.csv"
+    ],
+    "fig11_joint_monthly_coverage.png": [
+      "table12_joint_monthly_coverage.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_minimum_global_coverage.png": "Figure 1. Minimum monthly area-weighted availability on the frozen 400-km global coastal mask during 1993-2025; dashed thresholds define the pre-registered deployment classes.",
+    "fig02_monthly_global_coverage.png": "Figure 2. Monthly area-weighted availability for the five standardized dynamic predictors across the frozen product geometry from January 1993 through December 2025.",
+    "fig03_time_block_minima.png": "Figure 3. Worst monthly product-area availability within the four frozen temporal blocks, exposing source-era weaknesses that a whole-period mean would conceal.",
+    "fig04_shelf_vs_product.png": "Figure 4. Mean availability over the complete coastal product and the GEBCO 0-200 m shelf core, quantifying whether missingness intensifies near the shallow coast.",
+    "fig05_latitude_minima.png": "Figure 5. Minimum monthly area-weighted availability by ten-degree latitude band, identifying polar and regional holes inside the global product envelope.",
+    "fig06_spatial_minimum_fraction.png": "Figure 6. Exact fraction of 1993-2025 months in which all five standardized predictors are simultaneously valid at each coastal node.",
+    "fig07_socat_row_availability.png": "Figure 7. Predictor availability at frozen SOCAT SSS and fCO2 grid-month rows inside the new product mask; target values select audit rows but never enter predictor construction.",
+    "fig08_inventory_classification.png": "Figure 8. Final readiness classification across measured, static, deterministic, derived, and currently absent predictor groups under the frozen Issue 52 rules.",
+    "fig09_source_timeline.png": "Figure 9. Nominal source coverage against the 1993-2025 core period; chlorophyll-a is structurally absent before mid-2002 and after 2020 even if its raw source is restored.",
+    "fig10_repair_priority.png": "Figure 10. Engineering priority matrix combining expected scientific value and current readiness; point size encodes urgency for the next predictor-cube issue.",
+    "fig11_joint_monthly_coverage.png": "Figure 11. Exact monthly area where SST, GLORYS SSS, ADT, wind speed, and atmospheric xCO2 are all valid together, shown for the full coastal product and shelf core."
+  },
+  "files_sha256": {
+    "README.md": "969755f9113b8b228982ed00c575957bb02d38dbbff69fcebbd25842e67b9663",
+    "REPORT.md": "b2bcc437f2ed44dddee6031a89a38549c1a118c4523e6c548af6686d8548f85b",
+    "CAPTIONS.md": "6a30efa9669d76ea709966c91cfc0fee3e9ff20ebbdc8a2ae06b5939f316641c",
+    "figures/fig01_minimum_global_coverage.png": "7dca94291141e484d372993bab5dc6ba3a0267bd97b0366b237ea03fff4e1fe2",
+    "figures/fig02_monthly_global_coverage.png": "995c60e0d2f64a6fae71217c4f4a0833479b8af56d531496eb3da0ad7d8d054d",
+    "figures/fig03_time_block_minima.png": "31485774a4cc5e62ac433f4a5d64c1fa3d17375b345faa8501d7c7cc5f971d27",
+    "figures/fig04_shelf_vs_product.png": "317cd06276ada690f770a763d330ccc4f15ef5b3f3e4323ff24e09a06d7e7d58",
+    "figures/fig05_latitude_minima.png": "35c1fe730d3cc9bfae218dcb3e9276b11a3dc88c0de3b67119778bd603e5ead4",
+    "figures/fig06_spatial_minimum_fraction.png": "482944ba9f886c7019fa55f1a677c168b5ceb5b5bdbda35491e16b75ed3b034b",
+    "figures/fig07_socat_row_availability.png": "9ca500488eb31a894d00e99eeab11b8e9b321332d337b1f51da8820886c024ca",
+    "figures/fig08_inventory_classification.png": "27d596f3ad409e4b0bd526c30fdf1f9679aacff25ef7c3b7670a5c329042f5e9",
+    "figures/fig09_source_timeline.png": "83eabb4d68d4130f2e4ad5b90a65142c7fef51f524e229fad7b68da2708cec07",
+    "figures/fig10_repair_priority.png": "ac17674e7444b4a4ac6ead1b710118e19e29c6f6339b87957434e231017953db",
+    "figures/fig11_joint_monthly_coverage.png": "7bef70c900ff449af5dcd2bbcfe9dd5ee38712f847aa803434e69a308915c260",
+    "tables/table01_field_summary.csv": "20c895a70a48d692d1a52c7fe21de79f6e815087b5ff43f14ed358d12f641bf3",
+    "tables/table02_monthly_coverage.csv": "b9087b7c34da06d5625a2038a73a5ec42a7a49604be53f09323f8b1ae69c5e0d",
+    "tables/table03_time_block_coverage.csv": "fcc3f99b1192ff2867d4f6f618f9b01981354db51184bf297edcad11d22505d9",
+    "tables/table04_latitude_coverage.csv": "bf08e9fe741faab7a17c44bbe8b1bbb97470f44dabb167b64b6f37dde0ac84e2",
+    "tables/table05_socat_monthly.csv": "a752b16aa15f8775192928373321e503d7077ec95c9bfc91def074c15d55b362",
+    "tables/table06_socat_summary.csv": "9540e45fef99a069c4c51717bb5baaebb1420d1c60bd72f7ee2636471322194d",
+    "tables/table07_predictor_inventory.csv": "73701a1e8a6b3d6c71b59abcf84809818b3ac04cf435a683a8e2fe6343328ada",
+    "tables/table08_source_timeline.csv": "c5e21e200f4aad3f3f395f8ddf095f3d4b88d34e5f2cee28c0de4f401df27b2f",
+    "tables/table09_repair_priority.csv": "1589540096b9f12cfd7b3d0e5e8da237d8becf1d200e052572697d2870a9aa1a",
+    "tables/table10_value_ranges.csv": "eb0c9d749b65a7d42352ba168453d08eb0dfe178500a225a7d1957bdc5b292a3",
+    "tables/table11_source_transitions.csv": "ecf647d1d483dec7834ddf3f86a50f897fe29634cc5effa064aae85239d7e057",
+    "tables/table12_joint_monthly_coverage.csv": "1eb88b76b0e92f49314e5b28e506c0b75cca3dbdb159412c731d6a4c506330de"
+  },
+  "archive_builder_sha256": "21bd4780c801e0eb9a1d6abc254f575bcd26c90d3a7c19e6e9868d7511a54b4f",
+  "analysis_script_sha256": "21bd4780c801e0eb9a1d6abc254f575bcd26c90d3a7c19e6e9868d7511a54b4f",
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_mask_v2.3.nc": "0e99ca53398a3f4c29d5058b3307857535c78195bcbabdadf06c59b0ee4957cf",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\sst.nc": "d6b3a2650bb0296582dd4d3c18fc85b32685da51f08807a4464f2f3ccb2baf25",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\sss.nc": "fe0258389afe15ef69eea8e5a2b166ba7dc91ad2d6cb5758c05088df1d8187f3",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\adt.nc": "45c631a3d5cff408727357d453897a46a3a2a5d2658c540c8d62e9fcfe1b70ee",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\wspd.nc": "943d5ee6602290ccfb5cc65f7712dc0ddcb990510371ad68eac8d87bcc34e116",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\xco2air.nc": "eb0826163b57539269ca2c017cf64845ba19a88857c9fd205bab4c33c3a4f2be"
+  },
+  "generated_products": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\predictor_availability_grid_v2.3.nc": "96c5a172cb530611a9c92a829bd8469b8f3f5b26862ebaa8d0c9821c4cb04016"
+  }
+}

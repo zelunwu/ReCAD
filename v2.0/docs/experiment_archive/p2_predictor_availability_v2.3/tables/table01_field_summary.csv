@@ -1,0 +1,6 @@
+predictor,mean_product_area_fraction,minimum_product_area_fraction,mean_shelf_area_fraction,minimum_shelf_area_fraction,total_out_of_range,total_missing,classification,plausible_min,plausible_max,observed_min,observed_max
+SST,1.0,1.0,1.0,1.0,0,0,deployable,-5.0,50.0,-1.7999999523162842,36.15386962890625
+GLORYS SSS,0.9812579159512149,0.9812579159512149,0.9638950044887816,0.9638950044887815,0,9645768,deployable_with_missingness,0.0,50.0,0.0,46.68660354614258
+ADT,0.9266585143146847,0.8771065330305836,0.9049236805295572,0.8044645513998124,0,57102093,repair_required,-5.0,5.0,-1.3241214752197266,1.2641677856445312
+wind speed,1.0,1.0,1.0,1.0,0,0,deployable,0.0,80.0,0.1185513436794281,22.90761947631836
+atmospheric xCO2,1.0,1.0,1.0,1.0,0,0,deployable,250.0,600.0,354.44000244140625,427.30999755859375

@@ -1,0 +1,7 @@
+predictor,transition_inside_core,detected_boundary,implication
+SST,False,none in standardized cache,raw-source identity must still be pinned in #53
+GLORYS SSS,False,none in standardized cache,raw-source identity must still be pinned in #53
+ADT,False,none in standardized cache,raw-source identity must still be pinned in #53
+wind speed,False,none in standardized cache,raw-source identity must still be pinned in #53
+atmospheric xCO2,False,none in standardized cache,raw-source identity must still be pinned in #53
+chlorophyll-a,True,absent 1993-06/2002 and 2021-2025,cannot be a mandatory dense predictor
