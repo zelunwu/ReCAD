@@ -1,0 +1,52 @@
+{
+  "version": "2.3",
+  "issue": 40,
+  "experiment_id": "p2_sss_global_bakeoff_v2.3",
+  "target": "SOCAT in-situ salinity",
+  "background": "frozen monthly GLORYS SSS",
+  "models": [
+    "raw_glorys",
+    "robust_regional",
+    "catboost_global",
+    "gmm_experts",
+    "top2_experts",
+    "st96"
+  ],
+  "retained_features": [
+    "year_centered",
+    "month_sin",
+    "month_cos",
+    "latitude_sin",
+    "latitude_cos",
+    "longitude_sin",
+    "longitude_cos",
+    "distance_to_significant_land_km",
+    "bathymetry_m",
+    "shelf_core_mask",
+    "slope_deep_mask",
+    "sst",
+    "wspd",
+    "xco2air",
+    "sss_bg",
+    "sss_bg_available"
+  ],
+  "missing_background_policy": "same-fold A2 direct fallback for every candidate",
+  "outer_schemes": ["cruise", "spatial", "whole_lme", "forward"],
+  "forward_reporting_periods": ["2019-2021", "2022-2025"],
+  "catboost_budget": {"iterations": 300, "depth": 8},
+  "gmm_expert_budget": {"components": 8, "iterations_per_expert": 200, "depth": 7, "global_shrinkage": 0.5},
+  "neural_budget": {"steps": 1000, "batch_size": 4096, "seed": 64023},
+  "primary_metric": "cruise-equal RMSE",
+  "selection_gate": {
+    "median_relative_rmse_improvement": 0.05,
+    "cruise_and_spatial_must_improve": true,
+    "whole_lme_and_forward_maximum_degradation": 0.0,
+    "low_salinity_and_lme17_must_not_degrade": true,
+    "paired_group_bootstrap_replicates": 2000,
+    "coverage50_range": [0.45, 0.55],
+    "coverage90_range": [0.85, 0.95]
+  },
+  "locked_test_policy": "Issue 25 locked labels are used history and forbidden for model selection",
+  "external_independent_opened": false,
+  "provisional_2026_opened": false
+}

@@ -39,6 +39,7 @@
 | global predictor availability v2.3 | 1993–2025；Issue #50 的 838,661 个沿岸节点；5 个标准化动态场及严格同月联合覆盖 | `C:\backup\phd\data\processed\recad_v2_3\predictor_availability_grid_v2.3.nc` | SST/风速/xCO2 完整；GLORYS SSS 最差月面积 98.13%；ADT 最差月 87.71%、陆架 80.45%；不进入 Git |
 | global coastal predictor cube v2.3 | 1993–2025；396 月 × 838,661 沿岸节点；42 个变量；1.571 GB | `C:\backup\phd\data\processed\recad_v2_3\global_coastal_predictor_cube_v2.3.nc` | SHA256 `0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401`；保留 NaN/状态/availability；不含目标、插补或标准化；Issue #54 冻结输入 |
 | predictor ablation matchup/OOF v2.3 | 887,822 个冻结几何内 SOCAT 格月；224 个逐折预测文件 | `C:\backup\phd\data\processed\recad_v2_3\p2_predictor_ablation_v2.3` | matchup SHA256 `935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75`；只含 1993–2025 development rows；2026、locked 与 external-independent 未开启；Git 外保存 |
+| SSS global bake-off v2.3 | 750,040 条 SSS development rows；6 个模型族 × 16 个外层折 = 96 份预测，32 个 learned checkpoint | `C:\backup\phd\data\processed\recad_v2_3\p2_sss_global_bakeoff_v2.3` | 使用 Issue #54 相同输入和 split；含局地 GLORYS front、分层、经验区间、risk-coverage 与 2,000 次 grouped bootstrap 诊断；locked/external-independent 未开启；大文件不进 Git |
 | coastal graph / support map v2.2 | 148,795 节点、492,570 条四邻接有向边 | P0 已冻结，同上 | 图审计确认只连接水体节点；含最近碳支持距离 |
 
 ## 标签来源规则

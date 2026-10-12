@@ -22,6 +22,7 @@
 | D016 | 2026-10-12 | P2.3 全球立方体以 SST、风速和大气 xCO2 为必需动态场；GLORYS SSS 带显式缺失掩膜；ADT 只能作为有回退路径的可选场，不能决定网格月是否发布 | Issue #52 在 1993–2025 冻结沿岸掩膜上测得 GLORYS SSS 最差月面积覆盖 98.13%，ADT 为 87.71%、陆架为 80.45%；五场严格同月联合覆盖均值/最差为 92.14%/87.30% | 当前有效；Chl-a、MLD、河流流量不得作为 #53 必需输入 |
 | D017 | 2026-10-12 | 冻结 1993–2025 沿岸节点压缩 predictor cube；基础 cube 保留 NaN 和逐变量状态，不做全期插补、climatology 或标准化；训练相关变换必须在各训练折内拟合 | Issue #53 生成 396×838,661、42 变量的 1.571 GB NetCDF；10,492 个重放/恒等式检查零 mismatch；mandatory predictor-ready 为 100%，五场 strict support 均值/最差为 92.14%/87.30% | 当前有效；Issue #54 及后续模型必须使用 SHA256 `0f4e9f37…d0401` 或显式提升版本 |
 | D018 | 2026-10-12 | #40 SSS 使用 A2 必需输入加 masked GLORYS-SSS 残差订正与同折 direct fallback；#41 fCO2 只使用 A2，不加入背景 SSS 或 ADT | Issue #54 的 SSS 背景残差分支在 cruise/spatial/whole-LME/两段 forward 均改善并通过共同支持和 grouped bootstrap；fCO2 背景 SSS 的 pooled 改善约 1%，但 cruise bootstrap 跨零；ADT 对两个目标均失败 | 当前有效；可选输入不能因 pooled 改善或覆盖筛选单独进入生产；最终模型仍需 #40/#41 改善 forward 与 whole-LME 尾部 |
+| D019 | 2026-10-12 | #40 不提升任何 SSS 候选为无条件全球生产模型；global CatBoost 保留为冻结基线，GMM experts 只在后续显式支持域内作为 challenger | GMM pooled cruise/spatial/forward RMSE 改善到 0.864/0.918/1.422 PSU，但主指标 cruise-equal 改善仅 4.61%，whole-LME 恶化到 2.620 PSU，LME 17 和 late-forward 失败；ST96/top-2 experts 更差 | `diagnostic_only`；下一阶段必须以支持感知 gate、背景回退和新盲测解决可发布范围，不能以更大模型替代迁移证据 |
 
 ## 被明确否定或限制的旧做法
 
