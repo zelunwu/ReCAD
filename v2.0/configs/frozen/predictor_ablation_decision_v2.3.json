@@ -1,0 +1,59 @@
+{
+  "version": "2.3",
+  "issue": 54,
+  "experiment_id": "p2_predictor_ablation_v2.3",
+  "point_model": {
+    "family": "CatBoostRegressor",
+    "iterations": 300,
+    "depth": 8,
+    "learning_rate": 0.05,
+    "lme_then_cruise_balanced_weights": true
+  },
+  "sss_retained_input": "A3_background_sss",
+  "sss_contract": "A2 direct fallback plus background-SSS residual correction when available",
+  "fco2_retained_input": "A2_environment",
+  "fco2_contract": "geotime, coastal geometry, SST, wind speed, atmospheric xCO2",
+  "adt_retained": false,
+  "decision_rows": [
+    {
+      "target": "SSS",
+      "group": "adt",
+      "retained": false,
+      "reasons": "median_improvement_below_0.5pct;cruise_not_improved;forward_2019_2021_degrades_over_1pct;forward_2022_2025_degrades_over_1pct;common_support_not_improved;paired_bootstrap_not_significant"
+    },
+    {
+      "target": "SSS",
+      "group": "background_sss",
+      "retained": true,
+      "reasons": "passed_all_gates"
+    },
+    {
+      "target": "SSS",
+      "group": "missing_robustness",
+      "retained": false,
+      "reasons": "median_improvement_below_0.5pct;spatial_not_improved;forward_2019_2021_degrades_over_1pct;common_support_not_improved;paired_bootstrap_not_significant"
+    },
+    {
+      "target": "fCO2",
+      "group": "adt",
+      "retained": false,
+      "reasons": "median_improvement_below_0.5pct;cruise_not_improved;spatial_not_improved;common_support_not_improved;paired_bootstrap_not_significant"
+    },
+    {
+      "target": "fCO2",
+      "group": "background_sss",
+      "retained": false,
+      "reasons": "paired_bootstrap_not_significant"
+    },
+    {
+      "target": "fCO2",
+      "group": "missing_robustness",
+      "retained": false,
+      "reasons": "median_improvement_below_0.5pct;cruise_not_improved;spatial_not_improved;common_support_not_improved;paired_bootstrap_not_significant"
+    }
+  ],
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "large_output_root": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\p2_predictor_ablation_v2.3",
+  "matchup_sha256": "935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75"
+}

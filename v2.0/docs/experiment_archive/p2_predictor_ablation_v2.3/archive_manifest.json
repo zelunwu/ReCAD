@@ -1,0 +1,190 @@
+{
+  "experiment_id": "p2_predictor_ablation_v2.3",
+  "training_git_commit": "9ff221e625afebd429e7c694fdc4f7c04a996320",
+  "data_manifest_sha256": "0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "1993-2025 frozen development observations with cruise, spatial, whole-LME, and forward-time OOF evaluation",
+  "decision": "retain SSS background-residual input; reject optional inputs for fCO2 and reject ADT for both targets",
+  "figure_source_data": {
+    "fig01_sss_rmse_matrix.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig02_fco2_rmse_matrix.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig03_optional_effects.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig04_common_support.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig05_bootstrap_intervals.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig06_lme_distributions.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig07_worst_lme.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig08_time_blocks.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig09_forward_periods.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig10_annual_bias.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig11_missing_strata.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ],
+    "fig12_retained_decision.png": [
+      "table01_pooled_metrics.csv",
+      "table06_effects.csv",
+      "table05_paired_bootstrap.csv",
+      "table02_lme_metrics.csv",
+      "table03_time_block_metrics.csv",
+      "table04_missing_strata_metrics.csv",
+      "table07_retained_decision.csv",
+      "table15_annual_transition_diagnostic.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_sss_rmse_matrix.png": "Figure 1. SSS held-out RMSE for every feature variant and validation scheme; cell colors are normalized to the mandatory-environment A2 baseline while annotations retain absolute PSU values.",
+    "fig02_fco2_rmse_matrix.png": "Figure 2. fCO2 held-out RMSE for every feature variant and validation scheme; pooled gains from background SSS are small compared with the variation among validation designs.",
+    "fig03_optional_effects.png": "Figure 3. Relative RMSE effects of background SSS, ADT, and training-only missing-field dropout across all five decision schemes; positive bars denote lower candidate error.",
+    "fig04_common_support.png": "Figure 4. Optional-field effects on all observations and the identical strict common-support subset, preventing coverage reduction from masquerading as predictor skill.",
+    "fig05_bootstrap_intervals.png": "Figure 5. Cruise-level paired bootstrap mean squared-error contrasts with 95% intervals; an optional group passes this gate only when the complete interval is below zero in cruise and spatial validation.",
+    "fig06_lme_distributions.png": "Figure 6. Distribution of per-LME errors under whole-LME validation; background-SSS residual correction sharply reduces SSS transfer error but substantial regional heterogeneity remains.",
+    "fig07_worst_lme.png": "Figure 7. Worst per-LME RMSE under whole-LME validation for the principal baseline and retained variants, emphasizing the tail risk hidden by pooled global metrics.",
+    "fig08_time_blocks.png": "Figure 8. Cruise-OOF RMSE in four frozen time blocks for the retained SSS input and frozen fCO2 input, documenting temporal rather than only pooled behavior.",
+    "fig09_forward_periods.png": "Figure 9. Strict forward-time RMSE in 2019-2021 and 2022-2025 for the mandatory baseline and principal optional candidates; later years are harder for both targets.",
+    "fig10_annual_bias.png": "Figure 10. Annual cruise-OOF bias for the retained target-specific inputs; year-to-year changes mix model drift with changing observational composition and are not interpreted as source discontinuities.",
+    "fig11_missing_strata.png": "Figure 11. Cruise-OOF RMSE by background-SSS and ADT availability strata; unavailable SSS uses the frozen same-fold A2 fallback and ADT absence never removes a prediction.",
+    "fig12_retained_decision.png": "Figure 12. Frozen target-specific gate outcome: background-SSS residual correction is retained only for SSS, while ADT and missing-field dropout are rejected for both targets."
+  },
+  "files_sha256": {
+    "README.md": "ad9cbbfaa4566c52898d51192702505f6c53b24839f4ed2d0b34c3c738476cb3",
+    "REPORT.md": "37fe05f540cecf2c3899ca59bae9ea4f6d632c9240f1e1599d6ceabfdd9b48e8",
+    "CAPTIONS.md": "c6e294e84bf4205153a22c4e566b3adecf7d2f370b6a0fe7ea0994d38796af5f",
+    "figures/fig01_sss_rmse_matrix.png": "7bab2ed2828b24615aaa5da533b0699468b9ec27f3d2f4d0bf0f4471e404909a",
+    "figures/fig02_fco2_rmse_matrix.png": "7c1db9a7f763995997bfd03c6d76ecae7a4d4f053ea5494b177c1eb0e16822ea",
+    "figures/fig03_optional_effects.png": "299efe15e5ef84154148850877e022eaa90cb5c9f20b356d131de5b121935aa1",
+    "figures/fig04_common_support.png": "c7fe554843a31703c0d5c2efa99bfefa694033113963000ac300b33691f407c7",
+    "figures/fig05_bootstrap_intervals.png": "3865fe4d503062946b0d0efe3afce183b55ec81150e224dba46325353e786ae6",
+    "figures/fig06_lme_distributions.png": "2d0c903a232f077d1f17a80493de7f48a1d6d21f76162bb8d0504c8626444fec",
+    "figures/fig07_worst_lme.png": "1241a467ae7427fe8c3c63a25d5852b10cf45d7d2fe1f44fb687b34b38bfb671",
+    "figures/fig08_time_blocks.png": "bda663600e5c851bbff152d1559214c4c6d9c6e4b590c32de866d663690f01af",
+    "figures/fig09_forward_periods.png": "bb05d1ddad8f292ba0b077593aadde307f3a2408a9a2af8d9be29ff6e4704a7a",
+    "figures/fig10_annual_bias.png": "bcc01eaba0984245e3440b1a9f633007b37fad188c25e67e50d35bc7fb618532",
+    "figures/fig11_missing_strata.png": "e77b18152a1e5ce330836b7193882ffe28148304bd3d74066d80f7085c23759b",
+    "figures/fig12_retained_decision.png": "824c19baca741ed385e7d473bc88a55e8f95d099be5f1fd545e70956df5e29e7",
+    "tables/table01_pooled_metrics.csv": "e9fd1dfdf8e2443e018219b2291ed5fe55075751d3661e9c23f901a68a1cd37b",
+    "tables/table02_lme_metrics.csv": "768f7323c26779e5b87ccaa9a208203be142003a7a22acf82e5bc722fe4f5f54",
+    "tables/table03_time_block_metrics.csv": "654b02b412670a96920c61aaef0e9eb4046794414c628f0cb93178d8ef85f161",
+    "tables/table04_missing_strata_metrics.csv": "eab757634300e15a9251d28b783ea7ea5980291b503f83c07882a1f5a7bf9edd",
+    "tables/table05_paired_bootstrap.csv": "e5c1593194a5ad6b561f4d9bd558d2189f935f386c402efd2edf35774102f798",
+    "tables/table06_effects.csv": "d1c7ba531ae2c070ed34cb9729aee05eafa51a48997bac02ae81259c0beedcf5",
+    "tables/table07_retained_decision.csv": "6db49f90a624ab903c0becc9f0f3b7c283dde502b6ae04e110a3bc761ea4a21c",
+    "tables/table08_variant_definitions.csv": "c7adc21295efc3b9b4757e3c66b81978fc8e7fb752ad76db6fb138844a7e6485",
+    "tables/table09_source_inventory.csv": "c53058b9c4858935fe398e3ed960eeb63fe15e3a7d94fa60498384e124cda7e0",
+    "tables/table10_training_log.csv": "d4cff858897a561a2252756c72d749479212c45f44fe991c4ccee0f9ec4d9afa",
+    "tables/table11_data_scope.csv": "26f848fcff11df81baab30a11f3e9577dbab54da880ff3ba7b6e37eeada7fba7",
+    "tables/table12_lme_macro_worst.csv": "e2975917f11233fee493b1c692f5f1f7eff10a93e0aa112e613ae47773f53457",
+    "tables/table13_acceptance_gates.csv": "c95c3ee3eae83dbed476c1da3c6ef67da46b0657356628e87584c63db6d521db",
+    "tables/table14_excluded_candidates.csv": "ee7cb821778d04c180b99d7567987abbafc8177a06440e088838b89638fbc9ff",
+    "tables/table15_annual_transition_diagnostic.csv": "ee6b276889f184024ff2e3ee080b5c24d422467697040b3004292720b6d2e62d"
+  },
+  "archive_builder_sha256": "104b37c869b4650b42d9d3830e4b10e13033febd5576e88fcb24858535a1930f",
+  "analysis_script_sha256": "0bc30fba3c511dddb8f87f61c5de607410a52d6cc67fe4bf4de4e7ceac7b8e5b",
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_predictor_cube_v2.3.nc": "0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_group_split_manifest_v2.3.parquet": "a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\p2_predictor_ablation_v2.3\\socat_predictor_matchup_v2.3.parquet": "935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75"
+  },
+  "large_outputs": {
+    "root": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\p2_predictor_ablation_v2.3",
+    "prediction_files": 224,
+    "matchup_rows": 887811
+  }
+}
