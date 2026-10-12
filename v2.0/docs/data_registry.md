@@ -36,6 +36,7 @@
 | Pacific-US caches | 西岸输入/标签 | 历史西岸实验 | `*_invalid_sal_path` 明确失效；只用修正目录 |
 | North America compact joint cache v2.2 | SOCAT 522,322 个航次格月（到 2025）；碳观测 13,501 条 | P0 已冻结，Git 外目录 `C:\backup\phd\data\processed\recad_v2_2` | 按航次 split；外部航次统一封存 |
 | inference availability v2.2 | 2025–2026 逐月逐沿岸节点 predictor 可用性 | 同上 `inference_availability_v2.2.nc` | 2025 全年严格可推理；2026 当前严格共同覆盖仅 1 月 |
+| global predictor availability v2.3 | 1993–2025；Issue #50 的 838,661 个沿岸节点；5 个标准化动态场及严格同月联合覆盖 | `C:\backup\phd\data\processed\recad_v2_3\predictor_availability_grid_v2.3.nc` | SST/风速/xCO2 完整；GLORYS SSS 最差月面积 98.13%；ADT 最差月 87.71%、陆架 80.45%；不进入 Git |
 | coastal graph / support map v2.2 | 148,795 节点、492,570 条四邻接有向边 | P0 已冻结，同上 | 图审计确认只连接水体节点；含最近碳支持距离 |
 
 ## 标签来源规则

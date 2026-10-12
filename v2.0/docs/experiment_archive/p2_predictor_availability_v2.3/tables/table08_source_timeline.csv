@@ -1,0 +1,7 @@
+predictor,start_year,end_year,color
+SST,1993,2025,#4c78a8
+GLORYS SSS,1993,2025,#f58518
+ADT,1993,2025,#e45756
+wind speed,1993,2025,#72b7b2
+atmospheric xCO2,1993,2025,#54a24b
+chlorophyll-a (regional raw era),2002,2020,#b279a2

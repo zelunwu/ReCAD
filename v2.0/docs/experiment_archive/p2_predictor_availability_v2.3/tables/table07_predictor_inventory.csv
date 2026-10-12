@@ -1,0 +1,12 @@
+predictor,source,nominal_period,artifact,classification,rationale
+SST,OISST AVHRR v2.1,1993-2025,D:\proj_personal\PhD\ReCAD\v2.0\outputs\cache\sst.nc,deployable,direct standardized field
+GLORYS SSS,GLORYS12,1993-2025,D:\proj_personal\PhD\ReCAD\v2.0\outputs\cache\sss.nc,deployable_with_missingness,background salinity; not the reconstructed target
+ADT,satellite altimetry standardized cache,1993-2025,D:\proj_personal\PhD\ReCAD\v2.0\outputs\cache\adt.nc,repair_required,direct field
+wind speed,CCMP v3.1,1993-2025,D:\proj_personal\PhD\ReCAD\v2.0\outputs\cache\wspd.nc,deployable,direct field
+atmospheric xCO2,NOAA marine boundary layer,1993-2025,D:\proj_personal\PhD\ReCAD\v2.0\outputs\cache\xco2air.nc,deployable,direct field
+bathymetry / distance / shelf,GEBCO 2025 + landmetrics/GSHHG,static,C:\backup\phd\data\processed\recad_v2_3\global_coastal_mask_v2.3.nc,deployable,static geometry replicated through time
+calendar / trend / coordinates,deterministic,1993-2025,generated,deployable,deterministic features
+chlorophyll-a,MODIS Aqua L3 monthly,2002-07 to 2020-12 regional only,E:\T7_4T\modis\mapped_monthly\chlor_a,repair_required,global cache absent; source path unavailable; structural gaps
+mixed-layer depth,none frozen,none,unavailable,unavailable,no source artifact found
+river discharge / runoff,none frozen,none,unavailable,unavailable,GSHHG river geometry is not discharge
+upwelling / circulation proxies,derivable from wind and ADT,1993-2025 after definition,derived,diagnostic_only,formula and edge handling must be frozen in #53

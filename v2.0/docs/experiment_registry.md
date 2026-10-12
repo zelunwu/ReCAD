@@ -218,3 +218,11 @@ DIC 等级不得高于 SSS、fCO2、TA 中最弱的等级。locked DIC/TA 与 41
 `p2_benchmark_freeze_v2.3` 核对了 ReCAD v1.1、ULB-SOM-FFN-coastal v2、CMEMS-LSCE、RFR-LMEs、区域高分辨率 pCO2、2026 transfer learning、GLORYS、ESA CCI、SMAP 与近期区域 SSS 研究。原生论文指标的目标定义、分辨率、时期、观测支持和验证 split 不同，因此不能直接用于模型选择。
 
 冻结四层面板：publication-native context、0.25° monthly all-support、0.25° monthly common-support，以及相同数据/split/训练折内校准的 strict-method panel。fCO2 的 minimum cruise/spatial/forward ceiling 为 30/40/40 µatm，SSS 为 1.0/1.2/1.2 PSU；competitive 分别为 25/35/35 与 0.8/1.0/1.0，ideal 为 20/30/30 与 0.6/0.8/0.8。每一级还要求相对 strict v1.x/最强 same-split baseline 改善 5%/10%/15%、所有 scheme 正 skill、worst supported-LME 比值≤1.10、校准覆盖率和固定覆盖风险通过。2004–2005 继续只作历史描述。完整报告、11 个源表和 8 张带 caption 的图见 `docs/experiment_archive/p2_benchmark_freeze_v2.3/`。
+
+## P2.3b 全球沿岸入参可用性审计（Issue #52）
+
+`p2_predictor_availability_v2.3` 在 Issue #50 冻结的 400 km 产品掩膜上逐月扫描 1993–2025 的 SST、GLORYS SSS、ADT、CCMP 风速和大气 xCO2，并以球面面积、0–200 m 陆架、10° 纬度带和 Issue #38 SOCAT 行四种口径审计。没有训练模型，没有读取目标值，也没有开启 locked 或 external-independent 标签。
+
+SST、风速和大气 xCO2 的 396 个月覆盖均为 100%；GLORYS SSS 的全球沿岸/陆架面积覆盖为 98.13%/96.39%，归类为 `deployable_with_missingness`。ADT 平均覆盖 92.67%，但最差月全球沿岸仅 87.71%、陆架 80.45%，归类为 `repair_required`。五个动态场严格同月联合覆盖的全球沿岸均值/最差为 92.14%/87.30%，陆架为 89.33%/79.44%。SOCAT 行上的 ADT 覆盖约 97.45%（fCO2）和 99.05%（SSS），明显高估完整产品域，故不得以观测点覆盖代替全球审计。
+
+决策为 `pass_availability_audit`：#53 的必需动态底座为 SST、风速和大气 xCO2；GLORYS SSS 使用显式缺失掩膜；ADT 仅作有回退路径的可选输入。全球 Chl-a 缓存缺失且原始路径当前不可用，MLD 和河流流量没有冻结数据源，均不得成为必需输入。完整报告、11 张带 caption 的图和 12 个源表见 `docs/experiment_archive/p2_predictor_availability_v2.3/`；网格级审计产物保存在 Git 外目录。

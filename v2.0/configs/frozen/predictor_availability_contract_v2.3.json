@@ -1,0 +1,32 @@
+{
+  "experiment_id": "p2_predictor_availability_v2.3",
+  "created_utc": "2026-10-12T02:47:25.289386+00:00",
+  "period": "1993-01/2025-12",
+  "mask": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_mask_v2.3.nc",
+  "mask_sha256": "0e99ca53398a3f4c29d5058b3307857535c78195bcbabdadf06c59b0ee4957cf",
+  "socat_cache": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet",
+  "socat_cache_sha256": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+  "coverage_thresholds": {
+    "deployable_minimum_monthly_area_fraction": 0.99,
+    "deployable_with_missingness_minimum_monthly_area_fraction": 0.9
+  },
+  "decision": "pass_availability_audit",
+  "mandatory_dense_dynamic_fields": [
+    "SST",
+    "wind speed",
+    "atmospheric xCO2"
+  ],
+  "masked_background_fields": [
+    "GLORYS SSS"
+  ],
+  "optional_repair_required_fields": [
+    "ADT"
+  ],
+  "mandatory_exclusions": [
+    "chlorophyll-a",
+    "mixed-layer depth",
+    "river discharge"
+  ],
+  "locked_test_opened": false,
+  "external_independent_opened": false
+}
