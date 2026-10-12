@@ -1,0 +1,106 @@
+{
+  "experiment_id": "p2_global_predictor_cube_v2.3",
+  "training_git_commit": "d03688fdeb4e70c40cb837b644a0530c2acfc56e",
+  "data_manifest_sha256": "0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "traceable 1993-2025 predictor construction on frozen geometry",
+  "decision": "pass_cube_freeze",
+  "figure_source_data": {
+    "fig01_dynamic_availability.png": [
+      "table03_monthly_coverage.csv"
+    ],
+    "fig02_release_and_strict_masks.png": [
+      "table03_monthly_coverage.csv",
+      "table09_mask_definitions.csv"
+    ],
+    "fig03_summary_coverage.png": [
+      "table04_predictor_summary.csv"
+    ],
+    "fig04_adt_seasonality.png": [
+      "table06_seasonal_coverage.csv"
+    ],
+    "fig05_status_accounting.png": [
+      "table04_predictor_summary.csv"
+    ],
+    "fig06_storage_accounting.png": [
+      "table07_resource_accounting.csv",
+      "table12_cube_file.csv"
+    ],
+    "fig07_replay_checks.png": [
+      "table08_replay_checks.csv"
+    ],
+    "fig08_source_inventory.png": [
+      "table02_source_inventory.csv"
+    ],
+    "fig09_strict_map_1994-02.png": [
+      "table03_monthly_coverage.csv",
+      "local:global_coastal_predictor_cube_v2.3.nc"
+    ],
+    "fig10_strict_map_2025-12.png": [
+      "table03_monthly_coverage.csv",
+      "local:global_coastal_predictor_cube_v2.3.nc"
+    ],
+    "fig11_frozen_roles.png": [
+      "table11_frozen_decision.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_dynamic_availability.png": "Figure 1. Replayed monthly area-weighted availability for every dynamic field written to the frozen coastal-node cube from 1993 through 2025.",
+    "fig02_release_and_strict_masks.png": "Figure 2. Mandatory predictor-ready coverage remains separate from five-field strict common support; dashed curves show the shallower and more seasonally incomplete shelf core.",
+    "fig03_summary_coverage.png": "Figure 3. Mean and worst-month product-area coverage for each stored field and the two distinct readiness masks, confirming that optional ADT does not gate release.",
+    "fig04_adt_seasonality.png": "Figure 4. Calendar-month climatology of ADT and strict support, showing why an ADT requirement would impose a strong seasonal selection on shelf waters.",
+    "fig05_status_accounting.png": "Figure 5. Missing, physical-range-rejected, and imputed grid-month accounting; the frozen cube performs no imputation and preserves unavailable values as NaN plus status codes.",
+    "fig06_storage_accounting.png": "Figure 6. Storage accounting for the five full-grid standardized caches and the coastal-node cube, which removes land and non-product ocean nodes while retaining explicit status masks.",
+    "fig07_replay_checks.png": "Figure 7. Deterministic source-value, status, readiness-mask, and Issue 52 coverage replay mismatches; all required checks must remain exactly zero.",
+    "fig08_source_inventory.png": "Figure 8. Frozen input-artifact sizes for the geometry, target cache, split manifest, and five standardized predictor sources; every SHA256 was verified before publication.",
+    "fig09_strict_map_1994-02.png": "Figure 9. Exact five-field strict common-support mask for 1994-02; this diagnostic mask is deliberately separate from the mandatory predictor-ready release mask.",
+    "fig10_strict_map_2025-12.png": "Figure 10. Exact five-field strict common-support mask for 2025-12; this diagnostic mask is deliberately separate from the mandatory predictor-ready release mask.",
+    "fig11_frozen_roles.png": "Figure 11. Frozen production roles distinguish mandatory dynamic inputs, explicitly masked background SSS, optional ADT, and transformations that must be fitted only inside training folds."
+  },
+  "files_sha256": {
+    "README.md": "0f740bef05797b293da0f50fec64676040a301dcc25f455320aad463912d9b86",
+    "REPORT.md": "160bd85bcc94cfc0412d1cf185d578a96f4a3c2e08590a473aef7a671edc41e3",
+    "CAPTIONS.md": "8d6c5abe848e52196904995aeec083ae424934a869806989c60e56c0035c95fc",
+    "figures/fig01_dynamic_availability.png": "00b260973b53d3f1d666fe96e04fc5e0be84079089d56a2d536b8e207ab7175e",
+    "figures/fig02_release_and_strict_masks.png": "22d583aeb0464c6e1dd0605284be15f0d84d583ec153f1ff5d916cfb1aa9e40e",
+    "figures/fig03_summary_coverage.png": "8d51526e49702a73d08cbed1f8c9f4b16f9257495252755253a1ad5ec5316d45",
+    "figures/fig04_adt_seasonality.png": "12a39396c4caf6bf4ed2aa75f6518ab58d6473f4d4e0d0cdd91c2dd25238d8eb",
+    "figures/fig05_status_accounting.png": "7cdeb2797d12208ba546933704dae84a6117d7a13800c95ed5023532ad51ec2d",
+    "figures/fig06_storage_accounting.png": "0addf44ba5ea23d48af2af420b7855d473c4c7dcab7883c4b56bcefa80aa2169",
+    "figures/fig07_replay_checks.png": "c1bdabc04387ed2434a9f3be77e59e68bfe938bbe702581f34eae87dea57f0f4",
+    "figures/fig08_source_inventory.png": "5cab436090f053457a13c71eeba1e13b615f60f7410e2c6662c711321e2603af",
+    "figures/fig09_strict_map_1994-02.png": "a2d9f38972b32b77557f586438e28e37d89b2ce39e4085228eceafb3460097ac",
+    "figures/fig10_strict_map_2025-12.png": "8cbda647beebffde937d9e0d5ce3caa1a0c84ed3a2da3c49ba520b8107f39d92",
+    "figures/fig11_frozen_roles.png": "b7ec8ed6d0086323c492e0e8440332b76495ab0b7947ee4ad06c1276aed28d35",
+    "tables/table01_data_dictionary.csv": "5b6c62d605a8f7794d6c38afa0fcc9612c56f8e3b0eff6c3871f906b98e3e8a3",
+    "tables/table02_source_inventory.csv": "94c58ded8b0eba38b4f38d541749f5f96207c816b6ae29cbea744115276e4d1f",
+    "tables/table03_monthly_coverage.csv": "59df1d7d3c540a7e5c72324af1589bb38f6e509e693add6d7f2d566d4c82bfa6",
+    "tables/table04_predictor_summary.csv": "d10398bb8825189fa12a5b39c250963d0c3695be06abd4f7ee654f339554b28a",
+    "tables/table05_time_block_coverage.csv": "07a22e72e922e95747384c86e38582166b92310ce35782c9472f21e449fdb772",
+    "tables/table06_seasonal_coverage.csv": "3745c2f533fa96f3faa7b1e48d3db942d80aa127a2b032a8d76168b3d6f5b467",
+    "tables/table07_resource_accounting.csv": "926ee9a1d075ca334c58b8f3c6063a1decc5cca6670a264f25472e49fb3442b7",
+    "tables/table08_replay_checks.csv": "4a7475747fd70d0690a1a2ebb2e3d03fd82525d0237a4b2952f3145ef6a7cd36",
+    "tables/table09_mask_definitions.csv": "c7eb3766269b58efdb0c584b9817abb306b9cd90189adbae3a057f2f6be57457",
+    "tables/table10_excluded_candidates.csv": "c0c81499676d50274165b425a040e14a0ef4b0f213b5df73895253edd15b29b6",
+    "tables/table11_frozen_decision.csv": "77edb8ccb7f79411f2ba29f8a77bd8fbd8082fca943fd56e700eb53df308b7a3",
+    "tables/table12_cube_file.csv": "d6614ab0fb306feda24ef01f6e1d1e9f39b5f9dac194619d2621cb681bbe2529"
+  },
+  "archive_builder_sha256": "e673eb10b6170d381da03be685dc6fd451096caa0290b3da80f3487a51c3f07f",
+  "analysis_script_sha256": "e673eb10b6170d381da03be685dc6fd451096caa0290b3da80f3487a51c3f07f",
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_mask_v2.3.nc": "0e99ca53398a3f4c29d5058b3307857535c78195bcbabdadf06c59b0ee4957cf",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_group_split_manifest_v2.3.parquet": "a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\sst.nc": "d6b3a2650bb0296582dd4d3c18fc85b32685da51f08807a4464f2f3ccb2baf25",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\sss.nc": "fe0258389afe15ef69eea8e5a2b166ba7dc91ad2d6cb5758c05088df1d8187f3",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\adt.nc": "45c631a3d5cff408727357d453897a46a3a2a5d2658c540c8d62e9fcfe1b70ee",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\wspd.nc": "943d5ee6602290ccfb5cc65f7712dc0ddcb990510371ad68eac8d87bcc34e116",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\xco2air.nc": "eb0826163b57539269ca2c017cf64845ba19a88857c9fd205bab4c33c3a4f2be"
+  },
+  "generated_product": {
+    "path": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_predictor_cube_v2.3.nc",
+    "sha256": "0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401",
+    "bytes": 1571369891
+  }
+}

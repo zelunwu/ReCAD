@@ -1,0 +1,26 @@
+variable,dtype,dimensions,units,role,definition
+sst,float32,"time,node",degree_Celsius,mandatory_dense,source value; invalid retained as NaN
+sst_available,uint8,"time,node",1,availability,1 iff source status is accepted
+sst_status,uint8,"time,node",1,QC/missingness/imputation,0 missing; 1 source valid; 2 range rejected; 3 imputed
+sst_source_era,uint8,time,1,provenance,1 single standardized source era
+sss_bg,float32,"time,node",1e-3,masked_background,source value; invalid retained as NaN
+sss_bg_available,uint8,"time,node",1,availability,1 iff source status is accepted
+sss_bg_status,uint8,"time,node",1,QC/missingness/imputation,0 missing; 1 source valid; 2 range rejected; 3 imputed
+sss_bg_source_era,uint8,time,1,provenance,1 single standardized source era
+adt,float32,"time,node",m,optional,source value; invalid retained as NaN
+adt_available,uint8,"time,node",1,availability,1 iff source status is accepted
+adt_status,uint8,"time,node",1,QC/missingness/imputation,0 missing; 1 source valid; 2 range rejected; 3 imputed
+adt_source_era,uint8,time,1,provenance,1 single standardized source era
+wspd,float32,"time,node",m s-1,mandatory_dense,source value; invalid retained as NaN
+wspd_available,uint8,"time,node",1,availability,1 iff source status is accepted
+wspd_status,uint8,"time,node",1,QC/missingness/imputation,0 missing; 1 source valid; 2 range rejected; 3 imputed
+wspd_source_era,uint8,time,1,provenance,1 single standardized source era
+xco2air,float32,"time,node",umol mol-1,mandatory_dense,source value; invalid retained as NaN
+xco2air_available,uint8,"time,node",1,availability,1 iff source status is accepted
+xco2air_status,uint8,"time,node",1,QC/missingness/imputation,0 missing; 1 source valid; 2 range rejected; 3 imputed
+xco2air_source_era,uint8,time,1,provenance,1 single standardized source era
+predictor_ready_mask,uint8,"time,node",1,release mask,"SST, wind, and atmospheric xCO2 valid"
+strict_common_support_mask,uint8,"time,node",1,diagnostic mask,all five dynamic fields valid
+grid_flat,int32,node,1,grid mapping,row-major source-grid index
+shelf_core_mask,uint8,node,1,geometry,GEBCO depth 0-200 m
+distance_to_significant_land_km,float32,node,km,geometry,distance to GSHHG land >=1400 km2

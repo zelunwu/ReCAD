@@ -25,3 +25,4 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 | `p2_global_coastal_cache_v2.3`（Issue #38） | verified；pass_data_freeze；global observation cache；legacy product-mask defect exposed | [完整报告](p2_global_coastal_cache_v2.3/REPORT.md) |
 | `p2_global_coastal_mask_v2.3`（Issue #50） | verified；pass_geometry_freeze；400 km global geometry；GEBCO 200 m shelf core | [完整报告](p2_global_coastal_mask_v2.3/REPORT.md) |
 | `p2_predictor_availability_v2.3`（Issue #52） | verified；pass_availability_audit；three dense dynamic fields；masked GLORYS SSS；optional ADT | [完整报告](p2_predictor_availability_v2.3/REPORT.md) |
+| `p2_global_predictor_cube_v2.3`（Issue #53） | verified；pass_cube_freeze；396 months × 838,661 nodes；zero-mismatch replay | [完整报告](p2_global_predictor_cube_v2.3/REPORT.md) |

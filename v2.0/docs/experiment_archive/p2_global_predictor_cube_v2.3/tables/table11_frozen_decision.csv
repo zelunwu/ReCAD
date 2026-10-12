@@ -1,0 +1,5 @@
+category,variables,rule
+mandatory_dense_dynamic,sst;wspd;xco2air,all must be valid for predictor_ready
+masked_background,sss_bg,missingness is explicit and does not block release
+optional,adt,missingness is explicit and does not block release
+fold_fitted_transformations,none in cube,fit climatology/scaling/imputation in training folds

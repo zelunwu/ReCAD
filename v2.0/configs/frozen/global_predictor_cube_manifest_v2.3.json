@@ -1,0 +1,39 @@
+{
+  "product": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_predictor_cube_v2.3.nc",
+  "sha256": "0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401",
+  "bytes": 1571369891,
+  "period": "1993-01/2025-12",
+  "grid": {
+    "resolution_deg": 0.125,
+    "coastal_nodes": 838661,
+    "months": 396
+  },
+  "mandatory_dense_dynamic_fields": [
+    "sst",
+    "wspd",
+    "xco2air"
+  ],
+  "masked_background_fields": [
+    "sss_bg"
+  ],
+  "optional_fields": [
+    "adt"
+  ],
+  "fold_fitted_transformations_in_cube": false,
+  "target_observations_in_cube": false,
+  "geometry_sha256": "0e99ca53398a3f4c29d5058b3307857535c78195bcbabdadf06c59b0ee4957cf",
+  "socat_cache_sha256": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+  "split_manifest_sha256": "a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748",
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_mask_v2.3.nc": "0e99ca53398a3f4c29d5058b3307857535c78195bcbabdadf06c59b0ee4957cf",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_socat_cache_v2.3.parquet": "7748db79dda802951f8d2f34346106ca9c6f3f49cbd5593b695e4f17e305babc",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_group_split_manifest_v2.3.parquet": "a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\sst.nc": "d6b3a2650bb0296582dd4d3c18fc85b32685da51f08807a4464f2f3ccb2baf25",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\sss.nc": "fe0258389afe15ef69eea8e5a2b166ba7dc91ad2d6cb5758c05088df1d8187f3",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\adt.nc": "45c631a3d5cff408727357d453897a46a3a2a5d2658c540c8d62e9fcfe1b70ee",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\wspd.nc": "943d5ee6602290ccfb5cc65f7712dc0ddcb990510371ad68eac8d87bcc34e116",
+    "D:\\proj_personal\\PhD\\ReCAD\\v2.0\\outputs\\cache\\xco2air.nc": "eb0826163b57539269ca2c017cf64845ba19a88857c9fd205bab4c33c3a4f2be"
+  },
+  "replay_passed": true,
+  "decision": "pass_cube_freeze"
+}

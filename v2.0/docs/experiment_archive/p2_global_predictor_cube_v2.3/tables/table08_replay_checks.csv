@@ -1,0 +1,8 @@
+check,samples,maximum_absolute_difference,mismatches,passed
+source_replay_sst,1216,0.0,0,True
+source_replay_sss_bg,1216,0.0,0,True
+source_replay_adt,1216,0.0,0,True
+source_replay_wspd,1216,0.0,0,True
+source_replay_xco2air,1216,0.0,0,True
+readiness_mask_identity,2432,0.0,0,True
+issue52_monthly_area_replay,1980,1.1102230246251565e-16,0,True
