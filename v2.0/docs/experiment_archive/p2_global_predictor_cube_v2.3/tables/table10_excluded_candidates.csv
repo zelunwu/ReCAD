@@ -1,0 +1,5 @@
+candidate,status,reason
+chlorophyll-a,repair_required,global cache absent; raw source path unavailable; structural gaps
+mixed-layer depth,unavailable,no frozen source artifact
+river discharge,unavailable,river geometry is not discharge
+derived circulation proxies,diagnostic_only,formula and boundary handling not frozen

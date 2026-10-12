@@ -226,3 +226,11 @@ DIC 等级不得高于 SSS、fCO2、TA 中最弱的等级。locked DIC/TA 与 41
 SST、风速和大气 xCO2 的 396 个月覆盖均为 100%；GLORYS SSS 的全球沿岸/陆架面积覆盖为 98.13%/96.39%，归类为 `deployable_with_missingness`。ADT 平均覆盖 92.67%，但最差月全球沿岸仅 87.71%、陆架 80.45%，归类为 `repair_required`。五个动态场严格同月联合覆盖的全球沿岸均值/最差为 92.14%/87.30%，陆架为 89.33%/79.44%。SOCAT 行上的 ADT 覆盖约 97.45%（fCO2）和 99.05%（SSS），明显高估完整产品域，故不得以观测点覆盖代替全球审计。
 
 决策为 `pass_availability_audit`：#53 的必需动态底座为 SST、风速和大气 xCO2；GLORYS SSS 使用显式缺失掩膜；ADT 仅作有回退路径的可选输入。全球 Chl-a 缓存缺失且原始路径当前不可用，MLD 和河流流量没有冻结数据源，均不得成为必需输入。完整报告、11 张带 caption 的图和 12 个源表见 `docs/experiment_archive/p2_predictor_availability_v2.3/`；网格级审计产物保存在 Git 外目录。
+
+## P2.3c 全球沿岸入参立方体（Issue #53）
+
+`p2_global_predictor_cube_v2.3` 将 Issue #52 允许的五个标准化动态场写入 Issue #50 的沿岸节点压缩网格。最终 NetCDF 为 396 月 × 838,661 节点、332,109,756 个 grid-month、42 个变量和 1.571 GB。每个动态场都保存原始可接受值、availability、四级状态码和 source-era；静态部分保存 source-grid 映射、经纬度、面积、距显著陆地距离、GEBCO 水深和陆架/深水分类。
+
+`predictor_ready_mask` 只要求 SST、风速和大气 xCO2，因此 1993–2025 为 100%；GLORYS SSS 作为显式缺失的背景场，ADT 作为不阻断发布的可选场。五场 `strict_common_support_mask` 只用于共同支持消融，面积覆盖均值/最差为 92.14%/87.30%。基础 cube 不做插补、climatology、标准化或任何目标相关变换，这些操作必须在训练折内部拟合。
+
+全部 8 个冻结输入 SHA256 通过；五场 source replay、状态、availability、掩膜恒等式和 Issue #52 的 1,980 条月覆盖重放共 10,492 个检查点零 mismatch。最终状态为 `pass_cube_freeze`，允许 #54 在完全相同 cube、观测与 split 上开始 SSS/fCO2 入参消融。完整报告、11 张带 caption 的图和 12 个源表见 `docs/experiment_archive/p2_global_predictor_cube_v2.3/`；1.571 GB 产品保存在 Git 外目录。

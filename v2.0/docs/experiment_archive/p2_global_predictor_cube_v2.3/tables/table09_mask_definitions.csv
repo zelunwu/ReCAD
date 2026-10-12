@@ -1,0 +1,5 @@
+mask,grain,definition,use,release_relevant
+coastal_geometry,node,Issue #50 geometry,independent of predictors and targets,True
+predictor_ready,grid-month,sst & wspd & xco2air,release may proceed when true,True
+strict_common,grid-month,sst & sss_bg & adt & wspd & xco2air,diagnostic common-support comparisons,False
+per-variable available,grid-month,accepted source value,input-specific missingness,False

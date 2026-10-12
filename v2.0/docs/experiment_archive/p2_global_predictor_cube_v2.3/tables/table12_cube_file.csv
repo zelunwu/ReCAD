@@ -1,0 +1,2 @@
+path,bytes,sha256,format,time_chunks,node_chunks,compression
+C:\backup\phd\data\processed\recad_v2_3\global_coastal_predictor_cube_v2.3.nc,1571369891,0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401,NetCDF4/HDF5,1,65536,zlib level 2 values; level 4 masks/static

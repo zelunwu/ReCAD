@@ -1,0 +1,8 @@
+predictor,role,mean_area_fraction,minimum_area_fraction,missing_gridmonths,range_rejected_gridmonths,imputed_gridmonths
+sst,mandatory_dense,1.0,1.0,0,0,0
+sss_bg,masked_background,0.9812579159512149,0.9812579159512149,9645768,0,0
+adt,optional,0.9266585143146847,0.8771065330305836,57102093,0,0
+wspd,mandatory_dense,1.0,1.0,0,0,0
+xco2air,mandatory_dense,1.0,1.0,0,0,0
+predictor_ready,release_mask,1.0,1.0,0,0,0
+strict_common,diagnostic_mask,0.9213799624955112,0.8730122428315633,59219633,0,0
