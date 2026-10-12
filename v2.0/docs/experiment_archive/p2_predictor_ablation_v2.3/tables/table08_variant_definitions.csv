@@ -1,0 +1,8 @@
+variant,features,feature_count,training_dropout_sss,training_dropout_adt
+A0_geo_time,year_centered;month_sin;month_cos;latitude_sin;latitude_cos;longitude_sin;longitude_cos,7,0.0,0.0
+A1_geometry,year_centered;month_sin;month_cos;latitude_sin;latitude_cos;longitude_sin;longitude_cos;distance_to_significant_land_km;bathymetry_m;shelf_core_mask;slope_deep_mask,11,0.0,0.0
+A2_environment,year_centered;month_sin;month_cos;latitude_sin;latitude_cos;longitude_sin;longitude_cos;distance_to_significant_land_km;bathymetry_m;shelf_core_mask;slope_deep_mask;sst;wspd;xco2air,14,0.0,0.0
+A3_background_sss,year_centered;month_sin;month_cos;latitude_sin;latitude_cos;longitude_sin;longitude_cos;distance_to_significant_land_km;bathymetry_m;shelf_core_mask;slope_deep_mask;sst;wspd;xco2air;sss_bg;sss_bg_available,16,0.0,0.0
+A4_adt,year_centered;month_sin;month_cos;latitude_sin;latitude_cos;longitude_sin;longitude_cos;distance_to_significant_land_km;bathymetry_m;shelf_core_mask;slope_deep_mask;sst;wspd;xco2air;adt;adt_available,16,0.0,0.0
+A5_sss_adt,year_centered;month_sin;month_cos;latitude_sin;latitude_cos;longitude_sin;longitude_cos;distance_to_significant_land_km;bathymetry_m;shelf_core_mask;slope_deep_mask;sst;wspd;xco2air;sss_bg;sss_bg_available;adt;adt_available,18,0.0,0.0
+A6_missing_robust,year_centered;month_sin;month_cos;latitude_sin;latitude_cos;longitude_sin;longitude_cos;distance_to_significant_land_km;bathymetry_m;shelf_core_mask;slope_deep_mask;sst;wspd;xco2air;sss_bg;sss_bg_available;adt;adt_available,18,0.05,0.15

@@ -234,3 +234,11 @@ SST、风速和大气 xCO2 的 396 个月覆盖均为 100%；GLORYS SSS 的全�
 `predictor_ready_mask` 只要求 SST、风速和大气 xCO2，因此 1993–2025 为 100%；GLORYS SSS 作为显式缺失的背景场，ADT 作为不阻断发布的可选场。五场 `strict_common_support_mask` 只用于共同支持消融，面积覆盖均值/最差为 92.14%/87.30%。基础 cube 不做插补、climatology、标准化或任何目标相关变换，这些操作必须在训练折内部拟合。
 
 全部 8 个冻结输入 SHA256 通过；五场 source replay、状态、availability、掩膜恒等式和 Issue #52 的 1,980 条月覆盖重放共 10,492 个检查点零 mismatch。最终状态为 `pass_cube_freeze`，允许 #54 在完全相同 cube、观测与 split 上开始 SSS/fCO2 入参消融。完整报告、11 张带 caption 的图和 12 个源表见 `docs/experiment_archive/p2_global_predictor_cube_v2.3/`；1.571 GB 产品保存在 Git 外目录。
+
+## P2.3d SSS/fCO2 入参消融（Issue #54）
+
+`p2_predictor_ablation_v2.3` 在同一冻结 predictor cube、SOCAT 航次格月和 split 上完成 224 个 CatBoost 拟合。SSS 使用 750,040 条记录、4,615 个航次、54 个 LME；fCO2 使用 887,811 条记录、5,143 个航次、54 个 LME。全部变体共享 cruise、空间块、整 LME 与前向时间留出；可选场缺失不删除样本，2026 provisional、locked test 与 external-independent 标签均未开启。
+
+SSS 的背景场必须按残差订正使用：有 GLORYS SSS 时预测 `SSSobs-SSSbg`，缺失时回退到同折 A2 direct 模型。该分支相对 A2 将 cruise/spatial/whole-LME/2019–2021 forward/2022–2025 forward RMSE 从 0.962/1.058/8.334/1.760/1.956 降至 0.907/0.973/2.470/1.227/1.580 PSU，并通过共同支持与 2,000 次航次级 bootstrap 门槛。ADT 与额外 missing-field dropout 均未通过。
+
+fCO2 的背景 SSS 将 pooled cruise/spatial RMSE 从 36.484/39.001 降至 36.070/38.469 µatm，但 cruise bootstrap 置信区间跨零，不能冻结为生产输入；ADT 同样失败。因此 #40 SSS 冻结为 A2 + masked background-SSS residual/fallback，#41 fCO2 冻结为 A2（时空、沿岸几何、SST、风速、大气 xCO2）。当前点模型仍未满足 Issue #37 的全部最低目标，尤其是 late-forward 和 whole-LME 尾部。完整报告、12 张带 caption 的图和 15 个源表见 `docs/experiment_archive/p2_predictor_ablation_v2.3/`；匹配表和 224 份逐折预测保存在 Git 外目录。

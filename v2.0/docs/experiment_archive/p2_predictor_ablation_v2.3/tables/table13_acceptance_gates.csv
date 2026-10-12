@@ -1,0 +1,7 @@
+gate,threshold
+median relative RMSE improvement,>= 0.5%
+cruise and spatial RMSE,both improve
+whole-LME and forward periods,no degradation over 1%
+strict common support,cruise and spatial improve
+paired cruise bootstrap,95% upper CI of delta MSE < 0
+coverage,no row removal for optional fields
