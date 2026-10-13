@@ -1,0 +1,42 @@
+{
+  "version": "2.3",
+  "issue": 42,
+  "experiment_id": "p2_context_connectivity_v2.3",
+  "target": "SOCAT fCO2",
+  "models": [
+    "v11_random_forest",
+    "lag_catboost",
+    "gru_context",
+    "st96_local",
+    "st96_graph"
+  ],
+  "history_months": 6,
+  "history_fields": ["sst", "wspd", "xco2air", "sss_bg"],
+  "history_policy": "observation-independent frozen predictor cube only; no lagged fCO2 or observed SSS",
+  "graph_policy": "four-neighbour water-only adjacency on frozen coastal nodes; graph branch runs only when RF residual adjacent correlation exceeds 0.15",
+  "graph_trigger_correlation": 0.15,
+  "outer_schemes": ["cruise", "spatial", "whole_lme", "forward"],
+  "point_baseline": "v11_random_forest from Issue 41",
+  "catboost_budget": {"iterations": 300, "depth": 8, "learning_rate": 0.05},
+  "neural_budget": {
+    "maximum_epochs": 8,
+    "early_stopping_patience": 2,
+    "batch_size": 4096,
+    "learning_rate": 0.002,
+    "weight_decay": 0.0001,
+    "inner_validation_cruise_fraction": 0.1
+  },
+  "selection_gate": {
+    "relative_improvement_threshold": 0.05,
+    "minimum_primary_schemes_improved": 2,
+    "maximum_other_scheme_degradation": 0.01,
+    "worst_supported_lme_ratio_max": 1.1,
+    "coverage50_range": [0.45, 0.55],
+    "coverage90_range": [0.85, 0.95]
+  },
+  "learning_curve_cruise_fractions": [0.1, 0.2, 0.4, 0.6, 0.8, 1.0],
+  "historical_2004_2005_policy": "descriptive only and forbidden for selection",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "provisional_2026_opened": false
+}

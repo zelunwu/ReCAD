@@ -1,0 +1,6 @@
+model,definition
+v11_random_forest,Issue #41 strict point random-forest baseline
+lag_catboost,residual CatBoost with six months of label-free local predictors
+gru_context,two-layer 64-unit GRU over six local predictor months
+st96_local,two-layer d_model=96 temporal transformer over local history
+st96_graph,same ST96 plus four-neighbour water-connected predictor history

@@ -1,0 +1,25 @@
+candidate,gate,passed,cruise_improvement,spatial_improvement,whole_lme_improvement,forward_improvement
+lag_catboost,at least two outer schemes improve >=5%,False,-0.07465589,-0.07191408,-0.046650887,0.0044279695
+lag_catboost,no outer scheme degrades over 1%,False,-0.07465589,-0.07191408,-0.046650887,0.0044279695
+lag_catboost,cruise/spatial paired bootstrap upper CI <0,False,-0.07465589,-0.07191408,-0.046650887,0.0044279695
+lag_catboost,worst whole-LME ratio <=1.10,True,-0.07465589,-0.07191408,-0.046650887,0.0044279695
+lag_catboost,50% interval coverage calibrated,False,-0.07465589,-0.07191408,-0.046650887,0.0044279695
+lag_catboost,90% interval coverage calibrated,False,-0.07465589,-0.07191408,-0.046650887,0.0044279695
+gru_context,at least two outer schemes improve >=5%,False,-0.34928036,-0.20502567,-0.09117293,-0.14581013
+gru_context,no outer scheme degrades over 1%,False,-0.34928036,-0.20502567,-0.09117293,-0.14581013
+gru_context,cruise/spatial paired bootstrap upper CI <0,False,-0.34928036,-0.20502567,-0.09117293,-0.14581013
+gru_context,worst whole-LME ratio <=1.10,True,-0.34928036,-0.20502567,-0.09117293,-0.14581013
+gru_context,50% interval coverage calibrated,False,-0.34928036,-0.20502567,-0.09117293,-0.14581013
+gru_context,90% interval coverage calibrated,False,-0.34928036,-0.20502567,-0.09117293,-0.14581013
+st96_local,at least two outer schemes improve >=5%,False,-0.33295977,-0.20568538,-0.0727787,-0.1636194
+st96_local,no outer scheme degrades over 1%,False,-0.33295977,-0.20568538,-0.0727787,-0.1636194
+st96_local,cruise/spatial paired bootstrap upper CI <0,False,-0.33295977,-0.20568538,-0.0727787,-0.1636194
+st96_local,worst whole-LME ratio <=1.10,True,-0.33295977,-0.20568538,-0.0727787,-0.1636194
+st96_local,50% interval coverage calibrated,False,-0.33295977,-0.20568538,-0.0727787,-0.1636194
+st96_local,90% interval coverage calibrated,False,-0.33295977,-0.20568538,-0.0727787,-0.1636194
+st96_graph,at least two outer schemes improve >=5%,False,-0.3180877,-0.19630063,-0.07479966,-0.1473198
+st96_graph,no outer scheme degrades over 1%,False,-0.3180877,-0.19630063,-0.07479966,-0.1473198
+st96_graph,cruise/spatial paired bootstrap upper CI <0,False,-0.3180877,-0.19630063,-0.07479966,-0.1473198
+st96_graph,worst whole-LME ratio <=1.10,True,-0.3180877,-0.19630063,-0.07479966,-0.1473198
+st96_graph,50% interval coverage calibrated,False,-0.3180877,-0.19630063,-0.07479966,-0.1473198
+st96_graph,90% interval coverage calibrated,False,-0.3180877,-0.19630063,-0.07479966,-0.1473198

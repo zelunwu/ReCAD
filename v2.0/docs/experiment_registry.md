@@ -260,3 +260,11 @@ GMM experts 的 pooled cruise/spatial/forward RMSE 为 0.864/0.918/1.422 PSU，�
 Cross-fitted SSS 对 residual CatBoost 的 cruise/spatial/whole-LME/forward RMSE 产生一致但有限的改善：36.93/39.20/57.43/47.46 降为 36.45/38.58/57.28/46.57 µatm。GMM 在简单的绝对 RMSE/正 skill 条件下有 22 个 development-qualified LME，RF 为 18 个；但 GMM forward 50/90 coverage 只有 0.396/0.806，不能把该计数解释为产品可信覆盖。
 
 最终状态为 **`diagnostic_only` / no promotion**：诚实 v1.x RF 保留为 strict interpolation baseline，residual/GMM 只作为 #42 temporal/connectivity 实验的时间迁移分支。下一候选必须同时保留 RF 的 cruise/spatial 技能和 residual 模型的趋势/late-forward 优势。locked、external-independent 与 2026 provisional 标签均未开启。完整报告、15 张带 caption 的图和 22 个源表见 `docs/experiment_archive/p2_fco2_global_bakeoff_v2.3/`；大文件保存在 Git 外目录。
+
+## P2.6 时间上下文与沿岸连通性（Issue #42）
+
+`p2_context_connectivity_v2.3` 在 Issue #41 的相同 887,811 条 fCO2、5,143 个航次、54 个 LME、strict cross-fitted SSS 与 16 个冻结外层折上比较诚实 v1.x Random Forest、6 个月 lag CatBoost、两层 GRU、单目标 ST96 和四邻接水体图 ST96。时间序列只读取 observation-independent predictor cube 的 SST、风速、大气 xCO2 和背景 SSS；没有使用历史 fCO2 或 observed SSS。RF 相邻水体网格残差相关为 0.869、同月置换对照约为零，因此图分支按预设条件触发。
+
+RF 的 pooled cruise/spatial/whole-LME/forward RMSE 为 33.96/37.45/54.38/47.55 µatm。Lag CatBoost 只把 forward 降到 47.16，并将 bias 从 -15.06 降到 -5.14 µatm，但 cruise/spatial/whole-LME 的 cruise-equal RMSE 分别退化 7.5%/7.2%/4.7%。GRU、局地 ST96 和图 ST96 在所有外层方案均明显退化；图 ST96 虽相对局地 ST96 改善 cruise/forward，却未消除相邻残差结构。所有 context candidate 的 cruise/spatial paired bootstrap MSE 差均显著大于 RF，forward 区间校准也未通过。
+
+嵌套 LME 内 cruise 学习曲线进一步区分数据与模型容量：训练 cruise 从 429 增至 4,161 时，RF fold-0 RMSE 从 41.57 持续降至 32.49；lag CatBoost 在约 40% 后停滞于 35.9；ST96 始终高于 41 且不稳定。结果支持“当前独立航次覆盖与月尺度入参限制有效模型复杂度”，但不支持“单纯增加相同数据量即可释放 Transformer”。最终状态为 **`stop_scaling_context_family` / no promotion**；保留 RF point baseline，禁止将不连续 LME-month background 原样用于连续产品。完整报告、17 张带 caption 的图和 22 个源表见 `docs/experiment_archive/p2_context_connectivity_v2.3/`；80 份外层预测、18 份学习曲线预测、82 个 checkpoint 与上下文缓存保存在 Git 外目录。
