@@ -45,6 +45,13 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def normalize_lf(path: Path) -> None:
+    """Write a text artifact with repository-stable LF line endings."""
+
+    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    path.write_bytes(content)
+
+
 def save_figure(figure: plt.Figure, name: str) -> None:
     """Save a publication-readable PNG."""
 
@@ -407,6 +414,9 @@ def main() -> int:
     )
     tracked = [ARCHIVE / "README.md", ARCHIVE / "REPORT.md", ARCHIVE / "CAPTIONS.md"]
     tracked += sorted(FIGURES.glob("*.png")) + sorted(TABLES.glob("*.csv"))
+    for path in tracked:
+        if path.suffix in {".md", ".csv"}:
+            normalize_lf(path)
     relative_hashes = {
         str(path.relative_to(ARCHIVE)).replace("\\", "/"): sha256(path) for path in tracked
     }

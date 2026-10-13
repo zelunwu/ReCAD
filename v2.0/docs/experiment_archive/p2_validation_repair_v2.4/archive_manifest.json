@@ -1,6 +1,6 @@
 {
   "experiment_id": "p2_validation_repair_v2.4",
-  "training_git_commit": "739cb4a6e7a1babc81b5ef562e2424d80fc3d87e",
+  "training_git_commit": "b51a5a47f0fc3d4e92be34ef8eb22ec8b71b3d1f",
   "data_manifest_sha256": "fb907d4b150b1ea7533e34f3a1723da3e7c976432e384446792e2bb4e8d746b5",
   "locked_test_opened": false,
   "external_independent_opened": false,
@@ -59,9 +59,9 @@
     "fig12_gate_matrix.png": "Figure 12. Count of passed applicable preregistered gates for each target, validation design, and model; whole-region has two applicable coverage gates because no absolute RMSE ceiling was frozen for that scheme. Passing a subset does not promote a model; Issue 61 unblocks fair model-family screening while retaining all baselines as development evidence only."
   },
   "files_sha256": {
-    "README.md": "1dd0f0fb310cd6fc7fe2adbc348879845098275b1732e2fe562e09a22bd1683c",
-    "REPORT.md": "247b596a92042acf10f8822d0d3d3f9442777d41f042261c203d6439100da758",
-    "CAPTIONS.md": "3307e4871db463ca92c9a04c94c7ff0a70ef63a71aba1a2a7d971ce5c4096b92",
+    "README.md": "14f403a187e40acb7a41241f6686d6ce3ae9e4c202fd291fceb377c17d01722f",
+    "REPORT.md": "4848234b606f14033b4b924cac42c6690a57054650ee885d82328505b7bf570e",
+    "CAPTIONS.md": "1b9700a64c06d16cc726797990445d88ec1fba42c64eb6decb0bfb0d9f8bf22c",
     "figures/fig01_sss_rmse.png": "c21c42a4ab384d98c9c8f24a6dc29f79437b45f2c5bfc36e0ba83b70ad7101dc",
     "figures/fig02_fco2_rmse.png": "18ddcb93a3bf4f69e73ce9f38956c338400076d83bfe1a8bfc4a84ec7ad506ce",
     "figures/fig03_r2.png": "f13428cd58a44262bbf81c6c3f27b339cb1baf94e6d1c1752fcd8cf118f8294c",
@@ -74,17 +74,17 @@
     "figures/fig10_split_sizes.png": "46a19cd2b40f4d607f74a60d1c5ef1d5c9964670a57a6fd13610acdddd21a518",
     "figures/fig11_leakage_audit.png": "f6b8e8519ab273f905323b2d992d2f15e45342d3fbc57c47d3824c0fd1752136",
     "figures/fig12_gate_matrix.png": "ef94371f3fb09e444da9b320172da4ae8093fdf4c419ec921a4c45f38e121b5f",
-    "tables/archive_correction_matrix.csv": "5b019e1e8cec12453f9c9fd4389ff7eecc8bc3a7117572e730a6f979af5e2bf1",
-    "tables/corrected_common_grid_metrics.csv": "2223c9d6cfb34850f2625d0968edf68ba6ea4f1902f0b31aa59d062735e77040",
-    "tables/corrected_gate_matrix.csv": "5377ee78ec7fd86b097172bd73fdb28901061372332e1a8900daa164085a9dad",
-    "tables/corrected_native_metrics.csv": "1a8b0aef2a6d58628de5f0a7622b113630bf93ca85de41a2df7d2c728923eabd",
-    "tables/corrected_risk_coverage.csv": "a6a970becf371bdb2b82caf75f1d67d19b8d028ccbe703938de2aefbfaba54e9",
-    "tables/exposure_summary.csv": "174aa7cd645843ff94be13ceb735c6cda1235994c9a372e3edffeb2cf29186ff",
-    "tables/model_coverage.csv": "b89f2f28a96aa41672bf38f4efd5fd5f5df053afcc1863fc7112787116d839ca",
-    "tables/split_audit.csv": "f235862451b70f8fba651dd17dcecb1c7ca2ee88ac38f564c108846921a0f9c4",
-    "tables/training_log.csv": "9e38d1580c5a5719bc8f557b537ffddc77cae91504a0c9dad11ae3f7a90be101"
+    "tables/archive_correction_matrix.csv": "c3a2a7725c3df6d7a8f98dcd499c48050486bffd3c1367ea6ba7bd7b8281ff54",
+    "tables/corrected_common_grid_metrics.csv": "d0cff4a17833bbc380f52c308cddecc08ee506d61d3f6abf18a752d13c9eb02e",
+    "tables/corrected_gate_matrix.csv": "3db8eefe1c16d596da82ac27a95a14e7cd5ddf398d373b3bdebf6c9e5055c876",
+    "tables/corrected_native_metrics.csv": "e7d57e6fdacb3753d142e1bcf7dfad4b92742034bcaed3eca28224a627ef9b59",
+    "tables/corrected_risk_coverage.csv": "61f6ccba8b3d309eef6d012551018950d0af1a6034f7e9da6bb09821103bff2e",
+    "tables/exposure_summary.csv": "97e0115d6fffe3e51ce039b4f2ccda00e1b537471b50690f0acc393fe3616def",
+    "tables/model_coverage.csv": "938b932771768651e602e3c14fb455cff17574a089cb26b30f20a214dee8207d",
+    "tables/split_audit.csv": "cf08d1ee28b4564e8a191d50983495edbeb000db5c6b4c70b13e090bb7f89944",
+    "tables/training_log.csv": "fbd3820538946ac54fc0dd47f9c626c883242f805b810751d28b01c2893ff892"
   },
-  "archive_builder_sha256": "200a0533cc99e3371b62816b7be7429113a00c4fe9ba79070d89ac7d08f02d15",
+  "archive_builder_sha256": "90b9265582471c11516a14e767dba51a9752fbac6e973228f2ee4ecf5ef8be52",
   "analysis_script_sha256": "c414257b67ee72e6898d63ca72eae48b4f3c7eed3b26478b17cfffc4ff3cfabf",
   "source_artifacts_sha256": {
     "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\data_manifest.json": "fb907d4b150b1ea7533e34f3a1723da3e7c976432e384446792e2bb4e8d746b5",
