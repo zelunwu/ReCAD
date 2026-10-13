@@ -14,7 +14,7 @@ science:
 
 data:
   manifest_path: configs/p2_validation_repair_v2.4.json
-  manifest_sha256: 9369c187d858d329a00357e208d3a9fb6c1000c6c76f1ef01725dfab284b3bb4
+  manifest_sha256: 56a7ed5ef6f08eb4f48d1d9a780abca1fe54c59b5103a1762515d4d0f5476704
   prepared_path: C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet
   prepared_sha256: 935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75
   observation_products: [SOCATv2026 Coastal, ReCAD v2.2 split manifest, ReCAD v2.3 global group manifest]
@@ -28,7 +28,7 @@ splits:
   manifest_path: external output split_manifest_v2.4.parquet
   manifest_sha256: generated_after_preregistered_code_run
   grouping: Complete normalized cruise/platform groups; actual 5-degree geographic blocks with 100-km buffer; complete LME/fixed-neutral regions; three rolling forward windows.
-  train: Outer-training only, with two-fold grouped cross-conformal residual generation.
+  train: Each outer-training partition is divided by complete group into 80% fit and 20% calibration; no model or upstream component is refit after calibration.
   development: Cruise, geographic, whole-region, and rolling-forward held rows.
   locked_test: No eligible locked label opened; legacy groups found in P2 are reclassified development-only.
   external_independent: No target value opened; eligibility determined by metadata ledger only.
@@ -37,7 +37,7 @@ splits:
 model:
   family: Corrected strong baselines only
   config_path: configs/p2_validation_repair_v2.4.json
-  config_sha256: 9369c187d858d329a00357e208d3a9fb6c1000c6c76f1ef01725dfab284b3bb4
+  config_sha256: 56a7ed5ef6f08eb4f48d1d9a780abca1fe54c59b5103a1762515d4d0f5476704
   inputs: [deployable Issue 41 A2 predictors, GLORYS background SSS, optional ADT for strict-v1 common cases]
   learned_outputs: [SSS, fCO2]
   derived_outputs: [50/90 symmetric conformal intervals, applicability diagnostics]
@@ -50,7 +50,7 @@ training:
   optimizer_steps: Frozen tree counts in config; no Issue 61 tuning.
   compute_budget: One corrected baseline pass over 5 cruise, 5 geographic, 5 whole-region, and 3 rolling-forward outer partitions.
   checkpoint_selection: No checkpoint selection; fixed budgets preregistered here.
-  uncertainty_method: Two-fold grouped cross-conformal residuals using prediction bands only.
+  uncertainty_method: Group-disjoint 20% calibration holdout inside outer training, using prediction bands only.
 
 evaluation:
   primary_metrics: [RMSE, MAE, bias, R2, cruise-equal RMSE]

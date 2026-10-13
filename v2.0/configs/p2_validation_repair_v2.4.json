@@ -24,11 +24,11 @@
     }
   },
   "nested_calibration": {
-    "method": "two-fold grouped cross-conformal residuals inside each outer-training partition",
+    "method": "complete-group 80/20 fit/calibration holdout inside each outer-training partition; the fitted model predicts both calibration and outer-held rows and is not refit after calibration",
     "stratification": "fixed bands of model prediction only",
     "minimum_band_rows": 200,
     "intervals": [0.5, 0.9],
-    "forbidden": ["observed truth bands", "residuals from models trained on the outer-held fold", "future labels"]
+      "forbidden": ["observed truth bands", "calibration labels used in model or upstream fitting", "residuals from models trained on the outer-held fold", "future labels"]
   },
   "sss_models": {
     "raw_glorys": {"role": "background baseline"},

@@ -244,6 +244,27 @@ def inner_group_folds(
     return groups.map(mapping).to_numpy(np.int8)
 
 
+def grouped_fit_calibration(
+    frame: pd.DataFrame,
+    *,
+    calibration_fold: int = 0,
+    n_folds: int = 5,
+    salt: str,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Split outer training into group-disjoint 80/20 fit and calibration rows."""
+
+    assignment = inner_group_folds(frame, n_folds=n_folds, salt=salt)
+    calibration = assignment == calibration_fold
+    fit = ~calibration
+    if not fit.any() or not calibration.any():
+        raise ValueError("grouped fit/calibration split has an empty partition")
+    fit_groups = set(frame.loc[fit, "group_key"].astype(str))
+    calibration_groups = set(frame.loc[calibration, "group_key"].astype(str))
+    if fit_groups & calibration_groups:
+        raise AssertionError("fit/calibration groups overlap")
+    return np.flatnonzero(fit), np.flatnonzero(calibration)
+
+
 def prediction_band(values: np.ndarray, target: str) -> pd.Categorical:
     """Create deployable interval strata from predictions rather than target truth."""
 

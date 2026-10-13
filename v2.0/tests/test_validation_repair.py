@@ -9,6 +9,7 @@ from recad.evaluate.validation_repair import (
     assert_split_integrity,
     conformal_widths,
     geographic_splits,
+    grouped_fit_calibration,
     normalize_group_key,
     rolling_forward_splits,
 )
@@ -81,3 +82,9 @@ def test_conformal_widths_use_prediction_bands() -> None:
     assert bands.tolist() == ["lt20", "34_36"]
     assert width50[0] > width50[1]
     assert width90[0] > width90[1]
+
+
+def test_grouped_fit_calibration_has_no_group_overlap() -> None:
+    frame = sample_frame()
+    fit, calibration = grouped_fit_calibration(frame, salt="test-calibration")
+    assert set(frame.iloc[fit].group_key).isdisjoint(frame.iloc[calibration].group_key)
