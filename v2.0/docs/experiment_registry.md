@@ -2,6 +2,8 @@
 
 本文件是实验记录的统一入口。它回答四个问题：做过什么、使用了什么数据与 split、如何选择模型、结论能信到什么程度。详细协议、机器可读 manifest、指标和大文件仍保存在各实验目录；本文件只保存可进入 Git 的元数据和索引。
 
+> **2026-10-13 证据更正**：#40–#42 仍保留其点预测开发比较，但不再视为 untouched、严格新地理位置或可部署不确定性证据。元数据审计确认旧 SOCAT locked/external 组进入 P2 manifest 与 matchup；现行 `spatial_fold` 是 dominant-block 航次分组而非实际 geographic block 留出；#40 SSS 区间按观测真值盐度分箱；#40–#42 校准没有完全嵌套在当前 outer-training 中。受影响的 sealed、strict-spatial、leakage-safe calibration、coverage 和 risk-coverage 表述均由 #61 重算并更正。已暴露标签永久降为 development，不得通过重新分割恢复 blind 身份。
+
 ## 记录层级
 
 1. `docs/experiment_protocol.md`：全项目共同的验证原则和统计口径。
@@ -268,3 +270,13 @@ Cross-fitted SSS 对 residual CatBoost 的 cruise/spatial/whole-LME/forward RMSE
 RF 的 pooled cruise/spatial/whole-LME/forward RMSE 为 33.96/37.45/54.38/47.55 µatm。Lag CatBoost 只把 forward 降到 47.16，并将 bias 从 -15.06 降到 -5.14 µatm，但 cruise/spatial/whole-LME 的 cruise-equal RMSE 分别退化 7.5%/7.2%/4.7%。GRU、局地 ST96 和图 ST96 在所有外层方案均明显退化；图 ST96 虽相对局地 ST96 改善 cruise/forward，却未消除相邻残差结构。所有 context candidate 的 cruise/spatial paired bootstrap MSE 差均显著大于 RF，forward 区间校准也未通过。
 
 嵌套 LME 内 cruise 学习曲线进一步区分数据与模型容量：训练 cruise 从 429 增至 4,161 时，RF fold-0 RMSE 从 41.57 持续降至 32.49；lag CatBoost 在约 40% 后停滞于 35.9；ST96 始终高于 41 且不稳定。结果支持“当前独立航次覆盖与月尺度入参限制有效模型复杂度”，但不支持“单纯增加相同数据量即可释放 Transformer”。最终状态为 **`stop_scaling_context_family` / no promotion**；保留 RF point baseline，禁止将不连续 LME-month background 原样用于连续产品。完整报告、17 张带 caption 的图和 22 个源表见 `docs/experiment_archive/p2_context_connectivity_v2.3/`；80 份外层预测、18 份学习曲线预测、82 个 checkpoint 与上下文缓存保存在 Git 外目录。
+
+## P2.7 证据审计与路线修订（Issues #43、#61–#64）
+
+2026-10-13 只读审计核对了 v2.2 split manifest、v2.3 global group manifest、#54 matchup 元数据以及 #40–#42 runner/analyzer。旧 SOCAT locked 的 538/538 航次进入 v2.3 manifest，其中 417 航次、79,135 行进入实际 matchup；旧 SOCAT external 的 9/9 航次进入 manifest，其中 7 航次、1,474 行进入 matchup。该核对没有读取新的目标列，但足以证明相关组已参与开发数据链，旧“sealed”身份不可恢复。
+
+空间审计显示，各折 held 行中 85.2%–92.0% 的精确 1/8°格点也出现在训练，绝大多数实际 5°块同样重叠。现有结果继续表示新航次分组压力测试，不表示真正新地点外推。校准审计还发现其他 outer-fold 残差会由训练过当前 held 标签的模型产生；forward 仅筛早期残差行不能消除生成模型使用未来标签的问题。#40 的 `salinity_band` 由 `truth` 构造并用于区间宽度，只能保留为事后误差分层。
+
+路线因此调整为：#61 先冻结暴露账、真实 geographic block + buffer、past-only rolling forward、outer-training 内 fit/selection/calibration 和更正基线；#62 再以相同小型 inner-search 预算比较 strict-v1 RF、modernized RF、ExtraTrees、boosting、MLP/ResNet、表格 Transformer 及必要时序候选；#63 在 #61 后测试 Chl-a、MLD、淡水/环流代理和连续背景；#64 只在 inner-OOF 残差互补或低支持失败明确时测试集成、概率头和预训练。#44、#5、#46 依次后移。
+
+#42 的有效结论收窄为“停止放大当前 GRU/ST96/四邻接实现”。其短训练、单种子、残差背景和简化邻域输入不足以否定全部 Transformer、时序或图模型。RF 暂作为 modernized point baseline；exact strict-v1 replica 在 #61/#62 中单独实现与命名。

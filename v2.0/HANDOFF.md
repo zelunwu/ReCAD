@@ -1,5 +1,7 @@
 # ReCAD v2.0 — Agent Handoff
 
+> **2026-10-13 P2.7 路线修订（当前最高优先级）**：#40–#42 保留为开发实验，但审计发现旧 SOCAT locked/external 航次进入 P2 matchup、现行 spatial fold 并非真实地理块留出、SSS 区间使用观测真值盐度分箱、#40–#42 校准未严格嵌套。当前顺序改为 **#61 验证与暴露谱系修复 → #62 公平有限 model-zoo；#63 过程变量与连续背景可在 #61 后并行准备 → #64 条件性集成/预训练 → #44 可信度合同 → #5 新独立验证 → #46 发布**。任何已暴露标签永久降为 development，不能重新分割后称为 blind。GitHub #1/#4/#43 为最新执行权威。
+
 > **当前权威入口（2026-10-08）**：数据版本与路径见 `docs/data_registry.md`；实验方法、结果和证据等级见 `docs/experiment_registry.md`；研究方向变化见 `docs/decision_log.md`；当前执行路线以 GitHub #1、#4、#5 和 `configs/frozen/product_scope_v2.3.json` 为准。下方早期章节保留工程历史，若与这些入口冲突，以当前权威入口为准。
 
 > **2026-10-08 P2.0 范围冻结**：全球沿海 SSS/fCO2 是 P2 核心研究目标，但当前均未取得全球产品资格。SSS 正式状态为 `diagnostic_only`：#25 已使用一次 locked set，虽然通过 7/8 门槛，但 LME 17 失败，该集合永久不得再次称为 blind。fCO2 仅 Caribbean LME 12 为开发证据上的 `pass_regional`。MAB TA/DIC 为 `diagnostic_only`，SAB TA 为 `fail`；TA/DIC 只作为预算不超过 P2 10% 的北美可选扩展，失败不阻断核心产品。全球 atlas 只代表投影域，不代表全球观测验证。完整证据总账见 `docs/experiment_archive/p2_scope_reconciliation_v2.3/`。
@@ -24,7 +26,7 @@
 
 ## 0. 当前一句话
 
-ReCAD v2.0 当前进入 P2：产品范围和改进合同已经由 #36/#37 冻结，下一步执行 #38 全球观测缓存；随后 #39–#41 在同一全球 cruise/spatial/forward 证据上比较输入与 SSS/fCO2 模型。北美 TA 和由 `T+SSS+fCO2+TA` 经 inverse CO2SYS 派生的 DIC 是非阻断可选扩展。
+ReCAD v2.0 当前执行 #61：先修复标签暴露账、真实 geographic block + buffer、past-only rolling forward 和 outer-training 内嵌套校准，再由 #62 在同一修复证据上公平筛选 RF、boosting、MLP/ResNet、表格 Transformer 与必要的时序候选。#63 补过程变量和连续背景；#64 仅在残差互补或低支持失败明确时测试集成/预训练。北美 TA 与 inverse-CO2SYS DIC 仍是预算受限、非阻断扩展。
 
 ---
 
