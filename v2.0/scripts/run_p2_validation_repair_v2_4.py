@@ -254,6 +254,7 @@ def audit_splits(target: str, frame: pd.DataFrame, splits: list[RepairedSplit]) 
     SPLITS.mkdir(parents=True, exist_ok=True)
     rows = []
     assignments = []
+    index_payload: dict[str, np.ndarray] = {}
     for split in splits:
         checks = assert_split_integrity(frame, split)
         fit = frame.iloc[split.fit_index]
@@ -299,10 +300,48 @@ def audit_splits(target: str, frame: pd.DataFrame, splits: list[RepairedSplit]) 
             .assign(target=target, scheme=split.scheme, fold=split.fold, role="held")
             .copy()
         )
+        key = f"{split.scheme}__{split.fold}"
+        index_payload[f"{key}__fit"] = split.fit_index.astype(np.int64)
+        index_payload[f"{key}__held"] = split.held_index.astype(np.int64)
     pd.DataFrame(rows).to_csv(SPLITS / f"{target}_split_audit.csv", index=False)
     pd.concat(assignments, ignore_index=True).to_parquet(
         SPLITS / f"{target}_held_assignments.parquet", index=False, compression="zstd"
     )
+    np.savez_compressed(SPLITS / f"{target}_split_indices.npz", **index_payload)
+
+
+def cached_splits(target: str, frame: pd.DataFrame) -> list[RepairedSplit]:
+    """Load audited split indices and verify they still match the current frame."""
+
+    path = SPLITS / f"{target}_split_indices.npz"
+    audit_path = SPLITS / f"{target}_split_audit.csv"
+    if not path.is_file() or not audit_path.is_file():
+        splits = build_splits(frame)
+        audit_splits(target, frame, splits)
+        return splits
+    audit = pd.read_csv(audit_path).set_index(["scheme", "fold"])
+    stored = np.load(path)
+    splits = []
+    for scheme, fold in audit.index:
+        key = f"{scheme}__{int(fold)}"
+        fit_index = stored[f"{key}__fit"]
+        held_index = stored[f"{key}__held"]
+        row = audit.loc[(scheme, fold)]
+        fit_hash = hash_values(frame.iloc[fit_index].record_id.to_numpy(np.int64))
+        held_hash = hash_values(frame.iloc[held_index].record_id.to_numpy(np.int64))
+        if fit_hash != row.fit_record_hash or held_hash != row.held_record_hash:
+            raise RuntimeError(f"cached split drift: {target} {scheme}/{fold}")
+        splits.append(
+            RepairedSplit(
+                scheme=str(scheme),
+                fold=int(fold),
+                fit_index=fit_index,
+                held_index=held_index,
+                held_groups=tuple(sorted(set(frame.iloc[held_index].group_key.astype(str)))),
+                metadata={},
+            )
+        )
+    return splits
 
 
 def catboost_model(seed: int, iterations: int = 300) -> CatBoostRegressor:
@@ -697,8 +736,7 @@ def run_models(target: str | None = None, only_scheme: str | None = None) -> Non
         frame = load_frame(target_name)
         if target_name == "fCO2":
             frame = add_pco2air(frame)
-        splits = build_splits(frame)
-        audit_splits(target_name, frame, splits)
+        splits = cached_splits(target_name, frame)
         for split in splits:
             if only_scheme and split.scheme != only_scheme:
                 continue
@@ -949,7 +987,8 @@ def main() -> int:
         audit_exposure()
         for target in ("SSS", "fCO2"):
             frame = load_frame(target)
-            audit_splits(target, frame, build_splits(frame))
+            if not (SPLITS / f"{target}_split_indices.npz").is_file():
+                audit_splits(target, frame, build_splits(frame))
         write_manifests()
     if args.stage in {"models", "all"}:
         run_models(args.target, args.scheme)
