@@ -1,0 +1,87 @@
+{
+  "schema_version": "2.4",
+  "experiment_id": "p2_validation_repair_v2.4",
+  "issue": 61,
+  "parent_issue": 43,
+  "created_utc": "2026-10-13T09:40:00Z",
+  "targets": ["SSS", "fCO2"],
+  "outer_schemes": {
+    "cruise": {"folds": 5, "group": "normalized cruise/platform"},
+    "geographic": {
+      "folds": 5,
+      "block_degrees": 5.0,
+      "buffer_km": 100.0,
+      "held_scope": "all observations physically inside held blocks",
+      "fit_exclusions": ["every held cruise/platform group", "every cell within buffer_km"]
+    },
+    "whole_region": {
+      "folds": 5,
+      "region": "LME where available; fixed 20-degree latitude by 40-degree longitude neutral region otherwise"
+    },
+    "forward": {
+      "windows": [[2013, 2016], [2017, 2020], [2021, 2025]],
+      "rule": "all fitting, transforms, upstream predictions, selection, and calibration use years before held_start"
+    }
+  },
+  "nested_calibration": {
+    "method": "two-fold grouped cross-conformal residuals inside each outer-training partition",
+    "stratification": "fixed bands of model prediction only",
+    "minimum_band_rows": 200,
+    "intervals": [0.5, 0.9],
+    "forbidden": ["observed truth bands", "residuals from models trained on the outer-held fold", "future labels"]
+  },
+  "sss_models": {
+    "raw_glorys": {"role": "background baseline"},
+    "catboost_background_residual": {
+      "iterations": 300,
+      "depth": 8,
+      "learning_rate": 0.05,
+      "missing_background": "same-fold direct CatBoost fallback"
+    }
+  },
+  "fco2_models": {
+    "strict_v1_rf": {
+      "features": ["longitude", "latitude", "month", "background SSS", "SST", "ADT", "atmospheric pCO2"],
+      "trees": 300,
+      "minimum_leaf": 1,
+      "max_features": 1.0,
+      "bootstrap": true,
+      "sample_weight": false,
+      "complete_case": true
+    },
+    "modernized_rf": {
+      "features": "Issue #41 A2 plus outer-fold cross-fitted SSS",
+      "trees": 96,
+      "max_depth": 18,
+      "minimum_leaf": 20,
+      "max_features": 0.7,
+      "max_samples": 0.5,
+      "sample_weight": "LME then cruise balanced"
+    },
+    "direct_catboost": {
+      "features": "Issue #41 A2",
+      "iterations": 300,
+      "depth": 8,
+      "learning_rate": 0.05,
+      "sample_weight": "LME then cruise balanced"
+    }
+  },
+  "common_grid": {"resolution_degrees": 0.25, "aggregation": "held grid-month mean on model-common rows"},
+  "acceptance": {
+    "zero_group_overlap": true,
+    "zero_record_overlap": true,
+    "zero_forbidden_forward_rows": true,
+    "zero_target_derived_deployment_features": true,
+    "coverage50_bounds": [0.45, 0.55],
+    "coverage90_bounds": [0.85, 0.95],
+    "minimum_relative_improvement": 0.05,
+    "baseline_scope": "correct the evidence boundary; model-family promotion is reserved for Issue #62"
+  },
+  "label_policy": {
+    "legacy_exposed_groups": "permanently development-only",
+    "repartitioning_cannot_restore_blind_status": true,
+    "new_independent_labels_opened": false,
+    "2026_provisional_opened": false
+  },
+  "large_output_root": "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4"
+}
