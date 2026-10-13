@@ -1,0 +1,8 @@
+model,definition
+seasonal_trend,training-fold trend/season plus shrunk LME-month climatology
+v11_random_forest,honest v1.x random forest with outer-fold cross-fitted SSS
+catboost_direct,frozen Issue #54 direct A2 CatBoost
+catboost_residual,CatBoost residual around fold-fitted seasonal/trend background
+catboost_residual_sss,same residual CatBoost plus strict outer-fold cross-fitted SSS
+lme_adapters,residual-SSS CatBoost plus shrunk fixed-LME/month correction
+gmm_experts,eight probabilistic environmental residual experts shrunk toward global residual-SSS CatBoost

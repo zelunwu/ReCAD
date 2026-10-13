@@ -1,0 +1,51 @@
+candidate,gate,passed
+catboost_direct,cruise-equal improvement over strict v1 >= 5%,False
+catboost_direct,spatial cruise-equal improvement over strict v1 >= 5%,False
+catboost_direct,global spatial skill positive,True
+catboost_direct,global forward skill positive,True
+catboost_direct,whole-LME does not degrade from strict v1,False
+catboost_direct,worst-LME ratio <= 1.10,True
+catboost_direct,Caribbean Issue 26 skill maintained,False
+catboost_direct,cruise/spatial bootstrap upper CI < 0,False
+catboost_direct,50% interval coverage in range,False
+catboost_direct,90% interval coverage in range,False
+catboost_residual,cruise-equal improvement over strict v1 >= 5%,False
+catboost_residual,spatial cruise-equal improvement over strict v1 >= 5%,False
+catboost_residual,global spatial skill positive,True
+catboost_residual,global forward skill positive,True
+catboost_residual,whole-LME does not degrade from strict v1,False
+catboost_residual,worst-LME ratio <= 1.10,False
+catboost_residual,Caribbean Issue 26 skill maintained,False
+catboost_residual,cruise/spatial bootstrap upper CI < 0,False
+catboost_residual,50% interval coverage in range,False
+catboost_residual,90% interval coverage in range,False
+catboost_residual_sss,cruise-equal improvement over strict v1 >= 5%,False
+catboost_residual_sss,spatial cruise-equal improvement over strict v1 >= 5%,False
+catboost_residual_sss,global spatial skill positive,True
+catboost_residual_sss,global forward skill positive,True
+catboost_residual_sss,whole-LME does not degrade from strict v1,False
+catboost_residual_sss,worst-LME ratio <= 1.10,False
+catboost_residual_sss,Caribbean Issue 26 skill maintained,False
+catboost_residual_sss,cruise/spatial bootstrap upper CI < 0,False
+catboost_residual_sss,50% interval coverage in range,False
+catboost_residual_sss,90% interval coverage in range,False
+lme_adapters,cruise-equal improvement over strict v1 >= 5%,False
+lme_adapters,spatial cruise-equal improvement over strict v1 >= 5%,False
+lme_adapters,global spatial skill positive,True
+lme_adapters,global forward skill positive,True
+lme_adapters,whole-LME does not degrade from strict v1,False
+lme_adapters,worst-LME ratio <= 1.10,False
+lme_adapters,Caribbean Issue 26 skill maintained,False
+lme_adapters,cruise/spatial bootstrap upper CI < 0,False
+lme_adapters,50% interval coverage in range,False
+lme_adapters,90% interval coverage in range,False
+gmm_experts,cruise-equal improvement over strict v1 >= 5%,False
+gmm_experts,spatial cruise-equal improvement over strict v1 >= 5%,False
+gmm_experts,global spatial skill positive,True
+gmm_experts,global forward skill positive,True
+gmm_experts,whole-LME does not degrade from strict v1,False
+gmm_experts,worst-LME ratio <= 1.10,False
+gmm_experts,Caribbean Issue 26 skill maintained,False
+gmm_experts,cruise/spatial bootstrap upper CI < 0,False
+gmm_experts,50% interval coverage in range,False
+gmm_experts,90% interval coverage in range,False

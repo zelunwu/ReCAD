@@ -250,3 +250,13 @@ fCO2 的背景 SSS 将 pooled cruise/spatial RMSE 从 36.484/39.001 降至 36.07
 GMM experts 的 pooled cruise/spatial/forward RMSE 为 0.864/0.918/1.422 PSU，优于 CatBoost 的 0.907/0.973/1.446，且两种普通外层 split 的 2,000 次航次 bootstrap MSE 差均显著低于零。冻结的主指标 cruise-equal RMSE 从 1.049 降至 1.000 PSU，改善 4.61%，未达到 5% 门槛；whole-LME 从 2.470 恶化到 2.620 PSU，2022–2025 forward 仍为 1.560 PSU。LME 17 的 spatial/whole-LME/forward RMSE 为 5.584/6.136/7.104 PSU，均未改善。ST96 与 top-2 experts 在普通 split 和 whole-LME 上均不支持升级。
 
 最终状态为 **`diagnostic_only` / no promotion**：保留 global CatBoost 作为可重复基线，GMM 只作为显式观测支持域内的 challenger；不授权无条件全球 SSS 订正产品。经验区间的 forward 90% coverage 为 CatBoost 0.876、GMM 0.873，仍不足以替代新盲测和外部独立验证。完整报告、12 张带 caption 的图和 15 个源表见 `docs/experiment_archive/p2_sss_global_bakeoff_v2.3/`；预测、checkpoint 和分析中间表保存在 Git 外目录。
+
+## P2.5 全球沿岸 fCO2 模型族与区域共享比较（Issue #41）
+
+`p2_fco2_global_bakeoff_v2.3` 在相同 887,811 条 SOCAT fCO2、5,143 个航次、54 个 LME 和 Issue #54 的冻结 A2 输入上比较 seasonal/trend background、诚实重训 v1.x Random Forest、direct CatBoost、两种 residual CatBoost、固定 LME adapter 与 8 个概率环境/GMM experts。每个外层折都重新构造 SSS：外层训练部分采用两折 cruise cross-fit，held 部分只由全部外层训练 SSS 标签拟合；observed SSS 从未直接作为 fCO2 输入。最终保存 16 份 cross-fitted SSS、112 份预测和 176 个模型 checkpoint。
+
+诚实 RF 在普通外推中仍最强，pooled cruise/spatial RMSE 为 33.96/37.45 µatm；所有现代候选相对 RF 的 cruise 与 spatial 航次级 paired bootstrap MSE 差均显著大于零。LME adapter/GMM 将 forward RMSE 从 47.55 降至 46.21/46.45 µatm，且 GMM 的 cruise 年 bias slope 为 -0.013 µatm yr-1，优于 RF 的 -0.170，说明显式 trend/residual 分支更能跟踪时间变化；但 whole-LME、普通 cruise 和既有 Caribbean 区域技能同时退化。2022–2025 GMM RMSE 仍为 46.58 µatm，高于 40 µatm 门槛。
+
+Cross-fitted SSS 对 residual CatBoost 的 cruise/spatial/whole-LME/forward RMSE 产生一致但有限的改善：36.93/39.20/57.43/47.46 降为 36.45/38.58/57.28/46.57 µatm。GMM 在简单的绝对 RMSE/正 skill 条件下有 22 个 development-qualified LME，RF 为 18 个；但 GMM forward 50/90 coverage 只有 0.396/0.806，不能把该计数解释为产品可信覆盖。
+
+最终状态为 **`diagnostic_only` / no promotion**：诚实 v1.x RF 保留为 strict interpolation baseline，residual/GMM 只作为 #42 temporal/connectivity 实验的时间迁移分支。下一候选必须同时保留 RF 的 cruise/spatial 技能和 residual 模型的趋势/late-forward 优势。locked、external-independent 与 2026 provisional 标签均未开启。完整报告、15 张带 caption 的图和 22 个源表见 `docs/experiment_archive/p2_fco2_global_bakeoff_v2.3/`；大文件保存在 Git 外目录。

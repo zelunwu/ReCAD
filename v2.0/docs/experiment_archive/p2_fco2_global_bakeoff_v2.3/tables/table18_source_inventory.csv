@@ -1,0 +1,4 @@
+artifact,count,location
+prediction_partitions,112,C:\backup\phd\data\processed\recad_v2_3\p2_fco2_global_bakeoff_v2.3\partitions
+crossfit_sss_partitions,16,C:\backup\phd\data\processed\recad_v2_3\p2_fco2_global_bakeoff_v2.3\crossfit_sss
+model_checkpoints,176,C:\backup\phd\data\processed\recad_v2_3\p2_fco2_global_bakeoff_v2.3\checkpoints
