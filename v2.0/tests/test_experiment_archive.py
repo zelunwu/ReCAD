@@ -40,6 +40,7 @@ SPEC.loader.exec_module(MODULE)
         "p2_predictor_ablation_v2.3",
         "p2_sss_global_bakeoff_v2.3",
         "p2_fco2_global_bakeoff_v2.3",
+        "p2_context_connectivity_v2.3",
     ],
 )
 def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -> None:
