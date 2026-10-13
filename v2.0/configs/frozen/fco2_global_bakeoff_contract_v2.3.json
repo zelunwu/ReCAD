@@ -1,0 +1,53 @@
+{
+  "version": "2.3",
+  "issue": 41,
+  "experiment_id": "p2_fco2_global_bakeoff_v2.3",
+  "target": "SOCAT fCO2",
+  "models": [
+    "seasonal_trend",
+    "v11_random_forest",
+    "catboost_direct",
+    "catboost_residual",
+    "catboost_residual_sss",
+    "lme_adapters",
+    "gmm_experts"
+  ],
+  "retained_features": [
+    "year_centered",
+    "month_sin",
+    "month_cos",
+    "latitude_sin",
+    "latitude_cos",
+    "longitude_sin",
+    "longitude_cos",
+    "distance_to_significant_land_km",
+    "bathymetry_m",
+    "shelf_core_mask",
+    "slope_deep_mask",
+    "sst",
+    "wspd",
+    "xco2air"
+  ],
+  "sss_policy": "outer-fold SSS only: two-fold cruise cross-fit within outer training and all-outer-fit prediction for held rows; observed salinity is forbidden as an fCO2 predictor",
+  "outer_schemes": ["cruise", "spatial", "whole_lme", "forward"],
+  "forward_reporting_periods": ["2019-2021", "2022-2025"],
+  "catboost_budget": {"iterations": 300, "depth": 8, "learning_rate": 0.05},
+  "sss_budget": {"iterations": 240, "depth": 8, "inner_folds": 2},
+  "random_forest_budget": {"trees": 96, "max_depth": 18, "minimum_leaf": 20, "max_samples": 0.5},
+  "gmm_expert_budget": {"components": 8, "iterations_per_expert": 180, "depth": 7, "global_shrinkage": 0.5},
+  "primary_metric": "cruise-equal RMSE",
+  "selection_gate": {
+    "relative_improvement_over_strict_v1": 0.05,
+    "global_spatial_and_forward_skill_positive": true,
+    "caribbean_lme12_must_not_degrade": true,
+    "whole_lme_maximum_degradation": 0.0,
+    "worst_supported_lme_ratio_max": 1.1,
+    "paired_group_bootstrap_replicates": 2000,
+    "coverage50_range": [0.45, 0.55],
+    "coverage90_range": [0.85, 0.95]
+  },
+  "historical_2004_2005_policy": "descriptive only and forbidden for selection",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "provisional_2026_opened": false
+}
