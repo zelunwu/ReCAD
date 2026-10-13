@@ -925,7 +925,7 @@ def analyze() -> None:
                 "scheme": row.scheme,
                 "model": row.model,
                 "rmse_ceiling": target_ceiling,
-                "rmse_pass": bool(target_ceiling is None or row.rmse <= target_ceiling),
+                "rmse_pass": None if target_ceiling is None else bool(row.rmse <= target_ceiling),
                 "coverage50_pass": bool(
                     pd.notna(getattr(row, "coverage50", np.nan)) and 0.45 <= row.coverage50 <= 0.55
                 ),
@@ -936,6 +936,7 @@ def analyze() -> None:
         )
     gates = pd.DataFrame(gate_rows)
     gates.to_csv(TABLES / "corrected_gate_matrix.csv", index=False)
+    gate_records = gates.astype(object).where(pd.notna(gates), None).to_dict("records")
     write_json(
         OUTPUT / "decision.json",
         {
@@ -955,7 +956,7 @@ def analyze() -> None:
             "complex_model_intervals_recomputed": False,
             "complex_model_policy": "withdraw affected claims and rerun families fairly in Issue 62",
             "new_independent_labels_opened": False,
-            "gate_rows": gates.to_dict("records"),
+            "gate_rows": gate_records,
         },
     )
 

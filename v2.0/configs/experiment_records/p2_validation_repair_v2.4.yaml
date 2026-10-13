@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p2_validation_repair_v2.4
-status: preregistered
+status: completed
 owner: ReCAD
 created_utc: 2026-10-13T09:40:00Z
 
@@ -25,8 +25,8 @@ data:
   aggregation: Native 1/8-degree grid-month for training; additional 0.25-degree held common-grid evaluation.
 
 splits:
-  manifest_path: external output split_manifest_v2.4.parquet
-  manifest_sha256: generated_after_preregistered_code_run
+  manifest_path: external output splits/SSS_split_indices.npz and splits/fCO2_split_indices.npz
+  manifest_sha256: SSS 55bec64e205648d4ed9c53c64b55e3e4d6a97a407e657a65b89c295cf61c0d91; fCO2 9ecce6550ebeddafbbbecbe050bda7bb5c3adf40516664212deb7b2dd3e47689
   grouping: Complete normalized cruise/platform groups; actual 5-degree geographic blocks with 100-km buffer; complete LME/fixed-neutral regions; three rolling forward windows.
   train: Each outer-training partition is divided by complete group into 80% fit and 20% calibration; no model or upstream component is refit after calibration.
   development: Cruise, geographic, whole-region, and rolling-forward held rows.
@@ -59,7 +59,7 @@ evaluation:
   baselines: [raw GLORYS, exact strict-v1 RF, modernized RF, direct CatBoost]
 
 reproducibility:
-  git_commit: preregistration commit recorded before training
+  git_commit: 739cb4a6e7a1babc81b5ef562e2424d80fc3d87e
   git_worktree_clean: true at preregistration commit
   source_hashes:
     matchup: 935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75
@@ -72,25 +72,27 @@ artifacts:
   protocol: external output protocol.json
   data_manifest: external output data_manifest.json
   selection: external output decision.json
-  checkpoints: []
-  predictions: []
-  metrics: []
-  figures: []
+  checkpoints: [none selected; deterministic fixed-budget baselines]
+  predictions: [90 external Parquet outer-prediction partitions, 18 nested upstream-SSS Parquet partitions]
+  metrics: [external tables/corrected_native_metrics.csv, external tables/corrected_common_grid_metrics.csv, external tables/corrected_risk_coverage.csv]
+  figures: [12 reviewer figures under docs/experiment_archive/p2_validation_repair_v2.4/figures]
   report: docs/experiment_archive/p2_validation_repair_v2.4/REPORT.md
   reviewer_archive:
     path: docs/experiment_archive/p2_validation_repair_v2.4
     report: docs/experiment_archive/p2_validation_repair_v2.4/REPORT.md
     captions: docs/experiment_archive/p2_validation_repair_v2.4/CAPTIONS.md
-    figures: []
-    source_tables: []
+    figures: [12 PNG figures]
+    source_tables: [9 CSV tables]
     manifest: docs/experiment_archive/p2_validation_repair_v2.4/archive_manifest.json
-    verification_status: null
+    verification_status: verified
 
 outcome:
-  completed_utc: null
-  primary_result: null
-  acceptance_gate_passed: null
-  deviations: []
+  completed_utc: 2026-10-13T10:36:00Z
+  primary_result: SSS CatBoost cruise/geographic/whole-region RMSE 0.921/1.593/2.571 psu; fCO2 best cruise/geographic RMSE 34.38/52.12 µatm. Repaired validation is reusable, but no baseline passes the full product-promotion contract.
+  acceptance_gate_passed: true for validation repair and zero leakage; false for model promotion
+  deviations:
+    - Before formal training, the early two-fold cross-conformal sketch was replaced by a deterministic complete-group 80/20 fit/calibration split to prevent indirect cross-target reuse of calibration groups.
+    - Affected complex-family interval claims from Issues 40-42 were withdrawn rather than partially recomputed; fair family reruns are assigned to Issue 62 on the repaired folds.
   invalidation_reason: null
-  evidence_grade: null
-  allowed_claims: null
+  evidence_grade: development_only
+  allowed_claims: Corrected baseline ranking and failure boundaries under cruise, true geographic, whole-region, and rolling-forward development holdouts; no independent qualification or production promotion.
