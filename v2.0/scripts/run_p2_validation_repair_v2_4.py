@@ -724,7 +724,11 @@ def run_fco2_split(frame: pd.DataFrame, split: RepairedSplit) -> None:
         )
 
 
-def run_models(target: str | None = None, only_scheme: str | None = None) -> None:
+def run_models(
+    target: str | None = None,
+    only_scheme: str | None = None,
+    only_fold: int | None = None,
+) -> None:
     """Run the preregistered corrected baselines with resumable partitions."""
 
     PARTITIONS.mkdir(parents=True, exist_ok=True)
@@ -739,6 +743,8 @@ def run_models(target: str | None = None, only_scheme: str | None = None) -> Non
         splits = cached_splits(target_name, frame)
         for split in splits:
             if only_scheme and split.scheme != only_scheme:
+                continue
+            if only_fold is not None and split.fold != only_fold:
                 continue
             started = time.perf_counter()
             print(
@@ -980,6 +986,7 @@ def main() -> int:
     parser.add_argument("--stage", choices=("audit", "models", "analyze", "all"), default="all")
     parser.add_argument("--target", choices=("SSS", "fCO2"))
     parser.add_argument("--scheme", choices=("cruise", "geographic", "whole_region", "forward"))
+    parser.add_argument("--fold", type=int, choices=range(5))
     args = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
     TABLES.mkdir(parents=True, exist_ok=True)
@@ -991,7 +998,7 @@ def main() -> int:
                 audit_splits(target, frame, build_splits(frame))
         write_manifests()
     if args.stage in {"models", "all"}:
-        run_models(args.target, args.scheme)
+        run_models(args.target, args.scheme, args.fold)
         write_manifests()
     if args.stage in {"analyze", "all"}:
         analyze()
