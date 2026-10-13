@@ -1,0 +1,98 @@
+schema_version: 1
+experiment_id: p2_validation_repair_v2.4
+status: completed
+owner: ReCAD
+created_utc: 2026-10-13T09:40:00Z
+
+science:
+  question: Can the P2 point baselines and uncertainty claims survive corrected exposure, geographic, temporal, and nested-calibration rules?
+  hypothesis: Corrected evaluation will preserve useful point-baseline ordering but widen uncertainty and reveal lower true geographic and forward skill.
+  product_scope: Global coastal SSS and fCO2 development evidence only; no independent qualification.
+  primary_comparison: SSS CatBoost residual versus raw GLORYS; fCO2 modernized RF and direct CatBoost versus exact strict-v1 RF.
+  acceptance_gate: Zero group/record/time leakage, deployment-only calibration strata, reproducible exposure ledger, corrected 0.25-degree common-grid and uncertainty results.
+  stopping_rule: Do not add model families or tune them in Issue 61; archive corrected baselines and pass the repaired contract to Issue 62.
+
+data:
+  manifest_path: configs/p2_validation_repair_v2.4.json
+  manifest_sha256: 56a7ed5ef6f08eb4f48d1d9a780abca1fe54c59b5103a1762515d4d0f5476704
+  prepared_path: C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet
+  prepared_sha256: 935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75
+  observation_products: [SOCATv2026 Coastal, ReCAD v2.2 split manifest, ReCAD v2.3 global group manifest]
+  time_range: 1993-2025
+  spatial_domain: SOCAT-supported global coastal matchup inside the frozen 400-km product geometry
+  qc_policy: Reuse frozen Issue 54 matchup rows; do not open 2026 provisional or any new independent label.
+  provenance_policy: Audit exact and normalized cruise/platform keys across v2.2, v2.3, and matchup artifacts; exposed legacy groups become development-only.
+  aggregation: Native 1/8-degree grid-month for training; additional 0.25-degree held common-grid evaluation.
+
+splits:
+  manifest_path: external output splits/SSS_split_indices.npz and splits/fCO2_split_indices.npz
+  manifest_sha256: SSS 55bec64e205648d4ed9c53c64b55e3e4d6a97a407e657a65b89c295cf61c0d91; fCO2 9ecce6550ebeddafbbbecbe050bda7bb5c3adf40516664212deb7b2dd3e47689
+  grouping: Complete normalized cruise/platform groups; actual 5-degree geographic blocks with 100-km buffer; complete LME/fixed-neutral regions; three rolling forward windows.
+  train: Each outer-training partition is divided by complete group into 80% fit and 20% calibration; no model or upstream component is refit after calibration.
+  development: Cruise, geographic, whole-region, and rolling-forward held rows.
+  locked_test: No eligible locked label opened; legacy groups found in P2 are reclassified development-only.
+  external_independent: No target value opened; eligibility determined by metadata ledger only.
+  previously_opened_benchmarks: [2004-2005, Issue 25 SSS locked, legacy SOCAT groups included in P2 matchup]
+
+model:
+  family: Corrected strong baselines only
+  config_path: configs/p2_validation_repair_v2.4.json
+  config_sha256: 56a7ed5ef6f08eb4f48d1d9a780abca1fe54c59b5103a1762515d4d0f5476704
+  inputs: [deployable Issue 41 A2 predictors, GLORYS background SSS, optional ADT for strict-v1 common cases]
+  learned_outputs: [SSS, fCO2]
+  derived_outputs: [50/90 symmetric conformal intervals, applicability diagnostics]
+  loss: RMSE
+  sampling: LME-then-cruise balanced except exact strict-v1 RF
+  parameter_count: tree ensembles; recorded per model in the archive
+
+training:
+  seeds: [61024]
+  optimizer_steps: Frozen tree counts in config; no Issue 61 tuning.
+  compute_budget: One corrected baseline pass over 5 cruise, 5 geographic, 5 whole-region, and 3 rolling-forward outer partitions.
+  checkpoint_selection: No checkpoint selection; fixed budgets preregistered here.
+  uncertainty_method: Group-disjoint 20% calibration holdout inside outer training, using prediction bands only.
+
+evaluation:
+  primary_metrics: [RMSE, MAE, bias, R2, cruise-equal RMSE]
+  group_metrics: [actual geographic block, cruise, whole region, rolling forward, worst LME, 0.25-degree common grid]
+  calibration_metrics: [coverage50, coverage90, interval width, WIS, fixed-coverage risk]
+  baselines: [raw GLORYS, exact strict-v1 RF, modernized RF, direct CatBoost]
+
+reproducibility:
+  git_commit: 739cb4a6e7a1babc81b5ef562e2424d80fc3d87e
+  git_worktree_clean: true at preregistration commit
+  source_hashes:
+    matchup: 935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75
+    v2_2_split_manifest: 25d5423c15ef0149336bbb0ac95866e182ba365bec2e129aecee03d3d71154e5
+    v2_3_global_group_manifest: a67888d34961b08cf3f6b9c75f62f24b5875dc461e156e70c2e2c9b42f46a748
+  environment_lock: v2.0/.venv plus pyproject.toml; exact package inventory archived externally
+
+artifacts:
+  output_directory: C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4
+  protocol: external output protocol.json
+  data_manifest: external output data_manifest.json
+  selection: external output decision.json
+  checkpoints: [none selected; deterministic fixed-budget baselines]
+  predictions: [90 external Parquet outer-prediction partitions, 18 nested upstream-SSS Parquet partitions]
+  metrics: [external tables/corrected_native_metrics.csv, external tables/corrected_common_grid_metrics.csv, external tables/corrected_risk_coverage.csv]
+  figures: [12 reviewer figures under docs/experiment_archive/p2_validation_repair_v2.4/figures]
+  report: docs/experiment_archive/p2_validation_repair_v2.4/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p2_validation_repair_v2.4
+    report: docs/experiment_archive/p2_validation_repair_v2.4/REPORT.md
+    captions: docs/experiment_archive/p2_validation_repair_v2.4/CAPTIONS.md
+    figures: [12 PNG figures]
+    source_tables: [9 CSV tables]
+    manifest: docs/experiment_archive/p2_validation_repair_v2.4/archive_manifest.json
+    verification_status: verified
+
+outcome:
+  completed_utc: 2026-10-13T10:36:00Z
+  primary_result: SSS CatBoost cruise/geographic/whole-region RMSE 0.921/1.593/2.571 psu; fCO2 best cruise/geographic RMSE 34.38/52.12 µatm. Repaired validation is reusable, but no baseline passes the full product-promotion contract.
+  acceptance_gate_passed: true for validation repair and zero leakage; false for model promotion
+  deviations:
+    - Before formal training, the early two-fold cross-conformal sketch was replaced by a deterministic complete-group 80/20 fit/calibration split to prevent indirect cross-target reuse of calibration groups.
+    - Affected complex-family interval claims from Issues 40-42 were withdrawn rather than partially recomputed; fair family reruns are assigned to Issue 62 on the repaired folds.
+  invalidation_reason: null
+  evidence_grade: development_only
+  allowed_claims: Corrected baseline ranking and failure boundaries under cruise, true geographic, whole-region, and rolling-forward development holdouts; no independent qualification or production promotion.

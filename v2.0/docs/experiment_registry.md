@@ -280,3 +280,11 @@ RF 的 pooled cruise/spatial/whole-LME/forward RMSE 为 33.96/37.45/54.38/47.55 
 路线因此调整为：#61 先冻结暴露账、真实 geographic block + buffer、past-only rolling forward、outer-training 内 fit/selection/calibration 和更正基线；#62 再以相同小型 inner-search 预算比较 strict-v1 RF、modernized RF、ExtraTrees、boosting、MLP/ResNet、表格 Transformer 及必要时序候选；#63 在 #61 后测试 Chl-a、MLD、淡水/环流代理和连续背景；#64 只在 inner-OOF 残差互补或低支持失败明确时测试集成、概率头和预训练。#44、#5、#46 依次后移。
 
 #42 的有效结论收窄为“停止放大当前 GRU/ST96/四邻接实现”。其短训练、单种子、残差背景和简化邻域输入不足以否定全部 Transformer、时序或图模型。RF 暂作为 modernized point baseline；exact strict-v1 replica 在 #61/#62 中单独实现与命名。
+
+## P2.7a 验证、暴露谱系与基线修复（Issue #61）
+
+`p2_validation_repair_v2.4` 在冻结的 1993–2025 matchup 上建立了可复用的真实空间和时间验证合同。SSS 使用 750,040 条观测，fCO2 使用 887,811 条观测；两者均运行 5 个完整航次 folds、5 个真实 5° geographic folds（移除 held 航次并增加 100 km 缓冲）、5 个完整 LME/neutral-region folds 和 3 个严格 past-only forward windows。每个 outer training 再按完整 group 切为 80% 模型拟合与 20% 区间校准；全部 group、record、fit-calibration group 和 forbidden-future overlap 为零。旧 SOCAT locked/external 与 carbon-product 别名交集已写入机器可读 exposure ledger，不再拥有 blind 身份。
+
+SSS CatBoost 背景残差订正在 cruise/geographic/whole-region/forward 的 RMSE 为 0.921/1.593/2.571/1.284 PSU；raw GLORYS 为 1.721/1.721/1.721/1.871 PSU。因此订正在普通航次与时间外推上有效，但完整区域迁移会明显劣于背景场，不能作为无条件全球订正。fCO2 modernized RF 的 cruise/forward RMSE 为 34.38/40.54 µatm，direct CatBoost 的 geographic/whole-region RMSE 最低但仍为 52.12/53.18 µatm；strict-v1 RF 的 geographic/whole-region 为 62.53/66.81 µatm。所有 fCO2 绝对 RMSE promotion gates 均失败。
+
+训练内嵌套区间在 cruise 上接近 nominal，但在 geographic、whole-region 和 forward 常出现 under-coverage，故 interval width 只保留为风险排序诊断，不能称为已校准产品误差。最终状态为 **`corrected_development_baselines_only`**：#61 的验证修复 gate 通过并允许 #62 使用相同 folds 做公平 model-zoo；没有 SSS/fCO2 模型获得生产提升。完整报告、12 张 caption 紧随图片的图、9 个源表和外部大文件哈希见 `docs/experiment_archive/p2_validation_repair_v2.4/`。

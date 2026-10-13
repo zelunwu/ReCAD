@@ -1,0 +1,5 @@
+dataset,legacy_split,legacy_groups,groups_in_global_manifest,groups_in_matchup,matchup_rows
+carbon,external_independent,41,9,7,1474
+carbon,locked_test,66,19,15,3789
+socat,external_independent,9,9,7,1474
+socat,locked_test,538,538,417,79135

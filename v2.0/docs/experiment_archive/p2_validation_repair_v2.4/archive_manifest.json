@@ -1,0 +1,96 @@
+{
+  "experiment_id": "p2_validation_repair_v2.4",
+  "training_git_commit": "b51a5a47f0fc3d4e92be34ef8eb22ec8b71b3d1f",
+  "data_manifest_sha256": "fb907d4b150b1ea7533e34f3a1723da3e7c976432e384446792e2bb4e8d746b5",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "1993-2025 frozen development labels; repaired outer holdouts only",
+  "decision": "validation repair accepted; no production model promoted; Issue 62 unblocked",
+  "figure_source_data": {
+    "fig01_sss_rmse.png": [
+      "corrected_native_metrics.csv"
+    ],
+    "fig02_fco2_rmse.png": [
+      "corrected_native_metrics.csv"
+    ],
+    "fig03_r2.png": [
+      "corrected_native_metrics.csv"
+    ],
+    "fig04_cruise_equal_rmse.png": [
+      "corrected_native_metrics.csv"
+    ],
+    "fig05_coverage50.png": [
+      "corrected_native_metrics.csv"
+    ],
+    "fig06_coverage90.png": [
+      "corrected_native_metrics.csv"
+    ],
+    "fig07_fco2_interval_width.png": [
+      "corrected_native_metrics.csv"
+    ],
+    "fig08_risk_coverage.png": [
+      "corrected_risk_coverage.csv"
+    ],
+    "fig09_prediction_coverage.png": [
+      "model_coverage.csv"
+    ],
+    "fig10_split_sizes.png": [
+      "split_audit.csv"
+    ],
+    "fig11_leakage_audit.png": [
+      "split_audit.csv"
+    ],
+    "fig12_gate_matrix.png": [
+      "corrected_gate_matrix.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_sss_rmse.png": "Figure 1. Pooled held-out SSS RMSE across four leakage-repaired validation designs. CatBoost correction improves on raw GLORYS for cruise, geographic, and forward validation, but degrades under complete-region transfer and misses the 1.2 psu geographic and forward gate.",
+    "fig02_fco2_rmse.png": "Figure 2. Pooled held-out fCO2 RMSE across the strict v1 RF replica, modernized RF, and direct CatBoost. Modern RF leads cruise and forward validation, while direct CatBoost is least poor for geographic and whole-region extrapolation; every preregistered RMSE gate fails.",
+    "fig03_r2.png": "Figure 3. Held-out R-squared for SSS and fCO2 under the four repaired validation designs. Ordinary cruise validation remains optimistic relative to geographic and whole-region transfer, especially for fCO2 where geographic R-squared falls to about 0.31 for the best model.",
+    "fig04_cruise_equal_rmse.png": "Figure 4. Cruise-equal RMSE gives every held group equal weight instead of allowing dense cruises to dominate. The ranking broadly confirms the pooled metrics while exposing the larger error experienced by sparsely sampled groups.",
+    "fig05_coverage50.png": "Figure 5. Empirical coverage of nominal 50% prediction intervals calibrated only inside each outer training partition. Cruise coverage is near nominal, but geographic, whole-region, and forward transfer frequently under-cover, so these intervals are not yet deployable uncertainty estimates.",
+    "fig06_coverage90.png": "Figure 6. Empirical coverage of nominal 90% prediction intervals calibrated without held-out labels. Several strict-transfer settings fall outside the preregistered 0.85-0.95 acceptance range, demonstrating distribution shift that internal calibration cannot repair by itself.",
+    "fig07_fco2_interval_width.png": "Figure 7. Mean width of the nested 90% fCO2 intervals for each model and validation design. Width must be read together with Figure 6: a narrower interval is useful only when its held-out coverage remains calibrated.",
+    "fig08_risk_coverage.png": "Figure 8. Geographic-holdout RMSE after retaining observations with the narrowest predicted 90% intervals. The curves test whether interval width ranks error risk; they do not establish accuracy at coastal grid cells with no observations.",
+    "fig09_prediction_coverage.png": "Figure 9. Fraction of held-out observations receiving an eligible prediction. The strict v1 RF loses roughly 2.8-2.9% of fCO2 rows through its complete-case feature contract, whereas the modern models and residual SSS path retain all rows.",
+    "fig10_split_sizes.png": "Figure 10. Mean fit and held-out row counts per fold after complete-group exclusion and, for geographic folds, the 100 km spatial buffer. Smaller geographic training sets are a deliberate consequence of leakage control rather than failed data loading.",
+    "fig11_leakage_audit.png": "Figure 11. Summed leakage diagnostics across every target and validation design. All recorded group overlap, record overlap, fit-calibration group overlap, and forbidden future-time counts are exactly zero.",
+    "fig12_gate_matrix.png": "Figure 12. Count of passed applicable preregistered gates for each target, validation design, and model; whole-region has two applicable coverage gates because no absolute RMSE ceiling was frozen for that scheme. Passing a subset does not promote a model; Issue 61 unblocks fair model-family screening while retaining all baselines as development evidence only."
+  },
+  "files_sha256": {
+    "README.md": "14f403a187e40acb7a41241f6686d6ce3ae9e4c202fd291fceb377c17d01722f",
+    "REPORT.md": "4848234b606f14033b4b924cac42c6690a57054650ee885d82328505b7bf570e",
+    "CAPTIONS.md": "1b9700a64c06d16cc726797990445d88ec1fba42c64eb6decb0bfb0d9f8bf22c",
+    "figures/fig01_sss_rmse.png": "c21c42a4ab384d98c9c8f24a6dc29f79437b45f2c5bfc36e0ba83b70ad7101dc",
+    "figures/fig02_fco2_rmse.png": "18ddcb93a3bf4f69e73ce9f38956c338400076d83bfe1a8bfc4a84ec7ad506ce",
+    "figures/fig03_r2.png": "f13428cd58a44262bbf81c6c3f27b339cb1baf94e6d1c1752fcd8cf118f8294c",
+    "figures/fig04_cruise_equal_rmse.png": "c10388cb7a633098dc044c1613d1fc8cfb04e24d6069bee1575b5cb95582db33",
+    "figures/fig05_coverage50.png": "84ab8fec1063352af9b6dfca195157a954b57fbab71314dc3d5ef77638e4a5d3",
+    "figures/fig06_coverage90.png": "54d22ef981bac55bd383d75d800f4419abec17803ab5d7921f56aa5b6d4bf60d",
+    "figures/fig07_fco2_interval_width.png": "097411381175cb9e21a3980196c27a35858e51354f88b14b47fa8cc31d9eb6bf",
+    "figures/fig08_risk_coverage.png": "3cb842b7253399c37e8925012cf4e425082b8ec5ff1cb9015324253871746abd",
+    "figures/fig09_prediction_coverage.png": "eb8366b6f38fb00f351584bbf26622fb5525e15e2911a319cf319025c79baea0",
+    "figures/fig10_split_sizes.png": "46a19cd2b40f4d607f74a60d1c5ef1d5c9964670a57a6fd13610acdddd21a518",
+    "figures/fig11_leakage_audit.png": "f6b8e8519ab273f905323b2d992d2f15e45342d3fbc57c47d3824c0fd1752136",
+    "figures/fig12_gate_matrix.png": "ef94371f3fb09e444da9b320172da4ae8093fdf4c419ec921a4c45f38e121b5f",
+    "tables/archive_correction_matrix.csv": "c3a2a7725c3df6d7a8f98dcd499c48050486bffd3c1367ea6ba7bd7b8281ff54",
+    "tables/corrected_common_grid_metrics.csv": "d0cff4a17833bbc380f52c308cddecc08ee506d61d3f6abf18a752d13c9eb02e",
+    "tables/corrected_gate_matrix.csv": "3db8eefe1c16d596da82ac27a95a14e7cd5ddf398d373b3bdebf6c9e5055c876",
+    "tables/corrected_native_metrics.csv": "e7d57e6fdacb3753d142e1bcf7dfad4b92742034bcaed3eca28224a627ef9b59",
+    "tables/corrected_risk_coverage.csv": "61f6ccba8b3d309eef6d012551018950d0af1a6034f7e9da6bb09821103bff2e",
+    "tables/exposure_summary.csv": "97e0115d6fffe3e51ce039b4f2ccda00e1b537471b50690f0acc393fe3616def",
+    "tables/model_coverage.csv": "938b932771768651e602e3c14fb455cff17574a089cb26b30f20a214dee8207d",
+    "tables/split_audit.csv": "cf08d1ee28b4564e8a191d50983495edbeb000db5c6b4c70b13e090bb7f89944",
+    "tables/training_log.csv": "fbd3820538946ac54fc0dd47f9c626c883242f805b810751d28b01c2893ff892"
+  },
+  "archive_builder_sha256": "90b9265582471c11516a14e767dba51a9752fbac6e973228f2ee4ecf5ef8be52",
+  "analysis_script_sha256": "c414257b67ee72e6898d63ca72eae48b4f3c7eed3b26478b17cfffc4ff3cfabf",
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\data_manifest.json": "fb907d4b150b1ea7533e34f3a1723da3e7c976432e384446792e2bb4e8d746b5",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\protocol.json": "9221c81c9204141de303ba211e32e610a48e9b6dd83fc85a8c6769fe2c8df7f1",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\decision.json": "0027a0c17c4795abe66ea365bdd8ece824c4204f0c19c88c111240726d0e5bf5",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\splits\\SSS_split_indices.npz": "55bec64e205648d4ed9c53c64b55e3e4d6a97a407e657a65b89c295cf61c0d91",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\splits\\fCO2_split_indices.npz": "9ecce6550ebeddafbbbecbe050bda7bb5c3adf40516664212deb7b2dd3e47689"
+  }
+}

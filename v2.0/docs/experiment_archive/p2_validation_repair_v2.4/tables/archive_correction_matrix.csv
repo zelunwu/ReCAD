@@ -1,0 +1,4 @@
+archive,retained,withdrawn,replacement
+p2_sss_global_bakeoff_v2.3,point predictions as development diagnostics,"sealed-label, strict-spatial, leakage-safe interval and risk claims",Issue 61 corrected SSS baselines
+p2_fco2_global_bakeoff_v2.3,point rankings as development diagnostics,"sealed-label, strict-spatial, nested-calibration and exact-v1 identity claims",Issue 61 strict-v1 and modernized RF baselines
+p2_context_connectivity_v2.3,negative result for exact GRU/ST96/four-neighbour implementation,family-wide rejection and deployable uncertainty claims,Issue 62 fair model-family screen
