@@ -306,3 +306,11 @@ fCO2 没有模型通过相对 promotion 门槛。ExtraTrees 与 CatBoost 仅作�
 SSS 三个过程代理均未通过冻结门槛：锋面和 ADT 只在 whole-region 单一 scheme 有约 3.0%/3.6% 改善，却在 cruise 或 geographic 退化；背景 SSS 淡水代理令 geographic/whole-region 更差。fCO2 的三个过程代理同样失败；其中淡水代理令 geographic RMSE 退化 4.2%。唯一保留的是连续背景残差，其三种子 cruise/geographic/whole-region/forward RMSE 为 32.760/54.201/52.754/39.263 µatm，对匹配 ExtraTrees 的改善很小，且 90% coverage 仍只有 0.796/0.782/0.837（geographic/whole-region/forward）。
 
 最终状态为 **`retain_fco2_continuous_background_for_development_only` / no production promotion**。#64 不获得过程因子组合授权；只允许针对 #62 已触发的残差图结构测试改变架构或信息路径的受控假设，以及针对空间/时间 shift under-coverage 的不确定性假设，禁止重跑 #42 的四邻接 ST96。完整报告、10 张 caption 紧随图片的图和 11 个源表见 `docs/experiment_archive/p2_process_predictors_v2.4/`；270 个 OOF 分区、特征缓存和 1,080 个 checkpoint 文件保存在 Git 外目录。
+
+## P2.7d 条件图、集成与不确定性（Issue #64）
+
+`p2_conditional_combination_v2.4` 在 Issue #61 的完全相同 corrected folds 上测试三个被前序证据触发或允许筛选的分支。季节水体图分支只传播由 inner-training 模型在 honest inner-validation 行产生的残差，改变了 #42 的架构和信息路径；不确定性分支用同一 honest residual 拟合 log-absolute-error ExtraTrees scale head，再由 outer-training calibration 做标准化 conformal。过程因子组合与预训练没有触发，均作为负结果保留。
+
+图残差 adapter 对 SSS 只有 pooled cruise RMSE 从 0.895 到 0.873 的明显改善，其他迁移方案不足 1%；fCO2 cruise 和 forward 还会退化，两个目标均未通过两方案 paired-group 门槛。scale head 虽将 fCO2 geographic/forward 90% coverage 从 0.795/0.837 提高到 0.833/0.847，但仍低于 0.85，并把 whole-region 从 0.783 降到 0.742，因此不能取代产品 reliability flag。
+
+honest inner-OOF 的 fCO2 CatBoost/F4 残差中位相关为 0.860，触发冻结凸组合。逐折权重完全由 inner labels 决定；outer pooled cruise/geographic/whole-region/forward RMSE 从 32.776/54.061/52.834/39.317 降至 **32.471/52.495/52.504/38.853 µatm**。geographic 和 forward 改善超过 1%，paired grouped bootstrap 上界低于零，且无方案退化，故最终状态为 **`retain_fco2_convex_ensemble_for_development_only` / no production promotion**。完整报告、8 张 caption 紧随图片的图和源表见 `docs/experiment_archive/p2_conditional_combination_v2.4/`；未开启新 locked、external-independent 或 2026 标签。
