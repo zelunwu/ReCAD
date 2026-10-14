@@ -1,0 +1,77 @@
+{
+  "schema_version": "2.4",
+  "experiment_id": "p2_conditional_combination_v2.4",
+  "issue": 64,
+  "parent_issue": 43,
+  "created_utc": "2026-10-14T17:10:00Z",
+  "data_contract": {
+    "matchup": "C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet",
+    "predictor_cube": "C:/backup/phd/data/processed/recad_v2_3/global_coastal_predictor_cube_v2.3.nc",
+    "split_source": "C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits",
+    "issue62_source": "C:/backup/phd/data/processed/recad_v2_4/p2_model_zoo_v2.4",
+    "issue63_source": "C:/backup/phd/data/processed/recad_v2_4/p2_process_predictors_v2.4",
+    "period": "1993-2025",
+    "new_independent_labels_opened": false,
+    "2026_provisional_opened": false
+  },
+  "trigger_audit": {
+    "graph": {
+      "status": "triggered_for_controlled_test",
+      "evidence": "Issue-62 same-month adjacent residual correlation above permutation control: SSS 0.847, fCO2 0.845",
+      "caveat": "diagnostic only; does not prove a graph model"
+    },
+    "process_factor_combination": {
+      "status": "not_triggered",
+      "evidence": "Issue 63 retained no SSS process field and no fCO2 process proxy"
+    },
+    "point_ensemble": {
+      "status": "screen_only",
+      "trigger_rule": "run only if inner residual correlation is below 0.90 and a convex blend improves at least two corrected transfer schemes by 1% without regression",
+      "outer_diagnostic_only": "Issue-62 CatBoost versus Issue-63 continuous-background fCO2 residual correlation ranges 0.856-0.957; outer oracle evidence cannot set final weights"
+    },
+    "uncertainty_head": {
+      "status": "triggered_for_controlled_test",
+      "evidence": "Issue-63 90% coverage is 0.796 geographic, 0.782 whole-region, and 0.837 forward"
+    },
+    "pretraining": {
+      "status": "not_triggered",
+      "evidence": "no frozen auditable pretraining source with an identical from-scratch control and target-specific failure hypothesis"
+    }
+  },
+  "branches": {
+    "graph_residual_adapter": {
+      "targets": ["SSS", "fCO2"],
+      "definition": "seasonal nearest-source residual propagation over the frozen water-only coastal graph, using only honest inner-validation residuals generated from inner-training labels",
+      "architecture_change": "target-residual graph adapter rather than Issue-42 label-free four-neighbour ST96",
+      "inner_source_split": "complete groups; half sources and half graph-selection",
+      "seasons": 4,
+      "candidate_decay_hops": [8, 16, 32],
+      "candidate_shrinkage": [0.25, 0.5],
+      "maximum_graph_hops": 64,
+      "fallback": "zero correction when unreachable or unsupported"
+    },
+    "uncertainty_scale_head": {
+      "targets": ["SSS", "fCO2"],
+      "definition": "fixed ExtraTrees log-absolute-error scale head trained on honest inner-validation residuals, followed by outer-training-only standardized grouped conformal calibration",
+      "control": "Issue-61 prediction-stratified grouped conformal widths on the identical point prediction",
+      "point_prediction_frozen": true
+    }
+  },
+  "base_candidates": {
+    "SSS": "Issue-63 S0 CatBoost background-residual finalist",
+    "fCO2": "Issue-63 F4 ExtraTrees continuous-background residual"
+  },
+  "evaluation": {
+    "outer_splits": ["cruise", "geographic_plus_100km", "whole_region", "past_only_forward"],
+    "point_gate": "at least 1% RMSE improvement in two intended transfer schemes with paired grouped bootstrap upper MSE difference below zero, no scheme regression above 2%, and no boundary artifact",
+    "uncertainty_gate": "improve WIS and fixed-coverage risk in geographic, whole-region, and forward without coverage below 0.85, mean width inflation above 25%, or point-score change",
+    "ensemble_gate": "inner residual trigger plus the same outer point gate",
+    "pretraining_gate": "untriggered and not run"
+  },
+  "artifacts": {
+    "large_output_root": "C:/backup/phd/data/processed/recad_v2_4/p2_conditional_combination_v2.4",
+    "reviewer_archive": "docs/experiment_archive/p2_conditional_combination_v2.4",
+    "minimum_figures": 8,
+    "caption_policy": "full caption immediately below every figure in REPORT.md"
+  }
+}
