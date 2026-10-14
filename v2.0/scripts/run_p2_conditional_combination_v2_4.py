@@ -288,10 +288,84 @@ def run_ensemble_trigger_audit() -> None:
     )
 
 
+def run_outer_ensemble() -> None:
+    """Evaluate the triggered convex blend with weights frozen on inner labels."""
+
+    decision = json.loads((OUTPUT / "ensemble_trigger_decision.json").read_text(encoding="utf-8"))
+    if not decision["triggered"]:
+        return
+    audit = pd.read_csv(TABLES / "fCO2_inner_ensemble_trigger.csv")
+    frame = load_augmented_frame("fCO2")
+    rows = []
+    for split in cached_splits("fCO2", frame):
+        destination = PARTITIONS / f"fCO2_{split.scheme}_fold{split.fold}.parquet"
+        partition = pd.read_parquet(destination)
+        if "ensemble_prediction" in partition:
+            rows.append(
+                {
+                    "scheme": split.scheme,
+                    "fold": split.fold,
+                    "weight_catboost": float(partition.ensemble_weight_catboost.iloc[0]),
+                    "base_group_equal_rmse": group_equal_rmse(
+                        partition, partition.base_prediction.to_numpy(float)
+                    ),
+                    "ensemble_group_equal_rmse": group_equal_rmse(
+                        partition, partition.ensemble_prediction.to_numpy(float)
+                    ),
+                }
+            )
+            continue
+        _tune_train, _tune_validation, model_fit, _calibration, held = prepare_split(
+            "fCO2", frame, split
+        )
+        cat_path = ISSUE62 / "selection" / f"fCO2_{split.scheme}_fold{split.fold}_catboost.json"
+        cat_config = json.loads(cat_path.read_text(encoding="utf-8"))["selected_config"]
+        model = fit_model(
+            "catboost",
+            cat_config,
+            model_fit,
+            MODERN_RF_FEATURES,
+            model_fit.truth.to_numpy(float),
+            balanced_sample_weight(model_fit),
+            split_seed("fCO2", split, "issue64-ensemble-outer", SEED),
+        )
+        cat, _ = predict_model(model, held)
+        weight = float(
+            audit.loc[
+                (audit.scheme == split.scheme) & (audit.fold == split.fold),
+                "oracle_weight_catboost",
+            ].iloc[0]
+        )
+        partition["catboost_prediction"] = cat
+        partition["ensemble_weight_catboost"] = weight
+        partition["ensemble_prediction"] = (
+            partition.base_prediction.to_numpy(float)
+            + weight * (cat - partition.base_prediction.to_numpy(float))
+        ).astype("float32")
+        partition.to_parquet(destination, index=False, compression="zstd")
+        rows.append(
+            {
+                "scheme": split.scheme,
+                "fold": split.fold,
+                "weight_catboost": weight,
+                "base_group_equal_rmse": group_equal_rmse(
+                    partition, partition.base_prediction.to_numpy(float)
+                ),
+                "ensemble_group_equal_rmse": group_equal_rmse(
+                    partition, partition.ensemble_prediction.to_numpy(float)
+                ),
+            }
+        )
+        print(json.dumps({"outer_ensemble": rows[-1]}), flush=True)
+    pd.DataFrame(rows).to_csv(TABLES / "fCO2_outer_ensemble_summary.csv", index=False)
+    (OUTPUT / "ensemble_outer.complete").write_text("complete\n", encoding="utf-8")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", choices=["SSS", "fCO2", "all"], default="all")
     parser.add_argument("--ensemble-audit", action="store_true")
+    parser.add_argument("--ensemble-outer", action="store_true")
     args = parser.parse_args()
     graph = topology()
     targets = ("SSS", "fCO2") if args.target == "all" else (args.target,)
@@ -299,6 +373,8 @@ def main() -> None:
         run_target(target, graph)
     if args.ensemble_audit:
         run_ensemble_trigger_audit()
+    if args.ensemble_outer:
+        run_outer_ensemble()
     if args.target == "all":
         (OUTPUT / "training.complete").write_text("complete\n", encoding="utf-8")
 
