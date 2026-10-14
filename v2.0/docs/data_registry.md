@@ -44,6 +44,7 @@
 | fCO2 context/connectivity v2.3 | 887,811 条 fCO2 development rows；5 个模型 × 16 个外层折 = 80 份预测；18 份 nested-cruise learning-curve 预测；82 个 checkpoint；约 0.655 GB | `C:\backup\phd\data\processed\recad_v2_3\p2_context_connectivity_v2.3` | 6 个月 history 只含冻结 cube 的 SST/wspd/xCO2air/SSSbg；图为四邻接水体节点且由 residual correlation 0.869 触发；locked/external-independent/2026 未开启；缓存、预测和 checkpoint 不进 Git |
 | repaired validation assets v2.4 | SSS 750,040 行、fCO2 887,811 行；5 cruise + 5 geographic-buffer + 5 whole-region + 3 past-only forward splits/target | `C:\backup\phd\data\processed\recad_v2_4\p2_validation_repair_v2.4` | Issue #61 冻结 split indices、exposure ledger、outer-nested SSS 与校准谱系；所有已暴露旧 locked/external 组永久 development-only |
 | finite model-zoo outputs v2.4 | 216 个单种子初筛 OOF 分区；SSS CatBoost 与 fCO2 ExtraTrees/CatBoost 增加两种子后共 324 个分区、936 个 checkpoint 文件 | `C:\backup\phd\data\processed\recad_v2_4\p2_model_zoo_v2.4` | Issue #62 复用 Issue #61 folds；含 selection、resources、risk-coverage、graph diagnostics、decision 和 SHA256 manifest；未打开新 locked/external-independent/2026 标签；大文件不进 Git |
+| process-predictor ablation outputs v2.4 | 887,822 行过程特征缓存；162 个单种子筛选分区；fCO2 baseline/连续背景增加两种子后共 270 个 OOF 分区、1,080 个 checkpoint 文件 | `C:\backup\phd\data\processed\recad_v2_4\p2_process_predictors_v2.4` | Issue #63 复用 Issue #61 folds 和 Issue #62 finalists；Chl-a/MLD/river 明确不可用；仅 fCO2 continuous background 作为 development candidate；未打开新 locked/external-independent/2026 标签 |
 | coastal graph / support map v2.2 | 148,795 节点、492,570 条四邻接有向边 | P0 已冻结，同上 | 图审计确认只连接水体节点；含最近碳支持距离 |
 
 ## 标签来源规则
