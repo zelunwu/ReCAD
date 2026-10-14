@@ -170,6 +170,18 @@ def group_equal_rmse(frame: pd.DataFrame, prediction: np.ndarray) -> float:
     return float(np.sqrt(per_group.mean()))
 
 
+def nondominated_families(metrics: pd.DataFrame) -> list[str]:
+    """Return rows not Pareto-dominated when every metric is minimized."""
+
+    result = []
+    for family, values in metrics.iterrows():
+        other = metrics.drop(index=family)
+        dominated = ((other.le(values)).all(axis=1) & (other.lt(values)).any(axis=1)).any()
+        if not dominated:
+            result.append(str(family))
+    return result
+
+
 def _seed_everything(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)

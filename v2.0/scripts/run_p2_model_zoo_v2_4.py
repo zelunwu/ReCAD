@@ -20,6 +20,7 @@ from recad.evaluate.model_zoo import (
     deterministic_cap,
     fit_model,
     group_equal_rmse,
+    nondominated_families,
     predict_model,
     save_model,
 )
@@ -639,16 +640,18 @@ def select_finalists() -> dict[str, object]:
             if passes_two and no_regression:
                 qualified.append(family)
         ranks = table.rank(axis=0, method="average").mean(axis=1).sort_values()
-        selected = qualified[:2]
+        nondominated = nondominated_families(table)
+        selected = [family for family in ranks.index if family in qualified][:2]
         status = "promotion_finalist"
         if not selected:
-            selected = list(ranks.index[:2])
+            selected = [family for family in ranks.index if family in nondominated][:2]
             status = "stability_finalist_only"
         decisions[target] = {
             "baseline": baseline_model,
             "selected": selected,
             "status": status,
             "qualified": qualified,
+            "nondominated": nondominated,
             "mean_rank": {name: float(value) for name, value in ranks.items()},
             "relative_improvement": improvement.to_dict("index"),
         }

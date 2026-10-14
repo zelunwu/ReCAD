@@ -16,6 +16,7 @@ from recad.evaluate.model_zoo import (
     deterministic_cap,
     fit_model,
     group_equal_rmse,
+    nondominated_families,
     predict_model,
     save_model,
 )
@@ -52,6 +53,19 @@ def test_group_equal_rmse_and_deterministic_cap() -> None:
     second = deterministic_cap(frame, 2, "fixed")
     pd.testing.assert_frame_equal(first, second)
     assert len(first) == 2
+
+
+@pytest.mark.l1
+def test_nondominated_families_excludes_a_globally_worse_candidate() -> None:
+    metrics = pd.DataFrame(
+        {
+            "cruise": [1.0, 1.1, 0.9],
+            "geographic": [1.0, 1.2, 1.3],
+        },
+        index=["balanced", "dominated", "cruise_specialist"],
+    )
+
+    assert nondominated_families(metrics) == ["balanced", "cruise_specialist"]
 
 
 @pytest.mark.l1
