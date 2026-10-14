@@ -1,0 +1,269 @@
+{
+  "experiment_id": "p2_model_zoo_v2.4",
+  "training_git_commit": "d29e44ad07097a19997a129a2008030561260b54",
+  "data_manifest_sha256": "1d50a40279f2720b2b0b2acf04fd9262909ce2d33cfb661de3e5491f34b92dda",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "1993-2025 frozen development labels on corrected outer holdouts",
+  "decision": {
+    "context_triggers": {
+      "SSS": {
+        "graph_reason": "same-month adjacent residual correlation exceeds permutation control by threshold",
+        "graph_signal": 0.8469477192579524,
+        "graph_threshold": 0.2,
+        "graph_triggered": true,
+        "temporal_triggered": false
+      },
+      "fCO2": {
+        "graph_reason": "same-month adjacent residual correlation exceeds permutation control by threshold",
+        "graph_signal": 0.8449493541157461,
+        "graph_threshold": 0.2,
+        "graph_triggered": true,
+        "temporal_triggered": false
+      }
+    },
+    "finalists": {
+      "conditional_context": {
+        "graph_trigger": "corrected finalist residuals have water-connected correlation above 0.2 after same-month geographic-distance permutation control",
+        "otherwise": "archive as not triggered",
+        "temporal_trigger": "a point finalist passes cruise and geographic gates but retains at least 5% forward deficit"
+      },
+      "decisions": {
+        "SSS": {
+          "baseline": "catboost_background_residual",
+          "mean_rank": {
+            "catboost": 2.25,
+            "extra_trees": 2.75,
+            "ft_transformer": 3.5,
+            "residual_mlp": 5.0,
+            "ridge": 5.25,
+            "xgboost": 2.25
+          },
+          "nondominated": [
+            "catboost",
+            "extra_trees",
+            "xgboost"
+          ],
+          "qualified": [
+            "catboost"
+          ],
+          "relative_improvement": {
+            "catboost": {
+              "cruise": 0.022496047316447866,
+              "forward": 0.005843122866280434,
+              "geographic": 0.05818259746916058,
+              "whole_region": 0.09110417263498188
+            },
+            "extra_trees": {
+              "cruise": 0.155049355070136,
+              "forward": 0.06033723629502938,
+              "geographic": -0.9008206939934207,
+              "whole_region": -1.0362501509149766
+            },
+            "ft_transformer": {
+              "cruise": -0.04165478256902332,
+              "forward": -0.06594053595258376,
+              "geographic": -0.6347925704211682,
+              "whole_region": -0.5139463851208057
+            },
+            "residual_mlp": {
+              "cruise": -0.0701363920986263,
+              "forward": 0.02174903591245407,
+              "geographic": -2.1065536531783295,
+              "whole_region": -1.3620968388447439
+            },
+            "ridge": {
+              "cruise": -0.6801783385071648,
+              "forward": -0.3776028784938104,
+              "geographic": -1.3336371393348845,
+              "whole_region": -0.5527959912013883
+            },
+            "xgboost": {
+              "cruise": 0.09719597195078576,
+              "forward": 0.05689266958800482,
+              "geographic": -0.689765307759399,
+              "whole_region": -0.2260371691469298
+            }
+          },
+          "selected": [
+            "catboost"
+          ],
+          "status": "promotion_finalist"
+        },
+        "fCO2": {
+          "baseline": "modernized_rf",
+          "mean_rank": {
+            "catboost": 2.5,
+            "extra_trees": 1.5,
+            "ft_transformer": 4.0,
+            "residual_mlp": 4.5,
+            "ridge": 5.75,
+            "xgboost": 2.75
+          },
+          "nondominated": [
+            "catboost",
+            "extra_trees",
+            "xgboost"
+          ],
+          "qualified": [],
+          "relative_improvement": {
+            "catboost": {
+              "cruise": -0.01629657042009354,
+              "forward": 0.0029926841112209637,
+              "geographic": 0.18266111778377644,
+              "whole_region": -0.00314725239330457
+            },
+            "extra_trees": {
+              "cruise": 0.03135509596139685,
+              "forward": 0.024636341212983647,
+              "geographic": 0.1363314743135031,
+              "whole_region": 0.00813548769564022
+            },
+            "ft_transformer": {
+              "cruise": -0.11983676903960137,
+              "forward": -0.10710095779882087,
+              "geographic": 0.128884491717831,
+              "whole_region": -0.09320745023254143
+            },
+            "residual_mlp": {
+              "cruise": -0.07572482444689864,
+              "forward": -0.16039944994574934,
+              "geographic": 0.08155125919304337,
+              "whole_region": -0.09374387902183089
+            },
+            "ridge": {
+              "cruise": -0.6410695446724012,
+              "forward": -0.49029174555012356,
+              "geographic": 0.05998032942106214,
+              "whole_region": -0.09553459415444301
+            },
+            "xgboost": {
+              "cruise": 0.02064607100949158,
+              "forward": 0.030221444919249295,
+              "geographic": 0.05805827651019994,
+              "whole_region": 0.0063877881560915045
+            }
+          },
+          "selected": [
+            "extra_trees",
+            "catboost"
+          ],
+          "status": "stability_finalist_only"
+        }
+      },
+      "screen_seed": 62024
+    },
+    "new_independent_labels_opened": false,
+    "production_model_promoted": false,
+    "status": "development_model_zoo_complete"
+  },
+  "figure_source_data": {
+    "fig01_sss_rmse.png": [
+      "screen_candidate_metrics.csv"
+    ],
+    "fig02_fco2_rmse.png": [
+      "screen_candidate_metrics.csv"
+    ],
+    "fig03_sss_relative_improvement.png": [
+      "relative_improvement.csv",
+      "issue61_control_metrics.csv"
+    ],
+    "fig04_fco2_relative_improvement.png": [
+      "relative_improvement.csv",
+      "issue61_control_metrics.csv"
+    ],
+    "fig05_group_equal_rmse.png": [
+      "screen_candidate_metrics.csv"
+    ],
+    "fig06_finalist_seed_stability.png": [
+      "stability_metrics.csv",
+      "finalist_decisions.csv"
+    ],
+    "fig07_finalist_coverage90.png": [
+      "stability_metrics.csv",
+      "finalist_decisions.csv"
+    ],
+    "fig08_geographic_risk_coverage.png": [
+      "risk_coverage.csv",
+      "finalist_decisions.csv"
+    ],
+    "fig09_compute_performance.png": [
+      "compute_summary.csv",
+      "finalist_decisions.csv"
+    ],
+    "fig10_inner_search_distribution.png": [
+      "inner_selection_metrics.csv"
+    ],
+    "fig11_late_bias_worst_region.png": [
+      "all_seed_metrics.csv",
+      "finalist_decisions.csv"
+    ],
+    "fig12_graph_residual_signal.png": [
+      "graph_residual_diagnostics.csv",
+      "context_triggers.csv"
+    ],
+    "fig13_leakage_audit.png": [
+      "split_audit.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_sss_rmse.png": "Figure 1. Held-out SSS RMSE for all six preregistered point-model families across cruise, true geographic-block plus 100 km buffer, whole-region, and rolling-forward validation; every bar pools the complete corrected outer predictions rather than an inner tuning subset.",
+    "fig02_fco2_rmse.png": "Figure 2. Held-out fCO2 RMSE for the same six families and repaired validation designs, using outer-nested predicted SSS rather than observed salinity as an input; the strict transfer columns determine whether ordinary cruise skill generalizes.",
+    "fig03_sss_relative_improvement.png": "Figure 3. Percent SSS RMSE improvement relative to the Issue 61 CatBoost background-residual baseline; positive values indicate improvement, while the four columns expose any gain obtained by sacrificing geographic, regional, or future transfer.",
+    "fig04_fco2_relative_improvement.png": "Figure 4. Percent fCO2 RMSE improvement relative to the Issue 61 modernized random forest; the comparison uses identical outer folds and nested upstream SSS, so differences isolate model family and its fixed small search allowance.",
+    "fig05_group_equal_rmse.png": "Figure 5. Group-equal RMSE assigns every held cruise or platform group equal influence and therefore checks whether dense observations dominate pooled RMSE; lower values and consistent color across columns indicate more stable transfer.",
+    "fig06_finalist_seed_stability.png": "Figure 6. Three-seed RMSE mean and standard deviation for the preregistered Pareto or fallback finalists (SSS: CatBoost; fCO2: ExtraTrees, CatBoost); error bars quantify stochastic training sensitivity after configuration selection.",
+    "fig07_finalist_coverage90.png": "Figure 7. Empirical coverage of nominal 90% prediction intervals for the finalists; the green band marks the frozen 0.85-0.95 acceptance range and reveals where calibration fitted inside outer training fails under distribution shift.",
+    "fig08_geographic_risk_coverage.png": "Figure 8. Geographic-holdout RMSE after retaining observations with the narrowest prediction intervals; a monotone curve supports interval width as a risk-ranking device but does not validate unobserved coastal grid cells.",
+    "fig09_compute_performance.png": "Figure 9. Complete screening compute time versus mean held-out rank, including all six inner configurations and final outer fits; the lower-left region identifies families that combine transfer skill with practical computational cost.",
+    "fig10_inner_search_distribution.png": "Figure 10. Distribution of inner group-equal RMSE across every family configuration and outer fold; broad or shifted boxes show whether the equal six-configuration allowance yielded a robust family or a configuration-sensitive result.",
+    "fig11_late_bias_worst_region.png": "Figure 11. Finalist late-period bias for 2020-2025 and worst RMSE among LMEs with at least 200 held observations; these diagnostics prevent good global averages from hiding temporal drift or severe supported-region failures.",
+    "fig12_graph_residual_signal.png": "Figure 12. Same-month four-neighbour residual correlation after subtracting a within-month permutation control, averaged over finalist seeds; the frozen graph trigger is 0.20 and the resulting statuses are SSS=triggered, fCO2=triggered.",
+    "fig13_leakage_audit.png": "Figure 13. Summed group, record, calibration-group, and forbidden-future overlap counts inherited from the repaired Issue 61 folds; every displayed zero is required before model-family comparisons can be interpreted."
+  },
+  "files_sha256": {
+    "README.md": "fd6122126c2e6a858b732e9d735a992eb82be2e41be956268a055ef1ae051bc1",
+    "REPORT.md": "8338bafb8447fb72e568a449ec03e91807edd10d98e9c6a90453e5f9e4e0eff1",
+    "CAPTIONS.md": "b2b899b5fd5c08da0f01904a4c798d2585da05ea26e02e27adb08d3f2c68dd5a",
+    "figures/fig01_sss_rmse.png": "ef61e7f734dc15cf37f62b8e82e677ca86c6e6226d9166bc181552f54d96837c",
+    "figures/fig02_fco2_rmse.png": "4ee647b899649e43f6bc538849b8d3894672d6390aee188cc6c52cd89e17b2c7",
+    "figures/fig03_sss_relative_improvement.png": "d69d179b6cdca9e2d85bb7f30b00c38053720fac90a675038f7536d5193855bd",
+    "figures/fig04_fco2_relative_improvement.png": "fec96f3f24286f3608b1d8c08f6f90b1a31f5636551eedd118751b0160f4be7a",
+    "figures/fig05_group_equal_rmse.png": "f1a271127a98bfbe0088d36b81c0670fa85c3d648ab834eb84820e748f8855a2",
+    "figures/fig06_finalist_seed_stability.png": "8f12147e0d7f1ec912f46a46e2d14d77bae9bf5d7587e1eb4a6e3eaee2f1f465",
+    "figures/fig07_finalist_coverage90.png": "a343b5229356019222edd4c0f5c20ce61c78c528329aa07a22ebf2152be57e1a",
+    "figures/fig08_geographic_risk_coverage.png": "d124457b16333e9bbba87f6a53455a2cfb0374278b2ea501bb8b386a269e08a3",
+    "figures/fig09_compute_performance.png": "34fca13d79373da30ade3e63348ba4a2c6b322b9189e2ce63f4f14c2a119dab2",
+    "figures/fig10_inner_search_distribution.png": "eb855b0dd5f61d9c750a76558a41e59a8e65d7eb78492c19b89cdc6deef6bf57",
+    "figures/fig11_late_bias_worst_region.png": "417a50d4a0db0cd45493b0b49d4d04dc3f55c4211a2a059606a0e39407b813c3",
+    "figures/fig12_graph_residual_signal.png": "9dad620e85c741ae356e339a53adb6a00984e60204bf717f924b80c40901ab37",
+    "figures/fig13_leakage_audit.png": "99dd7c6772a80ce4ef8f4616265a661e83981471b75ae3f0ce2a8c6ed234e983",
+    "tables/all_seed_metrics.csv": "ff1afaf7166881a1dab7a44ff6c21b2c60263eb30b2a77c5e436bd5ba56a7be0",
+    "tables/checkpoint_manifest.csv": "46cec04d4b1c406b50d4ee44ddf58294c71c169856e15dbe83362081875e4433",
+    "tables/compute_metrics.csv": "ffc1f322527e1df5c4081da3cb288108ebf76c0751689c8362d1548faede5eb5",
+    "tables/compute_summary.csv": "728ea766393249a51d886c655d8b38d55b0f61029aaea935dc1098860a780358",
+    "tables/context_triggers.csv": "81efa8e661cf2f891506983bf281ff2fe1410a81dcd8ae94cee95699e65bfb3d",
+    "tables/finalist_decisions.csv": "b7be87629a35347fcea294f41af568117ee079d0c659d343aaf20f4c31e7a371",
+    "tables/graph_residual_diagnostics.csv": "37ff19426e2cd4de41bd5f00d9cf6020bba595b2d961a52dc0617012c7720fdd",
+    "tables/inner_selection_metrics.csv": "21c101920cb9c519413e85f16267c31724a06d10bad88378b328bb93a686f9c4",
+    "tables/issue61_control_metrics.csv": "100ee681021c61e4aebd45e18b52f93977b608576bbed918ebc8c62584ea238a",
+    "tables/model_definitions.csv": "e5104a785636d7aa1d98b4c928a9cfbe6e535b581a07713c23348458231afc63",
+    "tables/relative_improvement.csv": "df5e146072b9596165516b95a71df8f342fdc773242b60968b8c2a170f5fb496",
+    "tables/risk_coverage.csv": "0b4c2db469a0c0d294e7814508dcc82969e3d7c1073bd41c3e14a87b1260eed4",
+    "tables/screen_candidate_metrics.csv": "245b7b5ebb474dbf1e914024a335917a8891364e5dfb2ae23b78b0b2beabf399",
+    "tables/split_audit.csv": "cf08d1ee28b4564e8a191d50983495edbeb000db5c6b4c70b13e090bb7f89944",
+    "tables/stability_metrics.csv": "49674f426642af8478c3e411e0d0eb595d4f2229b2e1d45b1137775396925606"
+  },
+  "archive_builder_sha256": "4b94ad5eda97070e874a1a1d84232c187843a8f3fe7ccd48ea2d5cca123117f1",
+  "analysis_script_sha256": "f02b6ee0798d81d591933719a89453a141670740a44ea93fff9806a0cd018ef3",
+  "source_artifacts_sha256": {
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_model_zoo_v2.4\\data_manifest.json": "1d50a40279f2720b2b0b2acf04fd9262909ce2d33cfb661de3e5491f34b92dda",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_model_zoo_v2.4\\finalists.json": "fa9b7cbdedb8d861c509b265b7198f8b1174e583abc8a4845ffc3fc7facd4752",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_model_zoo_v2.4\\decision.json": "b58510e44e185c4c668dc62378ab1b0990d8fb8f744ac8d985759a14a7ca0b8b",
+    "D:\\proj_personal\\PhD\\ReCAD-issue62\\v2.0\\configs\\p2_model_zoo_v2.4.json": "cb21854a15c2b5d6477dab2310391c01214cb65d0c8ad447ab6cb0128ac905a9",
+    "D:\\proj_personal\\PhD\\ReCAD-issue62\\v2.0\\scripts\\run_p2_model_zoo_v2_4.py": "f02b6ee0798d81d591933719a89453a141670740a44ea93fff9806a0cd018ef3",
+    "D:\\proj_personal\\PhD\\ReCAD-issue62\\v2.0\\src\\recad\\evaluate\\model_zoo.py": "c4db26535345da81c79ab2d8df1d90dfb3bad5f3fd893897bcd59e6a851fce12",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\splits\\SSS_split_indices.npz": "55bec64e205648d4ed9c53c64b55e3e4d6a97a407e657a65b89c295cf61c0d91",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\splits\\fCO2_split_indices.npz": "9ecce6550ebeddafbbbecbe050bda7bb5c3adf40516664212deb7b2dd3e47689"
+  }
+}

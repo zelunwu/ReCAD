@@ -85,7 +85,14 @@ def prepare_tables() -> dict[str, pd.DataFrame]:
     split_frames = []
     for target in ("SSS", "fCO2"):
         frame = pd.read_csv(REPAIR / "splits" / f"{target}_split_audit.csv")
-        frame.insert(0, "target", target)
+        if "target" in frame:
+            observed_targets = set(frame.target.dropna().astype(str))
+            if observed_targets != {target}:
+                raise ValueError(
+                    f"unexpected targets in {target} split audit: {sorted(observed_targets)}"
+                )
+        else:
+            frame.insert(0, "target", target)
         split_frames.append(frame)
     frames["split_audit.csv"] = pd.concat(split_frames, ignore_index=True)
     frames["split_audit.csv"].to_csv(TABLES / "split_audit.csv", index=False)
