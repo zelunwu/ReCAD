@@ -27,6 +27,10 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def normalize_lf(path: Path) -> None:
+    path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n"))
+
+
 def pooled(target: str, scheme: str) -> pd.DataFrame:
     paths = sorted((OUTPUT / "partitions").glob(f"{target}_{scheme}_fold*.parquet"))
     return pd.concat([pd.read_parquet(path) for path in paths], ignore_index=True)
@@ -430,6 +434,9 @@ Exact source tables are under `tables/`. Row-level predictions and selections re
         "fig07_coverage90.png": ["uncertainty_metrics.csv"],
         "fig08_wis.png": ["uncertainty_metrics.csv"],
     }
+    for path in ARCHIVE.rglob("*"):
+        if path.is_file() and path.suffix.lower() in {".md", ".csv", ".json"}:
+            normalize_lf(path)
     files = {}
     for path in sorted(ARCHIVE.rglob("*")):
         if path.is_file() and path.name != "archive_manifest.json":

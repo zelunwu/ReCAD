@@ -85,7 +85,7 @@
     "fig08_wis.png": "Figure 8. Weighted interval score for control and scale-head intervals. Coverage failures prevent retaining the scale head even where average interval score changes favorably."
   },
   "files_sha256": {
-    "CAPTIONS.md": "79daccfc7d1d6575a0af60b2c99ba38f5e3abd4ed6f0f2dbcba26ea03144d20b",
+    "CAPTIONS.md": "cc174c74e995232905607df13d0469696bf3716364c960c49f08cd2d2d704dde",
     "figures/fig01_sss_graph_rmse.png": "05315ce915278fa8f923c8ada3c1a068649790e2fed714977e161b853adcb4a8",
     "figures/fig02_fco2_graph_rmse.png": "3786fab840baa044193cfe4a9067433767a10e503e935e2ddbf01c4a42eed394",
     "figures/fig03_graph_relative_improvement.png": "b04e1629b5df06641eddb320c95965d1de93c269a409b76e0462b52beef801df",
@@ -94,18 +94,18 @@
     "figures/fig06_fco2_ensemble_folds.png": "cdf7f4426a7dbafa5ba1e2ff01dc64730ae2f5f73cc9870ee36a123f009e60f8",
     "figures/fig07_coverage90.png": "1f3f944750da2fe8711791806a96ca7a603a85ef19af1444390d16954ac4b655",
     "figures/fig08_wis.png": "4abfcf6a4d8c3f4f0b6b016b974b54d7442a835dcb80da9e4c44587ffff7fc26",
-    "README.md": "ccc43d5f6e69e97a7c18d13f2b693992a07743ec55ef6c8896936bb4ac6c3242",
-    "REPORT.md": "d23590cd2843850c44fa637d1580d2592a430a2f25dbea57de5ad23f715e342e",
-    "tables/branch_decisions.csv": "19f16700c630dcf1ca07a7f788bcb5185796ae1fc28a10d2aaeaf21d90044122",
-    "tables/external_artifact_manifest.csv": "acc390b088a00a1af49552bc5d482b42dee52b29575c7768bece391079a9b44d",
-    "tables/fCO2_inner_ensemble_trigger.csv": "f349efd6c13507c025cdd81aeb88f8b3c0e5e95387785778fdfc0ced4db5348c",
-    "tables/fCO2_outer_ensemble_summary.csv": "16eaa133a5622b2373e3e446ca5a84dc6becbbaf2d1eedcb90e4472cc39d633e",
-    "tables/paired_group_bootstrap.csv": "a30f53748c7956b11a8fb29221af4f9fa40addf31b3cf003aac2062bc2db1278",
-    "tables/point_metrics.csv": "9b112ad2da65d61f4569f41e3a7e4976777fe03073df518b910ffbad9cb61d93",
-    "tables/trigger_audit.csv": "fe26f499c3d2c2f3bcb3b8e8aa942d2183cc8e25b642c9efae3f428e36918676",
-    "tables/uncertainty_metrics.csv": "a6aa1fdbb25c73b5b92799a1635455feb0db75e2626c01074102da40616cf685"
+    "README.md": "9141da44c65ff44dcacf2f4cbe5eb1e3d6e3c79bb7a9ae7758e49483ec865d63",
+    "REPORT.md": "11c14fe9bb3045a99ba7e420ab752f5ba153a21bdfe807a2d1b2caadce05bc44",
+    "tables/branch_decisions.csv": "8b7217de990adce9a33385df3f885d154934546dacf7b407074db10e24e17025",
+    "tables/external_artifact_manifest.csv": "c42888250de97c97478568931936eec89b39b770cbeb4e4b69bcdd975658eaa7",
+    "tables/fCO2_inner_ensemble_trigger.csv": "4c201fc755051f8dc0c966ddecd7949eca0a994ffb7f6f28c9ee786438749856",
+    "tables/fCO2_outer_ensemble_summary.csv": "613779ae9c31f3853dc90592fed4c90830442c50a690de1f45a8103ae0298d17",
+    "tables/paired_group_bootstrap.csv": "00ad7be9292c182a27ed1e4bfd278b81e3b6f7a977a25cf72eea99825d576dc1",
+    "tables/point_metrics.csv": "3f636113f67b07511b92598c676b97408bacc4962abe74fd0ee362046882b851",
+    "tables/trigger_audit.csv": "793927d8aa078700d7bef5caf187c3fbe7225684d3a0e1d169b994900c62b862",
+    "tables/uncertainty_metrics.csv": "9466126f9ceb4d14ade90543373a13809afd668a782ddb78f72a6d3dc71df0a9"
   },
-  "archive_builder_sha256": "34fb3f5917f5fe12bd0f7dbb8b0ea84034b8fd4fdb55b2ccbb75551d2ec6b4b6",
+  "archive_builder_sha256": "cfe4aa91603e88c79b4b1b0caba661d58b04e2223cb0eaf92124078a170a7252",
   "analysis_script_sha256": "51b75f6c392c7f5c61815018aa312551d38d2f2bcf340ed0c7bdc491025d3488",
   "source_artifacts_sha256": {
     "D:\\proj_personal\\PhD\\ReCAD-issue64\\v2.0\\configs\\p2_conditional_combination_v2.4.json": "7b0b322589f90c36c6e2035c7f05189b5172e41b903f7b928738f11a6bb72860",
