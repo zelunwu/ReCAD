@@ -1,0 +1,114 @@
+{
+  "schema_version": "2.4",
+  "experiment_id": "p2_model_zoo_v2.4",
+  "issue": 62,
+  "parent_issue": 43,
+  "created_utc": "2026-10-14T02:00:00Z",
+  "targets": ["SSS", "fCO2"],
+  "data_contract": {
+    "matchup": "C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet",
+    "split_source": "C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits",
+    "split_contract": "Issue 61: cruise, actual 5-degree geographic plus 100-km buffer, whole-region, and rolling past-only forward",
+    "new_independent_labels_opened": false,
+    "2026_provisional_opened": false
+  },
+  "outer_calibration": {
+    "fraction": 0.2,
+    "unit": "complete normalized cruise/platform group",
+    "use": "prediction-band conformal intervals only",
+    "forbidden": ["model fitting", "hyperparameter selection", "upstream fitting"]
+  },
+  "inner_selection": {
+    "method": "complete-group 80/20 selection holdout inside the Issue-61 model-fit partition",
+    "configurations_per_family": 6,
+    "metric": "group-equal RMSE",
+    "maximum_training_rows": 120000,
+    "maximum_selection_rows": 60000,
+    "subsample_rule": "deterministic rows after group-disjoint assignment",
+    "refit": "winning configuration on all outer model-fit rows; calibration remains untouched"
+  },
+  "parameterization": {
+    "SSS": "background residual where GLORYS is available plus same-family direct fallback",
+    "fCO2": "direct target with Issue-61 outer-nested cross-fitted SSS",
+    "features": "frozen Issue-61 deployable feature set",
+    "missing_values": "training-only median imputation plus explicit existing availability masks"
+  },
+  "families": {
+    "ridge": {
+      "alpha": [0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
+    },
+    "extra_trees": {
+      "configurations": [
+        [128, null, 2, 0.7],
+        [192, null, 5, 0.7],
+        [192, 24, 2, 1.0],
+        [256, 24, 5, 0.7],
+        [256, 16, 10, 1.0],
+        [320, 32, 10, 0.7]
+      ]
+    },
+    "catboost": {
+      "configurations": [
+        [300, 6, 0.05, 3.0],
+        [500, 6, 0.04, 5.0],
+        [300, 8, 0.05, 5.0],
+        [500, 8, 0.03, 8.0],
+        [400, 10, 0.03, 8.0],
+        [700, 10, 0.02, 12.0]
+      ]
+    },
+    "xgboost": {
+      "configurations": [
+        [300, 4, 0.05, 1.0, 0.8],
+        [500, 4, 0.03, 5.0, 0.8],
+        [300, 6, 0.05, 5.0, 0.8],
+        [500, 6, 0.03, 10.0, 0.8],
+        [400, 8, 0.03, 10.0, 0.7],
+        [700, 8, 0.02, 20.0, 0.7]
+      ]
+    },
+    "residual_mlp": {
+      "configurations": [
+        [128, 2, 0.0, 0.001, 20],
+        [128, 3, 0.1, 0.001, 25],
+        [256, 2, 0.1, 0.0005, 25],
+        [256, 3, 0.15, 0.0005, 30],
+        [384, 3, 0.1, 0.0003, 30],
+        [384, 4, 0.2, 0.0003, 35]
+      ]
+    },
+    "ft_transformer": {
+      "configurations": [
+        [64, 2, 4, 0.0, 0.001, 20],
+        [64, 3, 4, 0.1, 0.0007, 25],
+        [96, 2, 4, 0.1, 0.0007, 25],
+        [96, 3, 8, 0.1, 0.0005, 30],
+        [128, 2, 8, 0.15, 0.0005, 30],
+        [128, 3, 8, 0.2, 0.0003, 35]
+      ]
+    }
+  },
+  "controls": ["raw_glorys", "strict_v1_rf", "modernized_rf", "issue61_catboost"],
+  "screen_seed": 62024,
+  "finalist_seeds": [62024, 62025, 62026],
+  "finalist_rule": {
+    "maximum_families": 2,
+    "primary_schemes": ["cruise", "geographic", "whole_region", "forward"],
+    "minimum_improvement_in_two_schemes": 0.05,
+    "maximum_regression_other_scheme": 0.03,
+    "fallback_if_none_qualify": "two nondominated families with best mean normalized rank are stability finalists, not promoted finalists"
+  },
+  "conditional_context": {
+    "temporal_trigger": "a point finalist passes cruise and geographic gates but retains at least 5% forward deficit",
+    "graph_trigger": "corrected finalist residuals have water-connected correlation above 0.2 after same-month geographic-distance permutation control",
+    "otherwise": "archive as not triggered"
+  },
+  "promotion": {
+    "relative_improvement": 0.05,
+    "SSS_rmse_ceiling": {"cruise": 1.0, "geographic": 1.2, "forward": 1.2},
+    "fCO2_rmse_ceiling": {"cruise": 30.0, "geographic": 40.0, "forward": 40.0},
+    "coverage50": [0.45, 0.55],
+    "coverage90": [0.85, 0.95]
+  },
+  "large_output_root": "C:/backup/phd/data/processed/recad_v2_4/p2_model_zoo_v2.4"
+}
