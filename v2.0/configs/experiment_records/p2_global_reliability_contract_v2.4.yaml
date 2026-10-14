@@ -1,0 +1,58 @@
+schema_version: 1
+experiment_id: p2_global_reliability_contract_v2.4
+status: preregistered
+owner: ReCAD
+created_utc: 2026-10-14T22:10:00Z
+
+science:
+  question: Can deployment-available support, disagreement, and nested calibration produce honest SSS/fCO2 grid-month grades and intervals over the complete frozen coastal domain?
+  hypothesis: Risk-conditioned calibration will rank corrected-fold error and permit bounded A/B coverage, while explicit C/D flags preserve unsupported geography instead of hiding it.
+  product_scope: Development freeze for the 1993-2025 global coastal SSS/fCO2 core; no independent qualification.
+  stopping_rule: Freeze one target-specific point candidate, one nested interval method, and one grade policy; preserve failures and do not tune after independent-label access.
+
+data:
+  manifest_path: configs/p2_global_reliability_contract_v2.4.json
+  prepared_path: C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet
+  predictor_cube: C:/backup/phd/data/processed/recad_v2_3/global_coastal_predictor_cube_v2.3.nc
+  split_source: C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits
+  time_range: 1993-2025
+  provenance_policy: Reuse the Issue-61 exposure ledger; no new locked, external-independent, or 2026 labels.
+
+splits:
+  grouping: Exact Issue-61 cruise, geographic plus 100-km buffer, whole-region, and past-only forward partitions.
+  nesting: Point fitting, honest residual generation, risk fitting, interval selection, conformal calibration, and grade thresholds stay inside outer training.
+  calibration: Outer model-fit and grouped calibration remain isolated; forward calibration is past-only.
+  locked_test: Not opened.
+  external_independent: Not opened.
+
+model:
+  SSS_candidate: Issue-62 three-seed CatBoost background-residual finalist.
+  fCO2_candidate: Issue-64 inner-OOF-weighted CatBoost/F4 convex ensemble.
+  risk_model: Fixed ExtraTrees log-absolute-error head over deployment-available support and disagreement features.
+  interval_controls: [prediction-stratified grouped conformal, raw-disagreement scaled conformal, support-risk scaled conformal, risk-bin grouped conformal]
+  grades: A/B are trusted only inside demonstrated support; C is diagnostic; D is suppressed.
+
+evaluation:
+  point_metrics: [RMSE, MAE, bias, R2, group-equal RMSE]
+  calibration_metrics: [coverage50, coverage90, mean width, WIS, fixed-coverage risk]
+  product_metrics: [own-mask area, common-mask area, A/B trusted area, C diagnostic area, D suppressed area, reason-bit prevalence]
+  diagnostics: [region, time, support distance, environmental novelty, group diversity, input missingness, model disagreement]
+
+reproducibility:
+  git_commit: preregistration commit to be recorded before computation
+  environment_lock: v2.0/.venv plus pyproject.toml
+
+artifacts:
+  output_directory: C:/backup/phd/data/processed/recad_v2_4/p2_global_reliability_contract_v2.4
+  report: docs/experiment_archive/p2_global_reliability_contract_v2.4/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p2_global_reliability_contract_v2.4
+    verification_status: null
+
+outcome:
+  completed_utc: null
+  primary_result: null
+  acceptance_gate_passed: null
+  deviations: []
+  evidence_grade: null
+  allowed_claims: null
