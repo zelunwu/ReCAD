@@ -298,3 +298,11 @@ SSS CatBoost 是唯一通过“至少两个 scheme 改善 5%，其他 scheme 不
 fCO2 没有模型通过相对 promotion 门槛。ExtraTrees 与 CatBoost 仅作为三种子稳定性 finalists：前者 RMSE 为 33.301/51.242/52.408/39.228 µatm，后者为 34.907/48.950/53.092/40.079 µatm；两者均未满足 30/40/40 µatm 的 cruise/geographic/forward 合同，shifted interval 也 under-cover。相邻水体同月残差相对置换对照的相关增量为 SSS 0.847、fCO2 0.845，超过冻结的 0.20 graph trigger；temporal trigger 对两目标均未触发。该信号只授权后续受控图假设，不允许继续放大 #42 已失败的四邻接 ST96 实现。
 
 最终状态为 **`development_model_zoo_complete` / no production promotion**：SSS 保留 CatBoost 开发 finalist；fCO2 保留 ExtraTrees/CatBoost stability finalists；当前数据下更高点模型容量没有解决区域迁移。完整报告、13 张 caption 紧随图片的图和 15 个源表见 `docs/experiment_archive/p2_model_zoo_v2.4/`；逐行预测、配置记录和 checkpoint 保存在 Git 外目录 `C:\backup\phd\data\processed\recad_v2_4\p2_model_zoo_v2.4`。
+
+## P2.7c 过程变量与连续背景（Issue #63）
+
+`p2_process_predictors_v2.4` 在 Issue #61 的相同修复 folds 与 Issue #62 的目标特定树模型上，逐一测试同月水体四邻接 SST/风速锋面、背景 SSS 淡水亏损与局地梯度、可选 ADT 环流梯度，以及 fCO2 的训练折内连续球面-季节-趋势 Ridge 背景残差。全部可选场采用显式 availability/neighbour count 与保留全样本的回退；同时报告 all-support 与 common-support。Chl-a 原路径不可用，MLD 和河流流量没有冻结源，因此作为不可用负结果归档，没有伪造同名代理。没有开启新的 locked、external-independent 或 2026 标签。
+
+SSS 三个过程代理均未通过冻结门槛：锋面和 ADT 只在 whole-region 单一 scheme 有约 3.0%/3.6% 改善，却在 cruise 或 geographic 退化；背景 SSS 淡水代理令 geographic/whole-region 更差。fCO2 的三个过程代理同样失败；其中淡水代理令 geographic RMSE 退化 4.2%。唯一保留的是连续背景残差，其三种子 cruise/geographic/whole-region/forward RMSE 为 32.760/54.201/52.754/39.263 µatm，对匹配 ExtraTrees 的改善很小，且 90% coverage 仍只有 0.796/0.782/0.837（geographic/whole-region/forward）。
+
+最终状态为 **`retain_fco2_continuous_background_for_development_only` / no production promotion**。#64 不获得过程因子组合授权；只允许针对 #62 已触发的残差图结构测试改变架构或信息路径的受控假设，以及针对空间/时间 shift under-coverage 的不确定性假设，禁止重跑 #42 的四邻接 ST96。完整报告、10 张 caption 紧随图片的图和 11 个源表见 `docs/experiment_archive/p2_process_predictors_v2.4/`；270 个 OOF 分区、特征缓存和 1,080 个 checkpoint 文件保存在 Git 外目录。

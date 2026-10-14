@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p2_process_predictors_v2.4
-status: preregistered
+status: complete
 owner: ReCAD
 created_utc: 2026-10-14T12:00:00Z
 
@@ -54,7 +54,7 @@ evaluation:
   process_diagnostics: [front bins, freshwater bins, ADT availability, source-era transitions, cross-LME boundary contrast]
 
 reproducibility:
-  git_commit: preregistration commit to be recorded before feature materialization or training
+  git_commit: c71c488 preregistration; 55e1b55 implementation used for training
   git_worktree_clean: true at preregistration commit
   environment_lock: v2.0/.venv plus pyproject.toml
 
@@ -63,13 +63,13 @@ artifacts:
   report: docs/experiment_archive/p2_process_predictors_v2.4/REPORT.md
   reviewer_archive:
     path: docs/experiment_archive/p2_process_predictors_v2.4
-    verification_status: null
+    verification_status: verified; 10 figures, 10 captions, 11 source tables
 
 outcome:
-  completed_utc: null
-  primary_result: null
-  acceptance_gate_passed: null
-  deviations: []
+  completed_utc: 2026-10-14T16:50:00Z
+  primary_result: No SSS process factor passed. The fCO2 continuous spherical-seasonal-trend background residual passed the frozen screen and reduced three-seed RMSE to 32.760/54.201/52.754/39.263 uatm for cruise/geographic/whole-region/forward, but shifted coverage and product gates still fail.
+  acceptance_gate_passed: partial; F4 retained for development only, no production promotion
+  deviations: [Chl-a path unavailable, no frozen MLD source, no frozen river-discharge source; each preserved as an unavailable negative result without a training branch]
   invalidation_reason: null
-  evidence_grade: null
-  allowed_claims: null
+  evidence_grade: corrected-fold development evidence
+  allowed_claims: Continuous background modestly improves the frozen fCO2 point finalist; tested deployable process proxies do not transfer consistently; no SSS/fCO2 product is independently qualified.

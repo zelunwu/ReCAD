@@ -43,6 +43,7 @@ SPEC.loader.exec_module(MODULE)
         "p2_context_connectivity_v2.3",
         "p2_validation_repair_v2.4",
         "p2_model_zoo_v2.4",
+        "p2_process_predictors_v2.4",
     ],
 )
 def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -> None:

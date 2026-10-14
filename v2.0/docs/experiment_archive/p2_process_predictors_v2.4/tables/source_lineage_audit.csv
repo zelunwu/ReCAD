@@ -1,0 +1,7 @@
+factor,source,period,status,fallback
+dense_front,frozen SST and wind cube,1993-2025,available,zero contrast plus neighbour count
+freshwater_proxy,frozen background SSS cube,1993-2025,available_with_missingness,zero plus availability and neighbour count
+circulation_proxy,frozen ADT cube,1993-2025,optional_available_with_missingness,zero plus availability and neighbour count
+chlorophyll_a,MODIS Aqua monthly,expected 2002-07 to 2020-12,unavailable,no training branch
+mixed_layer_depth,no frozen artifact,none,unavailable,no training branch
+river_discharge,no frozen product,none,unavailable,no training branch

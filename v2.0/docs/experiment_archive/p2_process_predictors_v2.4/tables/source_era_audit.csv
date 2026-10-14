@@ -1,0 +1,6 @@
+field,unique_source_eras,transition_count,first_era,last_era,audit_result
+sst,1,0,1,1,single_standardized_source_era
+sss_bg,1,0,1,1,single_standardized_source_era
+adt,1,0,1,1,single_standardized_source_era
+wspd,1,0,1,1,single_standardized_source_era
+xco2air,1,0,1,1,single_standardized_source_era

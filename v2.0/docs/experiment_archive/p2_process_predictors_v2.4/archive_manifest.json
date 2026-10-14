@@ -1,0 +1,102 @@
+{
+  "experiment_id": "p2_process_predictors_v2.4",
+  "training_git_commit": "55e1b5508663d4bc41477e2e9c9996984872ee01",
+  "data_manifest_sha256": "2f9e5c9e7746b59ae2ce1a4beccce10b74288a7956c6658decaaf6832f4e3824",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "provisional_2026_opened": false,
+  "evidence_scope": "1993-2025 frozen development labels on corrected Issue 61 folds",
+  "decision": {
+    "status": "retain_fco2_continuous_background_for_development_only",
+    "SSS_retained_factors": [],
+    "fCO2_retained_factors": [
+      "F4_continuous_background_residual"
+    ],
+    "production_model_promoted": false
+  },
+  "figure_source_data": {
+    "fig01_sss_factor_rmse.png": [
+      "screen_metrics.csv"
+    ],
+    "fig02_fco2_factor_rmse.png": [
+      "screen_metrics.csv"
+    ],
+    "fig03_relative_improvement.png": [
+      "factor_decisions.csv"
+    ],
+    "fig04_background_seed_stability.png": [
+      "stability_metrics.csv"
+    ],
+    "fig05_background_coverage.png": [
+      "stability_metrics.csv"
+    ],
+    "fig06_product_domain_coverage.png": [
+      "product_domain_monthly_coverage.csv"
+    ],
+    "fig07_all_common_support.png": [
+      "support_metrics.csv"
+    ],
+    "fig08_process_regimes.png": [
+      "process_bin_diagnostics.csv"
+    ],
+    "fig09_boundary_diagnostic.png": [
+      "boundary_diagnostics.csv"
+    ],
+    "fig10_source_audit.png": [
+      "source_era_audit.csv",
+      "source_lineage_audit.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_sss_factor_rmse.png": "Figure 1. SSS held-out RMSE for the CatBoost baseline and each deployable process factor on the exact corrected cruise, geographic plus 100 km buffer, whole-region, and past-only forward folds; none of the three factors passes the preregistered two-scheme retention gate.",
+    "fig02_fco2_factor_rmse.png": "Figure 2. fCO2 held-out RMSE for the ExtraTrees baseline, three deployable process proxies, and the continuous spherical-seasonal-trend background residual; only the continuous background passes the frozen screen retention rule.",
+    "fig03_relative_improvement.png": "Figure 3. Single-seed RMSE improvement relative to each target's identical-fold baseline; red cells are regressions and blue cells are improvements, exposing split-specific gains that cannot justify unrestricted feature combinations.",
+    "fig04_background_seed_stability.png": "Figure 4. Three-seed mean and standard deviation for the retained fCO2 continuous-background residual and its ExtraTrees baseline; the gain is small and stable, while geographic and whole-region error remain far above publication gates.",
+    "fig05_background_coverage.png": "Figure 5. Empirical coverage of nominal 90% intervals for the retained fCO2 branch and baseline; the green band is the 0.85-0.95 target and shows that continuous-background gains do not repair spatial-shift under-coverage.",
+    "fig06_product_domain_coverage.png": "Figure 6. Monthly area-weighted availability over all 838,661 frozen coastal product nodes from 1993-2025; SST and wind are complete, background SSS has explicit sparse gaps, and optional ADT has the largest coverage loss.",
+    "fig07_all_common_support.png": "Figure 7. Geographic and whole-region RMSE improvement on all rows with deployable fallbacks and on factor-specific common support; reporting both views prevents apparent gains obtained by deleting difficult missing-field cases.",
+    "fig08_process_regimes.png": "Figure 8. Cruise-holdout RMSE across quintiles of the tested front, freshwater, and circulation proxies; errors vary strongly by regime, but the added proxy does not deliver the required transferable aggregate improvement.",
+    "fig09_boundary_diagnostic.png": "Figure 9. Cruise-holdout RMSE on observation-supported coastal nodes adjacent to a node assigned to another majority LME; the continuous fCO2 background introduces no discrete LME correction and does not create a new hard boundary artifact.",
+    "fig10_source_audit.png": "Figure 10. Frozen-cube source-era and preregistered source-availability audit; all deployed cube fields use one standardized source era, while Chl-a, mixed-layer depth, and river discharge remain explicit unavailable negative results rather than fabricated proxies."
+  },
+  "files_sha256": {
+    "README.md": "18238050bc6f52155979cca2572b464f65b9e59b9ff21650228cd9c69a955c80",
+    "REPORT.md": "28c9176ef1848bf40d2ace2d6bb7ec85fb51f759af9ec14ea4a570e71abe5f5e",
+    "CAPTIONS.md": "cda5553abded7d3472196cd7797e322004b05b4a0267c962a7a901d521f7a122",
+    "figures/fig01_sss_factor_rmse.png": "3ddce445cd3eb432018b033bcea1b8eaf16fc07a70e46a8ecc15887bf1ead1cc",
+    "figures/fig02_fco2_factor_rmse.png": "cb3a112f82260ac0c8f4ecf28e3bfb0888c70dc90cc1455e5ccb12a12c554d26",
+    "figures/fig03_relative_improvement.png": "dd69ce65ebf993590d1ff30ca931c5825d79df9e1efe063b084473b519a53b94",
+    "figures/fig04_background_seed_stability.png": "82a1ce1fac03d33642029e50bb639a2657c0fb0e51f2609590db35d16e1e9ffe",
+    "figures/fig05_background_coverage.png": "ca65a23fc36faaa1867fb46d2939fac54ce7120925c53eecbe8b5c476dc37320",
+    "figures/fig06_product_domain_coverage.png": "f5b4bb70a35662ba83a86cf9ad0601981606471ab438af4f38fac860cdaa8eae",
+    "figures/fig07_all_common_support.png": "3c02e36be04bd6523a1cf26fe86da2417e1527c9e6afb658c5ef92724212a9c2",
+    "figures/fig08_process_regimes.png": "277fab3bfae085d8f7cbf231aa875e08719ce8c0ac4467a27b5fadfae99123e0",
+    "figures/fig09_boundary_diagnostic.png": "574d1fba21b13a35bcaf1668e218ef9221f8e34067b91c621bb9e819b2f130be",
+    "figures/fig10_source_audit.png": "7d3c3313b38d5ccf9a6b82c98822cc7203300c4a212d764b79da1a301edfc565",
+    "tables/all_seed_metrics.csv": "c6da1a527af5d70d1dbe0dc79b3425eccf4a9a9c675168f1cb82a2a722166c1e",
+    "tables/boundary_diagnostics.csv": "d3911361f19892684cb8104b70091874a48e6cc7a5eada2487f4f18974543215",
+    "tables/external_artifact_manifest.csv": "9b6f0eb5073231878eaae9d3f8c73609e1f35eb360429e9780ea8dfe38177166",
+    "tables/factor_decisions.csv": "f01b4ec22240a59e951a6266f7703de854833e712ce1f45fd52ab6a7e31cbc06",
+    "tables/process_bin_diagnostics.csv": "a67db70747d6ef0b26043b5bb3605116c7559d3db3db8e3f88167098a365d3c5",
+    "tables/product_domain_monthly_coverage.csv": "ddc250d482b599fb552580ad02fe7d3850626d6871c8e0013ae22b7b3c1143ec",
+    "tables/screen_metrics.csv": "f60aef16ceb1ce8a231d86d94084604faf683c71bb0e03f35a8968aa03d3c40c",
+    "tables/source_era_audit.csv": "a66cea3eceaf833d5c465179b2abdffa8dda7c52f850c6ee5dd83ff6835dde2b",
+    "tables/source_lineage_audit.csv": "02bb5b0eeab03be349bb18f6a42703aba3658ddfea8b5956c56d000e0d274fb8",
+    "tables/split_audit.csv": "cf08d1ee28b4564e8a191d50983495edbeb000db5c6b4c70b13e090bb7f89944",
+    "tables/stability_metrics.csv": "cda0da51d7c09a72397159b87e7ec74f93bd009ac8f97c76498251f2fdd1b6d1",
+    "tables/support_metrics.csv": "5b16bbab779b1b95fa53d5600e5c0a10dcf9902043218f9cf168b20c633e8c4d"
+  },
+  "archive_builder_sha256": "f10c426220ce78bf72e8cd05846fdd34e816f07ab3a0058c46d802b224dac40e",
+  "analysis_script_sha256": "f88907e0bfdbf382e17910d8ad375303eb42d58c9cd995dde90e4a9e4e5c9d6b",
+  "source_artifacts_sha256": {
+    "D:\\proj_personal\\PhD\\ReCAD-issue63\\v2.0\\configs\\p2_process_predictors_v2.4.json": "92870e8ce226a64e6fb38095bae6f1758104294a807196f5d1acf7e38cb3b0f0",
+    "D:\\proj_personal\\PhD\\ReCAD-issue63\\v2.0\\scripts\\run_p2_process_predictors_v2_4.py": "f88907e0bfdbf382e17910d8ad375303eb42d58c9cd995dde90e4a9e4e5c9d6b",
+    "D:\\proj_personal\\PhD\\ReCAD-issue63\\v2.0\\scripts\\build_p2_process_features_v2_4.py": "75f5d14bcac84c29a36ea44d0dc8603fac455b5e136a3e71733a5e0b8b818c6e",
+    "D:\\proj_personal\\PhD\\ReCAD-issue63\\v2.0\\src\\recad\\evaluate\\process_predictors.py": "3d39bf4edd8d61832784e1c748434b656a6c0764f0fd0e2758a7335ed1aa5eb2",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_process_predictors_v2.4\\feature_manifest.json": "2f9e5c9e7746b59ae2ce1a4beccce10b74288a7956c6658decaaf6832f4e3824",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_process_predictors_v2.4\\retained_factors.json": "55a06cf1c3e0d363bd8bac032bb19da99452afdfe2ed40cfefe8cdc3f4df6858",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_process_predictors_v2.4\\analysis.json": "e1479af3fb8bc753c5023cbea22acd489e305e06120efd15acc5ac810bf607ad",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\splits\\SSS_split_indices.npz": "55bec64e205648d4ed9c53c64b55e3e4d6a97a407e657a65b89c295cf61c0d91",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_validation_repair_v2.4\\splits\\fCO2_split_indices.npz": "9ecce6550ebeddafbbbecbe050bda7bb5c3adf40516664212deb7b2dd3e47689"
+  }
+}
