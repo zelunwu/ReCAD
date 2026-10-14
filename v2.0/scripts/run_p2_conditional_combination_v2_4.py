@@ -26,12 +26,14 @@ from run_p2_process_predictors_v2_4 import (
     variant_features,
 )
 from run_p2_validation_repair_v2_4 import cached_splits
+from run_p2_validation_repair_v2_4 import MODERN_RF_FEATURES
 
 OUTPUT = Path(r"C:\backup\phd\data\processed\recad_v2_4\p2_conditional_combination_v2.4")
 PARTITIONS = OUTPUT / "partitions"
 SELECTION = OUTPUT / "selection"
 TABLES = OUTPUT / "tables"
 ISSUE63 = Path(r"C:\backup\phd\data\processed\recad_v2_4\p2_process_predictors_v2.4")
+ISSUE62 = Path(r"C:\backup\phd\data\processed\recad_v2_4\p2_model_zoo_v2.4")
 CUBE = Path(r"C:\backup\phd\data\processed\recad_v2_3\global_coastal_predictor_cube_v2.3.nc")
 SEED = 64024
 VARIANT = {"SSS": "S0_base", "fCO2": "F4_continuous_background_residual"}
@@ -203,14 +205,101 @@ def run_target(target: str, graph) -> None:
     pd.DataFrame(summaries).to_csv(TABLES / f"{target}_partition_summary.csv", index=False)
 
 
+def run_ensemble_trigger_audit() -> None:
+    """Use honest inner-validation residuals to decide whether an ensemble is allowed."""
+
+    destination = TABLES / "fCO2_inner_ensemble_trigger.csv"
+    if destination.is_file():
+        return
+    frame = load_augmented_frame("fCO2")
+    rows = []
+    for split in cached_splits("fCO2", frame):
+        tune_train, tune_validation, _model_fit, _calibration, _held = prepare_split(
+            "fCO2", frame, split
+        )
+        f4 = fit_variant(
+            "fCO2",
+            VARIANT["fCO2"],
+            selected_config("fCO2", split.scheme, split.fold),
+            tune_train,
+            tune_validation,
+            split_seed("fCO2", split, "issue64-ensemble-f4", SEED),
+        )
+        cat_path = ISSUE62 / "selection" / f"fCO2_{split.scheme}_fold{split.fold}_catboost.json"
+        cat_config = json.loads(cat_path.read_text(encoding="utf-8"))["selected_config"]
+        cat_model = fit_model(
+            "catboost",
+            cat_config,
+            tune_train,
+            MODERN_RF_FEATURES,
+            tune_train.truth.to_numpy(float),
+            balanced_sample_weight(tune_train),
+            split_seed("fCO2", split, "issue64-ensemble-catboost", SEED),
+        )
+        cat, _ = predict_model(cat_model, tune_validation)
+        truth = tune_validation.truth.to_numpy(float)
+        residual_f4 = truth - f4
+        residual_cat = truth - cat
+        delta = cat - f4
+        denominator = float(np.dot(delta, delta))
+        weight_cat = (
+            0.0
+            if denominator == 0
+            else float(np.clip(np.dot(residual_f4, delta) / denominator, 0, 1))
+        )
+        blend = f4 + weight_cat * delta
+        base_rmse = float(np.sqrt(np.mean(residual_f4**2)))
+        blend_rmse = float(np.sqrt(np.mean((truth - blend) ** 2)))
+        row = {
+            "scheme": split.scheme,
+            "fold": split.fold,
+            "rows": len(tune_validation),
+            "residual_correlation": float(np.corrcoef(residual_f4, residual_cat)[0, 1]),
+            "oracle_weight_catboost": weight_cat,
+            "f4_rmse": base_rmse,
+            "blend_rmse": blend_rmse,
+            "relative_improvement": (base_rmse - blend_rmse) / base_rmse,
+        }
+        rows.append(row)
+        print(json.dumps({"ensemble_trigger": row}), flush=True)
+    result = pd.DataFrame(rows)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    result.to_csv(destination, index=False)
+    summary = (
+        result.groupby("scheme")
+        .agg(
+            median_correlation=("residual_correlation", "median"),
+            median_improvement=("relative_improvement", "median"),
+        )
+        .reset_index()
+    )
+    triggered = bool(
+        (result.residual_correlation.median() < 0.90)
+        and ((summary.median_improvement >= 0.01).sum() >= 2)
+        and (summary.median_improvement.min() >= 0)
+    )
+    write_json(
+        OUTPUT / "ensemble_trigger_decision.json",
+        {
+            "triggered": triggered,
+            "rule": "median residual correlation <0.90; at least two schemes median improvement >=1%; no scheme median regression",
+            "overall_median_correlation": float(result.residual_correlation.median()),
+            "schemes": summary.to_dict(orient="records"),
+        },
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", choices=["SSS", "fCO2", "all"], default="all")
+    parser.add_argument("--ensemble-audit", action="store_true")
     args = parser.parse_args()
     graph = topology()
     targets = ("SSS", "fCO2") if args.target == "all" else (args.target,)
     for target in targets:
         run_target(target, graph)
+    if args.ensemble_audit:
+        run_ensemble_trigger_audit()
     if args.target == "all":
         (OUTPUT / "training.complete").write_text("complete\n", encoding="utf-8")
 
