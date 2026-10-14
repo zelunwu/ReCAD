@@ -1,0 +1,6 @@
+branch,status,evidence
+graph,triggered_controlled_test,Issue 62 adjacent residual signal
+uncertainty_scale,triggered_controlled_test,Issue 63 shifted under-coverage
+point_ensemble,triggered_after_inner_oof,median residual correlation below 0.90 and two-scheme inner gain
+process_combination,not_triggered,Issue 63 retained no process factor
+pretraining,not_triggered,no auditable frozen source and matched control

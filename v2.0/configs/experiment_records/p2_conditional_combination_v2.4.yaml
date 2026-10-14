@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p2_conditional_combination_v2.4
-status: preregistered
+status: completed
 owner: ReCAD
 created_utc: 2026-10-14T17:10:00Z
 
@@ -8,7 +8,7 @@ science:
   question: Can a leakage-safe target-residual coastal-graph adapter or a residual-scale uncertainty head repair the specific graph structure and shifted under-coverage left by Issues 62-63?
   hypothesis: Water-connected residual climatology may recover coherent coastal bias that label-free local context missed, while a covariate-conditioned scale head may rank shifted error better than prediction-only conformal strata.
   product_scope: Corrected-fold SSS/fCO2 development evidence only; no independent qualification.
-  stopping_rule: Run only the graph and uncertainty branches explicitly triggered by prior evidence; do not run process-factor combinations, unrestricted ensembles, simulation pretraining, or the failed Issue-42 ST96 implementation.
+  stopping_rule: Run graph and uncertainty branches triggered by prior evidence; screen a point ensemble only with honest inner-OOF residuals; do not run process-factor combinations, pretraining, or the failed Issue-42 ST96 implementation.
 
 data:
   manifest_path: configs/p2_conditional_combination_v2.4.json
@@ -29,7 +29,8 @@ model:
   fCO2_baseline: Issue-63 F4 ExtraTrees continuous-background residual.
   graph_branch: Four-season water-graph residual propagation from honest inner residuals; 3 decay values x 2 shrinkage values.
   uncertainty_branch: Fixed ExtraTrees log-absolute-error scale head plus standardized grouped conformal calibration.
-  untriggered: [process-factor combination, unrestricted point ensemble, masked-field pretraining, simulation pretraining]
+  triggered_ensemble: Fold-specific convex blend of Issue-62 CatBoost and Issue-63 F4, with weights frozen from honest inner-OOF residuals.
+  untriggered: [process-factor combination, masked-field pretraining, simulation pretraining]
 
 evaluation:
   point_metrics: [RMSE, group-equal RMSE, MAE, bias, R2, paired grouped bootstrap]
@@ -37,7 +38,7 @@ evaluation:
   diagnostics: [support distance, graph reachability, correction magnitude, LME boundary, seasonal bins, shifted folds]
 
 reproducibility:
-  git_commit: preregistration commit to be recorded before training
+  git_commit: 63e6021 preregistration; c0d4ff0 graph/uncertainty implementation; 681d046 triggered ensemble implementation
   environment_lock: v2.0/.venv plus pyproject.toml
 
 artifacts:
@@ -45,12 +46,12 @@ artifacts:
   report: docs/experiment_archive/p2_conditional_combination_v2.4/REPORT.md
   reviewer_archive:
     path: docs/experiment_archive/p2_conditional_combination_v2.4
-    verification_status: null
+    verification_status: verified; 8 figures, 8 captions, 8 source tables
 
 outcome:
-  completed_utc: null
-  primary_result: null
-  acceptance_gate_passed: null
-  deviations: []
-  evidence_grade: null
-  allowed_claims: null
+  completed_utc: 2026-10-15T04:45:00+08:00
+  primary_result: Graph residual adapters and scale-head uncertainty fail. Honest inner-OOF residual complementarity triggers the fCO2 CatBoost/F4 convex ensemble, reducing pooled cruise/geographic/whole-region/forward RMSE from 32.776/54.061/52.834/39.317 to 32.471/52.495/52.504/38.853 uatm.
+  acceptance_gate_passed: partial; fCO2 convex ensemble retained for development only, no production promotion
+  deviations: [The preregistered screen-only ensemble branch triggered and was therefore evaluated; process combinations and pretraining remained untriggered.]
+  evidence_grade: corrected-fold development evidence
+  allowed_claims: The fCO2 convex ensemble transfers better than F4 on geographic and forward corrected folds; graph propagation and residual scale heads do not satisfy frozen gates; no branch is independently qualified.
