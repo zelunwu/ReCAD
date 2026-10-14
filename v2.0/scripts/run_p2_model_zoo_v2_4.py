@@ -20,6 +20,7 @@ from recad.evaluate.model_zoo import (
     deterministic_cap,
     fit_model,
     group_equal_rmse,
+    group_outer_partition_paths,
     nondominated_families,
     predict_model,
     save_model,
@@ -600,10 +601,23 @@ def screen_metrics() -> pd.DataFrame:
     """Aggregate seed-62024 candidate metrics and repaired controls."""
 
     rows = []
-    for path in sorted(PARTITIONS.glob("*_seed62024.parquet")):
-        frame = pd.read_parquet(path)
-        keys = frame[["target", "scheme", "model", "seed"]].iloc[0].to_dict()
-        rows.append(metric_row(frame, **keys))
+    grouped_paths = group_outer_partition_paths(
+        sorted(PARTITIONS.glob("*_seed62024.parquet"))
+    )
+    for (target, scheme, model, seed), paths in sorted(grouped_paths.items()):
+        frame = pd.concat(
+            [pd.read_parquet(path) for path in sorted(paths)],
+            ignore_index=True,
+        )
+        rows.append(
+            metric_row(
+                frame,
+                target=target,
+                scheme=scheme,
+                model=model,
+                seed=seed,
+            )
+        )
     candidates = pd.DataFrame(rows)
     controls = pd.read_csv(REPAIR_OUTPUT / "tables/corrected_native_metrics.csv")
     controls = controls.rename(columns={"cruise_equal_rmse": "group_equal_rmse"})

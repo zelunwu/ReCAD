@@ -16,6 +16,7 @@ from recad.evaluate.model_zoo import (
     deterministic_cap,
     fit_model,
     group_equal_rmse,
+    group_outer_partition_paths,
     nondominated_families,
     predict_model,
     save_model,
@@ -66,6 +67,31 @@ def test_nondominated_families_excludes_a_globally_worse_candidate() -> None:
     )
 
     assert nondominated_families(metrics) == ["balanced", "cruise_specialist"]
+
+
+@pytest.mark.l1
+def test_outer_partition_paths_pool_folds_and_reject_duplicates(tmp_path) -> None:
+    def write(name: str, fold: int) -> object:
+        path = tmp_path / name
+        pd.DataFrame(
+            {
+                "target": ["SSS"],
+                "scheme": ["cruise"],
+                "model": ["ridge"],
+                "seed": [62024],
+                "fold": [fold],
+            }
+        ).to_parquet(path, index=False)
+        return path
+
+    fold0 = write("fold0.parquet", 0)
+    fold1 = write("fold1.parquet", 1)
+    duplicate = write("fold0-copy.parquet", 0)
+
+    grouped = group_outer_partition_paths([fold0, fold1])
+    assert grouped == {("SSS", "cruise", "ridge", 62024): [fold0, fold1]}
+    with pytest.raises(ValueError, match="duplicate outer partition cell"):
+        group_outer_partition_paths([fold0, duplicate])
 
 
 @pytest.mark.l1

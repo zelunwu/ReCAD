@@ -6,6 +6,7 @@ import hashlib
 import json
 import random
 import time
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -180,6 +181,35 @@ def nondominated_families(metrics: pd.DataFrame) -> list[str]:
         if not dominated:
             result.append(str(family))
     return result
+
+
+def group_outer_partition_paths(
+    paths: Iterable[Path],
+) -> dict[tuple[str, str, str, int], list[Path]]:
+    """Group outer-fold prediction files before scheme-level scoring.
+
+    Issue 62 writes one file per outer fold, while finalist selection compares
+    one pooled OOF score per target, model, and validation scheme.  Reading only
+    the identity columns keeps this grouping inexpensive and also rejects a
+    duplicated fold before it can silently receive extra weight.
+    """
+
+    grouped: dict[tuple[str, str, str, int], list[Path]] = {}
+    seen_cells: set[tuple[str, str, str, int, int]] = set()
+    identity_columns = ["target", "scheme", "model", "seed", "fold"]
+    for raw_path in paths:
+        path = Path(raw_path)
+        identity = pd.read_parquet(path, columns=identity_columns).drop_duplicates()
+        if len(identity) != 1:
+            raise ValueError(f"partition has non-unique identity: {path}")
+        row = identity.iloc[0]
+        key = (str(row.target), str(row.scheme), str(row.model), int(row.seed))
+        cell = (*key, int(row.fold))
+        if cell in seen_cells:
+            raise ValueError(f"duplicate outer partition cell: {cell}")
+        seen_cells.add(cell)
+        grouped.setdefault(key, []).append(path)
+    return grouped
 
 
 def _seed_everything(seed: int) -> None:
