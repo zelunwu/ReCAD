@@ -1,0 +1,13 @@
+target,scheme,candidate,upper95_group_mse_difference
+SSS,cruise,graph_prediction,-0.023179401804355307
+SSS,geographic,graph_prediction,-0.0038179359387974835
+SSS,whole_region,graph_prediction,-0.0012032771288916974
+SSS,forward,graph_prediction,-0.010603172564275825
+fCO2,cruise,graph_prediction,25.7421165157138
+fCO2,cruise,ensemble_prediction,-19.240467644869543
+fCO2,geographic,graph_prediction,-0.06240328357258951
+fCO2,geographic,ensemble_prediction,-113.19505012841024
+fCO2,whole_region,graph_prediction,1.1325422050848124
+fCO2,whole_region,ensemble_prediction,-38.54713996691744
+fCO2,forward,graph_prediction,-79.13604205287152
+fCO2,forward,ensemble_prediction,-53.330990527750195

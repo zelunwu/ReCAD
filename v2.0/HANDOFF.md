@@ -246,6 +246,12 @@ python -c "from recad.chem.esper_ta import ESPER_LIR_TA; e=ESPER_LIR_TA.from_mat
 拿到一个能跑的 1/8° NACCOM 基准;再决定全量(内存)与联合反演(TA/DIC/SOCAT 双源)的推进顺序。
 祝顺利。
 
+## 2026-10-15：Issue #64 条件模型实验完成
+
+Issue #64 在 #61 corrected folds 与 #62/#63 finalists 上完成。季节水体图 residual adapter 和 residual-scale uncertainty head 均未通过冻结 gate；过程因子组合与预训练未触发。图残差相关只能作为诊断，不能据此声明图模型有效；scale head 也没有把 geographic、whole-region、forward 的 90% coverage 全部提升到 0.85 以上。
+
+honest inner-OOF 证据触发了 fCO2 CatBoost/F4 convex ensemble。inner 冻结的逐折权重使 pooled cruise/geographic/whole-region/forward RMSE 从 32.776/54.061/52.834/39.317 降至 32.471/52.495/52.504/38.853 µatm；只有该分支保留为 development candidate，仍未经过一次性 independent gate。报告与图片在 `docs/experiment_archive/p2_conditional_combination_v2.4/`，大文件在 `C:\backup\phd\data\processed\recad_v2_4\p2_conditional_combination_v2.4`。下一步按 roadmap 处理 Issue #44；不要打开 #5 的独立标签，直到 metadata-only eligibility、lock.json 和全部输入/候选/校准/掩膜/报告哈希准备完毕。
+
 ## 2026-09-28：CODAP-NA v2026 已下载并完成严格 QC 初审
 
 NCEI 网页在中国网络不稳定，现已通过新 IPv6 服务器上的 Cloudflare WARP SOCKS 代理，从 NCEI 静态 FTP archive 下载 Version 2.2。完整数据已复制并解压到 `C:\backup\phd\data\raw\ocads\codap_na_v2026`。主 ZIP SHA256 为 `e5ddce21cdf257860a1f529eca9c1b8be7fbc3f0be792186f9427eb62a76624b`。

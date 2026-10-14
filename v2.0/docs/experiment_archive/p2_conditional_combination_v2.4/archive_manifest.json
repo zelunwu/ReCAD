@@ -1,0 +1,117 @@
+{
+  "experiment_id": "p2_conditional_combination_v2.4",
+  "training_git_commit": "681d046",
+  "data_manifest_sha256": "7b0b322589f90c36c6e2035c7f05189b5172e41b903f7b928738f11a6bb72860",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "provisional_2026_opened": false,
+  "evidence_scope": "1993-2025 development labels on corrected Issue 61 folds",
+  "decision": {
+    "decisions": [
+      {
+        "target": "SSS",
+        "branch": "graph_residual_adapter",
+        "retained": false
+      },
+      {
+        "target": "fCO2",
+        "branch": "graph_residual_adapter",
+        "retained": false
+      },
+      {
+        "target": "fCO2",
+        "branch": "catboost_f4_convex_ensemble",
+        "retained": true
+      },
+      {
+        "target": "SSS",
+        "branch": "uncertainty_scale_head",
+        "retained": false
+      },
+      {
+        "target": "fCO2",
+        "branch": "uncertainty_scale_head",
+        "retained": false
+      },
+      {
+        "target": "both",
+        "branch": "process_factor_combination",
+        "retained": false
+      },
+      {
+        "target": "both",
+        "branch": "pretraining",
+        "retained": false
+      }
+    ],
+    "machine_decision": "retain_fco2_convex_ensemble_for_development_only",
+    "independent_labels_opened": false,
+    "labels_2026_opened": false
+  },
+  "figure_source_data": {
+    "fig01_sss_graph_rmse.png": [
+      "point_metrics.csv"
+    ],
+    "fig02_fco2_graph_rmse.png": [
+      "point_metrics.csv"
+    ],
+    "fig03_graph_relative_improvement.png": [
+      "point_metrics.csv"
+    ],
+    "fig04_inner_ensemble_trigger.png": [
+      "fCO2_inner_ensemble_trigger.csv"
+    ],
+    "fig05_fco2_ensemble_rmse.png": [
+      "point_metrics.csv"
+    ],
+    "fig06_fco2_ensemble_folds.png": [
+      "fCO2_outer_ensemble_summary.csv"
+    ],
+    "fig07_coverage90.png": [
+      "uncertainty_metrics.csv"
+    ],
+    "fig08_wis.png": [
+      "uncertainty_metrics.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_sss_graph_rmse.png": "Figure 1. SSS pooled corrected-fold RMSE for the Issue 63 finalist and seasonal water-graph residual adapter. The apparent cruise gain is insufficient across transfer schemes.",
+    "fig02_fco2_graph_rmse.png": "Figure 2. fCO2 pooled corrected-fold RMSE for the continuous-background finalist and graph adapter. The graph hypothesis does not transfer consistently.",
+    "fig03_graph_relative_improvement.png": "Figure 3. Relative graph-adapter RMSE improvement by target and split; blue denotes improvement and red regression. The required two-scheme evidence is absent.",
+    "fig04_inner_ensemble_trigger.png": "Figure 4. Honest inner-OOF fCO2 residual correlation and oracle convex-blend gain. These labels only trigger the outer branch and never tune on held folds.",
+    "fig05_fco2_ensemble_rmse.png": "Figure 5. Pooled outer corrected-fold fCO2 RMSE for F4 and the fold-specific inner-frozen CatBoost/F4 convex ensemble.",
+    "fig06_fco2_ensemble_folds.png": "Figure 6. Fold-level group-equal RMSE improvement for the fCO2 ensemble, preserving heterogeneity hidden by pooled scores.",
+    "fig07_coverage90.png": "Figure 7. Empirical 90% interval coverage for prediction-stratified conformal control and residual scale head; the green band marks the frozen 0.85-0.95 acceptance range.",
+    "fig08_wis.png": "Figure 8. Weighted interval score for control and scale-head intervals. Coverage failures prevent retaining the scale head even where average interval score changes favorably."
+  },
+  "files_sha256": {
+    "CAPTIONS.md": "cc174c74e995232905607df13d0469696bf3716364c960c49f08cd2d2d704dde",
+    "figures/fig01_sss_graph_rmse.png": "05315ce915278fa8f923c8ada3c1a068649790e2fed714977e161b853adcb4a8",
+    "figures/fig02_fco2_graph_rmse.png": "3786fab840baa044193cfe4a9067433767a10e503e935e2ddbf01c4a42eed394",
+    "figures/fig03_graph_relative_improvement.png": "b04e1629b5df06641eddb320c95965d1de93c269a409b76e0462b52beef801df",
+    "figures/fig04_inner_ensemble_trigger.png": "4c3775d154d28ad13e466a4c02d1aec2829100e049e488af16466331c5aa317c",
+    "figures/fig05_fco2_ensemble_rmse.png": "48706f4982df4bf427433e8f7b08cf128a1faec73711c36c4a9339995f3a7d3a",
+    "figures/fig06_fco2_ensemble_folds.png": "cdf7f4426a7dbafa5ba1e2ff01dc64730ae2f5f73cc9870ee36a123f009e60f8",
+    "figures/fig07_coverage90.png": "1f3f944750da2fe8711791806a96ca7a603a85ef19af1444390d16954ac4b655",
+    "figures/fig08_wis.png": "4abfcf6a4d8c3f4f0b6b016b974b54d7442a835dcb80da9e4c44587ffff7fc26",
+    "README.md": "9141da44c65ff44dcacf2f4cbe5eb1e3d6e3c79bb7a9ae7758e49483ec865d63",
+    "REPORT.md": "11c14fe9bb3045a99ba7e420ab752f5ba153a21bdfe807a2d1b2caadce05bc44",
+    "tables/branch_decisions.csv": "8b7217de990adce9a33385df3f885d154934546dacf7b407074db10e24e17025",
+    "tables/external_artifact_manifest.csv": "c42888250de97c97478568931936eec89b39b770cbeb4e4b69bcdd975658eaa7",
+    "tables/fCO2_inner_ensemble_trigger.csv": "4c201fc755051f8dc0c966ddecd7949eca0a994ffb7f6f28c9ee786438749856",
+    "tables/fCO2_outer_ensemble_summary.csv": "613779ae9c31f3853dc90592fed4c90830442c50a690de1f45a8103ae0298d17",
+    "tables/paired_group_bootstrap.csv": "00ad7be9292c182a27ed1e4bfd278b81e3b6f7a977a25cf72eea99825d576dc1",
+    "tables/point_metrics.csv": "3f636113f67b07511b92598c676b97408bacc4962abe74fd0ee362046882b851",
+    "tables/trigger_audit.csv": "793927d8aa078700d7bef5caf187c3fbe7225684d3a0e1d169b994900c62b862",
+    "tables/uncertainty_metrics.csv": "9466126f9ceb4d14ade90543373a13809afd668a782ddb78f72a6d3dc71df0a9"
+  },
+  "archive_builder_sha256": "cfe4aa91603e88c79b4b1b0caba661d58b04e2223cb0eaf92124078a170a7252",
+  "analysis_script_sha256": "51b75f6c392c7f5c61815018aa312551d38d2f2bcf340ed0c7bdc491025d3488",
+  "source_artifacts_sha256": {
+    "D:\\proj_personal\\PhD\\ReCAD-issue64\\v2.0\\configs\\p2_conditional_combination_v2.4.json": "7b0b322589f90c36c6e2035c7f05189b5172e41b903f7b928738f11a6bb72860",
+    "D:\\proj_personal\\PhD\\ReCAD-issue64\\v2.0\\scripts\\run_p2_conditional_combination_v2_4.py": "51b75f6c392c7f5c61815018aa312551d38d2f2bcf340ed0c7bdc491025d3488",
+    "D:\\proj_personal\\PhD\\ReCAD-issue64\\v2.0\\src\\recad\\evaluate\\conditional_models.py": "a53c99d3ce97744f1b949bcc3ef030fff07e460d56508385f6e8562304b68008",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_conditional_combination_v2.4\\branch_decisions.json": "11b5356a604f24c0770d6d501f45be2fb1f72efea006186d9128d87b9d5eac8b",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_conditional_combination_v2.4\\ensemble_trigger_decision.json": "6d871fe0ece84acb8e5ab8b1443b3504fc20e9a666d5ca1f2ec6db9145d0271a"
+  }
+}

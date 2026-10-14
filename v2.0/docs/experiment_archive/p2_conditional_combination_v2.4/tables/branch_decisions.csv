@@ -1,0 +1,8 @@
+target,branch,retained
+SSS,graph_residual_adapter,False
+fCO2,graph_residual_adapter,False
+fCO2,catboost_f4_convex_ensemble,True
+SSS,uncertainty_scale_head,False
+fCO2,uncertainty_scale_head,False
+both,process_factor_combination,False
+both,pretraining,False
