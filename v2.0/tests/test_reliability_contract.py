@@ -31,6 +31,9 @@ def test_support_index_is_training_only_and_deployable():
     assert result.geographic_km.iloc[0] == 0
     assert result.unique_cruises.iloc[0] == 4
     assert result.time_extrapolation_years.iloc[0] == 2
+    split = DeployableSupportIndex(("sst", "wspd", "xco2air"), k=4).fit(source)
+    separate = pd.concat([split.query_geographic(query), split.query_environmental(query)], axis=1)
+    pd.testing.assert_frame_equal(result, separate)
 
 
 def test_scaled_widths_are_finite_sample_and_scale_aware():

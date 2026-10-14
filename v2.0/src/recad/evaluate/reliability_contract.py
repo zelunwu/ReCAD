@@ -45,6 +45,13 @@ class DeployableSupportIndex:
         return self
 
     def query(self, frame: pd.DataFrame) -> pd.DataFrame:
+        geographic = self.query_geographic(frame)
+        environmental = self.query_environmental(frame)
+        return pd.concat([geographic, environmental], axis=1)
+
+    def query_geographic(self, frame: pd.DataFrame) -> pd.DataFrame:
+        """Query static geographic distance and nearby cruise diversity."""
+
         usable = min(self.k, len(self.frame))
         distance, neighbour = self.geo.query(_sphere(frame), k=usable, workers=-1)
         if usable == 1:
@@ -62,6 +69,13 @@ class DeployableSupportIndex:
         result["unique_cruises"] = unique
         result["effective_groups"] = effective
         result["support_entropy"] = entropy
+        return result.reset_index(drop=True)
+
+    def query_environmental(self, frame: pd.DataFrame) -> pd.DataFrame:
+        """Query dynamic environmental novelty and temporal extrapolation."""
+
+        usable = min(self.k, len(self.frame))
+        result = pd.DataFrame(index=frame.index)
         environment = frame[list(self.environmental_columns)].to_numpy(float)
         result["missing_mandatory_input"] = ~np.isfinite(environment[:, :3]).all(axis=1)
         environment = np.where(np.isfinite(environment), environment, self.median)
