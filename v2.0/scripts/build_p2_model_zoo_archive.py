@@ -536,13 +536,13 @@ The screen compares Ridge, ExtraTrees, CatBoost, XGBoost, a residual MLP, and a 
 
 {chr(10).join(result_lines)}
 
-The finalist state is explicitly distinguished from promotion: `promotion_finalist` means the frozen relative-improvement rule passed, whereas `stability_finalist_only` preserves the best non-dominated families for a three-seed stability estimate without claiming practical superiority. Late-period bias, worst supported-region RMSE, group-equal error, interval coverage, risk-coverage, and compute cost remain part of the interpretation rather than post-hoc selection metrics.
+The finalist state is explicitly distinguished from product promotion: `promotion_finalist` means only that the frozen relative-improvement rule passed, whereas `stability_finalist_only` preserves the best non-dominated families for a three-seed stability estimate without claiming practical superiority. SSS CatBoost still misses the 1.2 PSU geographic ceiling (1.436 PSU) and its 90% coverage falls to 0.727 in geographic and 0.621 in whole-region transfer. fCO2 ExtraTrees misses the 30/40/40 µatm cruise/geographic/forward contract at 33.301/51.242/39.228 µatm and its forward 90% coverage is 0.834. The complete Issue-37 promotion gate therefore fails for both targets. Late-period bias, worst supported-region RMSE, group-equal error, interval coverage, risk-coverage, and compute cost remain part of the interpretation rather than post-hoc selection metrics.
 
 Conditional context diagnostics were evaluated only after the point screen. Their recorded outcomes are: {trigger_text}. A triggered diagnostic identifies residual structure worth a separately controlled context experiment; it is not evidence that a particular graph or temporal network will improve predictions.
 
 ## Decision and limitations
 
-The machine-readable decision is `{decision["status"]}`. The selected families are development candidates under observed-location transfer, not independently validated product models. Geographic and whole-region holdouts are the best current proxies for unsampled coastal space but do not reproduce every no-observation coastline. Prediction intervals calibrated on outer training can under-cover after spatial or temporal shift. The graph statistic uses observed same-month adjacent cells and a permutation control; it establishes residual dependence, not causality or guaranteed graph-model skill.
+The machine-readable decision is `{decision["status"]}` with `production_model_promoted=false`. CatBoost is retained as the SSS development finalist; ExtraTrees and CatBoost are retained only as fCO2 stability finalists. Ridge, the residual MLP, and FT-Transformer provide negative evidence against increasing point-model capacity on the current information, while XGBoost and ExtraTrees show that some tree-family gains are split-specific rather than transferable. Geographic and whole-region holdouts are the best current proxies for unsampled coastal space but do not reproduce every no-observation coastline. Prediction intervals calibrated on outer training under-cover after spatial or temporal shift. The graph statistic uses observed same-month adjacent cells and a permutation control; it establishes residual dependence, not causality or guaranteed graph-model skill. Because the exact four-neighbour graph/ST96 implementation already failed in Issue 42, the trigger authorizes only a separately controlled graph hypothesis with changed information or architecture, not another scale-up of that implementation.
 
 Issue 62 closes the finite fair family screen. Any context branch triggered here must be treated as a separately named follow-up with the same corrected folds and an explicit point-model comparison. Product promotion still requires later tuning, grid-month applicability flags, and independent evidence defined by the roadmap.
 
@@ -594,7 +594,15 @@ def main() -> int:
         REPAIR / "splits/SSS_split_indices.npz",
         REPAIR / "splits/fCO2_split_indices.npz",
     ]
-    git_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    training_commit_path = OUTPUT / "training_git_commit.txt"
+    if training_commit_path.is_file():
+        git_commit = training_commit_path.read_text(encoding="utf-8").strip()
+    else:
+        git_commit = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+        ).strip()
+    if len(git_commit) != 40 or any(character not in "0123456789abcdef" for character in git_commit):
+        raise ValueError(f"invalid training commit: {git_commit!r}")
     manifest = {
         "experiment_id": "p2_model_zoo_v2.4",
         "training_git_commit": git_commit,

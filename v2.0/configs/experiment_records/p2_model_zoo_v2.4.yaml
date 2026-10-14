@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p2_model_zoo_v2.4
-status: preregistered
+status: completed
 owner: ReCAD
 created_utc: 2026-10-14T02:00:00Z
 
@@ -55,7 +55,7 @@ evaluation:
   baselines: [raw GLORYS, strict-v1 RF, modernized RF, Issue-61 CatBoost]
 
 reproducibility:
-  git_commit: preregistration commit recorded before formal training
+  git_commit: d29e44ad07097a19997a129a2008030561260b54
   git_worktree_clean: true at preregistration commit
   environment_lock: v2.0/.venv plus pyproject.toml and model-zoo optional dependency group
 
@@ -64,13 +64,20 @@ artifacts:
   report: docs/experiment_archive/p2_model_zoo_v2.4/REPORT.md
   reviewer_archive:
     path: docs/experiment_archive/p2_model_zoo_v2.4
-    verification_status: null
+    report: docs/experiment_archive/p2_model_zoo_v2.4/REPORT.md
+    captions: docs/experiment_archive/p2_model_zoo_v2.4/CAPTIONS.md
+    figures: [13 PNG figures]
+    source_tables: [15 CSV tables]
+    manifest: docs/experiment_archive/p2_model_zoo_v2.4/archive_manifest.json
+    verification_status: verified
 
 outcome:
-  completed_utc: null
-  primary_result: null
-  acceptance_gate_passed: null
-  deviations: []
+  completed_utc: 2026-10-14T10:45:21Z
+  primary_result: SSS CatBoost is the sole relative-improvement finalist at cruise/geographic/whole-region/forward RMSE 0.899/1.436/2.168/1.186 PSU, but fails the geographic ceiling and shifted-coverage gate. fCO2 ExtraTrees and CatBoost are stability finalists only at 33.301/51.242/52.408/39.228 and 34.907/48.950/53.092/40.079 µatm. No target passes the complete production-promotion contract.
+  acceptance_gate_passed: false for product promotion; finite fair family screen completed
+  deviations:
+    - The first finalist-selection attempt exposed that per-fold metric rows had not yet been pooled to one complete OOF score per target/model/scheme. Selection stopped before producing a decision; the implementation was corrected, tested for duplicate folds, and all finalists were selected from pooled OOF metrics without rerunning or changing predictions.
+    - The first archive build found that Issue-61 split-audit tables already contained their target column. The builder was made backward-compatible, then rebuilt and hash-verified; scientific tables and decisions were unchanged.
   invalidation_reason: null
-  evidence_grade: null
-  allowed_claims: null
+  evidence_grade: development_only
+  allowed_claims: Fair corrected point-family rankings, three-seed finalist stability, negative neural point-model results, and graph-diagnostic triggers under the Issue-61 development folds; no independent qualification or production promotion.

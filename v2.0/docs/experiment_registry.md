@@ -288,3 +288,13 @@ RF 的 pooled cruise/spatial/whole-LME/forward RMSE 为 33.96/37.45/54.38/47.55 
 SSS CatBoost 背景残差订正在 cruise/geographic/whole-region/forward 的 RMSE 为 0.921/1.593/2.571/1.284 PSU；raw GLORYS 为 1.721/1.721/1.721/1.871 PSU。因此订正在普通航次与时间外推上有效，但完整区域迁移会明显劣于背景场，不能作为无条件全球订正。fCO2 modernized RF 的 cruise/forward RMSE 为 34.38/40.54 µatm，direct CatBoost 的 geographic/whole-region RMSE 最低但仍为 52.12/53.18 µatm；strict-v1 RF 的 geographic/whole-region 为 62.53/66.81 µatm。所有 fCO2 绝对 RMSE promotion gates 均失败。
 
 训练内嵌套区间在 cruise 上接近 nominal，但在 geographic、whole-region 和 forward 常出现 under-coverage，故 interval width 只保留为风险排序诊断，不能称为已校准产品误差。最终状态为 **`corrected_development_baselines_only`**：#61 的验证修复 gate 通过并允许 #62 使用相同 folds 做公平 model-zoo；没有 SSS/fCO2 模型获得生产提升。完整报告、12 张 caption 紧随图片的图、9 个源表和外部大文件哈希见 `docs/experiment_archive/p2_validation_repair_v2.4/`。
+
+## P2.7b 公平有限模型族筛选（Issue #62）
+
+`p2_model_zoo_v2.4` 在 Issue #61 的相同 750,040 条 SSS、887,811 条 fCO2 development 观测和修复后的 cruise、真实 5° geographic + 100 km buffer、whole-region、past-only forward folds 上，公平比较 Ridge、ExtraTrees、CatBoost、XGBoost、Residual MLP 与紧凑 FT-Transformer。每个模型族使用 6 个冻结 inner-group 配置、相同训练/选择行上限和 outer-training 内独立校准；fCO2 只使用 outer-nested predicted SSS。初筛 216 个分区，预注册 finalist 再增加两种子，最终保存 324 个 OOF 分区、936 个 checkpoint 文件和完整资源账。没有打开新的 locked、external-independent 或 2026 标签。
+
+SSS CatBoost 是唯一通过“至少两个 scheme 改善 5%，其他 scheme 不退化超过 3%”相对门槛的 finalist；三种子 cruise/geographic/whole-region/forward RMSE 为 0.899/1.436/2.168/1.186 PSU。但是 geographic 仍高于 Issue #37 的 1.2 PSU ceiling，geographic/whole-region 的 90% coverage 只有 0.727/0.621，因此不满足完整生产 gate。ExtraTrees 与 XGBoost 的普通 cruise/forward 改善伴随 geographic/whole-region 明显退化；Residual MLP、FT-Transformer 和 Ridge 没有提供可迁移优势。
+
+fCO2 没有模型通过相对 promotion 门槛。ExtraTrees 与 CatBoost 仅作为三种子稳定性 finalists：前者 RMSE 为 33.301/51.242/52.408/39.228 µatm，后者为 34.907/48.950/53.092/40.079 µatm；两者均未满足 30/40/40 µatm 的 cruise/geographic/forward 合同，shifted interval 也 under-cover。相邻水体同月残差相对置换对照的相关增量为 SSS 0.847、fCO2 0.845，超过冻结的 0.20 graph trigger；temporal trigger 对两目标均未触发。该信号只授权后续受控图假设，不允许继续放大 #42 已失败的四邻接 ST96 实现。
+
+最终状态为 **`development_model_zoo_complete` / no production promotion**：SSS 保留 CatBoost 开发 finalist；fCO2 保留 ExtraTrees/CatBoost stability finalists；当前数据下更高点模型容量没有解决区域迁移。完整报告、13 张 caption 紧随图片的图和 15 个源表见 `docs/experiment_archive/p2_model_zoo_v2.4/`；逐行预测、配置记录和 checkpoint 保存在 Git 外目录 `C:\backup\phd\data\processed\recad_v2_4\p2_model_zoo_v2.4`。
