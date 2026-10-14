@@ -1,0 +1,3 @@
+target,graph_reason,graph_signal,graph_threshold,graph_triggered,temporal_triggered
+SSS,same-month adjacent residual correlation exceeds permutation control by threshold,0.8469477192579524,0.2,True,False
+fCO2,same-month adjacent residual correlation exceeds permutation control by threshold,0.8449493541157461,0.2,True,False

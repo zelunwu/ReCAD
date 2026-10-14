@@ -1,6 +1,6 @@
 # ReCAD v2.0 — Agent Handoff
 
-> **2026-10-13 P2.7 路线修订（当前最高优先级）**：#40–#42 保留为开发实验，但审计发现旧 SOCAT locked/external 航次进入 P2 matchup、现行 spatial fold 并非真实地理块留出、SSS 区间使用观测真值盐度分箱、#40–#42 校准未严格嵌套。当前顺序改为 **#61 验证与暴露谱系修复 → #62 公平有限 model-zoo；#63 过程变量与连续背景可在 #61 后并行准备 → #64 条件性集成/预训练 → #44 可信度合同 → #5 新独立验证 → #46 发布**。任何已暴露标签永久降为 development，不能重新分割后称为 blind。GitHub #1/#4/#43 为最新执行权威。
+> **2026-10-14 P2.7b 完成（当前最高优先级）**：#61 已修复暴露谱系、真实 geographic + 100 km buffer、past-only forward 与 nested calibration；#62 已在相同 folds 上完成 Ridge、ExtraTrees、CatBoost、XGBoost、Residual MLP、FT-Transformer 的公平有限筛选。SSS CatBoost 仅成为 development finalist（0.899/1.436/2.168/1.186 PSU），仍失败 geographic ceiling 和 shifted coverage；fCO2 无 promotion finalist，ExtraTrees/CatBoost 只作 stability finalists。两目标 graph diagnostic 触发（0.847/0.845），temporal 未触发；这不授权重跑 #42 已失败的四邻接 ST96。当前顺序为 **#63 过程变量与连续背景 → 按触发证据执行 #64 的受控图/组合/不确定性分支 → #44 可信度合同 → #5 新独立验证 → #46 发布**。任何已暴露标签永久 development-only。完整证据见 `docs/experiment_archive/p2_model_zoo_v2.4/`。
 
 > **当前权威入口（2026-10-08）**：数据版本与路径见 `docs/data_registry.md`；实验方法、结果和证据等级见 `docs/experiment_registry.md`；研究方向变化见 `docs/decision_log.md`；当前执行路线以 GitHub #1、#4、#5 和 `configs/frozen/product_scope_v2.3.json` 为准。下方早期章节保留工程历史，若与这些入口冲突，以当前权威入口为准。
 
@@ -26,7 +26,7 @@
 
 ## 0. 当前一句话
 
-ReCAD v2.0 当前执行 #61：先修复标签暴露账、真实 geographic block + buffer、past-only rolling forward 和 outer-training 内嵌套校准，再由 #62 在同一修复证据上公平筛选 RF、boosting、MLP/ResNet、表格 Transformer 与必要的时序候选。#63 补过程变量和连续背景；#64 仅在残差互补或低支持失败明确时测试集成/预训练。北美 TA 与 inverse-CO2SYS DIC 仍是预算受限、非阻断扩展。
+ReCAD v2.0 已完成 #61 验证修复和 #62 公平 model-zoo；当前下一步是 #63，以相同修复 folds 检验过程变量与连续背景能否解决树模型也无法跨区域迁移的问题。#64 只执行 #62/#63 明确触发的受控图、组合、不确定性或预训练分支。北美 TA 与 inverse-CO2SYS DIC 仍是预算受限、非阻断扩展。
 
 ---
 

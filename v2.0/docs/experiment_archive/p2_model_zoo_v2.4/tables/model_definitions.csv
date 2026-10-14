@@ -1,0 +1,7 @@
+family,label,configurations,inner_metric,screen_seed,finalist_seeds
+ridge,Ridge,6,group-equal RMSE,62024,"62024,62025,62026"
+extra_trees,ExtraTrees,6,group-equal RMSE,62024,"62024,62025,62026"
+catboost,CatBoost,6,group-equal RMSE,62024,"62024,62025,62026"
+xgboost,XGBoost,6,group-equal RMSE,62024,"62024,62025,62026"
+residual_mlp,Residual MLP,6,group-equal RMSE,62024,"62024,62025,62026"
+ft_transformer,FT-Transformer,6,group-equal RMSE,62024,"62024,62025,62026"

@@ -1,0 +1,13 @@
+target,family,selected,qualified,nondominated,status,mean_rank
+SSS,ridge,False,False,False,promotion_finalist,5.25
+SSS,extra_trees,False,False,True,promotion_finalist,2.75
+SSS,catboost,True,True,True,promotion_finalist,2.25
+SSS,xgboost,False,False,True,promotion_finalist,2.25
+SSS,residual_mlp,False,False,False,promotion_finalist,5.0
+SSS,ft_transformer,False,False,False,promotion_finalist,3.5
+fCO2,ridge,False,False,False,stability_finalist_only,5.75
+fCO2,extra_trees,True,False,True,stability_finalist_only,1.5
+fCO2,catboost,True,False,True,stability_finalist_only,2.5
+fCO2,xgboost,False,False,True,stability_finalist_only,2.75
+fCO2,residual_mlp,False,False,False,stability_finalist_only,4.5
+fCO2,ft_transformer,False,False,False,stability_finalist_only,4.0

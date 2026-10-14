@@ -1,0 +1,83 @@
+schema_version: 1
+experiment_id: p2_model_zoo_v2.4
+status: completed
+owner: ReCAD
+created_utc: 2026-10-14T02:00:00Z
+
+science:
+  question: Which finite model families deserve finalist tuning for global coastal SSS and fCO2 under the repaired Issue 61 validation contract?
+  hypothesis: Tree ensembles will remain strongest on sparse tabular coastal observations, but a fairly tuned residual MLP or FT-Transformer may improve true-geographic or forward transfer.
+  product_scope: Global coastal SSS and fCO2 development evidence only; no independent qualification.
+  primary_comparison: Ridge, ExtraTrees, CatBoost, XGBoost, residual MLP, and FT-Transformer against raw/physical, strict-v1 RF, modernized RF, and Issue-61 CatBoost controls.
+  acceptance_gate: At least five-percent improvement in two primary outer schemes, no greater than three-percent regression in another scheme, absolute Issue-37 ceilings, and calibrated fixed-coverage risk.
+  stopping_rule: Screen the finite frozen matrix; do not expand a family or add temporal/graph context unless the preregistered trigger fires.
+
+data:
+  manifest_path: configs/p2_model_zoo_v2.4.json
+  manifest_sha256: cb21854a15c2b5d6477dab2310391c01214cb65d0c8ad447ab6cb0128ac905a9
+  prepared_path: C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet
+  prepared_sha256: 935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75
+  split_source: C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits
+  observation_products: [SOCATv2026 Coastal, Issue-61 repaired split indices]
+  time_range: 1993-2025
+  spatial_domain: SOCAT-supported global coastal matchup inside the frozen 400-km product geometry
+  qc_policy: Reuse frozen Issue-54 rows and exact Issue-61 split indices.
+  provenance_policy: Every exposed legacy group remains development-only; no repartitioning restores blind status.
+
+splits:
+  grouping: Exact Issue-61 cruise, true geographic plus 100-km buffer, whole-region, and rolling-forward indices.
+  train: Outer fit divided into complete-group model-fit and untouched calibration; inner model-fit divided again by complete group for six-configuration selection.
+  development: All four repaired outer schemes.
+  locked_test: Not opened.
+  external_independent: Not opened.
+
+model:
+  family: Finite fair point-model zoo
+  config_path: configs/p2_model_zoo_v2.4.json
+  config_sha256: cb21854a15c2b5d6477dab2310391c01214cb65d0c8ad447ab6cb0128ac905a9
+  inputs: [Issue-61 deployable features, GLORYS background SSS, outer-nested predicted SSS for fCO2]
+  learned_outputs: [SSS or SSS residual plus direct fallback, fCO2]
+  derived_outputs: [50/90 prediction-band conformal intervals]
+  loss: Weighted MSE/RMSE with family-specific regularization
+  parameter_count: Recorded per fitted candidate and finalist.
+
+training:
+  seeds: [62024, 62025, 62026]
+  optimizer_steps: Frozen by the six configurations per family; no outer-result expansion.
+  compute_budget: Six inner configurations per family and outer split, one full screen seed, then two additional seeds for no more than two finalists per target.
+  checkpoint_selection: Group-equal RMSE on the inner group-disjoint selection partition only.
+  uncertainty_method: Issue-61 group-disjoint outer calibration using prediction bands only.
+
+evaluation:
+  primary_metrics: [RMSE, MAE, bias, R2, group-equal RMSE]
+  group_metrics: [cruise, true geographic block, whole region, rolling forward, worst supported LME]
+  calibration_metrics: [coverage50, coverage90, interval width, WIS, fixed-coverage risk]
+  baselines: [raw GLORYS, strict-v1 RF, modernized RF, Issue-61 CatBoost]
+
+reproducibility:
+  git_commit: d29e44ad07097a19997a129a2008030561260b54
+  git_worktree_clean: true at preregistration commit
+  environment_lock: v2.0/.venv plus pyproject.toml and model-zoo optional dependency group
+
+artifacts:
+  output_directory: C:/backup/phd/data/processed/recad_v2_4/p2_model_zoo_v2.4
+  report: docs/experiment_archive/p2_model_zoo_v2.4/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p2_model_zoo_v2.4
+    report: docs/experiment_archive/p2_model_zoo_v2.4/REPORT.md
+    captions: docs/experiment_archive/p2_model_zoo_v2.4/CAPTIONS.md
+    figures: [13 PNG figures]
+    source_tables: [15 CSV tables]
+    manifest: docs/experiment_archive/p2_model_zoo_v2.4/archive_manifest.json
+    verification_status: verified
+
+outcome:
+  completed_utc: 2026-10-14T10:45:21Z
+  primary_result: SSS CatBoost is the sole relative-improvement finalist at cruise/geographic/whole-region/forward RMSE 0.899/1.436/2.168/1.186 PSU, but fails the geographic ceiling and shifted-coverage gate. fCO2 ExtraTrees and CatBoost are stability finalists only at 33.301/51.242/52.408/39.228 and 34.907/48.950/53.092/40.079 µatm. No target passes the complete production-promotion contract.
+  acceptance_gate_passed: false for product promotion; finite fair family screen completed
+  deviations:
+    - The first finalist-selection attempt exposed that per-fold metric rows had not yet been pooled to one complete OOF score per target/model/scheme. Selection stopped before producing a decision; the implementation was corrected, tested for duplicate folds, and all finalists were selected from pooled OOF metrics without rerunning or changing predictions.
+    - The first archive build found that Issue-61 split-audit tables already contained their target column. The builder was made backward-compatible, then rebuilt and hash-verified; scientific tables and decisions were unchanged.
+  invalidation_reason: null
+  evidence_grade: development_only
+  allowed_claims: Fair corrected point-family rankings, three-seed finalist stability, negative neural point-model results, and graph-diagnostic triggers under the Issue-61 development folds; no independent qualification or production promotion.
