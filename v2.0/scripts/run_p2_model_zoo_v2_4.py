@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from recad.evaluate.context_connectivity import water_neighbors
 from recad.evaluate.fco2_bakeoff import interval_scores
 from recad.evaluate.model_zoo import (
     deterministic_cap,
@@ -494,6 +495,22 @@ def metric_row(frame: pd.DataFrame, **keys: object) -> dict[str, object]:
         "r2": float(1 - np.sum(error**2) / denominator) if denominator else np.nan,
         "group_equal_rmse": group_equal_rmse(frame, frame.prediction.to_numpy(float)),
     }
+    late = frame.loc[frame.yr.ge(2020)]
+    row["late_period_n"] = len(late)
+    row["late_period_bias"] = (
+        float((late.prediction - late.truth).mean()) if not late.empty else np.nan
+    )
+    supported_regions = frame.groupby("lme_id", observed=True).filter(lambda part: len(part) >= 200)
+    if supported_regions.empty:
+        row["worst_supported_region_rmse"] = np.nan
+    else:
+        supported_regions = supported_regions.assign(
+            squared_error=(supported_regions.prediction - supported_regions.truth) ** 2
+        )
+        region_rmse = np.sqrt(
+            supported_regions.groupby("lme_id", observed=True).squared_error.mean()
+        )
+        row["worst_supported_region_rmse"] = float(region_rmse.max())
     calibrated = frame.loc[frame.calibrated & frame.width90.notna()]
     if not calibrated.empty:
         row.update(
@@ -505,6 +522,77 @@ def metric_row(frame: pd.DataFrame, **keys: object) -> dict[str, object]:
             )
         )
     return row
+
+
+def graph_residual_diagnostics(finalists: dict[str, object]) -> pd.DataFrame:
+    """Measure same-month water-neighbour residual structure for finalists."""
+
+    rows = []
+    for target, decision in finalists["decisions"].items():
+        for family in decision["selected"]:
+            for seed in config()["finalist_seeds"]:
+                paths = sorted(
+                    PARTITIONS.glob(f"{target}_cruise_fold*_{family}_seed{seed}.parquet")
+                )
+                if not paths:
+                    continue
+                held = pd.concat(
+                    [
+                        pd.read_parquet(
+                            path,
+                            columns=["yr", "mon", "grid_flat", "truth", "prediction"],
+                        )
+                        for path in paths
+                    ],
+                    ignore_index=True,
+                )
+                held["residual"] = held.truth - held.prediction
+                nodes = (
+                    held.groupby(["yr", "mon", "grid_flat"], as_index=False)
+                    .residual.mean()
+                    .dropna()
+                )
+                grid = np.sort(nodes.grid_flat.unique().astype(np.int64))
+                neighbours = water_neighbors(grid)
+                node_lookup = pd.Series(np.arange(len(grid), dtype=np.int32), index=grid)
+                nodes["node"] = nodes.grid_flat.map(node_lookup).astype(np.int32)
+                pairs = []
+                for slot in (1, 3):
+                    left = nodes.copy()
+                    left["neighbour_node"] = neighbours[left.node.to_numpy(), slot]
+                    left = left.loc[left.neighbour_node.ge(0)]
+                    right = nodes.rename(
+                        columns={"node": "neighbour_node", "residual": "neighbour_residual"}
+                    )[["yr", "mon", "neighbour_node", "neighbour_residual"]]
+                    pairs.append(left.merge(right, on=["yr", "mon", "neighbour_node"], how="inner"))
+                pair = pd.concat(pairs, ignore_index=True)
+                observed = float(pair.residual.corr(pair.neighbour_residual))
+                rng = np.random.default_rng(62024 + int(seed))
+                permuted = []
+                group_indices = list(pair.groupby(["yr", "mon"], observed=True).indices.values())
+                right = pair.neighbour_residual.to_numpy(float)
+                left = pair.residual.to_numpy(float)
+                for _ in range(100):
+                    shuffled = right.copy()
+                    for indices in group_indices:
+                        shuffled[indices] = rng.permutation(shuffled[indices])
+                    permuted.append(float(np.corrcoef(left, shuffled)[0, 1]))
+                control = float(np.nanmean(permuted))
+                rows.append(
+                    {
+                        "target": target,
+                        "model": family,
+                        "seed": seed,
+                        "pairs": len(pair),
+                        "adjacent_residual_correlation": observed,
+                        "within_month_permutation_correlation": control,
+                        "correlation_above_control": observed - abs(control),
+                        "same_sign_fraction": float(np.mean(np.sign(left) == np.sign(right))),
+                    }
+                )
+    result = pd.DataFrame(rows)
+    result.to_csv(TABLES / "graph_residual_diagnostics.csv", index=False)
+    return result
 
 
 def screen_metrics() -> pd.DataFrame:
@@ -684,6 +772,7 @@ def analyze_final() -> None:
             )
     pd.DataFrame(selection_rows).to_csv(TABLES / "inner_selection_metrics.csv", index=False)
     finalists = json.loads((OUTPUT / "finalists.json").read_text(encoding="utf-8"))
+    graph = graph_residual_diagnostics(finalists)
     triggers = {}
     for target, decision in finalists["decisions"].items():
         target_metrics = stability.loc[
@@ -698,10 +787,23 @@ def analyze_final() -> None:
             and geographic <= ceilings["geographic"]
             and forward > ceilings["forward"] * 1.05
         )
+        target_graph = graph.loc[graph.target == target]
+        graph_signal = (
+            float(target_graph.correlation_above_control.max())
+            if not target_graph.empty
+            else np.nan
+        )
+        graph_triggered = bool(np.isfinite(graph_signal) and graph_signal >= 0.2)
         triggers[target] = {
             "temporal_triggered": temporal,
-            "graph_triggered": False,
-            "graph_reason": "requires corrected water-connected residual analysis; no automatic family-wide graph claim",
+            "graph_triggered": graph_triggered,
+            "graph_signal": graph_signal,
+            "graph_threshold": 0.2,
+            "graph_reason": (
+                "same-month adjacent residual correlation exceeds permutation control by threshold"
+                if graph_triggered
+                else "corrected residual signal does not reach the frozen threshold"
+            ),
         }
     write_json(
         OUTPUT / "decision.json",
