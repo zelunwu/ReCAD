@@ -601,9 +601,7 @@ def screen_metrics() -> pd.DataFrame:
     """Aggregate seed-62024 candidate metrics and repaired controls."""
 
     rows = []
-    grouped_paths = group_outer_partition_paths(
-        sorted(PARTITIONS.glob("*_seed62024.parquet"))
-    )
+    grouped_paths = group_outer_partition_paths(sorted(PARTITIONS.glob("*_seed62024.parquet")))
     for (target, scheme, model, seed), paths in sorted(grouped_paths.items()):
         frame = pd.concat(
             [pd.read_parquet(path) for path in sorted(paths)],

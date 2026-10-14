@@ -601,7 +601,9 @@ def main() -> int:
         git_commit = subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
         ).strip()
-    if len(git_commit) != 40 or any(character not in "0123456789abcdef" for character in git_commit):
+    if len(git_commit) != 40 or any(
+        character not in "0123456789abcdef" for character in git_commit
+    ):
         raise ValueError(f"invalid training commit: {git_commit!r}")
     manifest = {
         "experiment_id": "p2_model_zoo_v2.4",
