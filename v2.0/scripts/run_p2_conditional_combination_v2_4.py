@@ -25,8 +25,7 @@ from run_p2_process_predictors_v2_4 import (
     load_augmented_frame,
     variant_features,
 )
-from run_p2_validation_repair_v2_4 import cached_splits
-from run_p2_validation_repair_v2_4 import MODERN_RF_FEATURES
+from run_p2_validation_repair_v2_4 import MODERN_RF_FEATURES, cached_splits
 
 OUTPUT = Path(r"C:\backup\phd\data\processed\recad_v2_4\p2_conditional_combination_v2.4")
 PARTITIONS = OUTPUT / "partitions"
