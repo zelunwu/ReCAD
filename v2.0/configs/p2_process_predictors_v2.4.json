@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.4",
+  "experiment_id": "p2_process_predictors_v2.4",
+  "issue": 63,
+  "parent_issue": 43,
+  "created_utc": "2026-10-14T12:00:00Z",
+  "targets": ["SSS", "fCO2"],
+  "data_contract": {
+    "matchup": "C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet",
+    "predictor_cube": "C:/backup/phd/data/processed/recad_v2_3/global_coastal_predictor_cube_v2.3.nc",
+    "split_source": "C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits",
+    "model_zoo_source": "C:/backup/phd/data/processed/recad_v2_4/p2_model_zoo_v2.4",
+    "period": "1993-2025",
+    "new_independent_labels_opened": false,
+    "2026_provisional_opened": false
+  },
+  "source_audit": {
+    "chlorophyll_a": {
+      "expected_source": "MODIS Aqua L3 mapped monthly chlorophyll-a",
+      "expected_path": "E:/T7_4T/modis/mapped_monthly/chlor_a",
+      "nominal_period": "2002-07 through 2020-12",
+      "workspace_status_at_preregistration": "unavailable",
+      "experiment_action": "availability and temporal-gap negative result only; no synthetic fill and no training branch"
+    },
+    "mixed_layer_depth": {
+      "workspace_status_at_preregistration": "no frozen source artifact",
+      "experiment_action": "unavailable negative result; no training branch"
+    },
+    "river_discharge": {
+      "workspace_status_at_preregistration": "no frozen discharge or runoff product",
+      "experiment_action": "unavailable negative result; river geometry is not used as freshwater flux"
+    },
+    "dense_front_proxy": {
+      "source_fields": ["sst", "wspd"],
+      "definition": "water-connected cardinal-neighbour mean absolute difference and range at the same grid month",
+      "fallback": "zero-valued contrast plus explicit valid-neighbour count",
+      "production_status": "deployable from the frozen cube"
+    },
+    "freshwater_proxy": {
+      "source_fields": ["sss_bg", "sss_bg_available"],
+      "definition": "background-SSS freshwater deficit relative to 35 plus water-connected local contrast and range",
+      "fallback": "zero-valued proxy plus explicit background availability and valid-neighbour count",
+      "production_status": "deployable with explicit missingness"
+    },
+    "circulation_proxy": {
+      "source_fields": ["adt", "adt_available"],
+      "definition": "water-connected cardinal-neighbour ADT mean absolute difference and range",
+      "fallback": "zero-valued proxy plus explicit availability and valid-neighbour count",
+      "production_status": "optional; may not reduce product coverage"
+    },
+    "continuous_background": {
+      "target": "fCO2",
+      "definition": "outer-training-only continuous spherical-seasonal-trend Ridge background using unit-sphere coordinates, annual harmonics, trend, and their interactions",
+      "fallback": "direct point finalist",
+      "forbidden": ["LME identity", "held labels", "outer calibration labels", "future labels in forward folds"]
+    }
+  },
+  "base_models": {
+    "SSS": "Issue-62 CatBoost background-residual finalist",
+    "fCO2": "Issue-62 ExtraTrees stability finalist"
+  },
+  "variants": {
+    "SSS": [
+      "S0_base",
+      "S1_dense_front",
+      "S2_freshwater_proxy",
+      "S3_optional_circulation"
+    ],
+    "fCO2": [
+      "F0_base",
+      "F1_dense_front",
+      "F2_freshwater_proxy",
+      "F3_optional_circulation",
+      "F4_continuous_background_residual"
+    ]
+  },
+  "training": {
+    "outer_splits": "exact Issue-61 cruise, geographic plus 100 km buffer, whole-region, and past-only forward indices",
+    "inner_selection": "same complete-group inner split and six-configuration allowance as Issue 62",
+    "outer_calibration": "same isolated complete-group calibration partition as Issue 61",
+    "screen_seed": 63024,
+    "retained_seeds": [63024, 63025, 63026],
+    "combination_policy": "do not combine factors in Issue 63; combinations belong to Issue 64 only if single-factor evidence retains both"
+  },
+  "evaluation": {
+    "primary_metrics": ["RMSE", "group-equal RMSE", "MAE", "bias", "R2"],
+    "transfer_metrics": ["geographic", "whole-region", "rolling-forward", "worst supported region"],
+    "calibration_metrics": ["coverage50", "coverage90", "width", "WIS", "fixed-coverage risk"],
+    "coverage_views": ["all support with fallback", "strict common support"],
+    "process_diagnostics": ["front-strength bins", "freshwater-deficit bins", "ADT availability", "source-era transitions", "cross-LME boundary contrast"]
+  },
+  "retention_gate": {
+    "minimum_relative_rmse_improvement": 0.01,
+    "minimum_primary_schemes_improved": 2,
+    "maximum_other_scheme_regression": 0.02,
+    "paired_group_bootstrap_upper_mse_difference": 0.0,
+    "maximum_coverage90_drop": 0.02,
+    "must_preserve_all_support_rows": true,
+    "must_not_create_source_era_or_boundary_artifact": true,
+    "unavailable_source_policy": "archive as unavailable negative evidence without inventing a proxy bearing the source name"
+  },
+  "artifacts": {
+    "large_output_root": "C:/backup/phd/data/processed/recad_v2_4/p2_process_predictors_v2.4",
+    "reviewer_archive": "docs/experiment_archive/p2_process_predictors_v2.4",
+    "minimum_figures": 8,
+    "caption_policy": "full caption immediately below every figure in REPORT.md"
+  }
+}

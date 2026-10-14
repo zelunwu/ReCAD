@@ -1,0 +1,75 @@
+schema_version: 1
+experiment_id: p2_process_predictors_v2.4
+status: preregistered
+owner: ReCAD
+created_utc: 2026-10-14T12:00:00Z
+
+science:
+  question: Can deployable process proxies or a continuous fCO2 background improve strict geographic, whole-region, or future transfer beyond the Issue-62 tree finalists?
+  hypothesis: Missing process information and discontinuous backgrounds constrain transfer more than additional point-model capacity.
+  product_scope: Global coastal SSS/fCO2 development evidence only; no independent qualification.
+  acceptance_gate: A factor improves at least two intended outer schemes by at least 1%, has paired grouped-bootstrap upper MSE difference below zero, causes no other-scheme regression above 2%, preserves all-support rows, and does not worsen 90% coverage by more than 0.02 or create source-era/boundary artifacts.
+  stopping_rule: Test each frozen factor independently; unavailable Chl-a, MLD, and discharge remain explicit negative availability results; no unrestricted feature search or factor combination.
+
+data:
+  manifest_path: configs/p2_process_predictors_v2.4.json
+  manifest_sha256: 92870e8ce226a64e6fb38095bae6f1758104294a807196f5d1acf7e38cb3b0f0
+  prepared_path: C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet
+  predictor_cube: C:/backup/phd/data/processed/recad_v2_3/global_coastal_predictor_cube_v2.3.nc
+  split_source: C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits
+  model_zoo_source: C:/backup/phd/data/processed/recad_v2_4/p2_model_zoo_v2.4
+  time_range: 1993-2025
+  spatial_domain: Frozen 400-km global coastal product geometry and SOCAT-supported development matchup
+  provenance_policy: Reuse Issue-61 exposure ledger; no new locked, external-independent, or 2026 labels.
+
+splits:
+  grouping: Exact Issue-61 cruise, geographic plus 100-km buffer, whole-region, and past-only forward partitions.
+  train: Outer model-fit and calibration groups remain isolated; inner selection uses complete groups.
+  development: All four corrected outer schemes.
+  locked_test: Not opened.
+  external_independent: Not opened.
+
+model:
+  family: Target-specific controlled process ablation
+  config_path: configs/p2_process_predictors_v2.4.json
+  config_sha256: 92870e8ce226a64e6fb38095bae6f1758104294a807196f5d1acf7e38cb3b0f0
+  SSS_baseline: Issue-62 CatBoost background-residual finalist
+  fCO2_baseline: Issue-62 ExtraTrees stability finalist
+  factors: [dense SST/wind front proxy, background-SSS freshwater proxy, optional ADT circulation proxy, continuous spherical-seasonal-trend fCO2 background]
+  unavailable_factors: [global Chl-a, mixed-layer depth, river discharge]
+  loss: Same target-specific weighted squared-error objective as Issue 62.
+
+training:
+  seeds: [63024, 63025, 63026]
+  screen_policy: One seed for every single-factor variant; two additional seeds only for retained factors.
+  compute_budget: Same six-configuration inner allowance as Issue 62.
+  combination_policy: No combinations in Issue 63; hand retained complementary factors to conditional Issue 64.
+  uncertainty_method: Reuse Issue-61 outer-training-only grouped conformal construction.
+
+evaluation:
+  primary_metrics: [RMSE, group-equal RMSE, MAE, bias, R2]
+  transfer_metrics: [geographic, whole-region, rolling-forward, worst supported region]
+  calibration_metrics: [coverage50, coverage90, width, WIS, fixed-coverage risk]
+  coverage_views: [all support with fallback, strict common support]
+  process_diagnostics: [front bins, freshwater bins, ADT availability, source-era transitions, cross-LME boundary contrast]
+
+reproducibility:
+  git_commit: preregistration commit to be recorded before feature materialization or training
+  git_worktree_clean: true at preregistration commit
+  environment_lock: v2.0/.venv plus pyproject.toml
+
+artifacts:
+  output_directory: C:/backup/phd/data/processed/recad_v2_4/p2_process_predictors_v2.4
+  report: docs/experiment_archive/p2_process_predictors_v2.4/REPORT.md
+  reviewer_archive:
+    path: docs/experiment_archive/p2_process_predictors_v2.4
+    verification_status: null
+
+outcome:
+  completed_utc: null
+  primary_result: null
+  acceptance_gate_passed: null
+  deviations: []
+  invalidation_reason: null
+  evidence_grade: null
+  allowed_claims: null
