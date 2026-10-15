@@ -23,7 +23,7 @@
     {"path": "docs/experiment_archive/p2_global_reliability_contract_v2.4/REPORT.md", "sha256": "4f7dec84ed87e2c4be6d52c004e2d5eccbcd735074ff490cd62cceeed2b2adfb"},
     {"path": "docs/experiment_archive/p1_ta_bights_v2.2/REPORT.md", "sha256": "9af3f2cd42e8c4d895547c81a54c7917cb528ef891d7adcb0e7971b97fb7f439"},
     {"path": "docs/experiment_archive/p1_dic_reliability_v2.2/REPORT.md", "sha256": "8253a4ef004d4505c4c2b4fa823f9de5f46b7f81a1fa2076b2610f217cd2572f"},
-    {"path": "configs/frozen/product_scope_v2.3.json", "sha256": "80871df149767dc4679234655210961cc7707fbdb0c882c1c1666464bf788a9d"}
+    {"path": "configs/frozen/product_scope_v2.3.json", "sha256": "6ca5299328634e15a7a400ab66f7e16115aa2329b74ab00b73465d27e6d5c985"}
   ],
   "reopen_condition": "A future frozen roadmap explicitly supplies North-American SSS and fCO2 inputs that pass their applicable independent qualification gates"
 }

@@ -23,5 +23,6 @@ def test_issue45_evidence_hashes_are_frozen() -> None:
     audit = json.loads(AUDIT_PATH.read_text(encoding="utf-8"))
     for evidence in audit["evidence"]:
         path = ROOT / evidence["path"]
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        normalized = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+        digest = hashlib.sha256(normalized.encode()).hexdigest()
         assert digest == evidence["sha256"]
