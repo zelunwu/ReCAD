@@ -5,6 +5,7 @@
 /data/
 /outputs/
 /runs/
+/out/
 /*.nc
 /*.mat
 /*.zarr/
