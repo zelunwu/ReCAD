@@ -30,3 +30,4 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 | `p2_process_predictors_v2.4`（Issue #63） | verified；fCO2 continuous background retained for development only；all process proxies negative；no production promotion | [完整报告](p2_process_predictors_v2.4/REPORT.md) |
 | `p2_conditional_combination_v2.4`（Issue #64） | verified；fCO2 convex ensemble retained for development only；graph/scale-head negative | [完整报告](p2_conditional_combination_v2.4/REPORT.md) |
 | `p2_global_reliability_contract_v2.4`（Issue #44） | verified；complete A/B/C/D product projection；global shifted-interval qualification failed | [完整报告](p2_global_reliability_contract_v2.4/REPORT.md) |
+| `p2_na_carbonate_optional_v2.4`（Issue #45） | trigger audit；untriggered/non-blocking；no labels opened | [完整报告](p2_na_carbonate_optional_v2.4/REPORT.md) |

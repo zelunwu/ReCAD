@@ -320,3 +320,7 @@ honest inner-OOF 的 fCO2 CatBoost/F4 残差中位相关为 0.860，触发冻结
 `p2_global_reliability_contract_v2.4` 在 Issue #61 corrected folds 上为 Issue #62 的 SSS CatBoost 背景残差 finalist 和 Issue #64 的 fCO2 CatBoost/F4 凸组合建立嵌套区间、风险排序、A/B/C/D、trusted/diagnostic/suppressed 状态与 reason bits。SSS/fCO2 cruise RMSE 为 0.896 PSU / 32.42 µatm，90% coverage 为 0.898/0.901；geographic、whole-region、forward 中最低 coverage 为 0.788，未通过冻结的 0.85 shifted gate。
 
 最终写出两个完整 1993–2025 NetCDF，各含 396×838,661 个 grid-month。平均面积加权 A/B 为 SSS 20.61%、fCO2 20.97%，D/suppressed 为 70.47%/69.11%，没有通过删除困难区域制造结果。结论为 **`freeze_applicability_contract_but_fail_global_interval_qualification`**：flagged 产品和校准对象可进入一次性独立评估准备，但不允许宣称无观测沿岸已获全球准确度资格。完整报告、12 张 caption 紧随图片的图和 14 个源表见 `docs/experiment_archive/p2_global_reliability_contract_v2.4/`；大文件和 SHA256 保存在 Git 外目录。
+
+## P2.X 北美 TA/DIC 可选分支触发审计（Issue #45）
+
+`p2_na_carbonate_optional_v2.4` 核对了冻结的 entry condition：只有存在已合格的北美 SSS/fCO2 部署输入，才允许消耗最多 10% 的 P2 预算测试 TA/DIC rescue。Issue #44 冻结了 development support grades，但 shifted 90% coverage 最低为 0.788，明确没有取得独立产品资格；MAB TA/DIC 仍为 `diagnostic_only`，SAB TA 仍为 `fail`。因此该分支以 **`untriggered_non_blocking`** 关闭，没有训练新模型、派生 DIC、消耗预算或开启 locked/external-independent/2026 标签。完整触发审计和哈希证据见 `docs/experiment_archive/p2_na_carbonate_optional_v2.4/`。

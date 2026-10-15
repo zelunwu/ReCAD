@@ -1,0 +1,5 @@
+requirement,current_status,entry_pass,evidence
+qualified North-American SSS,development support only,false,p2_global_reliability_contract_v2.4
+qualified North-American fCO2,development support only,false,p2_global_reliability_contract_v2.4
+deployable TA,MAB diagnostic_only and SAB fail,false,p1_ta_bights_v2.2
+deployable DIC,MAB diagnostic_only and suppressed,false,p1_dic_reliability_v2.2

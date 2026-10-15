@@ -1,5 +1,7 @@
 # ReCAD v2.0 — Agent Handoff
 
+> **2026-10-15 P2.X 触发审计闭环（当前最高优先级）**：Issue #45 要求 qualified North-American SSS/fCO2 inputs。Issue #44 仅冻结 development support grades 且 shifted interval gate 失败，MAB TA/DIC 仍为 `diagnostic_only`、SAB TA 为 `fail`，因此 #45 以 `untriggered_non_blocking` 关闭。没有训练 TA、派生 DIC、消耗 P2 可选预算或开启 locked/external-independent/2026 标签。审计见 `docs/experiment_archive/p2_na_carbonate_optional_v2.4/`。下一步准备 #5/#46；一次性 independent label access 前必须完成 metadata-only eligibility audit、lock.json 与全部哈希。
+
 > **2026-10-15 P2.7c 完成（当前最高优先级）**：#63 在 #61 修复 folds 与 #62 finalists 上完成过程变量和连续背景消融。SSS 的 SST/风速锋面、背景 SSS 淡水与 ADT 环流代理均失败；fCO2 三个过程代理也失败，仅连续球面-季节-趋势背景残差作为 development candidate 保留，三种子 cruise/geographic/whole-region/forward RMSE 为 32.760/54.201/52.754/39.263 µatm，但 shifted coverage 仍失败，不能提升产品。#64 不做过程因子组合，只允许改变架构/信息路径的受控图假设和 shifted-uncertainty 假设，禁止重跑 #42 四邻接 ST96。随后为 **#44 可信度合同 → #5 新独立验证 → #46 发布**。任何已暴露标签永久 development-only。完整证据见 `docs/experiment_archive/p2_process_predictors_v2.4/`。
 
 > **当前权威入口（2026-10-08）**：数据版本与路径见 `docs/data_registry.md`；实验方法、结果和证据等级见 `docs/experiment_registry.md`；研究方向变化见 `docs/decision_log.md`；当前执行路线以 GitHub #1、#4、#5 和 `configs/frozen/product_scope_v2.3.json` 为准。下方早期章节保留工程历史，若与这些入口冲突，以当前权威入口为准。
