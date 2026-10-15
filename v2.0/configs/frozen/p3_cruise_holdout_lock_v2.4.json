@@ -1,7 +1,7 @@
 {
   "schema_version": "2.4",
   "issue": 5,
-  "status": "metadata_holdout_frozen_pending_label_access",
+  "status": "evaluation_complete_flagged_release_qualified",
   "evidence_scope": "same-source complete-cruise, sparse-place, and recent-time transfer within SOCAT v2026",
   "cross_dataset_claim": false,
   "parent_candidate_lock": "configs/frozen/p3_lock_v2.4.json",
@@ -13,7 +13,15 @@
   "selector": "scripts/select_p3_cruise_holdout_v2_4.py",
   "selector_sha256": "9c1ab9e0861138bb2c530a9a03917c384f0b9f0ad31c8ca37912dba938246143",
   "target_values_used_for_selection": false,
-  "label_access_authorized": false,
-  "label_access_count": 0,
-  "unlock_rule": "Merge this immutable metadata-only preregistration, then run the frozen candidates once with every selected group excluded from all fitting, calibration, background, upstream-SSS, threshold, and support-index paths."
+  "label_access_authorized": true,
+  "label_access_count": 1,
+  "unlock_rule": "Merge this immutable metadata-only preregistration, then run the frozen candidates once with every selected group excluded from all fitting, calibration, background, upstream-SSS, threshold, and support-index paths.",
+  "label_access_scope": "50 frozen complete SOCAT v2026 cruises after PR 75 merge",
+  "result_decision": "pass_flagged_same_source_release_with_regional_suppression",
+  "result_sha256": {
+    "SSS_held_predictions.parquet": "b64acacf1af9bf5c6bed27a860c3fe5335102a9e71907587df92c5351cb9820e",
+    "fCO2_held_predictions.parquet": "becb8746a1cc6e18370cce749a0dc692606b02a847cd5400950df0686ccac05b",
+    "all_metrics.csv": "20f59bdf39540b57439fdff0ec37a14f90caa1673a57f211ee7ee1905e51b087",
+    "pipeline.complete": "59822ca9a07b721fa2400a01314dbfbe9a7712495437c36070d2c6dbf9b94afe"
+  }
 }

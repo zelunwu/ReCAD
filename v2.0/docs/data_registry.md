@@ -48,6 +48,7 @@
 | conditional model outputs v2.4 | SSS/fCO2 各 18 个 corrected-fold 分区；季节水体图残差、异方差 scale head、fCO2 inner-OOF 触发与 outer convex ensemble | `C:\backup\phd\data\processed\recad_v2_4\p2_conditional_combination_v2.4` | Issue #64；图和 scale head 均失败，fCO2 CatBoost/F4 ensemble 仅保留为 development candidate；逐行预测、选择与哈希保存在 Git 外；未打开新 locked/external-independent/2026 标签 |
 | global reliability products v2.4 | SSS/fCO2 各 396 月 × 838,661 节点；prediction、50/90 interval、risk、A/B/C/D、status、reason bits | `C:\backup\phd\data\processed\recad_v2_4\p2_global_reliability_contract_v2.4` | Issue #44；SSS/fCO2 NetCDF 为 6.76/4.75 GB，SHA256 `3d3fbc01…e0db` / `88869d61…a13cb`；平均 A/B 面积 20.61%/20.97%，D 为 70.47%/69.11%；shifted interval gate 失败；未打开 independent/2026 标签 |
 | P3 complete-cruise holdout v2.4 | SOCAT v2026 内 50 条 metadata-only 冻结航次；SSS 8,469 行、fCO2 8,470 行；5 个 basin | `configs/frozen/p3_cruise_holdout_manifest_v2.4.csv` | SHA256 `50ffcd07…fe2e`；23 条 recent、27 条 sparse-5°；选择未读取目标值；合入后从所有拟合、校准、背景与支持路径完整剔除并一次性评估 |
+| P3 complete-cruise results v2.4 | 50 条冻结航次的一次性 SSS/fCO2 predictions、intervals、grades、逐航次/区域/时间/支持距离 metrics；约 3 GB checkpoints | `C:\backup\phd\data\processed\recad_v2_4\p3_cruise_holdout_v2.4` | label access count=1；SSS/fCO2 prediction SHA256 `b64acacf…820e` / `becb8746…05b`；完整外部文件 SHA256 表在 reviewer archive Table 6；大文件不进 Git |
 | coastal graph / support map v2.2 | 148,795 节点、492,570 条四邻接有向边 | P0 已冻结，同上 | 图审计确认只连接水体节点；含最近碳支持距离 |
 
 ## 标签来源规则
