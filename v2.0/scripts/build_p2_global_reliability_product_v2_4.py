@@ -24,6 +24,9 @@ CUBE = Path(r"C:\backup\phd\data\processed\recad_v2_3\global_coastal_predictor_c
 CHECKPOINTS = OUTPUT / "checkpoints"
 PRODUCTS = OUTPUT / "products"
 TABLES = OUTPUT / "tables"
+UPSTREAM_SSS = Path(
+    r"C:\backup\phd\data\processed\recad_v2_4\p2_validation_repair_v2.4\upstream_sss"
+)
 ENVIRONMENT = (
     "sst",
     "wspd",
@@ -61,6 +64,24 @@ def sha256(path: Path) -> str:
 def pooled_cruise(target: str) -> pd.DataFrame:
     paths = sorted((OUTPUT / "partitions").glob(f"{target}_cruise_fold*.parquet"))
     return pd.concat([pd.read_parquet(path) for path in paths], ignore_index=True)
+
+
+def attach_final_sss_crossfit(frame: pd.DataFrame) -> pd.DataFrame:
+    """Average the existing leakage-safe SSS predictions for final fCO2 fitting."""
+
+    paths = sorted(UPSTREAM_SSS.glob("fCO2_cruise_fold*.parquet"))
+    if not paths:
+        raise FileNotFoundError("Issue 61 fCO2 upstream SSS partitions are missing")
+    predictions = pd.concat(
+        [pd.read_parquet(path, columns=["record_id", "sss_crossfit"]) for path in paths],
+        ignore_index=True,
+    )
+    mean = predictions.groupby("record_id", observed=True).sss_crossfit.mean()
+    result = frame.copy()
+    result["sss_crossfit"] = result.record_id.map(mean).astype("float32")
+    if result.sss_crossfit.isna().any():
+        raise RuntimeError("final fCO2 frame has missing cross-fitted SSS")
+    return result
 
 
 def fit_sss(frame: pd.DataFrame):
@@ -300,7 +321,7 @@ def main() -> None:
     CHECKPOINTS.mkdir(parents=True, exist_ok=True)
     TABLES.mkdir(parents=True, exist_ok=True)
     sss_train = load_augmented_frame("SSS")
-    fco2_train = load_augmented_frame("fCO2")
+    fco2_train = attach_final_sss_crossfit(load_augmented_frame("fCO2"))
     sss_models = fit_sss(sss_train)
     fco2_models = fit_fco2(fco2_train)
     sss_risk, _sss_oof, sss_contract = fit_risk("SSS", sss_train)
