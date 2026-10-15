@@ -1,7 +1,5 @@
 # ReCAD v2.0 — Agent Handoff
 
-> **当前方案与结果总报告**：截至 2026-10-15 的科学问题、输入、模型、验证口径、完整航次结果、v1.x 对比、产品可信边界和后续建议，统一见 [`docs/current_scheme_and_results_v2.4.md`](docs/current_scheme_and_results_v2.4.md)。
-
 > **2026-10-15 ReCAD v2.4.0 条件发布完成（当前最高优先级）**：Issue #46 已生成 1993–2025、396×838,661 的 SSS/fCO2 NetCDF，包含 prediction、50/90 widths、A/B/C/D、status、reason bits、support、basin 以及独立 `trusted_prediction`/`diagnostic_prediction`。SSS/fCO2 平均 trusted area 为 20.61%/12.28%，diagnostic 8.91%/18.61%，suppressed 70.47%/69.11%；fCO2 Pacific A/B 已降为 diagnostic。相同 50 条 held cruise 和共同 7,907 行上，strict v1.x RF → v2 原生 RMSE 为 41.100→30.325 µatm（改善 26.2%），0.25° 为 42.424→31.014 µatm（改善 26.9%）。两产品 SHA256 为 SSS `5c1276b0…cb5d`、fCO2 `be0b4ef9…360b`；大文件位于 `C:\backup\phd\data\processed\recad_v2_4\recad_v2_release_v2.4`，完整报告、10 图及 caption、11 源表见 `docs/experiment_archive/recad_v2_release_v2.4/`。
 
 > **2026-10-15 P3 整航次一次性验证完成（当前最高优先级）**：PR #75 合入 metadata-only 冻结清单后，50 条 SOCAT v2026 完整 cruise 被从模型、校准、连续背景、上游 SSS、阈值和支持索引全部排除，再一次性开盲。SSS/fCO2 pooled RMSE 为 1.185 PSU / 30.780 µatm，R² 0.773/0.592，90% coverage 0.910/0.883，相对背景 skill 0.700/0.622；A/B 层为 0.598 PSU / 26.619 µatm，coverage 0.927/0.904。结论为 `pass_flagged_same_source_release_with_regional_suppression`：SSS A/B 可进入同源资格发布，fCO2 A/B 仅 Pacific 外可进入；Pacific fCO2 A/B coverage=0.845，保持 diagnostic；C diagnostic、D suppressed。完整报告与 10 张 caption 紧随图片的图见 `docs/experiment_archive/p3_cruise_holdout_v2.4/`，大文件在 `C:\backup\phd\data\processed\recad_v2_4\p3_cruise_holdout_v2.4`。下一步执行 Issue #46 的条件发布。
