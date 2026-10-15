@@ -1,0 +1,3 @@
+environment_max,geographic_max_km,held_groups,interval_calibration_groups,interval_method,risk_fit_groups,risk_thresholds,target
+0.5583269698956501,39.19194910682044,50,449,support_risk_scaled,490,"[0.3287500739097595, 0.454831063747406, 0.6116196870803834]",SSS
+0.5217498132025492,29.88587392362529,50,519,prediction_stratified,513,"[9.946377754211426, 14.244308948516846, 20.89158344268799]",fCO2

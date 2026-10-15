@@ -66,4 +66,4 @@ The clearest failure is cruise `187F20250215`, a strong freshwater system with S
 
 ## Figure and table index
 
-Figures 1-5 report SSS agreement, cruise risk, grade calibration, support distance, and geography. Figures 6-10 provide the same views for fCO2. Table 1 contains overall metrics; Table 2 all frozen strata; Table 3 trusted A/B regional evidence; Table 4 every cruise; Table 5 the release decision; Table 6 hashes every external output.
+Figures 1-5 report SSS agreement, cruise risk, grade calibration, support distance, and geography. Figures 6-10 provide the same views for fCO2. Table 1 contains overall metrics; Table 2 all frozen strata; Table 3 trusted A/B regional evidence; Table 4 every cruise; Table 5 the release decision; Table 6 hashes every external output; Tables 7-8 store calibration and the one-time label-access ledger.

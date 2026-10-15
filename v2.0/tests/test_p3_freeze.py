@@ -44,12 +44,14 @@ def test_frozen_protocol_excludes_spent_and_optional_targets() -> None:
     assert protocol["one_time_policy"]["zero_alias_overlap_required"] is True
 
 
-def test_release_contract_is_conditional() -> None:
+def test_release_contract_records_completed_conditional_scope() -> None:
     contract = json.loads(
         (ROOT / "configs/frozen/p3_release_contract_v2.4.json").read_text(encoding="utf-8")
     )
-    assert contract["status"] == "prepared_conditional_on_issue5"
+    assert contract["status"] == "release_complete_flagged_scope"
     assert "Issue 5" in contract["release_gate"]
+    assert contract["qualified_scope"]["SSS"].startswith("grades A/B")
+    assert contract["cross_dataset_claim"] is False
 
 
 def test_lock_blocks_access_without_exact_independent_set() -> None:

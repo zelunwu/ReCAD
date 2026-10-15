@@ -1,0 +1,3 @@
+target,time_index,sample_step,source_product
+SSS,395,4,ReCAD_v2.4_SSS_1993_2025.nc
+fCO2,395,4,ReCAD_v2.4_fCO2_1993_2025.nc

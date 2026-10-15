@@ -72,7 +72,7 @@
   },
   "files_sha256": {
     "README.md": "af46038f843e2ddd63ada58f482f3c1023ed3b02ce916624f3bb568d3c5ea899",
-    "REPORT.md": "357f3ea48707e4699538c78bf02ee6180b459c562e794caeda0b1d8ab58451da",
+    "REPORT.md": "6daf6926ce96d85124ce828ec6e3f6df2b2f6a6c8143e43306b1f979332fb901",
     "CAPTIONS.md": "778ab7e3de75e9dec2802d932f541f726c84b9702765b56931eb0e483394737a",
     "figures/fig_fco2_01_observed_predicted.png": "df4692fe7c2d4d89a6f1bacf0e5182841c80d8f835057096ff3cca5fac77bc1b",
     "figures/fig_fco2_02_cruise_rmse.png": "2f11bf2fc38c13ef95a6135d2beb12c83b9ab05f88ed88f195185a155ce796aa",
@@ -89,10 +89,12 @@
     "tables/table03_trusted_ab_metrics.csv": "66bbb1beba591dc6f36b222a13e099a644fb5a76bfb15cc8abe824ca31bad17d",
     "tables/table04_per_cruise_metrics.csv": "7958a3bc0f31eea26ebeb45f198764872b3ac39ed36a7c108a008d70365f9ba9",
     "tables/table05_release_decision.csv": "d547e8a3295dbb222ea21dcb89894c798165fd92daa976e72faa3fc6e1e257a8",
-    "tables/table06_external_artifact_hashes.csv": "0fd931118bf380d2be7aac52f050f9e80f123f8314e0ce6d09c7842ba2666cde"
+    "tables/table06_external_artifact_hashes.csv": "0fd931118bf380d2be7aac52f050f9e80f123f8314e0ce6d09c7842ba2666cde",
+    "tables/table07_calibration_contracts.csv": "a3b442327f7e2ff7d8641e87b765f9e5df2b6ac44b7ca8b4ebc21ff87d8cebc3",
+    "tables/table08_label_access.csv": "c529146d8865221063c84afb17ad4a711d062a2ecf3e03400fc26f01d010da75"
   },
-  "archive_builder_sha256": "cece40a864eabba6fe7cee4de019caeebdd7634a77a9d49bf97bf0ad459b05a6",
-  "analysis_script_sha256": "4891877019f8f0e3e24dd8e2c5d0a04aef4bb5a03d70a5fca5806b80d54a0e66",
+  "archive_builder_sha256": "b6e1814c6932a36191ab79e1c4c0de790dd840aa6d3732f27565a082252b6dd4",
+  "analysis_script_sha256": "ea93b58141f726905541d5b97c3382c08cf8daadcfaecdeef50a086a93b4f004",
   "source_artifacts_sha256": {
     "external_artifact_hash_table": "0fd931118bf380d2be7aac52f050f9e80f123f8314e0ce6d09c7842ba2666cde",
     "frozen_manifest": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e"

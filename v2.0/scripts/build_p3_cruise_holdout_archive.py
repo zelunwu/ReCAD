@@ -174,6 +174,18 @@ def main() -> None:
         ]
     )
     decisions.to_csv(ARCHIVE / "tables/table05_release_decision.csv", index=False)
+    contracts = []
+    for target in ("SSS", "fCO2"):
+        contract = json.loads(
+            (OUTPUT / f"{target}_calibration_contract.json").read_text(encoding="utf-8")
+        )
+        contracts.append(contract)
+    pd.DataFrame(contracts).to_csv(
+        ARCHIVE / "tables/table07_calibration_contracts.csv", index=False
+    )
+    pd.DataFrame([json.loads((OUTPUT / "label_access.json").read_text(encoding="utf-8"))]).to_csv(
+        ARCHIVE / "tables/table08_label_access.csv", index=False
+    )
 
     for target, frame in frames.items():
         unit = UNITS[target]
@@ -293,7 +305,7 @@ def main() -> None:
             "",
             "## Figure and table index",
             "",
-            "Figures 1-5 report SSS agreement, cruise risk, grade calibration, support distance, and geography. Figures 6-10 provide the same views for fCO2. Table 1 contains overall metrics; Table 2 all frozen strata; Table 3 trusted A/B regional evidence; Table 4 every cruise; Table 5 the release decision; Table 6 hashes every external output.",
+            "Figures 1-5 report SSS agreement, cruise risk, grade calibration, support distance, and geography. Figures 6-10 provide the same views for fCO2. Table 1 contains overall metrics; Table 2 all frozen strata; Table 3 trusted A/B regional evidence; Table 4 every cruise; Table 5 the release decision; Table 6 hashes every external output; Tables 7-8 store calibration and the one-time label-access ledger.",
             "",
         ]
     )

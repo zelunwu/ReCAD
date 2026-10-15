@@ -46,6 +46,8 @@ SPEC.loader.exec_module(MODULE)
         "p2_process_predictors_v2.4",
         "p2_conditional_combination_v2.4",
         "p2_global_reliability_contract_v2.4",
+        "p3_cruise_holdout_v2.4",
+        "recad_v2_release_v2.4",
     ],
 )
 def test_p1_reviewer_archive_is_complete_and_hash_verified(experiment_id: str) -> None:
