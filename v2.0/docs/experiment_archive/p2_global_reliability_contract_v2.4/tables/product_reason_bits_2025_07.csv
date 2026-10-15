@@ -1,0 +1,13 @@
+target,reason_bit,reason,nodes,area_fraction
+SSS,1,no_training_within_200km,482623,0.4641155251946145
+SSS,16,environmental_extrapolation,186952,0.13810979259931386
+SSS,32,low_group_diversity,300401,0.34006882510493663
+SSS,64,missing_predictor,0,0.0
+SSS,512,temporal_extrapolation,0,0.0
+SSS,1024,model_disagreement,46764,0.04689299648249533
+fCO2,1,no_training_within_200km,481845,0.4626457806342956
+fCO2,16,environmental_extrapolation,205230,0.1576458206551188
+fCO2,32,low_group_diversity,291684,0.33154172489977946
+fCO2,64,missing_predictor,0,0.0
+fCO2,512,temporal_extrapolation,0,0.0
+fCO2,1024,model_disagreement,21065,0.020790392629302233

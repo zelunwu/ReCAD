@@ -28,3 +28,5 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 | `p2_global_predictor_cube_v2.3`（Issue #53） | verified；pass_cube_freeze；396 months × 838,661 nodes；zero-mismatch replay | [完整报告](p2_global_predictor_cube_v2.3/REPORT.md) |
 | `p2_model_zoo_v2.4`（Issue #62） | verified；development_model_zoo_complete；no production promotion；graph diagnostic triggered | [完整报告](p2_model_zoo_v2.4/REPORT.md) |
 | `p2_process_predictors_v2.4`（Issue #63） | verified；fCO2 continuous background retained for development only；all process proxies negative；no production promotion | [完整报告](p2_process_predictors_v2.4/REPORT.md) |
+| `p2_conditional_combination_v2.4`（Issue #64） | verified；fCO2 convex ensemble retained for development only；graph/scale-head negative | [完整报告](p2_conditional_combination_v2.4/REPORT.md) |
+| `p2_global_reliability_contract_v2.4`（Issue #44） | verified；complete A/B/C/D product projection；global shifted-interval qualification failed | [完整报告](p2_global_reliability_contract_v2.4/REPORT.md) |

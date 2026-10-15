@@ -1,0 +1,114 @@
+{
+  "experiment_id": "p2_global_reliability_contract_v2.4",
+  "training_git_commit": "280e6aa",
+  "data_manifest_sha256": "2c0b13fa5df34e4b737df6256bc4ef0e34e02a6fe94786c35fbd2b42db6debb7",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "provisional_2026_opened": false,
+  "evidence_scope": "1993-2025 development labels on corrected Issue 61 folds and complete unlabeled product geometry",
+  "decision": {
+    "machine_decision": "freeze_applicability_contract_but_fail_global_interval_qualification",
+    "acceptance_gate_passed": false,
+    "trusted_area_fraction": {
+      "SSS": 0.20611649214983668,
+      "fCO2": 0.20965594296066803
+    },
+    "suppressed_area_fraction": {
+      "SSS": 0.7047369034350418,
+      "fCO2": 0.691117613514842
+    },
+    "minimum_shifted_coverage90": 0.7880006399658684,
+    "independent_labels_opened": false,
+    "labels_2026_opened": false
+  },
+  "figure_source_data": {
+    "fig01_outer_rmse.png": [
+      "outer_metrics.csv"
+    ],
+    "fig02_outer_coverage90.png": [
+      "outer_metrics.csv"
+    ],
+    "fig03_outer_wis.png": [
+      "outer_metrics.csv"
+    ],
+    "fig04_sss_risk_coverage.png": [
+      "fixed_coverage_risk.csv"
+    ],
+    "fig05_fco2_risk_coverage.png": [
+      "fixed_coverage_risk.csv"
+    ],
+    "fig06_ab_observed_rmse.png": [
+      "observed_grade_metrics.csv"
+    ],
+    "fig07_product_grade_area.png": [
+      "product_aggregate_grade_coverage.csv"
+    ],
+    "fig08_trusted_area_by_year.png": [
+      "product_annual_grade_coverage.csv"
+    ],
+    "fig09_sss_grade_map_2025_07.png": [
+      "local:SSS_reliability_v2.4.nc"
+    ],
+    "fig10_fco2_grade_map_2025_07.png": [
+      "local:fCO2_reliability_v2.4.nc"
+    ],
+    "fig11_reason_bit_prevalence.png": [
+      "product_reason_bits_2025_07.csv"
+    ],
+    "fig12_regional_calibration.png": [
+      "regional_calibration.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_outer_rmse.png": "Figure 1. Pooled corrected-fold point RMSE for the frozen SSS and fCO2 candidates. Geographic, whole-region, and forward partitions quantify transfer error rather than random-row interpolation.",
+    "fig02_outer_coverage90.png": "Figure 2. Empirical 90% interval coverage on corrected outer folds. Cruise coverage is near nominal, while multiple shifted partitions fall below the frozen 0.85 lower bound.",
+    "fig03_outer_wis.png": "Figure 3. Weighted interval score for the selected target-specific interval rules across all corrected validation schemes; lower values indicate sharper calibrated distributions.",
+    "fig04_sss_risk_coverage.png": "Figure 4. SSS RMSE as observations are retained through fixed cruise-derived risk thresholds. Shifted regions retain fewer rows and remain harder even at matched risk cutoffs.",
+    "fig05_fco2_risk_coverage.png": "Figure 5. fCO2 RMSE at fixed 50%, 75%, 90%, and complete cruise-derived risk envelopes. Risk ranking is useful in-distribution but weak under whole-region transfer.",
+    "fig06_ab_observed_rmse.png": "Figure 6. RMSE among observations receiving frozen A/B status in each outer scheme. Geographic folds yield no A/B rows because the support envelope correctly abstains everywhere.",
+    "fig07_product_grade_area.png": "Figure 7. Mean area-weighted A/B/C/D coverage across the complete 396-month by 838,661-node product geometry. Difficult areas remain present as C/D rather than being discarded.",
+    "fig08_trusted_area_by_year.png": "Figure 8. Area-weighted A/B fraction from 1993 through 2025. Changes reflect predictor availability and distance from the temporal and environmental training envelope.",
+    "fig09_sss_grade_map_2025_07.png": "Figure 9. Global coastal SSS applicability grades in July 2025. A/B is concentrated near demonstrated observational support; C is diagnostic and D is suppressed.",
+    "fig10_fco2_grade_map_2025_07.png": "Figure 10. Global coastal fCO2 applicability grades in July 2025. The full geometry is retained, including unsupported coasts marked D rather than silently omitted.",
+    "fig11_reason_bit_prevalence.png": "Figure 11. Area-weighted prevalence of each deployable reason bit in July 2025. Multiple bits may coexist, so fractions are diagnostic and do not sum to one.",
+    "fig12_regional_calibration.png": "Figure 12. Cruise-fold 90% coverage in the fifteen observation regions with the largest row counts. Regional heterogeneity remains visible despite near-nominal pooled cruise coverage."
+  },
+  "files_sha256": {
+    "README.md": "6e595adefa3aa9e0429e2707d25e4bf66b8b76aed0d239fd09004907d77017f6",
+    "REPORT.md": "4f7dec84ed87e2c4be6d52c004e2d5eccbcd735074ff490cd62cceeed2b2adfb",
+    "CAPTIONS.md": "bc7de73ef1d872e40c30f43ce1b8b197ee7cb123600fd7570e76a7ac7588da27",
+    "figures/fig01_outer_rmse.png": "78f75ba8ef817d6bca233d3c198ad4e22c699f1b67ccdc8fce0e45f9ecdd79a9",
+    "figures/fig02_outer_coverage90.png": "3eed5dddce5ffde8e58771121f79ba039aa91ea1cd4cc964fe58967afdf38c47",
+    "figures/fig03_outer_wis.png": "dbabb9542bab47cd7cce07dfd940b8fac158c820e280e11b7954dc14b50675e2",
+    "figures/fig04_sss_risk_coverage.png": "13898ced01a8c1930d887757e2e39461e3f14cc65683eed1b12faf89be7d1ca1",
+    "figures/fig05_fco2_risk_coverage.png": "c93151c5f4d721c110d1a3fbddad2f27cf6a456f19dcffa4c0849c6fe8e7480d",
+    "figures/fig06_ab_observed_rmse.png": "dc0bf7b148544bb5696ac2bac038afd341aa8182500cc38d68246c3366eb2e7d",
+    "figures/fig07_product_grade_area.png": "fb38ccd94e2c51cd162b1b2991db8d0c5ab5a0623a6dfd62d4468ed94a0c0885",
+    "figures/fig08_trusted_area_by_year.png": "d251c2baee0190670565f14191dc119c51983a04a41e85050dc7c5d0ac0ebb74",
+    "figures/fig09_sss_grade_map_2025_07.png": "2b3bb62f1040ccf166c4b949447915e437a988c2e9096e3e8ceeaf8f4be28f25",
+    "figures/fig10_fco2_grade_map_2025_07.png": "97d69a13f14caa985378015d0bf388c092cb8dc03bffcb65aa477010fa782f9e",
+    "figures/fig11_reason_bit_prevalence.png": "e8d8b680b56cf4ac17c93bb688a20d6273160a134638a53cd2278a7cecbf275a",
+    "figures/fig12_regional_calibration.png": "ae61eccadfdbab0f1a1d8497c3d1d021dc1158aedaf8389abe56a66c27092e2f",
+    "tables/annual_calibration.csv": "f05159a526ae6ccaa01451b56d05fc19ceda29fe030a5211545cf03194283f0c",
+    "tables/external_artifact_manifest.csv": "d5b2921135e740aa14519bb1e18ac6f8264aed13dccae0e2da2fd1cee1cd2cec",
+    "tables/fCO2_partition_summary.csv": "c0ec6737083787910c99a3ac4492ffa03f2e503b651bb715b4da7e2ca8944406",
+    "tables/fixed_coverage_risk.csv": "c56db190b0bffa0d071ad716db899558ec9820aebcf6eb9635c31f709d87d527",
+    "tables/interval_method_audit.csv": "db755bbcf629a2ad1b192227c7c1be292536639c226f027cf89bae629dfec962",
+    "tables/observed_grade_metrics.csv": "d7c161cc4c89ffdc19ea76518014505ca8ccd1de0e54774c995eb0f4592d3362",
+    "tables/outer_metrics.csv": "87e54f552d1b7b68b008f2a4100b020f2eadaf86c6288a94fa8ef22e4061d649",
+    "tables/product_aggregate_grade_coverage.csv": "57132d537764ded0b5cba527aed64f9498d3b1099a9d0848d7b7d8de0179fd7b",
+    "tables/product_annual_grade_coverage.csv": "464e301ff7500015cba51dce216b2913fa57d1d3ec0393edee1fb8869cbc998a",
+    "tables/product_mask_coverage.csv": "fd3c351f49d709d7a9743b761f930989a3c85ccbafd712735e1d1eacafa129f9",
+    "tables/product_monthly_grade_coverage.csv": "1549a8d7616fb829626567d4b607f3d68ac2e92ab16fe15071f4d2a28aeacbd5",
+    "tables/product_reason_bits_2025_07.csv": "1b3325f2fc3315bea8964446cf8bdb47db99ddc08c78ec22bfb341cf6eabf5d0",
+    "tables/regional_calibration.csv": "e6529c2743f421806b7db528cf83ec9cdd0a3e2115844b0c6bdc990854ea83a3",
+    "tables/SSS_partition_summary.csv": "789da7c72ad8ee087931a1defae542a92a8c97abb173a3571a83be5cf963a944"
+  },
+  "archive_builder_sha256": "cd4b37d638c927d51372aaf26f2fbde226f5880fb907cc50a97da89e659d3033",
+  "analysis_script_sha256": "54ac84a8c92fe8dbf40ab2fbde83f9de7905de2c8b47098d1cc3cc4d1e3bf8d3",
+  "source_artifacts_sha256": {
+    "D:\\proj_personal\\PhD\\ReCAD-issue44\\v2.0\\configs\\p2_global_reliability_contract_v2.4.json": "2c0b13fa5df34e4b737df6256bc4ef0e34e02a6fe94786c35fbd2b42db6debb7",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\p2_global_reliability_contract_v2.4\\calibration_contract.json": "080e9ed50292ab6c2cdd946cfc196a52120bd297c2160864f70f8ce06fdec507",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_3\\global_coastal_predictor_cube_v2.3.nc": "0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401"
+  }
+}

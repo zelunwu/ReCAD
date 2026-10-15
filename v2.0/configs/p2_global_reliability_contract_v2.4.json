@@ -1,0 +1,101 @@
+{
+  "schema_version": "2.4",
+  "experiment_id": "p2_global_reliability_contract_v2.4",
+  "issue": 44,
+  "parent_issue": 4,
+  "created_utc": "2026-10-14T22:10:00Z",
+  "data_contract": {
+    "matchup": "C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet",
+    "predictor_cube": "C:/backup/phd/data/processed/recad_v2_3/global_coastal_predictor_cube_v2.3.nc",
+    "split_source": "C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits",
+    "sss_candidate_source": "C:/backup/phd/data/processed/recad_v2_4/p2_model_zoo_v2.4",
+    "fco2_candidate_source": "C:/backup/phd/data/processed/recad_v2_4/p2_conditional_combination_v2.4",
+    "period": "1993-2025",
+    "new_independent_labels_opened": false,
+    "2026_provisional_opened": false
+  },
+  "candidates": {
+    "SSS": "Issue-62 CatBoost background-residual finalist, three-seed mean",
+    "fCO2": "Issue-64 CatBoost/F4 convex ensemble with fold-specific inner-OOF weights"
+  },
+  "outer_evaluation": [
+    "cruise",
+    "geographic_plus_100km",
+    "whole_region",
+    "past_only_forward"
+  ],
+  "risk_features": {
+    "common": [
+      "log1p_geographic_km",
+      "log1p_environment_k16",
+      "effective_groups",
+      "unique_cruises",
+      "support_entropy",
+      "time_extrapolation_years",
+      "missing_mandatory_input"
+    ],
+    "SSS": ["seed_prediction_sd", "absolute_background_disagreement"],
+    "fCO2": ["catboost_f4_disagreement", "sss_background_missing"]
+  },
+  "environmental_features": {
+    "SSS": ["sst", "wspd", "xco2air", "sss_bg", "distance_to_significant_land_km", "bathymetry_m"],
+    "fCO2": ["sst", "wspd", "xco2air", "sss_bg", "distance_to_significant_land_km", "bathymetry_m"]
+  },
+  "interval_candidates": {
+    "prediction_stratified_grouped_conformal": "Issue-61 control",
+    "raw_disagreement_scaled_conformal": "candidate spread/disagreement with outer-training-only scale calibration",
+    "support_risk_scaled_conformal": "fixed ExtraTrees log-absolute-error head trained on honest inner residuals, then outer grouped conformal",
+    "risk_bin_grouped_conformal": "risk quartiles fitted inside outer training with global fallback"
+  },
+  "grade_policy": {
+    "A": "lowest-risk 0-50% demonstrated envelope and no hard reason bit",
+    "B": "50-75% demonstrated envelope and no hard reason bit",
+    "C": "75-90% risk or bounded explicit extrapolation; diagnostic only",
+    "D": "above 90% risk, outside demonstrated geographic/environmental envelope, or mandatory input unavailable; suppress",
+    "status": {"A": "trusted", "B": "trusted", "C": "diagnostic", "D": "suppressed"},
+    "independent_support": "sealed and null"
+  },
+  "reason_bits": {
+    "NO_TRAINING_WITHIN_200KM": 1,
+    "ENVIRONMENTAL_EXTRAPOLATION": 16,
+    "LOW_GROUP_DIVERSITY": 32,
+    "MISSING_PREDICTOR": 64,
+    "CALIBRATION_SUPPORT_SPARSE": 128,
+    "TEMPORAL_EXTRAPOLATION": 512,
+    "MODEL_DISAGREEMENT": 1024,
+    "INTERVAL_UNDERCOVERAGE": 2048
+  },
+  "fixed_observation_coverages": [0.5, 0.75, 0.9, 1.0],
+  "hard_constraints": {
+    "minimum_shifted_coverage90": 0.85,
+    "maximum_interval_width_inflation": 1.25,
+    "maximum_suppressed_area_fraction": 0.75,
+    "ab_requires_observed_support_envelope": true,
+    "thresholds_may_not_use_outer_held_or_independent_labels": true
+  },
+  "product_output": {
+    "format": "compressed NetCDF by time chunk",
+    "variables": [
+      "prediction",
+      "width50",
+      "width90",
+      "risk_score",
+      "applicability_grade",
+      "status",
+      "reason_bits",
+      "training_support_km",
+      "environmental_dissimilarity",
+      "effective_groups",
+      "model_disagreement",
+      "model_version",
+      "calibration_version"
+    ],
+    "complete_geometry": "396 months x 838661 frozen coastal nodes"
+  },
+  "artifacts": {
+    "large_output_root": "C:/backup/phd/data/processed/recad_v2_4/p2_global_reliability_contract_v2.4",
+    "reviewer_archive": "docs/experiment_archive/p2_global_reliability_contract_v2.4",
+    "minimum_figures": 8,
+    "caption_policy": "full caption immediately below every figure in REPORT.md"
+  }
+}

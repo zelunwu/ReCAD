@@ -1,0 +1,5 @@
+kind,target,path,bytes,sha256
+product,SSS,C:\backup\phd\data\processed\recad_v2_4\p2_global_reliability_contract_v2.4\products\SSS_reliability_v2.4.nc,6762797329,3d3fbc01d8c63d2c8a955f601e4c4fead6c019d2108f93c47f538f70da12e0db
+product,fCO2,C:\backup\phd\data\processed\recad_v2_4\p2_global_reliability_contract_v2.4\products\fCO2_reliability_v2.4.nc,4745641774,88869d61f0f79d24e6c6f72b8eabe64a3e8de61efb9c2e6a4dcfb865bb2a13cb
+calibration,both,C:\backup\phd\data\processed\recad_v2_4\p2_global_reliability_contract_v2.4\calibration_contract.json,1484,080e9ed50292ab6c2cdd946cfc196a52120bd297c2160864f70f8ce06fdec507
+calibration,both,C:\backup\phd\data\processed\recad_v2_4\p2_global_reliability_contract_v2.4\calibration_contract_frozen.json,1183,4f67a1df30009958ff3c36b5fcabdbd31fb78e0cde7fb671d998840c0de0fce5
