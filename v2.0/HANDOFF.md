@@ -246,6 +246,12 @@ python -c "from recad.chem.esper_ta import ESPER_LIR_TA; e=ESPER_LIR_TA.from_mat
 拿到一个能跑的 1/8° NACCOM 基准;再决定全量(内存)与联合反演(TA/DIC/SOCAT 双源)的推进顺序。
 祝顺利。
 
+## 2026-10-15：Issue #44 全球适用域合同完成
+
+Issue #44 已在完整 1993–2025、396×838,661 沿岸网格上写出 SSS/fCO2 reliability NetCDF。Cruise 90% coverage 接近 nominal，但 geographic、whole-region、forward 的最低 coverage 为 0.788，故全局 shifted-interval qualification 失败。平均 A/B 面积约为 SSS 20.61%、fCO2 20.97%；D/suppressed 为 70.47%/69.11%。完整 A/B/C/D、状态、区间和 reason bits 保留，困难区域没有被删除。
+
+正式结论是 `freeze_applicability_contract_but_fail_global_interval_qualification`。产品可进入独立评估准备，但 A/B 仍只是 development support contract，不是对无观测海域的独立准确度证明。报告在 `docs/experiment_archive/p2_global_reliability_contract_v2.4/`，大文件在 `C:\backup\phd\data\processed\recad_v2_4\p2_global_reliability_contract_v2.4`。下一步先审计 Issue #45 的北美 TA/DIC 输入资格；若不满足冻结 entry condition，则透明关闭为 untriggered/non-blocking，然后准备 #5/#46，仍不得提前读取一次性 independent 标签。
+
 ## 2026-10-15：Issue #64 条件模型实验完成
 
 Issue #64 在 #61 corrected folds 与 #62/#63 finalists 上完成。季节水体图 residual adapter 和 residual-scale uncertainty head 均未通过冻结 gate；过程因子组合与预训练未触发。图残差相关只能作为诊断，不能据此声明图模型有效；scale head 也没有把 geographic、whole-region、forward 的 90% coverage 全部提升到 0.85 以上。

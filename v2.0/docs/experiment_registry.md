@@ -314,3 +314,9 @@ SSS 三个过程代理均未通过冻结门槛：锋面和 ADT 只在 whole-regi
 图残差 adapter 对 SSS 只有 pooled cruise RMSE 从 0.895 到 0.873 的明显改善，其他迁移方案不足 1%；fCO2 cruise 和 forward 还会退化，两个目标均未通过两方案 paired-group 门槛。scale head 虽将 fCO2 geographic/forward 90% coverage 从 0.795/0.837 提高到 0.833/0.847，但仍低于 0.85，并把 whole-region 从 0.783 降到 0.742，因此不能取代产品 reliability flag。
 
 honest inner-OOF 的 fCO2 CatBoost/F4 残差中位相关为 0.860，触发冻结凸组合。逐折权重完全由 inner labels 决定；outer pooled cruise/geographic/whole-region/forward RMSE 从 32.776/54.061/52.834/39.317 降至 **32.471/52.495/52.504/38.853 µatm**。geographic 和 forward 改善超过 1%，paired grouped bootstrap 上界低于零，且无方案退化，故最终状态为 **`retain_fco2_convex_ensemble_for_development_only` / no production promotion**。完整报告、8 张 caption 紧随图片的图和源表见 `docs/experiment_archive/p2_conditional_combination_v2.4/`；未开启新 locked、external-independent 或 2026 标签。
+
+## P2.8 全球校准与适用域合同（Issue #44）
+
+`p2_global_reliability_contract_v2.4` 在 Issue #61 corrected folds 上为 Issue #62 的 SSS CatBoost 背景残差 finalist 和 Issue #64 的 fCO2 CatBoost/F4 凸组合建立嵌套区间、风险排序、A/B/C/D、trusted/diagnostic/suppressed 状态与 reason bits。SSS/fCO2 cruise RMSE 为 0.896 PSU / 32.42 µatm，90% coverage 为 0.898/0.901；geographic、whole-region、forward 中最低 coverage 为 0.788，未通过冻结的 0.85 shifted gate。
+
+最终写出两个完整 1993–2025 NetCDF，各含 396×838,661 个 grid-month。平均面积加权 A/B 为 SSS 20.61%、fCO2 20.97%，D/suppressed 为 70.47%/69.11%，没有通过删除困难区域制造结果。结论为 **`freeze_applicability_contract_but_fail_global_interval_qualification`**：flagged 产品和校准对象可进入一次性独立评估准备，但不允许宣称无观测沿岸已获全球准确度资格。完整报告、12 张 caption 紧随图片的图和 14 个源表见 `docs/experiment_archive/p2_global_reliability_contract_v2.4/`；大文件和 SHA256 保存在 Git 外目录。
