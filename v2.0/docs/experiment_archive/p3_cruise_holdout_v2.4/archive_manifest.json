@@ -71,9 +71,9 @@
     "fig_fco2_05_error_map.png": "Figure 10. Absolute fCO2 error at held-cruise grid months. The logarithmic color scale shows that the largest errors are localized rather than uniformly global."
   },
   "files_sha256": {
-    "README.md": "af46038f843e2ddd63ada58f482f3c1023ed3b02ce916624f3bb568d3c5ea899",
-    "REPORT.md": "6daf6926ce96d85124ce828ec6e3f6df2b2f6a6c8143e43306b1f979332fb901",
-    "CAPTIONS.md": "778ab7e3de75e9dec2802d932f541f726c84b9702765b56931eb0e483394737a",
+    "README.md": "75c3844af897f0aeca44e6553c50943e065528297552f837dbfe303d2bc3da4f",
+    "REPORT.md": "1e9a4227c4c181b75080f09fd11680317410b3f6d29a65c62010b8aa018665e3",
+    "CAPTIONS.md": "248db10c050dadacd2db457b8295c705edcf2c658753d2350965ea98ef78214e",
     "figures/fig_fco2_01_observed_predicted.png": "df4692fe7c2d4d89a6f1bacf0e5182841c80d8f835057096ff3cca5fac77bc1b",
     "figures/fig_fco2_02_cruise_rmse.png": "2f11bf2fc38c13ef95a6135d2beb12c83b9ab05f88ed88f195185a155ce796aa",
     "figures/fig_fco2_03_grade_coverage.png": "e0ef11cd2ad8c7b2eed49f0278391a7bd300107f5c5634796fe46573ac5dd727",
@@ -84,19 +84,19 @@
     "figures/fig_sss_03_grade_coverage.png": "97d9df807c36ca021fc1edb5f777ad4eb8d763ae50ddfdd8939afd110c3e7278",
     "figures/fig_sss_04_support_rmse.png": "4490f6de6eb96668f354581112d3def5663dba7a87c6b0b6ad6cfb507e502f88",
     "figures/fig_sss_05_error_map.png": "40f87463482a55f6380c5644c8be3b9c676a68f807f121f011a534a35bb4959b",
-    "tables/table01_overall_metrics.csv": "a0c7d1c79586f671ea6d6d9b693969233fc60d264a414f0b5c1ef940aa96879f",
-    "tables/table02_stratified_metrics.csv": "84e3e5ce02c58115f573811becc5d0770194358c8e95c8ba90a20961d7d3a68b",
-    "tables/table03_trusted_ab_metrics.csv": "66bbb1beba591dc6f36b222a13e099a644fb5a76bfb15cc8abe824ca31bad17d",
-    "tables/table04_per_cruise_metrics.csv": "7958a3bc0f31eea26ebeb45f198764872b3ac39ed36a7c108a008d70365f9ba9",
-    "tables/table05_release_decision.csv": "d547e8a3295dbb222ea21dcb89894c798165fd92daa976e72faa3fc6e1e257a8",
-    "tables/table06_external_artifact_hashes.csv": "0fd931118bf380d2be7aac52f050f9e80f123f8314e0ce6d09c7842ba2666cde",
-    "tables/table07_calibration_contracts.csv": "a3b442327f7e2ff7d8641e87b765f9e5df2b6ac44b7ca8b4ebc21ff87d8cebc3",
-    "tables/table08_label_access.csv": "c529146d8865221063c84afb17ad4a711d062a2ecf3e03400fc26f01d010da75"
+    "tables/table01_overall_metrics.csv": "d7ada374d1748c6db732b9952826510696ca52c3d123fc89c673739c51e7a285",
+    "tables/table02_stratified_metrics.csv": "994cbfb5cf7029118e0e76c47357f00e8bd5b8b8a1416429f341c1cfdfe8891d",
+    "tables/table03_trusted_ab_metrics.csv": "4f86c7d21888f60fb44fcddc60d85cd57d6204fda221f9707c03f3622574710f",
+    "tables/table04_per_cruise_metrics.csv": "d755b0f0547b179eb7b07f3d20f31b98783681e021bce94a55bdc1fc3f98bc97",
+    "tables/table05_release_decision.csv": "eda60cc951bfc94e7d6efc8ed86a9544a67d78eb42d434966e96132bef12eec3",
+    "tables/table06_external_artifact_hashes.csv": "07bc2bc8553b2e2957f9397dda2521e242ef07faac4aad6b2d1c3789315d1194",
+    "tables/table07_calibration_contracts.csv": "3f938801f588cd7b920eae93e93bd58205d756d657d1afc28242996a2b745b6f",
+    "tables/table08_label_access.csv": "0ed8e135f74b0a5df815da922809622f3dbcc7b7024b73120bdd1e589873cabd"
   },
-  "archive_builder_sha256": "b6e1814c6932a36191ab79e1c4c0de790dd840aa6d3732f27565a082252b6dd4",
+  "archive_builder_sha256": "00a4c46bf10bdfa996d4d5fe9f8dafe16e96edaea32919d090a24fe43cb1636e",
   "analysis_script_sha256": "ea93b58141f726905541d5b97c3382c08cf8daadcfaecdeef50a086a93b4f004",
   "source_artifacts_sha256": {
-    "external_artifact_hash_table": "0fd931118bf380d2be7aac52f050f9e80f123f8314e0ce6d09c7842ba2666cde",
+    "external_artifact_hash_table": "07bc2bc8553b2e2957f9397dda2521e242ef07faac4aad6b2d1c3789315d1194",
     "frozen_manifest": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e"
   },
   "label_access_count": 1,

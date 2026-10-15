@@ -53,9 +53,9 @@
     "fig_10_per_cruise_improvement.png": "Figure 10. Per-cruise fCO2 RMSE improvement of v2 over strict v1.x on common rows. Positive bars favor v2; remaining negative cruises are preserved rather than removed from the release evidence."
   },
   "files_sha256": {
-    "README.md": "1e3ad82305efb9a4f8a3f2388710bff8846233080ba9c64b81057e51e60dc80f",
-    "REPORT.md": "26c93d72083396f2f4290d5a5805cd6cfb1bf6ca27c7b9d8f889e56e4c6f8b37",
-    "CAPTIONS.md": "7e5895c090d618a461c813a8fb1a3d4cd1235d93988bcb5c4e69fb47f2b9443e",
+    "README.md": "c553319c693b271eaf3ec63d8d6e8e1a9ec002ce68dfa9216bf57e9140dfa2be",
+    "REPORT.md": "af545caca6c2eedcdc3f6364f186292d54edad13264893a1f4a29382c39e98c0",
+    "CAPTIONS.md": "7fd0960f660a027e1671fb616769ffde20c16f846df8ee8d9b2aa80c26786ab6",
     "figures/fig_07_v11_rmse_comparison.png": "cdadebf256b196fb49e265de54512de96589143fa9d5ed0f00dbab0c369e0d3d",
     "figures/fig_08_v1_strict_prediction.png": "9cebc77954ed0b519d9ce883dc775120b3e66d1179790cfa795dd22c573cea21",
     "figures/fig_09_v2_prediction.png": "cce084afba266c894b4ef1685bb5bfa8c70ad4a90e0932a640a85e1d4e7f0d63",
@@ -66,23 +66,23 @@
     "figures/fig_sss_01_status_map.png": "63d8767217fe426cb0d8e8632cdac1040a913c6aa2c0fd31c908382ae130055a",
     "figures/fig_sss_02_area_timeseries.png": "7e34ab9c2e9b1468d299617d1b658005caebff561661d4d20fffeb02c2eb4bff",
     "figures/fig_sss_03_area_summary.png": "a3e118734e132865f6369e9a101a4a98059ec559b80c8e0c02faf9ade24b82df",
-    "tables/table01_release_status_by_month.csv": "a46da663ed0748664e612488a6ec7da4fe6ba33dc2368036330b2597a6e47263",
-    "tables/table02_release_status_summary.csv": "e5bf5e0eeb51b3268caa98980c4a654e298262add994149caf9268124b097e25",
-    "tables/table03_release_checks.csv": "7dabaf1108b9bdbd8e98cadacd25f90a25a8f9a079bda1eb4216da2568406c09",
-    "tables/table04_v11_common_metrics.csv": "8e96b0f861a315a56477dc22399a25ca2e438104eb6960825078f957bb5b8366",
-    "tables/table05_v11_common_025_predictions.csv": "eaba46f9929fc85fc1ad0b5494730154ece07d88b73592c7d024549881006de2",
-    "tables/table06_literature_context.csv": "96fb24dfba950d7f75d6de3feb16c6f8d0ec3c972afdbecb51d5cfdbb74c6da0",
-    "tables/table07_release_scope.csv": "c9f855aed76252156205b66694ff134c3f62773807ec4a70b3b4a145937a593f",
-    "tables/table08_variable_dictionary.csv": "6babc309eb5e438ff824d38255db7db739ab6206777aaa8eaa33bff489672b05",
-    "tables/table09_map_source.csv": "7843abe2c33f69784953acbe921d6a533f99e30cd8b0ca216a2985d5d83a67c0",
-    "tables/table10_v11_per_cruise_improvement.csv": "f76b2787d022557d62d70a20495910e577b98c0014fff9a9c420eec700c838eb",
-    "tables/table11_external_artifact_hashes.csv": "f412d53936e02e59b6b127c45d41d9d42485adedb6f5a1b23cab7d01e5b0bef8"
+    "tables/table01_release_status_by_month.csv": "b56b0be8487f2db185460a51457a2b441cad6b0b784fb1296a8711797f88b69a",
+    "tables/table02_release_status_summary.csv": "a0ce49bcb9ccfaca67e2b4411e3b95df879c57554a9acf5b619f56efce8e15ff",
+    "tables/table03_release_checks.csv": "e96ed0c6d3003c174cfc31e6f9b05ebe88b4efbd012437ade5e2f6646bd92af4",
+    "tables/table04_v11_common_metrics.csv": "6909f102004f4c2878135bea725a04f232384c4b0d98d41d9a5eb58246a62cc8",
+    "tables/table05_v11_common_025_predictions.csv": "9523c0c6212ccc1af1e59b68784c2eb6a1020c3d04dfff009ea45fe9f76c4b1b",
+    "tables/table06_literature_context.csv": "3a0db88b06f223a6f7cc4ccafa43ca4a884f425e1c2c9deb2424c8bcd3690233",
+    "tables/table07_release_scope.csv": "99969a88c9b892dcf5656ef85c307a43540c175155b91399cb828c4a30ca8e6f",
+    "tables/table08_variable_dictionary.csv": "b636561a21356ff71f644bfeb58ede30d36dce83cc2dbcad80dd1b4d912c1ecc",
+    "tables/table09_map_source.csv": "6c362d9221b3147607b0af41d86f0e9505b96ca609230d7066f256772fda4531",
+    "tables/table10_v11_per_cruise_improvement.csv": "a89db2dba1c8955f7e6460b86e73962c59d93ce0928c529832364e480adc3372",
+    "tables/table11_external_artifact_hashes.csv": "886825abc726e650ffb87d25f04996db5ed55385193777eaaaa5f732d4e2dd8f"
   },
-  "archive_builder_sha256": "efaf0dbcf4dc8249cbade217eb103549c66c4cfdc2e78799ca9a1c0e44bcf2d9",
+  "archive_builder_sha256": "c3e7edb14d8e864d1cb8c71136b50e8a7994a152d0c028253fe03e651c5ceb8a",
   "analysis_script_sha256": "aac5a7c5a404f86c5bfc2519a28bb52f765b5a82626dbf373555259d552a5e67",
   "source_artifacts_sha256": {
     "release_manifest": "b1b3b9e91952f971660c7c767f231d75edf5c06859f9eb93042428308bb1265c",
     "v11_common_comparison": "4970567137cd4b5e8c3baea368783ac7519098507699937a2286164adafc74fd",
-    "external_artifact_hash_table": "f412d53936e02e59b6b127c45d41d9d42485adedb6f5a1b23cab7d01e5b0bef8"
+    "external_artifact_hash_table": "886825abc726e650ffb87d25f04996db5ed55385193777eaaaa5f732d4e2dd8f"
   }
 }

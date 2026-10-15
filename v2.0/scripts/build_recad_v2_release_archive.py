@@ -27,6 +27,14 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def normalize_archive_text() -> None:
+    """Make tracked text hashes invariant to the archive builder host OS."""
+    for pattern in ("*.md", "tables/*.csv"):
+        for path in ARCHIVE.glob(pattern):
+            payload = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+            path.write_bytes(payload)
+
+
 def save(figure: plt.Figure, name: str) -> None:
     figure.savefig(ARCHIVE / "figures" / name, dpi=180, bbox_inches="tight")
     plt.close(figure)
@@ -304,6 +312,7 @@ def main() -> None:
         caption_lines.extend([f"## {name}", "", caption, ""])
     (ARCHIVE / "CAPTIONS.md").write_text("\n".join(caption_lines), encoding="utf-8")
 
+    normalize_archive_text()
     tracked = ["README.md", "REPORT.md", "CAPTIONS.md"]
     tracked += [
         str(path.relative_to(ARCHIVE)).replace("\\", "/")
