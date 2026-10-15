@@ -38,6 +38,10 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def normalize_lf(path: Path) -> None:
+    path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n"))
+
+
 def pooled(target: str, scheme: str) -> pd.DataFrame:
     paths = sorted((OUTPUT / "partitions").glob(f"{target}_{scheme}_fold*.parquet"))
     return pd.concat([pd.read_parquet(path) for path in paths], ignore_index=True)
@@ -465,6 +469,10 @@ Figures 1-12 cover point error, calibration, risk coverage, observed grades, com
         "fig11_reason_bit_prevalence.png": ["product_reason_bits_2025_07.csv"],
         "fig12_regional_calibration.png": ["regional_calibration.csv"],
     }
+    for path in [ARCHIVE / "README.md", ARCHIVE / "REPORT.md", ARCHIVE / "CAPTIONS.md"]:
+        normalize_lf(path)
+    for path in TABLES.glob("*.csv"):
+        normalize_lf(path)
     tracked = [ARCHIVE / "README.md", ARCHIVE / "REPORT.md", ARCHIVE / "CAPTIONS.md"]
     tracked += sorted(FIGURES.glob("*.png")) + sorted(TABLES.glob("*.csv"))
     commit = subprocess.check_output(
