@@ -1,6 +1,6 @@
 # ReCAD v2.0 — Agent Handoff
 
-> **2026-10-15 P3 独立评估已完成可审阅准备（当前最高优先级）**：SSS/fCO2 candidates、21 个 checkpoint/config artifacts、calibration、mask、输入、指标、报告规则与 Issue #46 conditional release schema 已冻结在 `configs/frozen/p3_lock_v2.4.json`。metadata-only 审计没有读取标签；本机只有 SOCAT v2026，而旧 locked/external groups 已进入 P2 development，当前没有可用的 post-v2026 exact independent set。状态为 `prepared_waiting_for_eligible_independent_set`，`label_access_authorized=false`、access count=0。下一步必须由用户选择/提供 post-v2026 SOCAT 或另一真正独立的全球沿岸 SSS/fCO2 来源；来源到位后先生成零 alias-overlap 的 metadata-only cruise list 并哈希，再允许一次性开盲。报告见 `docs/experiment_archive/p3_independent_freeze_v2.4/`。
+> **2026-10-15 P3 整航次留出已完成预登记（当前最高优先级）**：Issue #5 检验 SOCAT v2026 内未参与拟合的航次、稀疏位置和新近时间迁移，不要求推广到另一个数据集。metadata-only selector 未读取 SSS/fCO2 值，冻结 50 条完整 cruise（SSS/fCO2 各 8,469/8,470 行；23 条 2022–2025 recent、27 条 sparse-5°；每个 basin 至少 6 条），manifest SHA256 为 `50ffcd07…fe2e`。这些 group 必须从模型、背景、校准、上游 SSS、风险阈值和支持索引中全部剔除；合入预登记后才允许一次性读取其标签。`p3_independent_freeze_v2.4` 的跨数据源等待方案保留为审计历史，但不再阻塞本问题。报告见 `docs/experiment_archive/p3_cruise_holdout_freeze_v2.4/`。
 
 > **2026-10-15 P2.X 触发审计闭环（当前最高优先级）**：Issue #45 要求 qualified North-American SSS/fCO2 inputs。Issue #44 仅冻结 development support grades 且 shifted interval gate 失败，MAB TA/DIC 仍为 `diagnostic_only`、SAB TA 为 `fail`，因此 #45 以 `untriggered_non_blocking` 关闭。没有训练 TA、派生 DIC、消耗 P2 可选预算或开启 locked/external-independent/2026 标签。审计见 `docs/experiment_archive/p2_na_carbonate_optional_v2.4/`。下一步准备 #5/#46；一次性 independent label access 前必须完成 metadata-only eligibility audit、lock.json 与全部哈希。
 

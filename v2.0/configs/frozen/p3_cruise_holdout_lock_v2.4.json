@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.4",
+  "issue": 5,
+  "status": "metadata_holdout_frozen_pending_label_access",
+  "evidence_scope": "same-source complete-cruise, sparse-place, and recent-time transfer within SOCAT v2026",
+  "cross_dataset_claim": false,
+  "parent_candidate_lock": "configs/frozen/p3_lock_v2.4.json",
+  "parent_candidate_lock_sha256": "173459f418a44e41276aa77f7cf6bc8f7bb4131373720b204af925cab68ee81e",
+  "protocol": "configs/frozen/p3_cruise_holdout_protocol_v2.4.json",
+  "protocol_sha256": "132dfa52ebcbcf048f4d7ef75bb13348fe7ebabc40d0a4cdd4b9d4e56c1c251b",
+  "manifest": "configs/frozen/p3_cruise_holdout_manifest_v2.4.csv",
+  "manifest_sha256": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e",
+  "selector": "scripts/select_p3_cruise_holdout_v2_4.py",
+  "selector_sha256": "9c1ab9e0861138bb2c530a9a03917c384f0b9f0ad31c8ca37912dba938246143",
+  "target_values_used_for_selection": false,
+  "label_access_authorized": false,
+  "label_access_count": 0,
+  "unlock_rule": "Merge this immutable metadata-only preregistration, then run the frozen candidates once with every selected group excluded from all fitting, calibration, background, upstream-SSS, threshold, and support-index paths."
+}

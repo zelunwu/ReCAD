@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.4",
+  "selection": "metadata_only_complete_cruises",
+  "target_values_read": false,
+  "source": "C:\\backup\\phd\\data\\processed\\recad_v2_3\\p2_predictor_ablation_v2.3\\socat_predictor_matchup_v2.3.parquet",
+  "salt": "recad-p3-final-cruise-holdout-v2.4",
+  "total_groups": 50,
+  "basin_groups": {
+    "0": 7,
+    "2": 13,
+    "3": 15,
+    "4": 9,
+    "5": 6
+  },
+  "reason_groups": {
+    "recent_2022_2025": 23,
+    "sparse_5deg_block": 27
+  },
+  "fco2_rows": 8470,
+  "sss_rows": 8469,
+  "manifest_sha256": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e",
+  "training_exclusion": "remove every selected group from SSS/fCO2 fit, calibration, upstream SSS, background, thresholds, and support indices",
+  "evaluation_views": [
+    "complete_cruise_holdout",
+    "support-distance strata measured against the remaining training cruises",
+    "recent 2022-2025 subset",
+    "sparse 5-degree-block subset"
+  ],
+  "claim_scope": "same-source cruise/spatial/time transfer; no cross-dataset claim"
+}

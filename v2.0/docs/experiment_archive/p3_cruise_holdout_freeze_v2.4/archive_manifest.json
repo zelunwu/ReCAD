@@ -1,0 +1,46 @@
+{
+  "experiment_id": "p3_cruise_holdout_freeze_v2.4",
+  "training_git_commit": "2bbf1005997ae0b38b7c919a0357b14ad804a839",
+  "data_manifest_sha256": "935de7b1710200367f64a718ebde0fb814b70316a301b6cf9cc511d724882b75",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "metadata-only preregistration for same-source complete-cruise, sparse-place, and recent-time transfer within SOCAT v2026; no cross-dataset claim",
+  "decision": "metadata_holdout_frozen_pending_label_access",
+  "figure_source_data": {
+    "fig01_holdout_map.png": [
+      "table01_selected_cruises.csv"
+    ],
+    "fig02_basin_balance.png": [
+      "table01_selected_cruises.csv",
+      "table02_selection_summary.csv"
+    ],
+    "fig03_time_distribution.png": [
+      "table01_selected_cruises.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_holdout_map.png": "Figure 1. Frozen median cruise positions by metadata-only selection stratum. Several cruises have the same or nearly the same median position, so overlapping markers can make the visible marker count smaller than 50.",
+    "fig02_basin_balance.png": "Figure 2. Complete-cruise counts by basin and metadata-only selection stratum. Every represented basin contributes at least six cruises so that the densest basin cannot determine the aggregate result alone.",
+    "fig03_time_distribution.png": "Figure 3. Latest year represented by each frozen complete cruise. The recent stratum stresses 2022\u20132025 transfer, while the sparse-block stratum spans 1993\u20132025 and stresses geographic support."
+  },
+  "files_sha256": {
+    "README.md": "efd742551066e2e5e2dc93d796a0b17243fb9a93754eb302f6ef417fe0e2c20e",
+    "REPORT.md": "0806fcf055438d16ec4c0693b8a76634f22f6df01bc3e4b9d7f87a233b897fbc",
+    "CAPTIONS.md": "2297472b5ac256dc597f8c8bc520f836ab2051f87a4136788d875d85070f4ecb",
+    "figures/fig01_holdout_map.png": "49123eac648c915c6fc53bb7fbc41fba9ab14c74a48361451db46ba85c878a24",
+    "figures/fig02_basin_balance.png": "b393683208a7583fa7e6ae26759927952a7a6f154d13bc9c64a19660074852a4",
+    "figures/fig03_time_distribution.png": "b6e7af954b6822882e985d350d4cc67ae9f60990c448514cec8a7dbc6bfb7012",
+    "tables/table01_selected_cruises.csv": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e",
+    "tables/table02_selection_summary.csv": "1fc3cd5b83e33f716bacb9715e32f25f6f7f099095dfedb7c7261914603a1be2"
+  },
+  "archive_builder_sha256": "9c1ab9e0861138bb2c530a9a03917c384f0b9f0ad31c8ca37912dba938246143",
+  "analysis_script_sha256": "9c1ab9e0861138bb2c530a9a03917c384f0b9f0ad31c8ca37912dba938246143",
+  "source_artifacts_sha256": {
+    "configs/frozen/p3_lock_v2.4.json": "173459f418a44e41276aa77f7cf6bc8f7bb4131373720b204af925cab68ee81e",
+    "configs/frozen/p3_cruise_holdout_protocol_v2.4.json": "132dfa52ebcbcf048f4d7ef75bb13348fe7ebabc40d0a4cdd4b9d4e56c1c251b",
+    "configs/frozen/p3_cruise_holdout_manifest_v2.4.csv": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e"
+  },
+  "target_labels_read": false,
+  "label_access_authorized": false,
+  "label_access_count": 0
+}
