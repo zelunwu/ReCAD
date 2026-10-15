@@ -24,9 +24,7 @@ def sha256_normalized_text(path: Path) -> str:
 
 
 def _git_head(repo_root: Path) -> str:
-    return subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], cwd=repo_root, text=True
-    ).strip()
+    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo_root, text=True).strip()
 
 
 def _socat_versions_from_names(raw_dir: Path) -> list[int]:
@@ -74,10 +72,7 @@ def prepare_lock(
         "scripts/build_p2_global_reliability_archive.py",
         "src/recad/evaluate/reliability_contract.py",
     ]
-    repository_hashes = {
-        path: sha256_normalized_text(v2 / path)
-        for path in repository_files
-    }
+    repository_hashes = {path: sha256_normalized_text(v2 / path) for path in repository_files}
     checkpoint_hashes = {
         str(path.relative_to(external_root)).replace("\\", "/"): sha256_file(path)
         for path in checkpoints
