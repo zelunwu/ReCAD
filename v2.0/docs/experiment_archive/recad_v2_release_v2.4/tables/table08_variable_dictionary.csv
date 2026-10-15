@@ -1,0 +1,37 @@
+target,variable,dtype,dimensions,units,long_name
+SSS,time,int64,time,days since 1993-01-15 00:00:00,
+SSS,latitude,float32,node,,
+SSS,longitude,float32,node,,
+SSS,cell_area_km2,float32,node,,
+SSS,prediction,float32,time;node,,
+SSS,width50,float32,time;node,,
+SSS,width90,float32,time;node,,
+SSS,risk_score,float32,time;node,,
+SSS,training_support_km,float32,time;node,,
+SSS,environmental_dissimilarity,float32,time;node,,
+SSS,effective_groups,float32,time;node,,
+SSS,model_disagreement,float32,time;node,,
+SSS,applicability_grade,uint8,time;node,,
+SSS,status,uint8,time;node,,
+SSS,reason_bits,uint16,time;node,,
+SSS,basin_id,int8,node,,coarse ocean basin used by the release qualification rule
+SSS,trusted_prediction,float32,time;node,1,prediction where the P3 release status is trusted
+SSS,diagnostic_prediction,float32,time;node,1,prediction where the P3 release status is diagnostic
+fCO2,time,int64,time,days since 1993-01-15 00:00:00,
+fCO2,latitude,float32,node,,
+fCO2,longitude,float32,node,,
+fCO2,cell_area_km2,float32,node,,
+fCO2,prediction,float32,time;node,,
+fCO2,width50,float32,time;node,,
+fCO2,width90,float32,time;node,,
+fCO2,risk_score,float32,time;node,,
+fCO2,training_support_km,float32,time;node,,
+fCO2,environmental_dissimilarity,float32,time;node,,
+fCO2,effective_groups,float32,time;node,,
+fCO2,model_disagreement,float32,time;node,,
+fCO2,applicability_grade,uint8,time;node,,
+fCO2,status,uint8,time;node,,
+fCO2,reason_bits,uint16,time;node,,
+fCO2,basin_id,int8,node,,coarse ocean basin used by the release qualification rule
+fCO2,trusted_prediction,float32,time;node,uatm,prediction where the P3 release status is trusted
+fCO2,diagnostic_prediction,float32,time;node,uatm,prediction where the P3 release status is diagnostic

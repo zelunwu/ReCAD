@@ -1,0 +1,88 @@
+{
+  "experiment_id": "recad_v2_release_v2.4",
+  "training_git_commit": "7f78ab372cea612b67ffea338690154edfab98d9",
+  "data_manifest_sha256": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e",
+  "locked_test_opened": true,
+  "external_independent_opened": false,
+  "evidence_scope": "flagged 1993-2025 release after one-time same-source complete-cruise validation; no cross-dataset claim",
+  "decision": "release_complete_flagged_scope",
+  "figure_source_data": {
+    "fig_sss_01_status_map.png": [
+      "table09_map_source.csv",
+      "local:ReCAD_v2.4_SSS_1993_2025.nc"
+    ],
+    "fig_fco2_01_status_map.png": [
+      "table09_map_source.csv",
+      "local:ReCAD_v2.4_fCO2_1993_2025.nc"
+    ],
+    "fig_sss_02_area_timeseries.png": [
+      "table01_release_status_by_month.csv"
+    ],
+    "fig_fco2_02_area_timeseries.png": [
+      "table01_release_status_by_month.csv"
+    ],
+    "fig_sss_03_area_summary.png": [
+      "table02_release_status_summary.csv"
+    ],
+    "fig_fco2_03_area_summary.png": [
+      "table02_release_status_summary.csv"
+    ],
+    "fig_07_v11_rmse_comparison.png": [
+      "table04_v11_common_metrics.csv"
+    ],
+    "fig_08_v1_strict_prediction.png": [
+      "local:fco2_v11_common_predictions.parquet"
+    ],
+    "fig_09_v2_prediction.png": [
+      "local:fco2_v11_common_predictions.parquet"
+    ],
+    "fig_10_per_cruise_improvement.png": [
+      "table10_v11_per_cruise_improvement.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig_sss_01_status_map.png": "Figure 1. December 2025 SSS release status on the native coastal nodes. Trusted, diagnostic, and suppressed layers remain geographically explicit instead of hiding difficult cells.",
+    "fig_fco2_01_status_map.png": "Figure 2. December 2025 fCO2 release status on the native coastal nodes. Pacific A/B cells are diagnostic under the P3 regional gate, while grade D remains suppressed globally.",
+    "fig_sss_02_area_timeseries.png": "Figure 3. Monthly area fractions of the three SSS release layers from 1993 through 2025. The trusted layer remains bounded near one fifth of coastal area rather than expanding after validation.",
+    "fig_fco2_02_area_timeseries.png": "Figure 4. Monthly area fractions of the three fCO2 release layers from 1993 through 2025. Pacific regional restriction reduces trusted area and increases diagnostic coverage.",
+    "fig_sss_03_area_summary.png": "Figure 5. Mean 1993-2025 SSS area fraction by release layer. Most complete-domain cells remain suppressed because geographic availability is not equivalent to validated reliability.",
+    "fig_fco2_03_area_summary.png": "Figure 6. Mean 1993-2025 fCO2 area fraction by release layer after the Pacific A/B downgrade. Trusted area is deliberately smaller than the Issue-44 development mask.",
+    "fig_07_v11_rmse_comparison.png": "Figure 7. Strict v1.x Random Forest and ReCAD v2.4 fCO2 RMSE on identical complete-cruise rows at native 1/8\u00b0 and cruise-preserving 0.25\u00b0 aggregation. v2 improves both comparisons by more than 25%.",
+    "fig_08_v1_strict_prediction.png": "Figure 8. Strict v1.x Random Forest predictions against observations on the 7,907 common held-cruise rows. This control omits the published full-period local calibration that would leak future context.",
+    "fig_09_v2_prediction.png": "Figure 9. ReCAD v2.4 predictions against observations on the same 7,907 held-cruise rows used by the strict v1.x control. The shared support makes the model comparison directly auditable.",
+    "fig_10_per_cruise_improvement.png": "Figure 10. Per-cruise fCO2 RMSE improvement of v2 over strict v1.x on common rows. Positive bars favor v2; remaining negative cruises are preserved rather than removed from the release evidence."
+  },
+  "files_sha256": {
+    "README.md": "c553319c693b271eaf3ec63d8d6e8e1a9ec002ce68dfa9216bf57e9140dfa2be",
+    "REPORT.md": "af545caca6c2eedcdc3f6364f186292d54edad13264893a1f4a29382c39e98c0",
+    "CAPTIONS.md": "7fd0960f660a027e1671fb616769ffde20c16f846df8ee8d9b2aa80c26786ab6",
+    "figures/fig_07_v11_rmse_comparison.png": "cdadebf256b196fb49e265de54512de96589143fa9d5ed0f00dbab0c369e0d3d",
+    "figures/fig_08_v1_strict_prediction.png": "9cebc77954ed0b519d9ce883dc775120b3e66d1179790cfa795dd22c573cea21",
+    "figures/fig_09_v2_prediction.png": "cce084afba266c894b4ef1685bb5bfa8c70ad4a90e0932a640a85e1d4e7f0d63",
+    "figures/fig_10_per_cruise_improvement.png": "e8d9b27729537bf398a02493677eb9763597df34f285f86e7a6d94edece54d74",
+    "figures/fig_fco2_01_status_map.png": "3f00a2623145f2e7efbc36abea6c53dbabc4d8f7a1010c18d95bbca837414de3",
+    "figures/fig_fco2_02_area_timeseries.png": "d73e027fec04e716b699a55ccdd47fb86b7b91138732d5a708399509ad89ecff",
+    "figures/fig_fco2_03_area_summary.png": "3d13d54a58525c1726cdcee74e6607f4d04f3cd0ea46acab0c165d7a64465583",
+    "figures/fig_sss_01_status_map.png": "63d8767217fe426cb0d8e8632cdac1040a913c6aa2c0fd31c908382ae130055a",
+    "figures/fig_sss_02_area_timeseries.png": "7e34ab9c2e9b1468d299617d1b658005caebff561661d4d20fffeb02c2eb4bff",
+    "figures/fig_sss_03_area_summary.png": "a3e118734e132865f6369e9a101a4a98059ec559b80c8e0c02faf9ade24b82df",
+    "tables/table01_release_status_by_month.csv": "b56b0be8487f2db185460a51457a2b441cad6b0b784fb1296a8711797f88b69a",
+    "tables/table02_release_status_summary.csv": "a0ce49bcb9ccfaca67e2b4411e3b95df879c57554a9acf5b619f56efce8e15ff",
+    "tables/table03_release_checks.csv": "e96ed0c6d3003c174cfc31e6f9b05ebe88b4efbd012437ade5e2f6646bd92af4",
+    "tables/table04_v11_common_metrics.csv": "6909f102004f4c2878135bea725a04f232384c4b0d98d41d9a5eb58246a62cc8",
+    "tables/table05_v11_common_025_predictions.csv": "9523c0c6212ccc1af1e59b68784c2eb6a1020c3d04dfff009ea45fe9f76c4b1b",
+    "tables/table06_literature_context.csv": "3a0db88b06f223a6f7cc4ccafa43ca4a884f425e1c2c9deb2424c8bcd3690233",
+    "tables/table07_release_scope.csv": "99969a88c9b892dcf5656ef85c307a43540c175155b91399cb828c4a30ca8e6f",
+    "tables/table08_variable_dictionary.csv": "b636561a21356ff71f644bfeb58ede30d36dce83cc2dbcad80dd1b4d912c1ecc",
+    "tables/table09_map_source.csv": "6c362d9221b3147607b0af41d86f0e9505b96ca609230d7066f256772fda4531",
+    "tables/table10_v11_per_cruise_improvement.csv": "a89db2dba1c8955f7e6460b86e73962c59d93ce0928c529832364e480adc3372",
+    "tables/table11_external_artifact_hashes.csv": "886825abc726e650ffb87d25f04996db5ed55385193777eaaaa5f732d4e2dd8f"
+  },
+  "archive_builder_sha256": "c3e7edb14d8e864d1cb8c71136b50e8a7994a152d0c028253fe03e651c5ceb8a",
+  "analysis_script_sha256": "aac5a7c5a404f86c5bfc2519a28bb52f765b5a82626dbf373555259d552a5e67",
+  "source_artifacts_sha256": {
+    "release_manifest": "b1b3b9e91952f971660c7c767f231d75edf5c06859f9eb93042428308bb1265c",
+    "v11_common_comparison": "4970567137cd4b5e8c3baea368783ac7519098507699937a2286164adafc74fd",
+    "external_artifact_hash_table": "886825abc726e650ffb87d25f04996db5ed55385193777eaaaa5f732d4e2dd8f"
+  }
+}

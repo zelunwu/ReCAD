@@ -1,7 +1,7 @@
 {
   "schema_version": "2.4",
   "issue": 46,
-  "status": "prepared_conditional_on_issue5",
+  "status": "release_complete_flagged_scope",
   "period": "1993-2025",
   "targets": ["SSS", "fCO2"],
   "ta_dic_policy": "suppressed; Issue 45 untriggered",
@@ -12,8 +12,22 @@
     "model_disagreement", "model_version", "calibration_version"
   ],
   "required_comparisons": [
-    "native_grid", "common_0.25_degree", "strict_v1_common_support", "external_product_common_support"
+    "native_grid", "common_0.25_degree", "strict_v1_common_support", "external_literature_context_only"
   ],
   "release_gate": "Only target-region pairs passing the frozen one-time Issue 5 evaluation may be published as trusted. All others remain diagnostic or suppressed.",
-  "provisional_2026": "separate artifact and never part of the 1993-2025 validated release"
+  "qualified_scope": {
+    "SSS": "grades A/B across basins represented in the complete-cruise audit",
+    "fCO2": "grades A/B outside the coarse Pacific basin"
+  },
+  "diagnostic_scope": {
+    "SSS": "grade C",
+    "fCO2": "grade C plus Pacific grades A/B"
+  },
+  "suppressed_scope": {"SSS": "grade D", "fCO2": "grade D"},
+  "provisional_2026": "separate artifact and never part of the 1993-2025 validated release",
+  "products": {
+    "SSS": "5c1276b0adf07d160b3d927ed3d326b08b78fe844702619aeb5f8acd2285cb5d",
+    "fCO2": "be0b4ef9cb0de60ab9053323adae9abda7be74b97fce6f907f8782c2bbd0360b"
+  },
+  "cross_dataset_claim": false
 }

@@ -1,0 +1,7 @@
+target,layer,scope
+SSS,trusted,grades A/B in all basins represented by the P3 holdout
+SSS,diagnostic,grade C
+SSS,suppressed,grade D
+fCO2,trusted,grades A/B outside coarse Pacific basin 3
+fCO2,diagnostic,grade C plus Pacific grades A/B
+fCO2,suppressed,grade D

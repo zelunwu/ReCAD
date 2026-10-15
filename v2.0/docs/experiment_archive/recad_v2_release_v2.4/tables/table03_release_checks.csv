@@ -1,0 +1,3 @@
+target,time_steps,nodes,start_year,end_year,release_layer_mismatch,trusted_nonfinite,diagnostic_nonfinite
+SSS,396,838661,1993,2025,0,0,0
+fCO2,396,838661,1993,2025,0,0,0
