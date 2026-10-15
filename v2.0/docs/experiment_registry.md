@@ -334,3 +334,9 @@ honest inner-OOF 的 fCO2 CatBoost/F4 残差中位相关为 0.860，触发冻结
 `p3_cruise_holdout_freeze_v2.4` 将 Issue #5 的验证问题收窄为 SOCAT v2026 内未见完整航次、稀疏位置和新近时间的迁移。selector 只读取 cruise key、时间、位置、basin 和目标可用行数，不读取 SSS/fCO2 值。冻结的 50 条航次包含 8,469 条 SSS 与 8,470 条 fCO2 观测，5 个 basin 各至少 6 条；23 条来自 2022–2025 recent stratum，27 条来自最低航次密度的 5° block。manifest SHA256 为 `50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e`。
 
 该集合合入前保持 target-unread；合入后须从模型、连续背景、校准、上游 SSS、风险阈值和支持索引中整组剔除，再一次性报告逐航次与聚合结果。证据范围是 **same-source complete-cruise/spatial/time transfer**，不作 cross-dataset generalization claim。预登记报告、3 张 metadata-only 图片及其紧随 caption、源表和复现代码见 `docs/experiment_archive/p3_cruise_holdout_freeze_v2.4/`。
+
+`p3_cruise_holdout_v2.4` 在 PR #75 合入冻结清单后进行一次性 target access。50 条 held cruise 从 SSS/fCO2 point fit、calibration、连续背景、上游 SSS、risk threshold 和 support index 全部剔除；fCO2 training SSS 由 remaining cruises 做两折完整航次 cross-fit，held/calibration SSS 只由非 held SSS 训练得到。label access count 固定为 1。
+
+SSS/fCO2 pooled RMSE 为 **1.185 PSU / 30.780 µatm**，R² 为 0.773/0.592，90% coverage 为 0.910/0.883，相对冻结背景的 MSE skill 为 0.700/0.622。cruise-equal RMSE 增至 2.445 PSU / 45.942 µatm，说明少数完整航次仍是主要尾部风险。A/B 层 RMSE 为 **0.598 PSU / 26.619 µatm**，coverage 为 0.927/0.904；sparse-5° stratum 明显差于 recent stratum。Pacific fCO2 A/B coverage=0.845，未通过 0.85 gate。
+
+最终状态为 **`pass_flagged_same_source_release_with_regional_suppression`**。SSS A/B 可进入 #46 的 same-source qualified layer；fCO2 A/B 仅 Pacific 外进入，Pacific A/B 与全部 C 保持 diagnostic，D suppressed。最差 cruise `187F20250215` 的 SSS/fCO2 RMSE 为 15.947 PSU / 266.792 µatm，虽被 D 捕获，仍证明 flag 不能被移除。完整报告、10 张 caption 紧随图片的图、6 个源表及全部外部 checkpoint/prediction 哈希见 `docs/experiment_archive/p3_cruise_holdout_v2.4/`。

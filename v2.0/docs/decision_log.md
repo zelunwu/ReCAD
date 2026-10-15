@@ -33,6 +33,7 @@
 | D027 | 2026-10-15 | #45 北美 TA/DIC 可选 rescue 不触发；不以 Issue #44 的 development A/B grades 替代 qualified North-American SSS/fCO2 inputs entry condition | Issue #44 shifted 90% coverage 最低 0.788，未通过 0.85 gate；MAB TA/DIC 仍为 `diagnostic_only`，SAB TA 为 `fail` | `untriggered_non_blocking`；零训练预算、零新标签访问，未来只有新冻结路线提供 independently qualified 上游输入才可重开 |
 | D028 | 2026-10-15 | 冻结 P3 SSS/fCO2 candidates、checkpoints、calibration、mask、metrics 与 conditional release schema，但不打开标签 | 本机只有 SOCAT v2026；旧 locked 538/538 和 old external 9/9 groups 已进入 P2 manifest，分别有 417/7 groups 进入 matchup；不存在 post-v2026 exact candidate set | `prepared_waiting_for_eligible_independent_set`；label access 未授权且计数为 0，需 post-v2026 SOCAT 或另一真正独立全球沿岸来源 |
 | D029 | 2026-10-15 | P3 改为 SOCAT v2026 内 metadata-only 选择完整航次并在所有拟合/校准路径中整组剔除；不要求或声称跨数据集推广 | 当前科学问题是模型对未见 cruise、稀疏位置和新近时间的可靠性；另一个数据源不能直接回答该问题。冻结 50 条完整航次，覆盖 5 个 basin、23 条 recent 与 27 条 sparse-5° 航次 | D028 的候选/代码哈希继续有效，但“必须等待新数据源”被本决定替代；合入 manifest 后一次性运行同源整航次验证，结论仅限 same-source transfer |
+| D030 | 2026-10-15 | P3 通过带 flag 的同源整航次门槛，但按 target/region/grade 限制发布：SSS A/B qualified；fCO2 A/B 仅 Pacific 外 qualified；C diagnostic，D suppressed | 50 条完整航次上 SSS/fCO2 RMSE 1.185 PSU / 30.780 µatm、coverage90 0.910/0.883；A/B 为 0.598 PSU / 26.619 µatm、coverage 0.927/0.904；Pacific fCO2 A/B coverage=0.845 低于 0.85 gate；极端淡水 cruise 被 D 捕获但误差仍巨大 | `pass_flagged_same_source_release_with_regional_suppression`；允许 #46 仅构建这些 qualified 层，不得声称 cross-dataset 或无条件全球可靠性 |
 
 ## 被明确否定或限制的旧做法
 

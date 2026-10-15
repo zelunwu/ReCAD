@@ -1,0 +1,102 @@
+{
+  "experiment_id": "p3_cruise_holdout_v2.4",
+  "training_git_commit": "c39713bdbdd87daa24a00f77c95fb254d37661d6",
+  "data_manifest_sha256": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "one-time same-source complete-cruise, sparse-place, and recent-time transfer within SOCAT v2026; no cross-dataset claim",
+  "decision": "pass_flagged_same_source_release_with_regional_suppression",
+  "figure_source_data": {
+    "fig_sss_01_observed_predicted.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_sss_02_cruise_rmse.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_sss_03_grade_coverage.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_sss_04_support_rmse.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_sss_05_error_map.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_fco2_01_observed_predicted.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_fco2_02_cruise_rmse.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_fco2_03_grade_coverage.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_fco2_04_support_rmse.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ],
+    "fig_fco2_05_error_map.png": [
+      "table01_overall_metrics.csv",
+      "table02_stratified_metrics.csv",
+      "table04_per_cruise_metrics.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig_sss_01_observed_predicted.png": "Figure 1. Held-cruise SSS observations against frozen-candidate predictions. The one-to-one line exposes both the dominant agreement and a small set of strong freshwater failures.",
+    "fig_sss_02_cruise_rmse.png": "Figure 2. SSS RMSE for every held cruise, ranked on a logarithmic axis. Red bars have modal grade D; the extreme tail explains the gap between pooled and cruise-equal RMSE.",
+    "fig_sss_03_grade_coverage.png": "Figure 3. SSS 90% interval coverage by frozen applicability grade. The dashed line is the preregistered 0.85 minimum; grade D falls below it and remains suppressed.",
+    "fig_sss_04_support_rmse.png": "Figure 4. SSS RMSE by distance to the remaining training cruises. Errors increase sharply away from dense support, so distance remains a required product flag.",
+    "fig_sss_05_error_map.png": "Figure 5. Absolute SSS error at held-cruise grid months. The logarithmic color scale preserves ordinary errors while exposing geographically concentrated freshwater failures.",
+    "fig_fco2_01_observed_predicted.png": "Figure 6. Held-cruise fCO2 observations against frozen-candidate predictions. Most rows follow the one-to-one line, while a small extreme-estuary tail remains unresolved.",
+    "fig_fco2_02_cruise_rmse.png": "Figure 7. fCO2 RMSE for every held cruise, ranked on a logarithmic axis. A few complete cruises dominate cruise-equal risk despite acceptable pooled performance.",
+    "fig_fco2_03_grade_coverage.png": "Figure 8. fCO2 90% interval coverage by frozen applicability grade. A/B meet the pooled gate, while C under-covers and D remains unsuitable for trusted publication.",
+    "fig_fco2_04_support_rmse.png": "Figure 9. fCO2 RMSE by distance to the remaining training cruises. The 25-100 km bin is especially difficult, and all distant bins retain weak interval coverage.",
+    "fig_fco2_05_error_map.png": "Figure 10. Absolute fCO2 error at held-cruise grid months. The logarithmic color scale shows that the largest errors are localized rather than uniformly global."
+  },
+  "files_sha256": {
+    "README.md": "af46038f843e2ddd63ada58f482f3c1023ed3b02ce916624f3bb568d3c5ea899",
+    "REPORT.md": "357f3ea48707e4699538c78bf02ee6180b459c562e794caeda0b1d8ab58451da",
+    "CAPTIONS.md": "778ab7e3de75e9dec2802d932f541f726c84b9702765b56931eb0e483394737a",
+    "figures/fig_fco2_01_observed_predicted.png": "df4692fe7c2d4d89a6f1bacf0e5182841c80d8f835057096ff3cca5fac77bc1b",
+    "figures/fig_fco2_02_cruise_rmse.png": "2f11bf2fc38c13ef95a6135d2beb12c83b9ab05f88ed88f195185a155ce796aa",
+    "figures/fig_fco2_03_grade_coverage.png": "e0ef11cd2ad8c7b2eed49f0278391a7bd300107f5c5634796fe46573ac5dd727",
+    "figures/fig_fco2_04_support_rmse.png": "ce600ac07ea69fb9d990fd9d5b80ade71913c9321bcdd203ad5d71111d597a14",
+    "figures/fig_fco2_05_error_map.png": "d3942986e75432697cf8ab5a79909f3cfbd4d636acb48e2929e76e4fd49544f0",
+    "figures/fig_sss_01_observed_predicted.png": "ab9bbcd096b528021d289bb5d320686bf843e8060f1810b031989a3c821e0a49",
+    "figures/fig_sss_02_cruise_rmse.png": "2bd697849d92b2f8c1d94652064b30202d7b527b70f895d329de1553d629e7e7",
+    "figures/fig_sss_03_grade_coverage.png": "97d9df807c36ca021fc1edb5f777ad4eb8d763ae50ddfdd8939afd110c3e7278",
+    "figures/fig_sss_04_support_rmse.png": "4490f6de6eb96668f354581112d3def5663dba7a87c6b0b6ad6cfb507e502f88",
+    "figures/fig_sss_05_error_map.png": "40f87463482a55f6380c5644c8be3b9c676a68f807f121f011a534a35bb4959b",
+    "tables/table01_overall_metrics.csv": "a0c7d1c79586f671ea6d6d9b693969233fc60d264a414f0b5c1ef940aa96879f",
+    "tables/table02_stratified_metrics.csv": "84e3e5ce02c58115f573811becc5d0770194358c8e95c8ba90a20961d7d3a68b",
+    "tables/table03_trusted_ab_metrics.csv": "66bbb1beba591dc6f36b222a13e099a644fb5a76bfb15cc8abe824ca31bad17d",
+    "tables/table04_per_cruise_metrics.csv": "7958a3bc0f31eea26ebeb45f198764872b3ac39ed36a7c108a008d70365f9ba9",
+    "tables/table05_release_decision.csv": "d547e8a3295dbb222ea21dcb89894c798165fd92daa976e72faa3fc6e1e257a8",
+    "tables/table06_external_artifact_hashes.csv": "0fd931118bf380d2be7aac52f050f9e80f123f8314e0ce6d09c7842ba2666cde"
+  },
+  "archive_builder_sha256": "cece40a864eabba6fe7cee4de019caeebdd7634a77a9d49bf97bf0ad459b05a6",
+  "analysis_script_sha256": "4891877019f8f0e3e24dd8e2c5d0a04aef4bb5a03d70a5fca5806b80d54a0e66",
+  "source_artifacts_sha256": {
+    "external_artifact_hash_table": "0fd931118bf380d2be7aac52f050f9e80f123f8314e0ce6d09c7842ba2666cde",
+    "frozen_manifest": "50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e"
+  },
+  "label_access_count": 1,
+  "target_labels_opened": true
+}

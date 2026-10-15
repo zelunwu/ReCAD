@@ -1,0 +1,8 @@
+target,scope,status,reason
+SSS,A/B all basins,qualified_same_source,coverage90=0.927 and positive background skill
+SSS,C,diagnostic,outside trusted contract
+SSS,D,suppressed,coverage90=0.841; distant-support coverage reaches 0.529
+fCO2,A/B outside Pacific,qualified_same_source,pooled coverage90=0.904 and positive background skill
+fCO2,Pacific A/B,diagnostic,coverage90=0.845 below frozen 0.85 gate
+fCO2,C,diagnostic,coverage90=0.829
+fCO2,D,suppressed,large errors and unsupported extreme cruises
