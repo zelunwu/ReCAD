@@ -1,0 +1,5 @@
+target,candidate,product_sha256,status
+SSS,Issue 62 CatBoost background-residual three-seed ensemble,3d3fbc01d8c63d2c8a955f601e4c4fead6c019d2108f93c47f538f70da12e0db,frozen_waiting
+fCO2,Issue 64 CatBoost F4 convex ensemble,88869d61f0f79d24e6c6f72b8eabe64a3e8de61efb9c2e6a4dcfb865bb2a13cb,frozen_waiting
+TA,excluded,,Issue 45 untriggered
+DIC,excluded,,Issue 45 untriggered

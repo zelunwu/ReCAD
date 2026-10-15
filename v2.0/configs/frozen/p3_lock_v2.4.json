@@ -1,0 +1,102 @@
+{
+  "schema_version": "2.4",
+  "issue": 5,
+  "status": "prepared_waiting_for_eligible_independent_set",
+  "candidate_git_commit": "f4405bead157c94a544d8534d0ee8d0c837952be",
+  "targets": {
+    "SSS": {
+      "candidate": "Issue-62 CatBoost background-residual three-seed ensemble",
+      "product_sha256": "3d3fbc01d8c63d2c8a955f601e4c4fead6c019d2108f93c47f538f70da12e0db"
+    },
+    "fCO2": {
+      "candidate": "Issue-64 CatBoost/F4 inner-OOF convex ensemble",
+      "catboost_weight": 0.3,
+      "product_sha256": "88869d61f0f79d24e6c6f72b8eabe64a3e8de61efb9c2e6a4dcfb865bb2a13cb"
+    },
+    "TA": {
+      "included": false,
+      "reason": "Issue 45 untriggered"
+    },
+    "DIC": {
+      "included": false,
+      "reason": "Issue 45 untriggered"
+    }
+  },
+  "calibration": {
+    "contract_sha256": "080e9ed50292ab6c2cdd946cfc196a52120bd297c2160864f70f8ce06fdec507",
+    "frozen_contract_sha256": "4f67a1df30009958ff3c36b5fcabdbd31fb78e0cde7fb671d998840c0de0fce5"
+  },
+  "repository_artifact_sha256": {
+    "configs/p2_global_reliability_contract_v2.4.json": "2c0b13fa5df34e4b737df6256bc4ef0e34e02a6fe94786c35fbd2b42db6debb7",
+    "configs/frozen/global_coastal_mask_manifest_v2.3.json": "c56745901d7fc595e251538a88df207f886038cb628f96277ce2c54bea8a3d43",
+    "configs/frozen/global_predictor_cube_manifest_v2.3.json": "b045b57ce281e23eb6c80fdecccab42062b31ef906b50012be4c24d51afc4bee",
+    "configs/frozen/product_scope_v2.3.json": "6ca5299328634e15a7a400ab66f7e16115aa2329b74ab00b73465d27e6d5c985",
+    "docs/experiment_archive/p2_global_reliability_contract_v2.4/REPORT.md": "4f7dec84ed87e2c4be6d52c004e2d5eccbcd735074ff490cd62cceeed2b2adfb",
+    "scripts/run_p2_global_reliability_contract_v2_4.py": "54ac84a8c92fe8dbf40ab2fbde83f9de7905de2c8b47098d1cc3cc4d1e3bf8d3",
+    "scripts/build_p2_global_reliability_product_v2_4.py": "c3589cbc85e32f33bb5d4dd20714aa7fede1ee58d462160e02192d70d3536074",
+    "scripts/build_p2_global_reliability_archive.py": "cd4b37d638c927d51372aaf26f2fbde226f5880fb907cc50a97da89e659d3033",
+    "src/recad/evaluate/reliability_contract.py": "61d47172c944a267af21db3c6b1b925b3ac35031d6f3cdf7c7d811af2fa0352a"
+  },
+  "checkpoint_sha256": {
+    "checkpoints/fCO2_catboost.cbm": "6f8c9b1d84c8741ad73a032982ff9f8f0cd1e62429e335f3990d69513938716c",
+    "checkpoints/fCO2_catboost.json": "ea27c11d17dab52f4e2d420b051bb4754a4e976c396b60804ef1910a808b5b08",
+    "checkpoints/fCO2_F4_background.joblib": "ecf6b4acc8de6742ba98471c0b2c742c3d2c3b5a6a1582511d246cca3d062168",
+    "checkpoints/fCO2_F4_residual.joblib": "d78b6e5ee9695de545bea8fda5630b700bc778897a1a6887583c0be4ac603bd1",
+    "checkpoints/fCO2_F4_residual.json": "fe7f649d143a53a0a340e20d7197a67ecacdcacb6d1e449cd497c393c1702121",
+    "checkpoints/fCO2_risk.joblib": "76d6f142f0b590f8b88715a981ae379812dbdc9e2d628a4d91c764447558910a",
+    "checkpoints/fCO2_risk.json": "4ac63a7991ff7e8b16389f91b6c0079cc541cd3032559c7f2d08d3ceb6ca6159",
+    "checkpoints/SSS_risk.joblib": "b4744bbec39555ed4316a0b4ba4430eddc780d006e7b99f201c2877fba65b662",
+    "checkpoints/SSS_risk.json": "11a310d4b1c6c96f5258ab48e437152e467e91425000964b3174637b4d6bc592",
+    "checkpoints/SSS_seed62024_direct.cbm": "5806d11655fba9432aaf8296d58e81bd5564c1b11abdc252134a3daae6e9fc6a",
+    "checkpoints/SSS_seed62024_direct.json": "e7ac36817c50656cad685b5c4f7f2425aaf0564f01798325cd8fb0803dcb1b59",
+    "checkpoints/SSS_seed62024_residual.cbm": "101a0c8c927d60c9bfd2b8bb84d671e72420ee2c3462a983d797d072c9ad54c0",
+    "checkpoints/SSS_seed62024_residual.json": "df4ed4d0676e07fa42af100d6925760ab15021001d13f15fc39485e8dadf8d9a",
+    "checkpoints/SSS_seed62025_direct.cbm": "c8eec3276c6a91446fc2ffb49d300f6ad524ef6e421f3d2b2ccefbde6bf8b5f6",
+    "checkpoints/SSS_seed62025_direct.json": "e7ac36817c50656cad685b5c4f7f2425aaf0564f01798325cd8fb0803dcb1b59",
+    "checkpoints/SSS_seed62025_residual.cbm": "0c53d861efbcdf2fa8bc410944c422513094e9b8fb8972a8c02f8ee37fc5154e",
+    "checkpoints/SSS_seed62025_residual.json": "df4ed4d0676e07fa42af100d6925760ab15021001d13f15fc39485e8dadf8d9a",
+    "checkpoints/SSS_seed62026_direct.cbm": "feacc8bfb4dd46bcf2f9bf5219b2704f11a1f588b05cf66d21ba804923e063ee",
+    "checkpoints/SSS_seed62026_direct.json": "e7ac36817c50656cad685b5c4f7f2425aaf0564f01798325cd8fb0803dcb1b59",
+    "checkpoints/SSS_seed62026_residual.cbm": "2a4e6942f33ab460d2e803c2bb1ac24fd3bee8054dff1eb974a7474804de3dea",
+    "checkpoints/SSS_seed62026_residual.json": "df4ed4d0676e07fa42af100d6925760ab15021001d13f15fc39485e8dadf8d9a"
+  },
+  "input_sha256": {
+    "predictor_cube": "0f4e9f37ddd65d5abb0ebd92715a8521703a7778375d05c1a6055254203d0401",
+    "coastal_mask": "0e99ca53398a3f4c29d5058b3307857535c78195bcbabdadf06c59b0ee4957cf"
+  },
+  "metadata_only_eligibility": {
+    "frozen_source": "SOCAT v2026",
+    "available_versions_from_filenames": [
+      2026
+    ],
+    "prospective_versions": [],
+    "legacy_exposure_summary": [
+      {
+        "dataset": "socat",
+        "legacy_split": "external_independent",
+        "legacy_groups": "9",
+        "groups_in_global_manifest": "9",
+        "groups_in_matchup": "7",
+        "matchup_rows": "1474"
+      },
+      {
+        "dataset": "socat",
+        "legacy_split": "locked_test",
+        "legacy_groups": "538",
+        "groups_in_global_manifest": "538",
+        "groups_in_matchup": "417",
+        "matchup_rows": "79135"
+      }
+    ],
+    "eligible_exact_set_identified": false,
+    "target_labels_read": false
+  },
+  "label_access_authorized": false,
+  "label_access_count": 0,
+  "blockers": [
+    "No SOCAT release newer than the frozen v2026 snapshot is present for metadata-only selection.",
+    "All legacy SOCAT locked/external families overlap P2 development and are permanently ineligible.",
+    "TA/DIC are excluded because Issue 45 closed untriggered."
+  ],
+  "unlock_rule": "Replace the null candidate set with a metadata-only cruise list from a SOCAT release newer than v2026, prove zero normalized cruise/alias overlap with the Issue-61 ledger, hash that list and its source, obtain the frozen protocol decision, then create a new lock."
+}

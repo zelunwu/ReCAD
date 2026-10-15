@@ -1,0 +1,6 @@
+candidate_source,available,eligible,reason
+SOCAT v2026,false,false,frozen development source
+legacy SOCAT locked,false,false,538 of 538 groups entered P2 manifest and 417 entered matchup
+legacy SOCAT external,false,false,9 of 9 groups entered P2 manifest and 7 entered matchup
+SOCAT newer than v2026,false,pending,required prospective source is absent
+CODAP carbonate external,true,false,Issue 45 untriggered and TA DIC excluded

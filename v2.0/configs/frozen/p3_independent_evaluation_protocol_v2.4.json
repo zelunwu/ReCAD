@@ -1,0 +1,44 @@
+{
+  "schema_version": "2.4",
+  "issue": 5,
+  "status": "frozen_before_label_access",
+  "targets": ["SSS", "fCO2"],
+  "excluded_targets": {"TA": "Issue 45 untriggered", "DIC": "Issue 45 untriggered"},
+  "candidate_source": "Issue 44 target-specific frozen products and calibration objects",
+  "eligible_evidence": "whole cruises/platforms from a SOCAT release newer than v2026, selected by metadata only and absent after normalized alias matching against the Issue-61 exposure ledger",
+  "ineligible_evidence": [
+    "Issue 25 SSS locked set",
+    "all legacy SOCAT locked and external groups represented in the P2 matchup",
+    "2004-2005 historical benchmark",
+    "2026 provisional rows from the frozen v2026 source",
+    "41 CODAP carbonate cruises while Issue 45 remains untriggered"
+  ],
+  "one_time_policy": {
+    "candidate_set_hash_required": true,
+    "source_hash_required": true,
+    "zero_alias_overlap_required": true,
+    "labels_opened_once": true,
+    "no_post_test_threshold_change": true,
+    "failed_target_remains_diagnostic_or_suppressed": true
+  },
+  "metrics": [
+    "rmse", "mae", "bias", "r2", "cruise_equal_rmse", "region_macro_rmse",
+    "coverage50", "coverage90", "median_width50", "median_width90", "wis",
+    "fixed_50_75_90_percent_coverage_risk", "grade_specific_skill", "support_distance_skill",
+    "time_bias", "boundary_front_skill", "common_support_v1_comparison"
+  ],
+  "decision_rules": {
+    "apply_issue44_mask_without_refit": true,
+    "minimum_coverage90": 0.85,
+    "global_claim_requires_multiple_ocean_regions": true,
+    "regional_pass_may_not_be_promoted_to_global": true,
+    "release_only_target_region_pairs_that_pass": true
+  },
+  "reporting": {
+    "observation_and_cruise_metrics": true,
+    "grid_month_and_region_metrics": true,
+    "all_failures_retained": true,
+    "caption_directly_below_each_figure": true,
+    "immutable_access_log": true
+  }
+}

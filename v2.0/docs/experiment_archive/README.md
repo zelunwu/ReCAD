@@ -31,3 +31,4 @@ python scripts/verify_experiment_archive.py docs/experiment_archive/<experiment_
 | `p2_conditional_combination_v2.4`（Issue #64） | verified；fCO2 convex ensemble retained for development only；graph/scale-head negative | [完整报告](p2_conditional_combination_v2.4/REPORT.md) |
 | `p2_global_reliability_contract_v2.4`（Issue #44） | verified；complete A/B/C/D product projection；global shifted-interval qualification failed | [完整报告](p2_global_reliability_contract_v2.4/REPORT.md) |
 | `p2_na_carbonate_optional_v2.4`（Issue #45） | trigger audit；untriggered/non-blocking；no labels opened | [完整报告](p2_na_carbonate_optional_v2.4/REPORT.md) |
+| `p3_independent_freeze_v2.4`（Issue #5 preparation） | candidate/protocol freeze；waiting for eligible post-v2026 independent source；no labels opened | [完整报告](p3_independent_freeze_v2.4/REPORT.md) |
