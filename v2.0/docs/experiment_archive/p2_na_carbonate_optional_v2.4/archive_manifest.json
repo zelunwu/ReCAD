@@ -1,0 +1,19 @@
+{
+  "experiment_id": "p2_na_carbonate_optional_v2.4",
+  "issue": 45,
+  "status": "untriggered_non_blocking",
+  "archive_type": "trigger_audit_no_model_experiment",
+  "figures_required": false,
+  "figure_captions": {},
+  "source_tables": [
+    "source_tables/entry_condition_audit.csv",
+    "source_tables/action_audit.csv"
+  ],
+  "files_sha256": {
+    "REPORT.md": "8a52d3e8a173bf96f80cb72404ae18f571a23c18a6dcc6d138962942702995ac",
+    "source_tables/entry_condition_audit.csv": "c3960ae98562715742555e8e0f506821f92830dd41f793b94c332bd6b09a8811",
+    "source_tables/action_audit.csv": "9fbe4c6d0374b8bcdfbb4a58890a1df42e89d5f0b3ffb7ea57158d0a41e6e055"
+  },
+  "external_artifacts": [],
+  "labels_opened": []
+}

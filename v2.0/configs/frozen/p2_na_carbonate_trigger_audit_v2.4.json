@@ -1,0 +1,29 @@
+{
+  "experiment_id": "p2_na_carbonate_optional_v2.4",
+  "issue": 45,
+  "audit_date": "2026-10-15",
+  "decision": "untriggered_non_blocking",
+  "entry_condition": "qualified North-American SSS and fCO2 deployment inputs exist",
+  "entry_condition_met": false,
+  "reasons": [
+    "Issue 44 froze development support grades but failed the global shifted-interval qualification gate",
+    "Issue 44 explicitly reserves A/B as a development support contract until untouched evaluation",
+    "MAB TA and derived DIC remain diagnostic_only and SAB TA remains fail",
+    "Running the bounded rescue now would substitute development-qualified upstream inputs for the frozen qualified-input requirement"
+  ],
+  "actions": {
+    "train_ta": false,
+    "derive_dic": false,
+    "open_locked_labels": false,
+    "open_external_independent_labels": false,
+    "open_2026_labels": false,
+    "consume_p2_training_budget": false
+  },
+  "evidence": [
+    {"path": "docs/experiment_archive/p2_global_reliability_contract_v2.4/REPORT.md", "sha256": "4f7dec84ed87e2c4be6d52c004e2d5eccbcd735074ff490cd62cceeed2b2adfb"},
+    {"path": "docs/experiment_archive/p1_ta_bights_v2.2/REPORT.md", "sha256": "9af3f2cd42e8c4d895547c81a54c7917cb528ef891d7adcb0e7971b97fb7f439"},
+    {"path": "docs/experiment_archive/p1_dic_reliability_v2.2/REPORT.md", "sha256": "8253a4ef004d4505c4c2b4fa823f9de5f46b7f81a1fa2076b2610f217cd2572f"},
+    {"path": "configs/frozen/product_scope_v2.3.json", "sha256": "80871df149767dc4679234655210961cc7707fbdb0c882c1c1666464bf788a9d"}
+  ],
+  "reopen_condition": "A future frozen roadmap explicitly supplies North-American SSS and fCO2 inputs that pass their applicable independent qualification gates"
+}
