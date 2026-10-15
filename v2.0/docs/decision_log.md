@@ -32,6 +32,7 @@
 | D026 | 2026-10-15 | 冻结 #44 的完整域 A/B/C/D、trusted/diagnostic/suppressed、reason-bit 与 abstention 合同，但不宣称全球区间已合格 | Cruise 90% coverage 为 SSS 0.898、fCO2 0.901；geographic/whole-region/forward 最低 coverage 为 0.788；完整 1993–2025 产品中平均 A/B 面积为 20.61%/20.97%，D 为 70.47%/69.11% | `freeze_applicability_contract_but_fail_global_interval_qualification`；保留完整 flagged 产品进入独立评估准备，禁止把无观测海域 A/B 当作已验证准确度 |
 | D027 | 2026-10-15 | #45 北美 TA/DIC 可选 rescue 不触发；不以 Issue #44 的 development A/B grades 替代 qualified North-American SSS/fCO2 inputs entry condition | Issue #44 shifted 90% coverage 最低 0.788，未通过 0.85 gate；MAB TA/DIC 仍为 `diagnostic_only`，SAB TA 为 `fail` | `untriggered_non_blocking`；零训练预算、零新标签访问，未来只有新冻结路线提供 independently qualified 上游输入才可重开 |
 | D028 | 2026-10-15 | 冻结 P3 SSS/fCO2 candidates、checkpoints、calibration、mask、metrics 与 conditional release schema，但不打开标签 | 本机只有 SOCAT v2026；旧 locked 538/538 和 old external 9/9 groups 已进入 P2 manifest，分别有 417/7 groups 进入 matchup；不存在 post-v2026 exact candidate set | `prepared_waiting_for_eligible_independent_set`；label access 未授权且计数为 0，需 post-v2026 SOCAT 或另一真正独立全球沿岸来源 |
+| D029 | 2026-10-15 | 接受 SOCAT v2026 为当前最新且无其他独立全球沿岸 SSS/fCO2 来源；终止本轮 P3 开盲与 trusted release | 用户确认没有 post-v2026 SOCAT 或替代来源；旧 SOCAT locked/external 已进入开发链，不能重分为 blind；P3 lock 的 access count 为 0 | `terminal_no_eligible_independent_source`；Issue-44 产品只以 development/diagnostic candidate 发布，TA/DIC suppressed；未来新来源出现后按冻结协议重开 |
 
 ## 被明确否定或限制的旧做法
 

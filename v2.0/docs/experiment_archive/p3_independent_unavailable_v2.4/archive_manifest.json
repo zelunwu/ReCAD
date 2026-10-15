@@ -1,0 +1,21 @@
+{
+  "experiment_id": "p3_independent_unavailable_v2.4",
+  "issues": [
+    5,
+    46
+  ],
+  "status": "terminal_no_eligible_independent_source",
+  "archive_type": "terminal_availability_decision_no_result_figures",
+  "figures_required": false,
+  "figure_captions": {},
+  "source_tables": [
+    "source_tables/terminal_decision.csv"
+  ],
+  "files_sha256": {
+    "REPORT.md": "4f71ab6f05b1cc1c5f8141368957e12d5f3bf3169bad661f68d3fbec235fae51",
+    "source_tables/terminal_decision.csv": "9431dcc2c1a72e277d6e6bcf8e02c84dc4664a27ff34129f0b115905781d100a"
+  },
+  "independent_labels_opened": false,
+  "provisional_2026_opened": false,
+  "label_access_count": 0
+}

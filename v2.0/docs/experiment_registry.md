@@ -330,3 +330,5 @@ honest inner-OOF 的 fCO2 CatBoost/F4 残差中位相关为 0.860，触发冻结
 `p3_independent_freeze_v2.4` 已冻结 SSS Issue-62 CatBoost background-residual 三种子 ensemble、fCO2 Issue-64 CatBoost/F4 convex ensemble、Issue-44 calibration/grade/mask、21 个 checkpoint/config artifact hashes、predictor cube/coastal mask、指标与报告规则，并准备 Issue #46 conditional release schema。metadata-only 审计只读取文件名、版本和 Issue-61 exposure ledger，没有读取任何新 target label。
 
 当前状态为 **`prepared_waiting_for_eligible_independent_set`**。本机只有 SOCAT v2026；旧 locked 538/538 航次组与 old external 9/9 组均进入 P2 manifest，其中 417/7 组进入实际 matchup，永久不能恢复 blind 身份。未来 post-v2026 SOCAT exact set 尚不存在，因此 `label_access_authorized=false`、access count=0。完整 lock、协议、源表和阻塞条件见 `configs/frozen/p3_lock_v2.4.json` 与 `docs/experiment_archive/p3_independent_freeze_v2.4/`。
+
+用户随后确认 SOCAT v2026 已是最新且没有其他可用独立来源，因此 P3 最终状态更新为 **`terminal_no_eligible_independent_source`**。没有执行开盲，access count 仍为 0。SSS/fCO2 的 1993-2025 完整场保留为带适用域和不确定性的 `diagnostic_only` candidate；没有 trusted target-region release。Issue #46 同步关闭为 untriggered，TA/DIC 继续 suppressed。终端证据边界见 `docs/experiment_archive/p3_independent_unavailable_v2.4/`。

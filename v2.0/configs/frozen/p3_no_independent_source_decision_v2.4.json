@@ -1,0 +1,32 @@
+{
+  "schema_version": "2.4",
+  "decision_date": "2026-10-15",
+  "issues": [5, 46],
+  "decision": "terminal_no_eligible_independent_source",
+  "user_confirmed": {
+    "socat_v2026_is_latest_available_release": true,
+    "alternative_independent_global_coastal_sss_fco2_source_exists": false
+  },
+  "label_access": {
+    "authorized": false,
+    "count": 0,
+    "independent_labels_opened": false,
+    "provisional_2026_labels_opened": false
+  },
+  "scientific_consequence": {
+    "sss_fco2_independent_qualification": "not_estimable_with_current_data",
+    "trusted_release": false,
+    "development_candidate_retained": true,
+    "development_candidate_status": "diagnostic_only",
+    "ta_dic_status": "suppressed"
+  },
+  "retained_artifacts": {
+    "candidate_lock": "configs/frozen/p3_lock_v2.4.json",
+    "evaluation_protocol": "configs/frozen/p3_independent_evaluation_protocol_v2.4.json",
+    "conditional_release_contract": "configs/frozen/p3_release_contract_v2.4.json",
+    "sss_product_sha256": "3d3fbc01d8c63d2c8a955f601e4c4fead6c019d2108f93c47f538f70da12e0db",
+    "fco2_product_sha256": "88869d61f0f79d24e6c6f72b8eabe64a3e8de61efb9c2e6a4dcfb865bb2a13cb"
+  },
+  "release_language": "The 1993-2025 fields are development/diagnostic candidate products with frozen applicability flags. They are not independently qualified global products.",
+  "reopen_rule": "Reopen P3 only when a genuinely new independent observation source exists and passes the frozen metadata-only and alias-overlap audit."
+}

@@ -1,0 +1,9 @@
+item,status,evidence
+SOCAT latest release,v2026,user-confirmed 2026-10-15
+newer SOCAT source,unavailable,local and user availability decision
+alternative global coastal SSS fCO2 source,unavailable,user-confirmed 2026-10-15
+independent label access,not authorized,p3_lock_v2.4
+independent label access count,0,p3_lock_v2.4
+SSS product,diagnostic_only,p2_global_reliability_contract_v2.4
+fCO2 product,diagnostic_only,p2_global_reliability_contract_v2.4
+TA DIC,suppressed,p2_na_carbonate_optional_v2.4
