@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.4",
+  "issue": 46,
+  "status": "prepared_conditional_on_issue5",
+  "period": "1993-2025",
+  "targets": ["SSS", "fCO2"],
+  "ta_dic_policy": "suppressed; Issue 45 untriggered",
+  "release_layers": ["trusted", "diagnostic", "suppressed"],
+  "required_variables": [
+    "prediction", "width50", "width90", "applicability_grade", "status", "reason_bits",
+    "training_support_km", "environmental_dissimilarity", "effective_groups",
+    "model_disagreement", "model_version", "calibration_version"
+  ],
+  "required_comparisons": [
+    "native_grid", "common_0.25_degree", "strict_v1_common_support", "external_product_common_support"
+  ],
+  "release_gate": "Only target-region pairs passing the frozen one-time Issue 5 evaluation may be published as trusted. All others remain diagnostic or suppressed.",
+  "provisional_2026": "separate artifact and never part of the 1993-2025 validated release"
+}

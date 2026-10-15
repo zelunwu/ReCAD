@@ -1,0 +1,22 @@
+{
+  "experiment_id": "p3_independent_freeze_v2.4",
+  "issue": 5,
+  "status": "prepared_waiting_for_eligible_independent_set",
+  "archive_type": "pre_access_freeze_no_result_figures",
+  "figures_required": false,
+  "figure_captions": {},
+  "source_tables": [
+    "source_tables/eligibility_audit.csv",
+    "source_tables/candidate_freeze.csv",
+    "source_tables/artifact_hashes.csv"
+  ],
+  "files_sha256": {
+    "REPORT.md": "c71a6de92f6a6b261be254a752684c4c92597f73e336d4b59414366897ebd750",
+    "source_tables/eligibility_audit.csv": "e78b5aee318e7f736d6ac3809a1be2a4736aa874f2b4bc60387fe5778639380c",
+    "source_tables/candidate_freeze.csv": "24976433305d2da086991c7fa217011689625822507fec9aad9f6022341c40a3",
+    "source_tables/artifact_hashes.csv": "f5e032b24f7c1a352abb4b520fe28063abbae5a45389d5ad201d9e18c32a1de8"
+  },
+  "label_access_authorized": false,
+  "label_access_count": 0,
+  "target_labels_read": false
+}

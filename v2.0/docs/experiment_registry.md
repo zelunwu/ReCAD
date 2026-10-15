@@ -324,3 +324,9 @@ honest inner-OOF 的 fCO2 CatBoost/F4 残差中位相关为 0.860，触发冻结
 ## P2.X 北美 TA/DIC 可选分支触发审计（Issue #45）
 
 `p2_na_carbonate_optional_v2.4` 核对了冻结的 entry condition：只有存在已合格的北美 SSS/fCO2 部署输入，才允许消耗最多 10% 的 P2 预算测试 TA/DIC rescue。Issue #44 冻结了 development support grades，但 shifted 90% coverage 最低为 0.788，明确没有取得独立产品资格；MAB TA/DIC 仍为 `diagnostic_only`，SAB TA 仍为 `fail`。因此该分支以 **`untriggered_non_blocking`** 关闭，没有训练新模型、派生 DIC、消耗预算或开启 locked/external-independent/2026 标签。完整触发审计和哈希证据见 `docs/experiment_archive/p2_na_carbonate_optional_v2.4/`。
+
+## P3 一次性独立评估冻结准备（Issue #5）
+
+`p3_independent_freeze_v2.4` 已冻结 SSS Issue-62 CatBoost background-residual 三种子 ensemble、fCO2 Issue-64 CatBoost/F4 convex ensemble、Issue-44 calibration/grade/mask、21 个 checkpoint/config artifact hashes、predictor cube/coastal mask、指标与报告规则，并准备 Issue #46 conditional release schema。metadata-only 审计只读取文件名、版本和 Issue-61 exposure ledger，没有读取任何新 target label。
+
+当前状态为 **`prepared_waiting_for_eligible_independent_set`**。本机只有 SOCAT v2026；旧 locked 538/538 航次组与 old external 9/9 组均进入 P2 manifest，其中 417/7 组进入实际 matchup，永久不能恢复 blind 身份。未来 post-v2026 SOCAT exact set 尚不存在，因此 `label_access_authorized=false`、access count=0。完整 lock、协议、源表和阻塞条件见 `configs/frozen/p3_lock_v2.4.json` 与 `docs/experiment_archive/p3_independent_freeze_v2.4/`。
