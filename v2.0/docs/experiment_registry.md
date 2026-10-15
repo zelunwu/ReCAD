@@ -330,3 +330,7 @@ honest inner-OOF 的 fCO2 CatBoost/F4 残差中位相关为 0.860，触发冻结
 `p3_independent_freeze_v2.4` 已冻结 SSS Issue-62 CatBoost background-residual 三种子 ensemble、fCO2 Issue-64 CatBoost/F4 convex ensemble、Issue-44 calibration/grade/mask、21 个 checkpoint/config artifact hashes、predictor cube/coastal mask、指标与报告规则，并准备 Issue #46 conditional release schema。metadata-only 审计只读取文件名、版本和 Issue-61 exposure ledger，没有读取任何新 target label。
 
 当前状态为 **`prepared_waiting_for_eligible_independent_set`**。本机只有 SOCAT v2026；旧 locked 538/538 航次组与 old external 9/9 组均进入 P2 manifest，其中 417/7 组进入实际 matchup，永久不能恢复 blind 身份。未来 post-v2026 SOCAT exact set 尚不存在，因此 `label_access_authorized=false`、access count=0。完整 lock、协议、源表和阻塞条件见 `configs/frozen/p3_lock_v2.4.json` 与 `docs/experiment_archive/p3_independent_freeze_v2.4/`。
+
+`p3_cruise_holdout_freeze_v2.4` 将 Issue #5 的验证问题收窄为 SOCAT v2026 内未见完整航次、稀疏位置和新近时间的迁移。selector 只读取 cruise key、时间、位置、basin 和目标可用行数，不读取 SSS/fCO2 值。冻结的 50 条航次包含 8,469 条 SSS 与 8,470 条 fCO2 观测，5 个 basin 各至少 6 条；23 条来自 2022–2025 recent stratum，27 条来自最低航次密度的 5° block。manifest SHA256 为 `50ffcd07c051781a44855ffc2ad3dee3dcb804d6dba745d4b3cb4b5aa632fe2e`。
+
+该集合合入前保持 target-unread；合入后须从模型、连续背景、校准、上游 SSS、风险阈值和支持索引中整组剔除，再一次性报告逐航次与聚合结果。证据范围是 **same-source complete-cruise/spatial/time transfer**，不作 cross-dataset generalization claim。预登记报告、3 张 metadata-only 图片及其紧随 caption、源表和复现代码见 `docs/experiment_archive/p3_cruise_holdout_freeze_v2.4/`。

@@ -1,0 +1,46 @@
+{
+  "schema_version": "2.4",
+  "issue": 5,
+  "validation_type": "same-source final complete-cruise holdout",
+  "claim_scope": "method reliability for unseen cruises, sparse geography, and recent time within SOCAT v2026; no cross-dataset generalization claim",
+  "selection": {
+    "groups": 50,
+    "minimum_target_rows_per_cruise": {"SSS": 10, "fCO2": 10},
+    "basin_minimum_groups": 6,
+    "recent_fraction_per_basin": 0.5,
+    "recent_years": "2022-2025",
+    "geographic_priority": "lowest training-candidate cruise count in 5-degree block",
+    "tie_break": "salted SHA256 of normalized complete-cruise key",
+    "target_values_used_for_selection": false
+  },
+  "leakage_barrier": {
+    "remove_holdout_from_model_fit": true,
+    "remove_holdout_from_calibration": true,
+    "remove_holdout_from_upstream_sss_crossfit": true,
+    "remove_holdout_from_background_fit": true,
+    "remove_holdout_from_risk_threshold_fit": true,
+    "remove_holdout_from_support_index": true,
+    "fco2_uses_observed_sss": false
+  },
+  "candidates": {
+    "SSS": "Issue-62 CatBoost background-residual three-seed ensemble",
+    "fCO2": "Issue-64 CatBoost/F4 convex ensemble with weight 0.30"
+  },
+  "evaluation_views": [
+    "all 50 held cruises",
+    "recent_2022_2025 selection stratum",
+    "sparse_5deg_block selection stratum",
+    "A/B/C/D grade",
+    "support distance measured against remaining training cruises without deleting additional observations",
+    "region and basin",
+    "common support against frozen backgrounds"
+  ],
+  "metrics": ["rmse", "mae", "bias", "r2", "cruise_equal_rmse", "coverage50", "coverage90", "median_width50", "median_width90", "wis"],
+  "decision": {
+    "minimum_coverage90": 0.85,
+    "apply_issue44_thresholds_without_refit_on_holdout": true,
+    "report_every_selected_cruise": true,
+    "failed_target_or_stratum_remains_diagnostic": true,
+    "no_cross_dataset_claim": true
+  }
+}
