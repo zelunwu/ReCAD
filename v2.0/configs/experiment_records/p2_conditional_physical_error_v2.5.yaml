@@ -1,0 +1,29 @@
+schema_version: 1
+experiment_id: p2_conditional_physical_error_v2.5
+status: completed_development_calibration_thresholds_unset
+owner: ReCAD
+issue: 81
+science:
+  question: Can deployment-available diagnostics estimate a conservative conditional q90 absolute reconstruction error in physical units across each transfer protocol?
+  primary_statistic: One-sided 95% cruise-evidence upper bound for conditional q90 absolute error.
+  permitted_claim: Development calibration on observed held cruises within each separate protocol.
+  prohibited_claim: Absolute grades, intended-use thresholds, or empirical validation of unsupported cells.
+data:
+  residual_banks: C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks
+  independent_labels_opened: false
+  labels_2026_opened: false
+protocol:
+  candidates: [constant, stratified, catboost_quantile]
+  group_crossfit: Five complete-cruise folds with separate fit, calibration, and test groups.
+  protocol_pooling: prohibited
+  deployment_combination: Upper envelope of separately calibrated protocol estimators.
+artifacts:
+  config: configs/frozen/conditional_physical_error_v2.5.in
+  output_directory: C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5
+  reviewer_archive: docs/experiment_archive/p2_conditional_physical_error_v2.5
+outcome:
+  SSS_selected: catboost_quantile for all five protocols
+  fCO2_selected: stratified for cruise/geographic/whole_region; catboost_quantile for forward/early_era
+  thresholds: {SSS: {T_A: UNSET, T_B: UNSET, T_C: UNSET}, fCO2: {T_A: UNSET, T_B: UNSET, T_C: UNSET}}
+  decision: Preserve selected protocol-specific estimators for development; qualify cohorts separately and do not publish A-D until intended-use thresholds are frozen.
+

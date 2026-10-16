@@ -1,0 +1,140 @@
+{
+  "experiment_id": "p2_conditional_physical_error_v2.5",
+  "training_git_commit": "72615b95eb51ce3d9369d8745a74cd99ce3e0bb2",
+  "data_manifest_sha256": "7b6eaae87787508cb52e4aeaffc2bd2fbf1eaeb484ae325f93e623e28d1447b1",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "development-only protocol-specific conditional physical-error calibration",
+  "decision": "retain_protocol_specific_estimators_thresholds_unset",
+  "figure_source_data": {
+    "fig01_candidate_mean_bound.png": [
+      "table01_candidate_summary.csv"
+    ],
+    "fig02_candidate_row_coverage.png": [
+      "table01_candidate_summary.csv"
+    ],
+    "fig03_candidate_group_coverage.png": [
+      "table01_candidate_summary.csv"
+    ],
+    "fig04_selected_fold_coverage.png": [
+      "table02_fold_metrics.csv",
+      "table03_selection.csv"
+    ],
+    "fig05_sss_reliability.png": [
+      "table06_reliability_bins.csv"
+    ],
+    "fig06_fco2_reliability.png": [
+      "table06_reliability_bins.csv"
+    ],
+    "fig07_region_coverage.png": [
+      "table04_region_calibration.csv"
+    ],
+    "fig08_support_coverage.png": [
+      "table05_support_calibration.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_candidate_mean_bound.png": "Figure 1. Mean calibrated physical error bound for every candidate and transfer protocol. Targets are shown in separate panels because their units differ.",
+    "fig02_candidate_row_coverage.png": "Figure 2. Observation-level coverage of each candidate's physical q90 upper bound. The dashed 0.90 line is the frozen marginal target.",
+    "fig03_candidate_group_coverage.png": "Figure 3. Fraction of complete cruises whose within-cruise 90th-percentile absolute error is covered. Cruises, rather than dense rows, are the evidence units.",
+    "fig04_selected_fold_coverage.png": "Figure 4. Fold-specific row coverage for the selected estimator in each protocol. No fold is removed when it performs worse than the pooled result.",
+    "fig05_sss_reliability.png": "Figure 5. SSS observed 90th-percentile absolute error versus the mean calibrated upper bound in each predicted-bound decile. Points below the diagonal are conservative.",
+    "fig06_fco2_reliability.png": "Figure 6. fCO2 observed 90th-percentile absolute error versus the mean calibrated upper bound in each predicted-bound decile. Points below the diagonal are conservative.",
+    "fig07_region_coverage.png": "Figure 7. Distribution of row coverage across adequately sampled ocean-region by protocol cohorts. Cohorts below 0.85 are retained as failed evidence rather than hidden by pooling.",
+    "fig08_support_coverage.png": "Figure 8. Distribution of coverage across adequately sampled fixed geographic, environmental, cruise-diversity, and temporal-support strata. Failed strata require VF or U in later product mapping."
+  },
+  "files_sha256": {
+    "README.md": "d13a81f8a8ab84d06e2e8b8fee0ed0cff8c56e83ea09d63607b616703d5d887e",
+    "REPORT.md": "33e6f178b5093ad88a99bac646ed072d3fa7318c40859fecf51b3c9b8e0343e1",
+    "CAPTIONS.md": "bb85f9f97323d952b82eeb9080278e10b9e385069b63ed088ed6efd8f39806b3",
+    "figures/fig01_candidate_mean_bound.png": "4f7f6e0a2a84bbce1fd3e91f8004e0c51ae2c99fab81b9e3c3c25f2ac15fa176",
+    "figures/fig02_candidate_row_coverage.png": "cd79b23b54efedd01ebf02e9ea96067fbebe1b58cb2c4a0c7919480e4036fd7c",
+    "figures/fig03_candidate_group_coverage.png": "06614896d30edd4757fe9b0177c99aac1af2804e323b288992c5756935981740",
+    "figures/fig04_selected_fold_coverage.png": "c38d6f6f4f91f6fdd197375579ab430fd78270b9b7d29b13ad0a4bb32bca0af6",
+    "figures/fig05_sss_reliability.png": "e9c7e0700fb4db4dcdd1ea88e304afb70167e2d578e27742a4c5749341123709",
+    "figures/fig06_fco2_reliability.png": "df7a262b74a3e48ae6763d6f98bed0b15bbcd4427d80e4830078faef621d8a4e",
+    "figures/fig07_region_coverage.png": "ca84b2f4e296993ec226976ed0099e7fb772b18da756fd429a29a3f1e8fbd391",
+    "figures/fig08_support_coverage.png": "b1d7ecdf7b12b382f2009d39b136560fb491cdcdc8738179002576b877b15b29",
+    "tables/table01_candidate_summary.csv": "172466f806a818047c683f51c20a074214faf6c662e689734dd1858513fe562a",
+    "tables/table02_fold_metrics.csv": "5d4ab3f3b5ad580889eb67e05c018903a097c4753a82c41e44f89a483d1373d7",
+    "tables/table03_selection.csv": "9814f1cb5b008594ad046d255f969d84c71ced985cf4fa168106119300b857e2",
+    "tables/table04_region_calibration.csv": "2558431a09fe255214f950ee62f90437cc14f3d6dba4e689e3b9f3c10c6f4df6",
+    "tables/table05_support_calibration.csv": "5eae384464a3540c3dea8d51cff037e1ee2bf7c5b1be2c3a28b6f1dd1b68dec9",
+    "tables/table06_reliability_bins.csv": "4cf07a5a1755cd4911a9b1dd5c2f1a3b55741642e234cb8102d9b17d28e43a6e",
+    "tables/table07_selected_partitions.csv": "412577ab30934c5be8d5c8cc15e9e1d48b27e09b2010110d97493a7f7b1d141a",
+    "tables/table08_model_artifacts.csv": "a8c27a0ba86f2027bc595484e5ff706e0baec710a604a44d45b69ce0af2a88c7",
+    "tables/table09_decision.csv": "bd30466175591de26b4a4a2367ab1bb566bd8fcc2c0ef4d49502ccbcc7f86cc6"
+  },
+  "archive_builder_sha256": "03032e968cd557c2f8114785855c8f80e3c777b8987c66d60d8609fffecbf34f",
+  "analysis_script_sha256": "2d7653cf39c5a6ff33473c1f6dcacb0c411c68787a6cb497a03073e50fc24867",
+  "source_artifacts_sha256": {
+    "configs/frozen/conditional_physical_error_v2.5.in": "7b6eaae87787508cb52e4aeaffc2bd2fbf1eaeb484ae325f93e623e28d1447b1",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_cruise_catboost_quantile_fold0.parquet": "1caad55dc2c6c4b28903ecba03b81d858a0bd75bd84f93932a9a6d752f0b2b8c",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_cruise_catboost_quantile_fold1.parquet": "35e9d8caad98ae949a2f968ddaf85f3125bfe648f45f7d8eb344cb6980939eca",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_cruise_catboost_quantile_fold2.parquet": "27a4785f85ff2cb858d0d7457c01136422aabe066a1dd86136198bcecfdcec2b",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_cruise_catboost_quantile_fold3.parquet": "9b52d5192eb91f583ab231fb8c2c0972f92846bcd7c13fe43523f9ff0eda3a9d",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_cruise_catboost_quantile_fold4.parquet": "d322143c25596c2d9c644e91c87f1f513f5fd3b16bd24212e6ff4446b2f20f69",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_geographic_catboost_quantile_fold0.parquet": "cd82fe32ad4e55a4f6df32c6c47efb6539fb5419a2059c4024132d5a54cb3a36",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_geographic_catboost_quantile_fold1.parquet": "4779967d54413aacc7c730a1648f13624bedd5cb0d147ca0b083f1d47a741846",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_geographic_catboost_quantile_fold2.parquet": "bd45aa0cd34ba40c896c5fc8a40494cf246022770e324393cc47a54638269f68",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_geographic_catboost_quantile_fold3.parquet": "6eca8a31ba623e5930ab92f5379ce10cf76d3ac2f16116a1ed20598189998936",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_geographic_catboost_quantile_fold4.parquet": "fe385360138707834077b0c3292d014d9f5f0c3da2b1acd7fb24879c74836541",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_whole_region_catboost_quantile_fold0.parquet": "6a58f31e95c69d5ea6776f57f117df056d4b9e49117b43cc9e5b826c8cc22f8d",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_whole_region_catboost_quantile_fold1.parquet": "1096fb63e320d00256dd9baebe774f44f43a860a476525908cb92af45820cba2",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_whole_region_catboost_quantile_fold2.parquet": "7aceea4ef28bd973982a438cdc7e399d344104c122bd017d5a051da55427c68c",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_whole_region_catboost_quantile_fold3.parquet": "95da78e15a4e0475a2f4e2b5eb2b3983f75bbcc9268fde0ff2f7d387db62470b",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_whole_region_catboost_quantile_fold4.parquet": "27416ce8454382e6e8b3f92c349b82d54f2bd1d6b01a601708240f41a914ad03",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_forward_catboost_quantile_fold0.parquet": "520f45c480539c270ed786da171d9827f4db1e323418c2184dffa12460131ec8",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_forward_catboost_quantile_fold1.parquet": "b3a4e2abb388ab4c4e95860cf34dca0164a43ab360107feb5d8ee67b58ff6aec",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_forward_catboost_quantile_fold2.parquet": "980d54fd559d896544e9809c2f1213df3da04f7bed5f3eeb7382251f23f5841a",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_forward_catboost_quantile_fold3.parquet": "96e9677680209cd070a5d20437e0624c8eb992923e8f480d1967581d4a386b12",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_forward_catboost_quantile_fold4.parquet": "aca2e44cdfb09e24ad14f31da4104033f10706aa758808663d552f76833a81bb",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_early_era_catboost_quantile_fold0.parquet": "3ba4308b4b7e128b57fb099ab68b06ec35353418ec9685f49d5ccd61c1d2455d",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_early_era_catboost_quantile_fold1.parquet": "520894d78c1e7685ff753506929cd15e87682313c600a92449cf0c3c063b660b",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_early_era_catboost_quantile_fold2.parquet": "489d8c00fbb20a869b460a234ad73f18a8cc17231e083a25cb02ab434ef18623",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_early_era_catboost_quantile_fold3.parquet": "992dc9e3aa86a9dc1a08dbc9be556b85ffba34388773f58e5b2bfd3ab055182d",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/SSS_early_era_catboost_quantile_fold4.parquet": "d571fb198fb8a859d0c55fd526783a20765ab5f712c61ec3763c6068fd0d3749",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_cruise_stratified_fold0.parquet": "39323148c4e7320c0be12cece57611ca4e4e7e3185e32a793b8a156b156743d3",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_cruise_stratified_fold1.parquet": "0c21d474e4e0523d29983fc79e98a550c30b35530a066b157358c10e7dcbb9c0",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_cruise_stratified_fold2.parquet": "7e891920dd35249841854c41d5839e538659c9638b32907d31a93186df8ce314",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_cruise_stratified_fold3.parquet": "bb47f2c1c6b2d246cd00be50f2367f1464486f497b3a8a67bc2dd9512c7bfadd",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_cruise_stratified_fold4.parquet": "f6c6b3e82b1b6dc3e49876a658cade0550231825d6d592c727848eb2d0b025d9",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_geographic_stratified_fold0.parquet": "6ae7fb1533e60f0d18bb298f2b40e14b5012892f757993560e4d93cce60e1cb7",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_geographic_stratified_fold1.parquet": "19a7be0712da48f53ac0281f720ff1fd9067a077f14c0128e31462c63120a9c8",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_geographic_stratified_fold2.parquet": "91b28138b5f1b72ed3dc4358bc53be69a120c791b9086b5515b27970750ee366",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_geographic_stratified_fold3.parquet": "0bc7bc1d482a069edd33aa7e9762d6f5341fe3a9536ca57360064c5133c1a24e",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_geographic_stratified_fold4.parquet": "f3131dfb29d446263696967e3a5040cf44172c0553eb317447f66730eee69043",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_whole_region_stratified_fold0.parquet": "6a58e889ceed8be02a5d54ce270581112a704ecbfb2f4eef6ecb1db33641c480",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_whole_region_stratified_fold1.parquet": "c85bdef33c448d6c3e3c585d12b06f7315c5c51dc0103dc2425c940512509b9d",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_whole_region_stratified_fold2.parquet": "74416c47fd3b35296cd0aebf1688b3d2e4eb1d4b32e68fc462ce7523ba20d814",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_whole_region_stratified_fold3.parquet": "fdbbfc6585c3af1b2679eefe6164e15bb58a609154432df1c1c149f1c20833dc",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_whole_region_stratified_fold4.parquet": "8141c12cf8df05407f765087b4a37e0c52a5a6b5a6aece29edb42c3deb8a55fb",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_forward_catboost_quantile_fold0.parquet": "069e91f4a09fbd338ab3c6cee95f42468fca91e16b1ae745f29114585492f5f8",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_forward_catboost_quantile_fold1.parquet": "a6f1cab348b523a601d6d7fa29b9cbc8303b1770c0ac93f400e84829cbcdbeeb",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_forward_catboost_quantile_fold2.parquet": "2a61221df468b10244dd0b98a0ab7645293e8e8e6f4c971ed1fd6bf7b58aa406",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_forward_catboost_quantile_fold3.parquet": "1a89727316fad32f58321099f6236c9d0c23f6ef7620a453ef0bd3010b07c08a",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_forward_catboost_quantile_fold4.parquet": "a1d1825567606f93b8615ee0d50407edc462b145d8b79c59772c724d480720a6",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_early_era_catboost_quantile_fold0.parquet": "97e98f1d1d3c8fc8f8ef4c0481a8e77f04b2e132c7a838736bf40d1406d37866",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_early_era_catboost_quantile_fold1.parquet": "9f447c17190224629d4fb7d1a2b11f458124df8b120e7c64c6e443c40fc1510e",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_early_era_catboost_quantile_fold2.parquet": "df3690a687976d6f63c1a7aab3706f5c4fd2135f9f7c62458af673bf257a68d4",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_early_era_catboost_quantile_fold3.parquet": "2b7568bd5613f06c46e93a00ac2761e7ad1d7490b7ab3777818bf39a0dcc0eaa",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/partitions/fCO2_early_era_catboost_quantile_fold4.parquet": "883b77bbe321b33b2612a717d8d8699943942705327fa7c930c9fe28e5dfe531",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/fCO2_cruise_stratified.json": "c617c6049c3e18ffc2cff82032229c10b668d809af415a3c686dbe540464ca9c",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/fCO2_early_era_catboost_quantile.cbm": "a48ce0c5a6d77e21db4c8cc62da6f1d9252132d2babe1bfab9f43beb36b5b535",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/fCO2_early_era_catboost_quantile.json": "dc1866358f68c34fe16d4c3073776312ccf080866d754b5ddfea9cd807134d12",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/fCO2_forward_catboost_quantile.cbm": "31243ed97ddef33e1d78602821316e8372d62e9bd89930b386bc64693caf5a4c",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/fCO2_forward_catboost_quantile.json": "30a4a85f42df78e510090eeedd68210fe727f9d57b8ad84b8be7a68893354ae6",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/fCO2_geographic_stratified.json": "ba4d65ef1ef5af1a14d3d3062d8259da3ab58f7962d5f7d1bc9111e46f6ac5f6",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/fCO2_whole_region_stratified.json": "5f6c4b02e8e13459a2a3d03e26f44cdcd5e982fec83438d539808ff278d23e7c",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_cruise_catboost_quantile.cbm": "349bdb396d918ec359aa4229b192d67b83dcae30c989ec94b2aa35d9418fba80",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_cruise_catboost_quantile.json": "3b7d6066158f6e4633b83384ddc4fbd888ac76b67fe201ace8533376bbd4aa9d",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_early_era_catboost_quantile.cbm": "8a6f59bee5d8f504905b53a5e9deb374f600869ab37a135510f5fa7d324dab51",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_early_era_catboost_quantile.json": "e2edd90a8de2e394c77a2907b373fef01055be2100a3f7798cb07d2f556a7955",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_forward_catboost_quantile.cbm": "b50636e7b43ce0bac599764e7e71f84c16942f8a3426d9d33bf0b6092d32dd59",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_forward_catboost_quantile.json": "5921fe0b3106a9004f921d3297edc455bfde601982279c07e67a0a6c1c6bbdbe",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_geographic_catboost_quantile.cbm": "4f11dd1697bed44dbca1267389cd7694f40f768cf8c6928038de49cb24542a15",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_geographic_catboost_quantile.json": "0a238047c2c4e2c419be637c2e856976a674d09a122c4579de5c8663fd961272",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_whole_region_catboost_quantile.cbm": "aa106daf2567f949c027606ad6dd050daf81c45013e78b0e293c0af99e09388e",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5/models/SSS_whole_region_catboost_quantile.json": "a7fe0d006fc0529d05d9c502d66472a194e8718fade151ad27931314eb5047c5"
+  }
+}
