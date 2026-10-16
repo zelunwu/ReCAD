@@ -367,6 +367,28 @@ def grouped_bars(
     plt.close(figure)
 
 
+def target_bars(
+    table: pd.DataFrame,
+    value: str,
+    ylabel: str,
+    title: str,
+    path: Path,
+) -> None:
+    protocols = list(dict.fromkeys(table.protocol))
+    figure, axes = plt.subplots(1, 2, figsize=(12, 4.8))
+    for axis, target in zip(axes, ("SSS", "fCO2"), strict=True):
+        part = table.loc[table.target.eq(target)].set_index("protocol").reindex(protocols)
+        axis.bar(protocols, part[value], color=COLORS[target])
+        axis.set_title(target)
+        axis.set_ylabel(ylabel)
+        axis.tick_params(axis="x", rotation=25)
+        axis.grid(axis="y", alpha=0.25)
+    figure.suptitle(title, weight="bold")
+    figure.tight_layout()
+    figure.savefig(path, dpi=180)
+    plt.close(figure)
+
+
 def support_plot(table: pd.DataFrame, field: str, title: str, path: Path) -> None:
     subset = table.loc[table.support_field.eq(field) & table.protocol.eq("geographic")].copy()
     figure, axes = plt.subplots(1, 2, figsize=(12, 4.8))
@@ -392,14 +414,14 @@ def build_figures(tables: dict[str, pd.DataFrame]) -> dict[str, str]:
     figures = ARCHIVE / "figures"
     figures.mkdir(parents=True, exist_ok=True)
     protocol = tables["table01_protocol_metrics.csv"]
-    grouped_bars(
+    target_bars(
         protocol,
         "record_q90_absolute_error",
         "Absolute error (target units)",
         "Observation-equal q90 absolute error by transfer protocol",
         figures / "fig01_record_q90.png",
     )
-    grouped_bars(
+    target_bars(
         protocol,
         "cruise_q90_upper95",
         "Absolute error (target units)",
@@ -499,27 +521,35 @@ def build_archive(
         blocks.append(f"![{caption}](figures/{name})\n\n{caption}")
     report = f"""# Deployment-matched end-to-end residual banks
 
-## Scope and frozen method
+## Scientific question and permitted claim
 
-This Issue 81 phase reuses the final Issue-44 SSS CatBoost background-residual candidate and fCO2 CatBoost/F4 convex ensemble on the exact corrected Issue-61 outer predictions. It opens no new labels and performs no model or threshold tuning. Raw residual banks remain separate for complete-cruise, buffered-geographic, whole-region, and past-to-future protocols. Basin identity is attached from GOaS v1 for reporting only.
+This experiment asks what deployment-matched end-to-end residual evidence is available for physical SSS and fCO2 error estimation under the frozen final candidates. The permitted claim is limited to residual-bank construction and an evidence-gap audit. It cannot define intended-use thresholds, publish A-D grades, or validate observation-free waters.
+
+## Data, splits, and leakage controls
+
+This Issue 81 phase reuses the exact corrected Issue-61 outer predictions archived by Issue 44. Raw residual banks remain separate for complete-cruise, buffered-geographic plus 100-km exclusion, whole-region, and past-to-future protocols. It opens no new labels. Complete cruises remain the independent evidence units. Every source partition is hashed, record and evaluation identities are audited, and no duplicate identity was found. Basin identity is attached from GOaS v1 for reporting only and cannot alter a grade.
+
+## Candidate models and training
+
+The point predictions are frozen: the Issue-44 three-seed SSS CatBoost background-residual candidate and the fCO2 inner-OOF-weighted CatBoost/F4 convex ensemble. This experiment does not fit or select a point model, refit a calibration model, or tune a threshold. The saved outer predictions therefore isolate error analysis from model selection.
 
 The primary feasibility statistic is hierarchical: compute the 90th-percentile absolute error inside each complete cruise, then take the 90th percentile across cruises and a distribution-free one-sided 95% order-statistic upper bound. This prevents dense rows within one cruise from manufacturing precision. Observation-equal q90, fold variability, region strata, support strata, RMSE, MAE, bias, R2, width and coverage remain diagnostics. These development residuals cannot define the intended-use `T_A`, `T_B`, or `T_C` thresholds.
 
-## Results
+## Main development results
 
 {chr(10).join(lines)}
 
 The four available residual banks are reusable, but the frozen contract also requires an early-era test in which later observations fit the model and earlier cruises are held out. That bank does not exist in Issues 61-44. Final grading therefore fails closed. No protocol is pooled into a global error estimate, and no error is asserted for observation-free cells from ensemble spread alone.
 
-## Figures
-
 {chr(10).join([block + chr(10) for block in blocks])}
 
-## Decision and next experiment
+## Decision and limitations
 
 Decision: retain the four separated banks as development evidence and run the missing early-era prediction experiment before conditional error calibration. After all five banks exist, fit and cross-fit candidate conditional physical-error estimators, test their calibration by protocol and cohort, and only then evaluate intended-use threshold profiles. The current v2.4 product remains unchanged.
 
-## Source tables
+The hierarchical bound is deliberately stricter than observation-equal error and describes transfer across observed cruises; it is not yet an area-time-weighted global product error. Observed locations cannot by themselves identify error in a coast with no target observations or validated analogue. Measurement and representativeness components are not separately estimated in this phase and must be added without double-counting the end-to-end residual.
+
+## Figure and table index
 
 - Table 1: protocol metrics.
 - Table 2: outer-fold metrics.
@@ -565,6 +595,7 @@ Decision: retain the four separated banks as development evidence and run the mi
         "data_manifest_sha256": tracked_text_sha256(config),
         "locked_test_opened": False,
         "external_independent_opened": False,
+        "evidence_scope": "development-only deployment-matched residual banks on frozen corrected outer predictions",
         "decision": "residual_banks_reusable_but_early_era_missing_and_final_grading_blocked",
         "figure_source_data": figure_sources,
         "figure_captions": captions,

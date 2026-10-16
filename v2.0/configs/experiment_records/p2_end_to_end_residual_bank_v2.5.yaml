@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p2_end_to_end_residual_bank_v2.5
-status: preregistered_running
+status: completed_partial_evidence_early_era_pending
 owner: ReCAD
 issue: 81
 
@@ -40,3 +40,23 @@ artifacts:
 thresholds:
   SSS: {T_A: UNSET, T_B: UNSET, T_C: UNSET}
   fCO2: {T_A: UNSET, T_B: UNSET, T_C: UNSET}
+
+outcome:
+  decision: residual_banks_reusable_but_contract_incomplete
+  final_grading_allowed: false
+  missing_required_protocols: [early_era]
+  duplicate_evaluation_identities: 0
+  SSS:
+    cruise: {rmse: 0.8956, record_q90: 1.0489, cruise_q90_upper95: 1.9645, coverage90: 0.8979}
+    geographic: {rmse: 1.5009, record_q90: 1.8740, cruise_q90_upper95: 3.5148, coverage90: 0.8041}
+    whole_region: {rmse: 2.6159, record_q90: 3.5215, cruise_q90_upper95: 3.8958, coverage90: 0.7880}
+    forward: {rmse: 1.2548, record_q90: 1.3378, cruise_q90_upper95: 2.5277, coverage90: 0.8347}
+  fCO2:
+    cruise: {rmse: 32.4197, record_q90: 46.4615, cruise_q90_upper95: 84.3777, coverage90: 0.9014}
+    geographic: {rmse: 52.4714, record_q90: 74.4612, cruise_q90_upper95: 133.6257, coverage90: 0.8324}
+    whole_region: {rmse: 52.1670, record_q90: 77.7316, cruise_q90_upper95: 125.4716, coverage90: 0.8148}
+    forward: {rmse: 38.8475, record_q90: 56.5269, cruise_q90_upper95: 108.3757, coverage90: 0.8489}
+  limitations:
+    - Hierarchical cruise bounds describe transfer across observed cruises and are not yet area-time-weighted product errors.
+    - Measurement and grid-month representativeness uncertainty remain separate missing components.
+    - Observation-free coasts remain unidentified unless a later frozen transfer audit validates an analogue.
