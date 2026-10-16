@@ -1,0 +1,61 @@
+[experiment]
+experiment_id = p2_global_model_benchmark_v2.5
+issue = 89
+parent_issue = 87
+contract = configs/frozen/model_family_benchmark_v2.5.in
+status = preregistered_before_primary_benchmark_results
+output_root = C:/backup/phd/data/processed/recad_v2_5/p2_model_family_benchmark_v2.5
+
+[inputs]
+matchup = C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet
+split_root = C:/backup/phd/data/processed/recad_v2_4/p2_validation_repair_v2.4/splits
+predictor_cube = C:/backup/phd/data/processed/recad_v2_3/global_coastal_predictor_cube_v2.3.nc
+early_era_root = C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5
+maximum_label_year = 2025
+open_independent_labels = false
+open_2026_labels = false
+
+[search]
+sampler = seeded_tpe
+seed = 89000
+fidelity_rows = 120000,300000,FULL
+fidelity_survival_fraction = 0.25
+minimum_full_fidelity_candidates = 4
+trial_batch = 8
+objective = cruise_equal_rmse
+same_rows_within_target_fidelity = true
+target_specific_rows = true
+outer_held_labels_visible_to_search = false
+configuration_selection_scope = outer_training_only
+
+[finalists]
+non_neural_seeds = 89001,89002,89003
+neural_seeds = 89001,89002,89003,89004,89005
+save_outer_predictions = true
+save_inner_predictions = true
+save_final_checkpoints = true
+
+[patch]
+dynamic_variables = sst,wspd,xco2air,sss_bg,sss_bg_available,adt,adt_available
+static_variables = distance_to_significant_land_km,bathymetry_m,shelf_core_mask,slope_deep_mask,latitude_sin,latitude_cos,longitude_sin,longitude_cos
+ocean_valid_channel = true
+normalization = outer_training_only
+longitude_boundary = cyclic
+latitude_boundary = masked
+sequence_direction = past_including_current_month
+cache_root = C:/backup/phd/data/processed/recad_v2_5/p2_model_family_benchmark_v2.5/patch_cache
+
+[tabpfn]
+version = v3
+pass_full_eligible_pool_to_fit = true
+allow_internal_architecture_subsampling = true
+allow_external_family_specific_subsampling = false
+resource_failure_status = resource_infeasible
+
+[failure]
+preserve_traceback = true
+preserve_partial_trials = true
+preserve_memory_limit = true
+preserve_timeout = true
+failed_family_substitution = false
+

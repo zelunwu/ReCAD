@@ -66,6 +66,15 @@ viz = [
 cmems = ["copernicusmarine>=2.4"]
 coastal-mask = ["landmetrics==1.0.0", "rasterio>=1.4"]
 model-zoo = ["xgboost>=2.1"]
+benchmark = [
+    "lightgbm>=4.6",
+    "optuna>=4.5",
+    "psutil>=7.0",
+    "pytabkit[models]>=1.7",
+    "tabm>=0.0.3",
+    "tabpfn>=9.0",
+    "xgboost>=3.0",
+]
 
 [project.scripts]
 recad = "recad.cli:main"
