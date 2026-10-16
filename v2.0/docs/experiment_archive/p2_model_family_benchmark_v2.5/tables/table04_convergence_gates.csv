@@ -1,0 +1,6 @@
+gate,threshold,status
+minimum trials completed,family-specific,required
+full eligible rows completed,100%,required
+minimum seeds completed,3 non-neural; 5 neural,required
+final 20% search improvement,<0.25%,required
+capacity-tail improvement,<0.25%,required

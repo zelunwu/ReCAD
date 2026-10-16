@@ -1,0 +1,77 @@
+{
+  "experiment_id": "p2_model_family_benchmark_v2.5",
+  "training_git_commit": "not_applicable_preregistration",
+  "data_manifest_sha256": "33c5ee3f8350a74a1cc4d5e5cb65e768ad127b03ba5ae0e4c75002333415df21",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "methodology and optimization preregistration; no new model result",
+  "decision": {
+    "machine_decision": "benchmark_contract_frozen_no_models_ranked",
+    "family_count": 14,
+    "target_count": 2,
+    "primary_cell_upper_bound": 68,
+    "models_ranked": false
+  },
+  "figure_source_data": {
+    "fig01_family_taxonomy.png": [
+      "table01_model_families.csv"
+    ],
+    "fig02_search_budgets.png": [
+      "table01_model_families.csv"
+    ],
+    "fig03_seed_requirements.png": [
+      "table01_model_families.csv"
+    ],
+    "fig04_protocol_weights.png": [
+      "table02_protocol_weights.csv"
+    ],
+    "fig05_fidelity_schedule.png": [
+      "table03_fidelity_schedule.csv"
+    ],
+    "fig06_convergence_gates.png": [
+      "table04_convergence_gates.csv"
+    ],
+    "fig07_primary_cell_budget.png": [
+      "table06_primary_cell_budget.csv"
+    ],
+    "fig08_information_policy.png": [
+      "table07_information_invariants.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_family_taxonomy.png": "Figure 1. The frozen benchmark contains 14 model-family columns spanning linear, bagged-tree, boosted-tree, tabular-neural, and spatiotemporal-neural approaches. SOM and GRaCER are excluded from the columns because they are spatial-organization rows.",
+    "fig02_search_budgets.png": "Figure 2. Every family receives a preregistered minimum and maximum optimization budget. A family may stop after the minimum only when the search and capacity tails meet the same empirical-convergence threshold; reaching the maximum without convergence is preserved as optimization_incomplete.",
+    "fig03_seed_requirements.png": "Figure 3. Tree and linear families require at least three completed seeds, while neural families require five. Seed counts are convergence requirements and cannot be reduced after outer-fold results are inspected.",
+    "fig04_protocol_weights.png": "Figure 4. The frozen primary score gives the largest weight to whole-region transfer, then buffered geography, with complete-cruise, forward-time, and early-era evidence retained. Every protocol uses cruise-equal RMSE normalized by its matched strict control.",
+    "fig05_fidelity_schedule.png": "Figure 5. Every family follows the same 120,000-row, 300,000-row, and full-data fidelity sequence. The lower fidelities allocate search effort; only a completed full-data stage can be declared empirically converged.",
+    "fig06_convergence_gates.png": "Figure 6. Advancement requires all convergence gates simultaneously: minimum trials, the full eligible data, the family-specific seed count, a flat final search tail, and a flat capacity tail. A failed gate remains visible rather than being converted into a poor score.",
+    "fig07_primary_cell_budget.png": "Figure 7. The roadmap bounds the scientific comparison at 68 primary target-architecture cells: 28 global cells, at most 30 additional spatial cells for five advancing families per target, and at most 10 target-representation cells. Folds, seeds, and trials are repetitions.",
+    "fig08_information_policy.png": "Figure 8. Main-ranking information is deliberately restricted. All families receive the same eligible rows within a target and deployment-valid nested SSS for fCO2; external target products, external pretraining, one-time independent labels, and 2026 labels are excluded."
+  },
+  "files_sha256": {
+    "README.md": "257a3ec9bf6d759a28e7b952eb3615b2ac606abcc1e61689fb751a99c6ca635a",
+    "REPORT.md": "25c84c81416f884e590bb30cb29e8c45eeb34da58d8cd099da37abe5cc8b1fbd",
+    "CAPTIONS.md": "0b044ca3beb8d4e612b7d78aa1f6feef63cdf61888c9dc04978002e2f45a223d",
+    "figures/fig01_family_taxonomy.png": "3e5b935641ed03f0f5d98a4a958d8a03ee94732db806827a9407a73cda417e61",
+    "figures/fig02_search_budgets.png": "32d34612cf6e6f147d50411fad68daa7c0699d1c400fd2a7757ebc8578ebf94d",
+    "figures/fig03_seed_requirements.png": "68c8b55abad01d72e60a1de791740cb6e2a4e82af1edf6b64b841115cbbdfcae",
+    "figures/fig04_protocol_weights.png": "7e446469128b2f1cfb43987336f1889218993a22a371e12ee927d397e2961082",
+    "figures/fig05_fidelity_schedule.png": "b7caf837fb656497ffa0a9db645c6e92f613bd28ce05399a3c76afbdb733878a",
+    "figures/fig06_convergence_gates.png": "7e972d93c77abdb8e8332f1d269e694f79b6a6e2c34a0a48724d8d70142e5dd8",
+    "figures/fig07_primary_cell_budget.png": "49506a298a736292ff07a386cb4bdcca3e7aa8620a1e350761e288f7eb98fe8f",
+    "figures/fig08_information_policy.png": "f6b93e6b497ca3c542db804d8e7f8e3f050036628bfcdc183e1f7343ea450592",
+    "tables/table01_model_families.csv": "98ce63920e48cedca04ae83f0274a5b147e653daf2f4bb1b279c591be8b4c32a",
+    "tables/table02_protocol_weights.csv": "d801fbd87a22b53a2cba9c578eb6545be10d16900d5a4bdbf09d70aee7ac8a21",
+    "tables/table03_fidelity_schedule.csv": "4365b165b41ecb115b1f892f68d846a77409c61d7562fe3133224408040bb08c",
+    "tables/table04_convergence_gates.csv": "5507fc364a7cea00c0ba12e32573635102a5d690d9f0726247c2b131506ac63a",
+    "tables/table05_selection_order.csv": "de0f358cd7d94b02c9870563dcecd5dcfab80e21b053b1dfeb20630aa2474a78",
+    "tables/table06_primary_cell_budget.csv": "26e2e18572166ef28bd2c12d15162379fa24aac51c24bff4806a35bdafc50264",
+    "tables/table07_information_invariants.csv": "de18df0170e191e60e0cf295881517138505bb25ee8c01e8070e7835d24ed77d",
+    "tables/table08_literature_coverage.csv": "da8d8c8d1e08c2266766aef5ec4e84d84ed46bc5d39ec4d91c9e036adce116cd"
+  },
+  "archive_builder_sha256": "e8fd78ab8ea20af52d3262acd91929db1254281d8814a4ad64eab9a15d35cfc7",
+  "analysis_script_sha256": "17ed4e88f92c115c17b55657ec8ae62d56f4364035430ba62ffb672547cf1789",
+  "source_artifacts_sha256": {
+    "configs/frozen/model_family_benchmark_v2.5.in": "33c5ee3f8350a74a1cc4d5e5cb65e768ad127b03ba5ae0e4c75002333415df21"
+  }
+}

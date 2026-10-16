@@ -1,0 +1,39 @@
+schema_version: 1
+experiment_id: p2_model_family_benchmark_v2.5
+status: preregistered_contract_complete
+owner: ReCAD
+issue: 88
+parent_issue: 87
+
+science:
+  question: Which globally applied model family best reconstructs coastal SSS and fCO2 under identical data, corrected folds, and empirically converged family-specific optimization?
+  permitted_claim: Benchmark design and deterministic advancement rules only; no new model result or production promotion.
+  machine_decision: benchmark_contract_frozen_no_models_ranked
+
+matrix:
+  targets: [SSS, fCO2]
+  global_families: 14
+  advancing_families_per_target: 5
+  primary_cell_upper_bound: 68
+  spatial_organizers_are_rows: true
+
+validation:
+  outer_protocols: [whole_cruise, buffered_geographic, whole_region, forward_time, early_era]
+  primary_metric: cruise_equal_rmse
+  independent_labels_opened: false
+  labels_2026_opened: false
+
+optimization:
+  fidelity_rows: [120000, 300000, FULL]
+  minimum_seeds: 3
+  minimum_neural_seeds: 5
+  tail_fraction: 0.20
+  maximum_tail_relative_improvement: 0.0025
+  incomplete_models_may_advance: false
+
+artifacts:
+  config: configs/frozen/model_family_benchmark_v2.5.in
+  reviewer_archive: docs/experiment_archive/p2_model_family_benchmark_v2.5
+  report: docs/experiment_archive/p2_model_family_benchmark_v2.5/REPORT.md
+  manifest: docs/experiment_archive/p2_model_family_benchmark_v2.5/archive_manifest.json
+  large_output_root: C:/backup/phd/data/processed/recad_v2_5/p2_model_family_benchmark_v2.5

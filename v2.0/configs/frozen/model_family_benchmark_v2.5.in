@@ -1,0 +1,168 @@
+[contract]
+contract_id = p2_model_family_benchmark_v2.5
+schema_version = 2.5
+status = preregistered_before_new_benchmark_results
+issue = 88
+parent_issue = 87
+targets = SSS,fCO2
+families = ridge,random_forest,extra_trees,hist_gradient_boosting,xgboost,lightgbm,catboost,residual_mlp,realmlp,tabm,ft_transformer,tabpfn_3,unet_convlstm,vision_transformer
+protocols = whole_cruise,buffered_geographic,whole_region,forward_time,early_era
+
+[data]
+product_period = 1993-2025
+outer_fold_source = issue61_corrected_development_folds
+coastal_mask_source = issue50_observation_independent_mask
+predictor_cube_source = issue53_global_coastal_predictor_cube
+fco2_sss_policy = outer_nested_deployment_valid_predictions_only
+same_eligible_rows_within_target = true
+external_pretraining_in_main_ranking = false
+external_target_products_in_main_ranking = false
+one_time_independent_labels_opened = false
+labels_2026_opened = false
+
+[optimization]
+fidelity_rows = 120000,300000,FULL
+minimum_seeds = 3
+minimum_neural_seeds = 5
+tail_fraction = 0.20
+maximum_tail_relative_improvement = 0.0025
+minimum_full_data_fraction = 1.0
+capacity_tail_relative_improvement = 0.0025
+full_data_required = true
+group_safe_inner_validation = true
+early_stopping_required_when_supported = true
+unresolved_status = optimization_incomplete
+
+[selection]
+advancers_per_target = 5
+primary_metric = cruise_equal_rmse
+normalization = matched_strict_control_ratio
+protocol_weights = whole_cruise:0.15,buffered_geographic:0.25,whole_region:0.30,forward_time:0.15,early_era:0.15
+tie_breakers = whole_region_ratio,worst_region_ratio,wall_seconds,family
+required_secondary_metrics = observation_equal_rmse,mae,bias,r2,worst_region_rmse,full_domain_input_availability
+missing_protocol_policy = ineligible
+optimization_incomplete_policy = ineligible
+
+[resources]
+ridge_trials = 16,32
+random_forest_trials = 48,96
+extra_trees_trials = 48,96
+hist_gradient_boosting_trials = 48,96
+xgboost_trials = 48,96
+lightgbm_trials = 48,96
+catboost_trials = 48,96
+residual_mlp_trials = 36,72
+realmlp_trials = 36,72
+tabm_trials = 36,72
+ft_transformer_trials = 36,72
+tabpfn_3_trials = 24,48
+unet_convlstm_trials = 36,72
+vision_transformer_trials = 36,72
+
+[family:ridge]
+kind = linear
+representation = tabular
+backend = scikit-learn
+neural = false
+search_space = {"alpha":{"type":"log_float","low":1e-6,"high":1e6}}
+
+[family:random_forest]
+kind = bagged_tree
+representation = tabular
+backend = scikit-learn
+neural = false
+search_space = {"n_estimators":{"type":"int","low":400,"high":2400},"max_depth":{"type":"choice","values":[null,12,20,32]},"min_samples_leaf":{"type":"int","low":1,"high":32},"max_features":{"type":"float","low":0.35,"high":1.0}}
+
+[family:extra_trees]
+kind = randomized_tree
+representation = tabular
+backend = scikit-learn
+neural = false
+search_space = {"n_estimators":{"type":"int","low":400,"high":2400},"max_depth":{"type":"choice","values":[null,12,20,32]},"min_samples_leaf":{"type":"int","low":1,"high":32},"max_features":{"type":"float","low":0.35,"high":1.0}}
+
+[family:hist_gradient_boosting]
+kind = gradient_boosted_tree
+representation = tabular
+backend = scikit-learn
+neural = false
+search_space = {"max_iter":{"type":"int","low":300,"high":3000},"learning_rate":{"type":"log_float","low":0.005,"high":0.2},"max_leaf_nodes":{"type":"int","low":15,"high":255},"min_samples_leaf":{"type":"int","low":10,"high":200},"l2_regularization":{"type":"log_float","low":1e-5,"high":100.0}}
+
+[family:xgboost]
+kind = gradient_boosted_tree
+representation = tabular
+backend = xgboost
+neural = false
+search_space = {"n_estimators":{"type":"int","low":300,"high":4000},"max_depth":{"type":"int","low":4,"high":12},"learning_rate":{"type":"log_float","low":0.005,"high":0.2},"min_child_weight":{"type":"log_float","low":0.1,"high":100.0},"subsample":{"type":"float","low":0.5,"high":1.0},"colsample_bytree":{"type":"float","low":0.5,"high":1.0}}
+
+[family:lightgbm]
+kind = gradient_boosted_tree
+representation = tabular
+backend = lightgbm
+neural = false
+search_space = {"n_estimators":{"type":"int","low":300,"high":4000},"learning_rate":{"type":"log_float","low":0.005,"high":0.2},"num_leaves":{"type":"int","low":15,"high":511},"min_child_samples":{"type":"int","low":10,"high":300},"feature_fraction":{"type":"float","low":0.5,"high":1.0},"bagging_fraction":{"type":"float","low":0.5,"high":1.0}}
+
+[family:catboost]
+kind = gradient_boosted_tree
+representation = tabular
+backend = catboost
+neural = false
+search_space = {"iterations":{"type":"int","low":300,"high":4000},"depth":{"type":"int","low":4,"high":12},"learning_rate":{"type":"log_float","low":0.005,"high":0.2},"l2_leaf_reg":{"type":"log_float","low":0.1,"high":100.0},"random_strength":{"type":"log_float","low":1e-4,"high":10.0}}
+
+[family:residual_mlp]
+kind = neural_tabular
+representation = tabular
+backend = torch
+neural = true
+search_space = {"width":{"type":"choice","values":[128,256,512,768]},"depth":{"type":"int","low":2,"high":8},"dropout":{"type":"float","low":0.0,"high":0.4},"learning_rate":{"type":"log_float","low":1e-5,"high":0.003},"weight_decay":{"type":"log_float","low":1e-7,"high":0.01},"epochs":{"type":"int","low":30,"high":300}}
+
+[family:realmlp]
+kind = neural_tabular
+representation = tabular
+backend = pytabkit
+neural = true
+search_space = {"hidden_sizes":{"type":"choice","values":["256-256-256","512-512-512","512-512-512-512"]},"dropout":{"type":"float","low":0.0,"high":0.4},"learning_rate":{"type":"log_float","low":1e-5,"high":0.003},"weight_decay":{"type":"log_float","low":1e-7,"high":0.01},"epochs":{"type":"int","low":30,"high":300}}
+
+[family:tabm]
+kind = neural_tabular_ensemble
+representation = tabular
+backend = tabm
+neural = true
+search_space = {"width":{"type":"choice","values":[128,256,512]},"depth":{"type":"int","low":2,"high":6},"ensemble_size":{"type":"choice","values":[8,16,32]},"dropout":{"type":"float","low":0.0,"high":0.3},"learning_rate":{"type":"log_float","low":1e-5,"high":0.003},"epochs":{"type":"int","low":30,"high":300}}
+
+[family:ft_transformer]
+kind = neural_tabular_transformer
+representation = feature_tokens
+backend = torch
+neural = true
+search_space = {"width":{"type":"choice","values":[64,128,192,256]},"depth":{"type":"int","low":2,"high":8},"heads":{"type":"choice","values":[4,8]},"dropout":{"type":"float","low":0.0,"high":0.4},"learning_rate":{"type":"log_float","low":1e-5,"high":0.003},"epochs":{"type":"int","low":30,"high":300}}
+
+[family:tabpfn_3]
+kind = pretrained_tabular_prior
+representation = tabular
+backend = tabpfn
+neural = true
+search_space = {"n_estimators":{"type":"choice","values":[4,8,16,32]},"inference_precision":{"type":"choice","values":["auto","float32"]},"internal_subsample":{"type":"choice","values":[null,100000,300000]},"fit_mode":{"type":"choice","values":["fit_preprocessors","fit_with_cache"]}}
+
+[family:unet_convlstm]
+kind = spatiotemporal_neural
+representation = coastal_grid_patch_sequence
+backend = torch
+neural = true
+search_space = {"base_channels":{"type":"choice","values":[32,64,96]},"depth":{"type":"int","low":2,"high":4},"sequence_months":{"type":"choice","values":[3,6,12]},"patch_size":{"type":"choice","values":[8,16,24]},"dropout":{"type":"float","low":0.0,"high":0.4},"learning_rate":{"type":"log_float","low":1e-5,"high":0.003},"epochs":{"type":"int","low":30,"high":300}}
+
+[family:vision_transformer]
+kind = spatiotemporal_neural
+representation = coastal_grid_patch_sequence
+backend = torch
+neural = true
+search_space = {"width":{"type":"choice","values":[128,256,384]},"depth":{"type":"int","low":4,"high":12},"heads":{"type":"choice","values":[4,8,12]},"sequence_months":{"type":"choice","values":[3,6,12]},"patch_size":{"type":"choice","values":[8,16,24]},"dropout":{"type":"float","low":0.0,"high":0.4},"learning_rate":{"type":"log_float","low":1e-5,"high":0.003},"epochs":{"type":"int","low":30,"high":300}}
+
+[policy]
+different_rows_between_families = false
+target_specific_outer_folds = false
+external_family_specific_subsample = false
+regional_family_switching = false
+result_dependent_search_space_change = false
+incomplete_model_may_advance = false
+hard_partition_is_product_candidate = false
+preserve_negative_results = true

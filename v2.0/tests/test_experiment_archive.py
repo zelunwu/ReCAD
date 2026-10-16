@@ -43,6 +43,7 @@ SPEC.loader.exec_module(MODULE)
         "p2_context_connectivity_v2.3",
         "p2_validation_repair_v2.4",
         "p2_model_zoo_v2.4",
+        "p2_model_family_benchmark_v2.5",
         "p2_process_predictors_v2.4",
         "p2_conditional_combination_v2.4",
         "p2_global_reliability_contract_v2.4",

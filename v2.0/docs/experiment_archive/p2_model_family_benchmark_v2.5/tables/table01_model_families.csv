@@ -1,0 +1,15 @@
+family,kind,representation,backend,neural,minimum_trials,maximum_trials,minimum_seeds,search_parameters
+ridge,linear,tabular,scikit-learn,False,16,32,3,1
+random_forest,bagged_tree,tabular,scikit-learn,False,48,96,3,4
+extra_trees,randomized_tree,tabular,scikit-learn,False,48,96,3,4
+hist_gradient_boosting,gradient_boosted_tree,tabular,scikit-learn,False,48,96,3,5
+xgboost,gradient_boosted_tree,tabular,xgboost,False,48,96,3,6
+lightgbm,gradient_boosted_tree,tabular,lightgbm,False,48,96,3,6
+catboost,gradient_boosted_tree,tabular,catboost,False,48,96,3,5
+residual_mlp,neural_tabular,tabular,torch,True,36,72,5,6
+realmlp,neural_tabular,tabular,pytabkit,True,36,72,5,5
+tabm,neural_tabular_ensemble,tabular,tabm,True,36,72,5,6
+ft_transformer,neural_tabular_transformer,feature_tokens,torch,True,36,72,5,6
+tabpfn_3,pretrained_tabular_prior,tabular,tabpfn,True,24,48,5,4
+unet_convlstm,spatiotemporal_neural,coastal_grid_patch_sequence,torch,True,36,72,5,7
+vision_transformer,spatiotemporal_neural,coastal_grid_patch_sequence,torch,True,36,72,5,8

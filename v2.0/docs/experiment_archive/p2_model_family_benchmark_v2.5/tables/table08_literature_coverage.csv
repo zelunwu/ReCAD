@@ -1,0 +1,9 @@
+family_or_structure,coverage_role,source
+Random Forest / boosted trees,NIES-ML3 and recent pCO2 mapping,https://www.nies.go.jp/doi/10.17595/20220311.001-e.html
+SOM plus FFNN,ULB coastal product,https://doi.org/10.5194/essd-16-421-2024
+Random cluster ensemble,OceanSODA-ETHZ GRaCER,https://doi.org/10.5194/essd-13-777-2021
+Residual target plus FFNN,OceanSODA-ETHZv2,https://doi.org/10.1029/2024GB008127
+U-Net plus ConvLSTM,physics-informed transfer reconstruction,https://doi.org/10.1038/s41597-024-03959-w
+Vision Transformer,SJTU AViT,https://doi.org/10.5194/essd-17-6071-2025
+TabM,ICLR 2025 tabular baseline,https://openreview.net/forum?id=sdFefxP4gn
+TabPFN,tabular foundation model,https://doi.org/10.1038/s41586-024-08328-6
