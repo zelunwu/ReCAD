@@ -1,0 +1,6 @@
+order,criterion
+1,weighted geometric mean of normalized cruise-equal RMSE
+2,whole-region normalized cruise-equal RMSE
+3,worst-region normalized cruise-equal RMSE
+4,total wall seconds
+5,stable family name

@@ -1,0 +1,6 @@
+protocol,weight
+whole_cruise,0.15
+buffered_geographic,0.25
+whole_region,0.3
+forward_time,0.15
+early_era,0.15

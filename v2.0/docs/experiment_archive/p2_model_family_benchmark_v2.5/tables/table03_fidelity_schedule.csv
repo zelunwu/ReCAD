@@ -1,0 +1,4 @@
+stage,eligible_rows,required_for_convergence
+1,120000,False
+2,300000,False
+3,FULL,True

@@ -1,0 +1,9 @@
+information_or_rule,allowed_or_required
+same eligible rows within target,True
+same corrected outer identities,True
+nested deployable SSS for fCO2,True
+external target products,False
+external pretraining in main ranking,False
+one-time independent labels,False
+2026 labels,False
+family-specific external subsample,False
