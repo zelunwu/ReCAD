@@ -20,6 +20,7 @@ class ResidualBankContract:
     required_protocols: tuple[str, ...]
     available_protocols: tuple[str, ...]
     partition_root: Path
+    early_era_partition_root: Path
     partition_pattern: str
     geographic_provenance: Path
     output_root: Path
@@ -85,6 +86,7 @@ def load_residual_bank_contract(path: Path | str) -> ResidualBankContract:
         required_protocols=required,
         available_protocols=available,
         partition_root=Path(_required(parser, "source", "partition_root")),
+        early_era_partition_root=Path(_required(parser, "source", "early_era_partition_root")),
         partition_pattern=_required(parser, "source", "partition_pattern"),
         geographic_provenance=Path(_required(parser, "source", "geographic_provenance")),
         output_root=Path(_required(parser, "source", "output_root")),

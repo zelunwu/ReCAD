@@ -37,11 +37,11 @@ def test_residual_bank_archive_is_complete_and_fail_closed() -> None:
     assert result["source_tables"] == 9
 
     contract = load_residual_bank_contract(CONFIG)
-    assert set(contract.required_protocols) - set(contract.available_protocols) == {"early_era"}
+    assert set(contract.required_protocols) == set(contract.available_protocols)
     decision = (ARCHIVE / "tables" / "table08_decision.csv").read_text(encoding="utf-8")
     assert "final_grading_allowed" in decision
     assert "False" in decision
-    assert "early_era" in decision
+    assert "thresholds_remain_unset" in decision
 
 
 def test_manifest_uses_portable_tracked_hashes_and_no_independent_labels() -> None:

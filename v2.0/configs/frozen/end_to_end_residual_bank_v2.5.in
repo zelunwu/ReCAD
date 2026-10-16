@@ -4,11 +4,12 @@ schema_version = 2.5
 issue = 81
 targets = SSS,fCO2
 required_protocols = cruise,geographic,whole_region,forward,early_era
-available_protocols = cruise,geographic,whole_region,forward
-status = frozen_residual_bank_protocol_early_era_pending
+available_protocols = cruise,geographic,whole_region,forward,early_era
+status = frozen_residual_bank_protocol_complete
 
 [source]
 partition_root = C:/backup/phd/data/processed/recad_v2_4/p2_global_reliability_contract_v2.4/partitions
+early_era_partition_root = C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions
 partition_pattern = {target}_{protocol}_fold*.parquet
 geographic_provenance = C:/backup/phd/data/processed/recad_v2_5/p2_ocean_region_provenance_v2.5/ocean_region_provenance_v2.5.nc
 output_root = C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5

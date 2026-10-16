@@ -341,3 +341,11 @@ R0 的 internal test RMSE 为 SSS 0.860、fCO2 25.409、DIC 40.983、TA 47.298�
 2004–2005 已反复用于模型选择，只保留为 v1.1 历史 benchmark。下一轮 fCO2 采用三类外层评价：整航次留出、整 LME/空间区留出、forward-chaining 时间外推；最终外部验证使用与 SOCAT 去重后的 OCADS mooring/OceanSITES/Saildrone 或冻结模型之后的新 SOCAT 版本。产品主指标按 grid-month、cruise 和 region 三种等权口径报告。
 
 NOAA/NCEI 已发布 CODAP-NA V2026（1981–2024，446 航次、32,250 剖面，含 TA/DIC/pH/fCO2/氧/营养盐）。下一步 TA/DIC 的首要工作是下载 CODAP、按 EXPOCODE+时空与 GLODAP 去重，然后比较区域线性、Carter bias correction、层级 varying-coefficient TA–SSS 和生物过程残差模型。最新 `smoke_sel` 因 `run_weighted_carbonate.py` 缺少 `selection_score` 定义而失败；任何正式重训前先修复并加测试。
+
+## 2026-10-16: Issue 81 absolute-error redesign, residual-bank phase
+
+The product-quality redesign replaces percentile-ranked A/B/C/D support grades with fixed physical-error tiers. The frozen primary statistic is the one-sided 95% confidence upper bound for the conditional 90th-percentile absolute grid-month error. Grades will eventually use fixed `T_A`, `T_B`, and `T_C`, but all three thresholds remain `UNSET` for both SSS and fCO2. Evidence status is a separate VD/VT/VU/VF/VI/NA axis. Basin provenance cannot alter either error tier or release status.
+
+All five required development residual banks now exist: complete cruise, true geographic block plus 100 km buffer, complete region, strict past-to-future, and strict later-to-early-era. The new early-era folds hold complete 1993-1998, 1999-2003, and 2004-2008 cruises while training starts in 2004, 2009, and 2014. fCO2 receives SSS generated only from later, nested training cruises. Pooled early-era SSS RMSE/q90/coverage90 are 0.856/0.922/0.905; fCO2 values are 36.122/52.616/0.880. All cruise overlap audits are zero, but early fCO2 bias and under-coverage remain explicit negative evidence.
+
+External constants and protocols are read from `configs/frozen/*.in`, following an ocean-model namelist style. The row-level outputs remain under `C:\backup\phd\data\processed\recad_v2_5`. Reviewer archives are `docs/experiment_archive/p2_early_era_validation_v2.5/` and `docs/experiment_archive/p2_end_to_end_residual_bank_v2.5/`. The next Issue 81 phase must cross-fit candidate conditional physical-error estimators over all five separated banks, evaluate calibration by protocol and cohort, and preserve U where error is not identifiable. Do not emit A-D grades or derive thresholds from the development residual bank.

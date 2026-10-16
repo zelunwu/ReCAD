@@ -1,0 +1,77 @@
+{
+  "experiment_id": "p2_early_era_validation_v2.5",
+  "training_git_commit": "504b80be505c9869aa44a7e0f681dbec3069fd43",
+  "data_manifest_sha256": "4fb40e7fb9270d21110b5843e41bd816948f8554b36e6f70833a1ca358493b7f",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "development-only reverse-time complete-cruise validation",
+  "decision": "add_complete_early_era_banks_and_continue_conditional_error_calibration",
+  "figure_source_data": {
+    "fig01_fold_rmse.png": [
+      "table01_fold_metrics.csv"
+    ],
+    "fig02_fold_q90.png": [
+      "table01_fold_metrics.csv"
+    ],
+    "fig03_fold_coverage90.png": [
+      "table01_fold_metrics.csv"
+    ],
+    "fig04_fold_bias.png": [
+      "table01_fold_metrics.csv"
+    ],
+    "fig05_held_rows.png": [
+      "table03_leakage_audit.csv"
+    ],
+    "fig06_error_cdf.png": [
+      "table01_fold_metrics.csv"
+    ],
+    "fig07_annual_rmse.png": [
+      "table04_annual_metrics.csv"
+    ],
+    "fig08_geographic_support.png": [
+      "table05_geographic_support.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_fold_rmse.png": "Figure 1. Fold-specific reverse-time RMSE in each target's physical units; the two targets use separate panels and are not compared by magnitude.",
+    "fig02_fold_q90.png": "Figure 2. Fold-specific observation-equal 90th-percentile absolute error for complete early cruises held before all model-fitting observations.",
+    "fig03_fold_coverage90.png": "Figure 3. Empirical coverage of prediction-stratified 90% intervals on early held cruises; the 0.90 reference line is diagnostic rather than a pass manufactured by filtering.",
+    "fig04_fold_bias.png": "Figure 4. Fold-specific signed bias. The earliest fCO2 window retains its negative bias as evidence of unresolved reverse-time transfer error.",
+    "fig05_held_rows.png": "Figure 5. Number of held observations in each complete-cruise early-era fold; all windows have substantial evidence and window definitions were frozen from metadata before error inspection.",
+    "fig06_error_cdf.png": "Figure 6. Empirical cumulative distributions of absolute reverse-time error, truncated visually at each target's 99th percentile while all rows remain in reported metrics.",
+    "fig07_annual_rmse.png": "Figure 7. Annual reverse-time RMSE inside the held windows, showing temporal heterogeneity that is hidden by a single pooled early-era score.",
+    "fig08_geographic_support.png": "Figure 8. Reverse-time 90th-percentile absolute error across fixed geographic-support bins; sparse or distant support remains a diagnostic and does not itself assign an A-D grade."
+  },
+  "files_sha256": {
+    "README.md": "bdf956be4f45d728669b5b71e0285c92644eead67114361bd9170423587e966f",
+    "REPORT.md": "a2b41363d4f6fdcd5a563a3e1c208c1ad6b069d9c1b16b337ad847a8bc13f45c",
+    "CAPTIONS.md": "67bac642e8a91b47ce5e28f838492aa6e01bb731b74cfe00c588613442c82803",
+    "figures/fig01_fold_rmse.png": "f9c7e0d6d24adc8a2b98cae2ad71160bb7c6d09392c59f1b74d1f61b8120e533",
+    "figures/fig02_fold_q90.png": "9595476a14d2ea6bfb81483b6d687f98aed3a249355e49f8e9816843399a7c74",
+    "figures/fig03_fold_coverage90.png": "6d1ae87250e8d29ff7e69a39e75d9ee51f6fde00b359422ad5d72a9f6462c522",
+    "figures/fig04_fold_bias.png": "4180e52c6ad01ea964db695a40a6593c5bd9be6e637d0a0eb35df05fcdea684c",
+    "figures/fig05_held_rows.png": "aa5914a3adcc2f46e86c68953b7ae80f6bfc899577a76d3d214fcb8f8bea5709",
+    "figures/fig06_error_cdf.png": "bfe0a57e3cc03c438f503e184c9cba69ac49d4ad80e75a3b638f0093e6f476fd",
+    "figures/fig07_annual_rmse.png": "c92711b570e81eebeb5fb5c71da56023026ddab11c532b802bddf509ed1d1be4",
+    "figures/fig08_geographic_support.png": "7f2d5b9cbbf66c6a185faeb0c0dae201400b988cdddc5580c4a87d8b6c725351",
+    "tables/table01_fold_metrics.csv": "a96414b66c9dc2a8ddb3c1fccd25057c8f86fecb0286b0c7517cfd96125fa580",
+    "tables/table02_source_partitions.csv": "89639f521ec3af7dc7cb18b41b0957fb18f6a2a72b29c567dbc37363edb8f324",
+    "tables/table03_leakage_audit.csv": "04eea820b46c8300bd7482716fa7722a063ca665954ac34a8be2c03a1378c094",
+    "tables/table04_annual_metrics.csv": "537ff3aa4d5bea4a3afd0f61cb5e09648523b906e8439a70b8008630611d6391",
+    "tables/table05_geographic_support.csv": "3976f84e8d68ab4404cc7056c5dfff7d5eff080b67f4916d57649413b11bac46",
+    "tables/table06_upstream_sss.csv": "2ba783694d52959ddfed1438764d01285284b610f6c134190fb9394e41694194",
+    "tables/table07_windows.csv": "c246411fd998c69be3163724c738f7d01668f7987bd6f9762b263dc9607892d5",
+    "tables/table08_decision.csv": "cdc83814b9684519adfbf6b6f35e30d7d327560086621004e5fa401a6d66ee66"
+  },
+  "archive_builder_sha256": "88b504551376890a4b29cc44156949d5690ca3719a2a176ada53ec03c811bb00",
+  "analysis_script_sha256": "b1fd6210286c3b9ac061d922b292b933a695133ec19024a372872fcd20b9f0d2",
+  "source_artifacts_sha256": {
+    "configs/frozen/early_era_validation_v2.5.in": "4fb40e7fb9270d21110b5843e41bd816948f8554b36e6f70833a1ca358493b7f",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions/fCO2_early_era_fold0.parquet": "73e220919e68a5eac34685c34567f61ff403912125b8b68e51e2ee6c00f4d1ca",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions/fCO2_early_era_fold1.parquet": "234ad87eda2b68d0153b5f28ccd26b17c2dd779e6599208a5da27e4ac18e6023",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions/fCO2_early_era_fold2.parquet": "c419a2751ea36914dd8da83fbe40368a706659d6f024cc72132d9af4ef95883b",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions/SSS_early_era_fold0.parquet": "249a8aa5a07808af59f8ba263073afea11b0141d40983dc762cc2115e98e9285",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions/SSS_early_era_fold1.parquet": "a9c4545a118668bc659765257bcfc762920bfa1b0529388250129b1a2e084e9b",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions/SSS_early_era_fold2.parquet": "808da1521549d88c41799499eae1cc011a58b1af8354e55946171f1c2cdd1110"
+  }
+}

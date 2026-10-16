@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: p2_end_to_end_residual_bank_v2.5
-status: completed_partial_evidence_early_era_pending
+status: completed_all_five_protocols_thresholds_pending
 owner: ReCAD
 issue: 81
 
@@ -13,6 +13,7 @@ science:
 
 data:
   prediction_source: C:/backup/phd/data/processed/recad_v2_4/p2_global_reliability_contract_v2.4/partitions
+  early_era_prediction_source: C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/partitions
   geographic_provenance: C:/backup/phd/data/processed/recad_v2_5/p2_ocean_region_provenance_v2.5/ocean_region_provenance_v2.5.nc
   targets: [SSS, fCO2]
   time_range: 1993-2025
@@ -21,6 +22,7 @@ data:
 protocols:
   required: [cruise, geographic, whole_region, forward, early_era]
   available_at_preregistration: [cruise, geographic, whole_region, forward]
+  available_after_execution: [cruise, geographic, whole_region, forward, early_era]
   missing_at_preregistration: [early_era]
   pooling_for_primary_error: prohibited
   grouping: Complete cruise/platform groups remain the independent evidence units inside every protocol.
@@ -42,20 +44,22 @@ thresholds:
   fCO2: {T_A: UNSET, T_B: UNSET, T_C: UNSET}
 
 outcome:
-  decision: residual_banks_reusable_but_contract_incomplete
+  decision: residual_banks_complete_but_thresholds_unset
   final_grading_allowed: false
-  missing_required_protocols: [early_era]
+  missing_required_protocols: []
   duplicate_evaluation_identities: 0
   SSS:
     cruise: {rmse: 0.8956, record_q90: 1.0489, cruise_q90_upper95: 1.9645, coverage90: 0.8979}
     geographic: {rmse: 1.5009, record_q90: 1.8740, cruise_q90_upper95: 3.5148, coverage90: 0.8041}
     whole_region: {rmse: 2.6159, record_q90: 3.5215, cruise_q90_upper95: 3.8958, coverage90: 0.7880}
     forward: {rmse: 1.2548, record_q90: 1.3378, cruise_q90_upper95: 2.5277, coverage90: 0.8347}
+    early_era: {rmse: 0.8557, record_q90: 0.9217, cruise_q90_upper95: 2.1058, coverage90: 0.9048}
   fCO2:
     cruise: {rmse: 32.4197, record_q90: 46.4615, cruise_q90_upper95: 84.3777, coverage90: 0.9014}
     geographic: {rmse: 52.4714, record_q90: 74.4612, cruise_q90_upper95: 133.6257, coverage90: 0.8324}
     whole_region: {rmse: 52.1670, record_q90: 77.7316, cruise_q90_upper95: 125.4716, coverage90: 0.8148}
     forward: {rmse: 38.8475, record_q90: 56.5269, cruise_q90_upper95: 108.3757, coverage90: 0.8489}
+    early_era: {rmse: 36.1223, record_q90: 52.6156, cruise_q90_upper95: 99.0207, coverage90: 0.8797}
   limitations:
     - Hierarchical cruise bounds describe transfer across observed cruises and are not yet area-time-weighted product errors.
     - Measurement and grid-month representativeness uncertainty remain separate missing components.
