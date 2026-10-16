@@ -20,8 +20,15 @@ CONFIG = ROOT / "configs" / "frozen" / "end_to_end_residual_bank_v2.5.in"
 def test_frozen_contract_preserves_separate_transfer_banks() -> None:
     contract = load_residual_bank_contract(CONFIG)
     assert contract.targets == ("SSS", "fCO2")
-    assert contract.available_protocols == ("cruise", "geographic", "whole_region", "forward")
+    assert contract.available_protocols == (
+        "cruise",
+        "geographic",
+        "whole_region",
+        "forward",
+        "early_era",
+    )
     assert contract.required_protocols[-1] == "early_era"
+    assert contract.early_era_partition_root.name == "partitions"
     assert contract.pool_protocols is False
     assert contract.basin_may_change_error_tier is False
     assert contract.thresholds_may_be_derived_from_this_bank is False

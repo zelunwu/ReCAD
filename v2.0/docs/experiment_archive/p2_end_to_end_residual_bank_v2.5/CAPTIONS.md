@@ -2,7 +2,7 @@
 
 ## fig01_record_q90.png
 
-Figure 1. Observation-equal 90th-percentile absolute held-out error for the frozen SSS and fCO2 candidates, kept separate across complete-cruise, buffered-geographic, whole-region, and forward-time protocols. Different physical units are shown in separate colored series and must not be compared across targets.
+Figure 1. Observation-equal 90th-percentile absolute held-out error for the frozen SSS and fCO2 candidates, kept separate across complete-cruise, buffered-geographic, whole-region, forward-time, and reverse-time early-era protocols. Different physical units are shown in separate colored series and must not be compared across targets.
 
 ## fig02_hierarchical_upper.png
 
@@ -30,4 +30,4 @@ Figure 7. Buffered-geographic held-out error stratified by the count of nearby u
 
 ## fig08_protocol_completeness.png
 
-Figure 8. Completeness of the five protocol banks required by the frozen absolute-error contract. Early-era evidence is missing for both targets, so final A-D grading remains blocked even though the other four banks are reusable.
+Figure 8. Completeness of the five protocol banks required by the frozen absolute-error contract. All five are now available for both targets; A-D grading remains blocked because intended-use physical thresholds and a validated conditional error estimator remain unset.

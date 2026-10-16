@@ -344,3 +344,11 @@ SSS/fCO2 pooled RMSE 为 **1.185 PSU / 30.780 µatm**，R² 为 0.773/0.592，90
 `recad_v2_release_v2.4` 将 Issue #5 的通过范围写成 ReCAD v2.4.0 1993–2025 release。SSS/fCO2 两个 NetCDF 均为 396×838,661 nodes，保留完整 prediction、width50/90、grade、status、reason bits 与支持变量，并增加 `trusted_prediction`、`diagnostic_prediction` 和 basin provenance。SSS/fCO2 平均 trusted area 为 20.61%/12.28%，diagnostic 8.91%/18.61%，suppressed 70.47%/69.11%；Pacific fCO2 A/B 已用 reason bit 2048 降为 diagnostic。所有 release-layer replay mismatch 与 qualified-layer nonfinite count 为零。
 
 严格 v1.x Random Forest 采用同一 50 条 complete-cruise exclusion，并只在共同 7,907 行比较。原生 1/8° fCO2 RMSE 从 41.100 降为 **30.325 µatm**（改善 26.2%），cruise-preserving 0.25° 从 42.424 降为 **31.014 µatm**（改善 26.9%），均超过冻结的 5% gate。published v1.1 和外部文献分数只作 context，不因不同 target basis、校准、domain 或 validation design 直接排名。最终状态为 **`release_complete_flagged_scope`**；完整报告、10 图、11 源表与全部外部产品哈希见 `docs/experiment_archive/recad_v2_release_v2.4/`。
+
+## P2.9 Absolute-error contract and reverse-time evidence (Issue #81)
+
+`p2_early_era_validation_v2.5` adds the missing reverse-time protocol without opening an external or 2026 label. Three complete-cruise windows hold 1993-1998, 1999-2003, and 2004-2008 while fitting begins in 2004, 2009, and 2014 respectively. Boundary-crossing cruises are excluded. fCO2 receives strictly nested later-only SSS predictions. All train-held cruise overlaps are zero.
+
+Pooled early-era SSS RMSE/q90/coverage90 are 0.856 PSU, 0.922 PSU, and 0.905. Pooled fCO2 values are 36.122 microatmospheres, 52.616 microatmospheres, and 0.880. The earliest fCO2 fold retains a -5.561 microatmosphere bias and the latest early-era fold covers only 0.867, so reverse-time transfer remains imperfect.
+
+`p2_end_to_end_residual_bank_v2.5` now contains all five required separated protocols: complete cruise, geographic plus 100 km buffer, whole region, past-to-future, and later-to-early-era. The primary audit statistic remains the distribution-free one-sided 95% upper bound for the cruise-level q90. Five-bank completeness does not authorize grades: `T_A`, `T_B`, and `T_C` remain `UNSET`, and the next phase must cross-fit a conditional physical-error estimator across protocols. Reviewer archives are `docs/experiment_archive/p2_early_era_validation_v2.5/` and `docs/experiment_archive/p2_end_to_end_residual_bank_v2.5/`.

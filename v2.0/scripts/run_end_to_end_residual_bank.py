@@ -62,6 +62,14 @@ KEEP_COLUMNS = (
 )
 
 
+def partition_root(contract: ResidualBankContract, protocol: str) -> Path:
+    """Return the immutable source root for one validation protocol."""
+
+    if protocol == "early_era":
+        return contract.early_era_partition_root
+    return contract.partition_root
+
+
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -149,9 +157,10 @@ def load_bank(
     macro_basin: np.ndarray,
 ) -> tuple[pd.DataFrame, list[dict[str, object]]]:
     pattern = contract.partition_pattern.format(target=target, protocol=protocol)
-    paths = sorted(contract.partition_root.glob(pattern))
+    root = partition_root(contract, protocol)
+    paths = sorted(root.glob(pattern))
     if not paths:
-        raise FileNotFoundError(f"no partitions match {contract.partition_root / pattern}")
+        raise FileNotFoundError(f"no partitions match {root / pattern}")
     frames = []
     sources = []
     for path in paths:
@@ -240,7 +249,8 @@ def build_tables(contract: ResidualBankContract) -> tuple[dict[str, pd.DataFrame
         for protocol in contract.required_protocols:
             available = protocol in contract.available_protocols
             pattern = contract.partition_pattern.format(target=target, protocol=protocol)
-            paths = sorted(contract.partition_root.glob(pattern)) if available else []
+            root = partition_root(contract, protocol)
+            paths = sorted(root.glob(pattern)) if available else []
             completeness_rows.append(
                 {
                     "target": target,
@@ -298,7 +308,7 @@ def build_tables(contract: ResidualBankContract) -> tuple[dict[str, pd.DataFrame
     decision = pd.DataFrame(
         [
             {
-                "decision": "residual_banks_reusable_but_contract_incomplete",
+                "decision": "residual_banks_complete_but_thresholds_unset",
                 "final_grading_allowed": False,
                 "missing_required_protocols": ",".join(
                     sorted(set(contract.required_protocols) - set(contract.available_protocols))
@@ -489,14 +499,14 @@ def build_figures(tables: dict[str, pd.DataFrame]) -> dict[str, str]:
     figure.savefig(figures / "fig08_protocol_completeness.png", dpi=180)
     plt.close(figure)
     return {
-        "fig01_record_q90.png": "Figure 1. Observation-equal 90th-percentile absolute held-out error for the frozen SSS and fCO2 candidates, kept separate across complete-cruise, buffered-geographic, whole-region, and forward-time protocols. Different physical units are shown in separate colored series and must not be compared across targets.",
+        "fig01_record_q90.png": "Figure 1. Observation-equal 90th-percentile absolute held-out error for the frozen SSS and fCO2 candidates, kept separate across complete-cruise, buffered-geographic, whole-region, forward-time, and reverse-time early-era protocols. Different physical units are shown in separate colored series and must not be compared across targets.",
         "fig02_hierarchical_upper.png": "Figure 2. Distribution-free one-sided 95% upper bound for the 90th percentile across within-cruise 90th-percentile absolute errors. Complete cruises are evidence units, so dense rows from one cruise cannot create artificial confidence.",
         "fig03_coverage90.png": "Figure 3. Empirical coverage of the nominal 90% Issue-44 intervals on the identical frozen predictions. Shifted protocols remain visibly below nominal coverage; this residual-bank phase does not repair or conceal that negative result.",
         "fig04_fold_variability.png": "Figure 4. Fold-specific record-level 90th-percentile absolute error. Variation across held geographic blocks, regions, and time windows remains explicit instead of being erased by a single pooled score.",
         "fig05_geographic_support.png": "Figure 5. Buffered-geographic held-out error stratified by distance to training support using fixed kilometer bins from the external .in contract. Empty or weak cohorts are not used to redefine bin boundaries.",
         "fig06_environment_support.png": "Figure 6. Buffered-geographic held-out error stratified by standardized environmental k-nearest-neighbour distance. The diagnostic is in physical error units; the novelty score itself is not a quality grade.",
         "fig07_cruise_support.png": "Figure 7. Buffered-geographic held-out error stratified by the count of nearby unique cruises. Cruise support is a deployment diagnostic and cannot by itself assign an A-D tier.",
-        "fig08_protocol_completeness.png": "Figure 8. Completeness of the five protocol banks required by the frozen absolute-error contract. Early-era evidence is missing for both targets, so final A-D grading remains blocked even though the other four banks are reusable.",
+        "fig08_protocol_completeness.png": "Figure 8. Completeness of the five protocol banks required by the frozen absolute-error contract. All five are now available for both targets; A-D grading remains blocked because intended-use physical thresholds and a validated conditional error estimator remain unset.",
     }
 
 
@@ -527,11 +537,11 @@ This experiment asks what deployment-matched end-to-end residual evidence is ava
 
 ## Data, splits, and leakage controls
 
-This Issue 81 phase reuses the exact corrected Issue-61 outer predictions archived by Issue 44. Raw residual banks remain separate for complete-cruise, buffered-geographic plus 100-km exclusion, whole-region, and past-to-future protocols. It opens no new labels. Complete cruises remain the independent evidence units. Every source partition is hashed, record and evaluation identities are audited, and no duplicate identity was found. Basin identity is attached from GOaS v1 for reporting only and cannot alter a grade.
+This Issue 81 phase reuses the exact corrected Issue-61 outer predictions archived by Issue 44 for complete-cruise, buffered-geographic plus 100-km exclusion, whole-region, and past-to-future protocols. It adds a preregistered reverse-time early-era protocol whose later observations fit the model and whose earlier complete cruises remain held out. The fCO2 early-era branch regenerates its SSS input strictly from later observations inside the training hierarchy. It opens no independent or 2026 labels. Complete cruises remain the independent evidence units. Every source partition is hashed, record and evaluation identities are audited, and no duplicate identity was found. Basin identity is attached from GOaS v1 for reporting only and cannot alter a grade.
 
 ## Candidate models and training
 
-The point predictions are frozen: the Issue-44 three-seed SSS CatBoost background-residual candidate and the fCO2 inner-OOF-weighted CatBoost/F4 convex ensemble. This experiment does not fit or select a point model, refit a calibration model, or tune a threshold. The saved outer predictions therefore isolate error analysis from model selection.
+The point-model definitions are frozen: the Issue-44 three-seed SSS CatBoost background-residual candidate and the fCO2 CatBoost/F4 convex ensemble with weight 0.3. Existing protocols reuse saved predictions; early-era refits those fixed candidates under later-only training. This experiment does not select a point model or tune an A-D threshold.
 
 The primary feasibility statistic is hierarchical: compute the 90th-percentile absolute error inside each complete cruise, then take the 90th percentile across cruises and a distribution-free one-sided 95% order-statistic upper bound. This prevents dense rows within one cruise from manufacturing precision. Observation-equal q90, fold variability, region strata, support strata, RMSE, MAE, bias, R2, width and coverage remain diagnostics. These development residuals cannot define the intended-use `T_A`, `T_B`, or `T_C` thresholds.
 
@@ -539,13 +549,13 @@ The primary feasibility statistic is hierarchical: compute the 90th-percentile a
 
 {chr(10).join(lines)}
 
-The four available residual banks are reusable, but the frozen contract also requires an early-era test in which later observations fit the model and earlier cruises are held out. That bank does not exist in Issues 61-44. Final grading therefore fails closed. No protocol is pooled into a global error estimate, and no error is asserted for observation-free cells from ensemble spread alone.
+All five required residual banks are now reusable development evidence. Final grading still fails closed because these banks do not by themselves define intended-use `T_A`, `T_B`, or `T_C`, and the conditional physical-error estimator has not yet passed cross-protocol calibration. No protocol is pooled into a global error estimate, and no error is asserted for observation-free cells from ensemble spread alone.
 
 {chr(10).join([block + chr(10) for block in blocks])}
 
 ## Decision and limitations
 
-Decision: retain the four separated banks as development evidence and run the missing early-era prediction experiment before conditional error calibration. After all five banks exist, fit and cross-fit candidate conditional physical-error estimators, test their calibration by protocol and cohort, and only then evaluate intended-use threshold profiles. The current v2.4 product remains unchanged.
+Decision: retain all five separated banks as development evidence and proceed to cross-fitted conditional physical-error estimation. Test calibration by protocol and cohort before evaluating intended-use threshold profiles. The current v2.4 product remains unchanged and no A-D product is emitted.
 
 The hierarchical bound is deliberately stricter than observation-equal error and describes transfer across observed cruises; it is not yet an area-time-weighted global product error. Observed locations cannot by themselves identify error in a coast with no target observations or validated analogue. Measurement and representativeness components are not separately estimated in this phase and must be added without double-counting the end-to-end residual.
 
@@ -596,7 +606,7 @@ The hierarchical bound is deliberately stricter than observation-equal error and
         "locked_test_opened": False,
         "external_independent_opened": False,
         "evidence_scope": "development-only deployment-matched residual banks on frozen corrected outer predictions",
-        "decision": "residual_banks_reusable_but_early_era_missing_and_final_grading_blocked",
+        "decision": "residual_banks_complete_thresholds_and_conditional_error_model_pending",
         "figure_source_data": figure_sources,
         "figure_captions": captions,
         "files_sha256": {

@@ -1,0 +1,30 @@
+schema_version: 1
+experiment_id: p2_early_era_validation_v2.5
+status: completed
+owner: ReCAD
+issue: 81
+science:
+  question: How do the frozen SSS and fCO2 candidates transfer backward to complete early cruises when trained only on later observations?
+  permitted_claim: Reverse-time development validation on observed early cruises only.
+  prohibited_claim: Error identification in observation-free waters or derivation of A-D thresholds.
+data:
+  labels: SOCAT-based frozen v2.3 matchup through 2025
+  independent_labels_opened: false
+  labels_2026_opened: false
+protocol:
+  folds:
+    - {held: 1993-1998, train_start: 2004}
+    - {held: 1999-2003, train_start: 2009}
+    - {held: 2004-2008, train_start: 2014}
+  unit: complete normalized cruise
+  mixed_boundary_groups: excluded
+  fco2_sss_input: nested later-only SSS predictions
+artifacts:
+  config: configs/frozen/early_era_validation_v2.5.in
+  output_directory: C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5
+  reviewer_archive: docs/experiment_archive/p2_early_era_validation_v2.5
+outcome:
+  SSS: {pooled_rmse: 0.8557, pooled_q90: 0.9217, coverage90: 0.9048}
+  fCO2: {pooled_rmse: 36.1223, pooled_q90: 52.6156, coverage90: 0.8797}
+  decision: Add both targets to the separated residual bank and continue to conditional physical-error calibration; keep all thresholds unset.
+

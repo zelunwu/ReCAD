@@ -1,0 +1,52 @@
+[contract]
+contract_id = early_era_validation_v2.5
+schema_version = 2.5
+issue = 81
+targets = SSS,fCO2
+status = frozen_before_label_error_evaluation
+
+[source]
+matchup = C:/backup/phd/data/processed/recad_v2_3/p2_predictor_ablation_v2.3/socat_predictor_matchup_v2.3.parquet
+process_features = C:/backup/phd/data/processed/recad_v2_4/p2_process_predictors_v2.4/process_features.parquet
+output_root = C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5
+maximum_label_year = 2025
+
+[fold_0]
+held_start = 1993
+held_end = 1998
+train_start = 2004
+
+[fold_1]
+held_start = 1999
+held_end = 2003
+train_start = 2009
+
+[fold_2]
+held_start = 2004
+held_end = 2008
+train_start = 2014
+
+[split]
+unit = complete_normalized_cruise
+mixed_boundary_groups = exclude
+calibration_folds = 5
+calibration_fold = 0
+upstream_sss_folds = 2
+
+[model]
+sss_family = catboost_background_residual
+sss_config = 700,10,0.02,12.0
+sss_seeds = 62024,62025,62026
+fco2_background_family = extra_trees_continuous_background_residual
+fco2_background_config = 256,24,5,0.7
+fco2_catboost_config = 700,10,0.02,12.0
+fco2_catboost_weight = 0.3
+interval_method = prediction_stratified
+
+[policy]
+later_labels_only = true
+strict_nested_sss_for_fco2 = true
+independent_labels_opened = false
+labels_2026_opened = false
+thresholds_may_be_derived_from_this_experiment = false
+

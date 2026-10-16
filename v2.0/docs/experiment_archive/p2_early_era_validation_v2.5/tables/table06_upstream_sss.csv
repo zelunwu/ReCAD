@@ -1,0 +1,4 @@
+path,rows,sha256
+C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/upstream_sss/fCO2_early_era_fold0.parquet,834748,dfd60cd79d97c959d81ea7d5a1a7727e7c4d1c1ca8c8cd9ba193eec3369302cc
+C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/upstream_sss/fCO2_early_era_fold1.parquet,709809,34640cbc53128a1e0224aad7098cc31733095951c0c98e955926c90e5463100f
+C:/backup/phd/data/processed/recad_v2_5/p2_early_era_validation_v2.5/upstream_sss/fCO2_early_era_fold2.parquet,634856,0b41523c0cad80de660d32e84faa3c6ffc7454f404a5bab66fb5d52bbb553f6e

@@ -1,0 +1,4 @@
+fold,held_start,held_end,train_start,minimum_gap_years
+0,1993,1998,2004,6
+1,1999,2003,2009,6
+2,2004,2008,2014,6

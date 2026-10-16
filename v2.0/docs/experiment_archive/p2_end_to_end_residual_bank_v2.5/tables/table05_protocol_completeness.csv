@@ -3,9 +3,9 @@ SSS,cruise,True,True,5,False
 SSS,geographic,True,True,5,False
 SSS,whole_region,True,True,5,False
 SSS,forward,True,True,3,False
-SSS,early_era,True,False,0,True
+SSS,early_era,True,True,3,False
 fCO2,cruise,True,True,5,False
 fCO2,geographic,True,True,5,False
 fCO2,whole_region,True,True,5,False
 fCO2,forward,True,True,3,False
-fCO2,early_era,True,False,0,True
+fCO2,early_era,True,True,3,False
