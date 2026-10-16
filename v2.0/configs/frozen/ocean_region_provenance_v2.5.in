@@ -1,0 +1,74 @@
+[dataset]
+contract_id = ocean_region_provenance_v2.5
+schema_version = 2.5
+source_title = Global Oceans and Seas, version 1
+source_organization = Flanders Marine Institute (VLIZ)
+source_date = 2021-12-14
+source_doi = https://doi.org/10.14284/542
+wfs_url = https://geo.vliz.be/geoserver/MarineRegions/ows?service=WFS&version=2.0.0&request=GetFeature&typeNames=MarineRegions%3Agoas&outputFormat=application%2Fjson&srsName=EPSG%3A4326
+raw_sha256 = 78e7512dec1c422ad363517e9c574fc2a33ae7e82f43e7f596a8afb0aac207dd
+simplification_tolerance_degrees = 0.005
+simplified_sha256 = 920dad2f8742401cd309fc7763c563f2006fb2fec1be0571bf911a963dc46d74
+default_external_geometry = C:/backup/phd/data/raw/marine_regions/GOaS_v1_20211214_simplified_0p005deg.geojson
+assignment_policy = polygon coverage with explicit unresolved and shared-boundary flags
+release_policy = provenance and reporting only; never a direct quality or release-status switch
+
+[region:Arctic Ocean]
+region_id = 0
+macro_basin_id = 0
+canonical_name = Arctic Ocean
+
+[region:Southern Ocean]
+region_id = 1
+macro_basin_id = 1
+canonical_name = Southern Ocean
+
+[region:North Atlantic Ocean]
+region_id = 2
+macro_basin_id = 2
+canonical_name = North Atlantic Ocean
+
+[region:South Atlantic Ocean]
+region_id = 3
+macro_basin_id = 2
+canonical_name = South Atlantic Ocean
+
+[region:North Pacific Ocean]
+region_id = 4
+macro_basin_id = 3
+canonical_name = North Pacific Ocean
+
+[region:South Pacific Ocean]
+region_id = 5
+macro_basin_id = 3
+canonical_name = South Pacific Ocean
+
+[region:Indian Ocean]
+region_id = 6
+macro_basin_id = 4
+canonical_name = Indian Ocean
+
+[region:Mediterranean Region]
+region_id = 7
+macro_basin_id = 5
+canonical_name = Mediterranean Region
+
+[region:Baltic Sea]
+region_id = 8
+macro_basin_id = 6
+canonical_name = Baltic Sea
+
+[region:South China and Easter Archipelagic Seas]
+region_id = 9
+macro_basin_id = 7
+canonical_name = South China and Eastern Archipelagic Seas
+
+[macro_basins]
+0 = Arctic
+1 = Southern
+2 = Atlantic
+3 = Pacific
+4 = Indian
+5 = Mediterranean
+6 = Baltic
+7 = South China and Eastern Archipelagic Seas

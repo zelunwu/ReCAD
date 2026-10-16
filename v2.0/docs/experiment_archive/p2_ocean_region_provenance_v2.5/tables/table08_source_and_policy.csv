@@ -1,0 +1,8 @@
+field,value
+source_title,"Global Oceans and Seas, version 1"
+source_doi,https://doi.org/10.14284/542
+source_sha256,78e7512dec1c422ad363517e9c574fc2a33ae7e82f43e7f596a8afb0aac207dd
+simplified_sha256,920dad2f8742401cd309fc7763c563f2006fb2fec1be0571bf911a963dc46d74
+simplification_tolerance_degrees,0.005
+assignment_policy,polygon coverage with explicit unresolved and shared-boundary flags
+release_policy,provenance and reporting only; never a direct quality or release-status switch
