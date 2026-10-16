@@ -42,6 +42,11 @@ def write_json(path: Path, payload: object) -> None:
 
 
 def complete(target: str, scheme: str, fold: int, family: str) -> bool:
+    terminal = OUTPUT / "family_status" / f"{target}_{scheme}_fold{fold}_{family}.json"
+    if terminal.is_file():
+        payload = json.loads(terminal.read_text(encoding="utf-8"))
+        if payload.get("status") == "resource_infeasible":
+            return True
     decision = OUTPUT / "search" / f"{target}_{scheme}_fold{fold}_{family}" / "decision.json"
     if not decision.is_file():
         return False
@@ -68,6 +73,39 @@ def complete(target: str, scheme: str, fold: int, family: str) -> bool:
         ).is_file()
         for seed in seeds
     )
+
+
+def preserve_resource_failure(
+    target: str,
+    scheme: str,
+    fold: int,
+    family: str,
+) -> bool:
+    """Archive a deterministic OOM as a terminal, non-advancing negative result."""
+
+    failure = OUTPUT / "failures" / f"{target}_{scheme}_fold{fold}_{family}.json"
+    if not failure.is_file():
+        return False
+    payload = json.loads(failure.read_text(encoding="utf-8"))
+    if payload.get("error_type") != "MemoryError":
+        return False
+    write_json(
+        OUTPUT / "family_status" / f"{target}_{scheme}_fold{fold}_{family}.json",
+        {
+            "target": target,
+            "scheme": scheme,
+            "fold": fold,
+            "family": family,
+            "status": "resource_infeasible",
+            "advancement_eligible": False,
+            "reason": "full_fidelity_memory_exhausted",
+            "failure": str(failure),
+            "search_space_changed": False,
+            "partial_trials_preserved": True,
+            "updated_utc": utc_now(),
+        },
+    )
+    return True
 
 
 def main() -> None:
@@ -137,6 +175,17 @@ def main() -> None:
                     log.write(f"{utc_now()} EXIT {result.returncode} {' '.join(command)}\n")
                     log.flush()
                     if result.returncode != 0:
+                        if preserve_resource_failure(
+                            target,
+                            split.scheme,
+                            split.fold,
+                            family,
+                        ):
+                            cell["status"] = "resource_infeasible"
+                            cell["returncode"] = result.returncode
+                            cell["finished_utc"] = utc_now()
+                            write_json(status_path, cell)
+                            continue
                         cell["status"] = "failed"
                         cell["returncode"] = result.returncode
                         cell["finished_utc"] = utc_now()
