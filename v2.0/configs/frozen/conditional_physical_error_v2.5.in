@@ -1,0 +1,62 @@
+[contract]
+contract_id = conditional_physical_error_v2.5
+schema_version = 2.5
+issue = 81
+targets = SSS,fCO2
+protocols = cruise,geographic,whole_region,forward,early_era
+status = frozen_before_conditional_error_evaluation
+
+[source]
+residual_bank_root = C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks
+residual_bank_pattern = {target}_{protocol}_residual_bank.parquet
+output_root = C:/backup/phd/data/processed/recad_v2_5/p2_conditional_physical_error_v2.5
+
+[estimand]
+response = absolute grid-month reconstruction error in target physical units
+conditional_quantile = 0.90
+confidence_level = 0.95
+independent_unit = complete cruise
+minimum_calibration_groups = 29
+
+[crossfit]
+group_folds = 5
+calibration_lag = 1
+split_salt = issue81-conditional-physical-error-v2.5
+
+[features]
+fields = prediction,model_disagreement,background_disagreement,geographic_km,environment_k16,unique_cruises,effective_groups,support_entropy,time_extrapolation_years,missing_mandatory_input,latitude,longitude,mon
+
+[candidates]
+names = constant,stratified,catboost_quantile
+stratified_minimum_rows = 500
+stratified_minimum_groups = 20
+stratified_geographic_edges = 0,25,50,100,200,400,inf
+stratified_environment_edges = 0,0.5,1,1.5,2,3,inf
+stratified_cruise_edges = 0,1,2,5,10,25,inf
+stratified_time_edges = 0,1,2,5,10,inf
+catboost_iterations = 700
+catboost_depth = 8
+catboost_learning_rate = 0.05
+catboost_l2_leaf_reg = 12.0
+
+[target:SSS]
+prediction_edges = -inf,20,30,34,36,inf
+
+[target:fCO2]
+prediction_edges = -inf,300,350,400,450,inf
+
+[selection]
+pooled_row_coverage_min = 0.90
+minimum_fold_row_coverage = 0.88
+pooled_group_q90_coverage_min = 0.90
+objective = minimum mean physical error bound among eligible candidates
+fallback = protocol evidence status VF and tier U when no candidate is eligible
+
+[policy]
+pool_protocols_for_training = false
+combine_protocols_by_upper_envelope = true
+basin_is_model_feature = false
+thresholds_may_be_derived_from_this_experiment = false
+independent_labels_opened = false
+labels_2026_opened = false
+
