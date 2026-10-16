@@ -1,0 +1,36 @@
+schema_version: 1
+experiment_id: p2_absolute_error_flag_contract_v2.5
+status: preregistered_methodology_thresholds_pending
+owner: ReCAD
+issue: 81
+
+science:
+  question: Can ReCAD replace model-relative percentile grades with fixed physical reconstruction-error tiers while retaining an explicit unknown-error state?
+  primary_statistic: One-sided 95% confidence upper bound for the conditional 90th-percentile absolute grid-month reconstruction error.
+  permitted_claim: Methodology and schema freeze only; no A-D product claim is allowed before physical thresholds and target-support evidence are frozen.
+  stopping_rule: Production grading fails closed while any target threshold is UNSET.
+
+target:
+  estimand: Wet-area and time weighted surface grid-month mean under a versioned target-support definition.
+  variables: [SSS, fCO2]
+  threshold_source: Preregistered intended-use error budgets in target physical units.
+  fixed_grade_occupancy: false
+
+validation:
+  outer_protocols: [whole_cruise, buffered_spatial_block, whole_region, forward_time, early_era]
+  eligible_evidence: [VD, VT]
+  unknown_evidence: [VU, VF]
+  invalid_evidence: [VI]
+  outside_domain_evidence: [NA]
+  independent_label_policy: Previously opened Issue 5 labels may audit but may not tune thresholds.
+
+error_ledger:
+  primary: End-to-end deployment-matched residual calibration with reference-error treatment.
+  diagnostics: [measurement, representativeness, input, fitting, structural, transfer]
+  covariance: Preserve covariance or use joint draws; never assume independence without evidence.
+  double_counting: Do not add components already represented in end-to-end residuals.
+
+artifacts:
+  config: configs/frozen/absolute_error_flag_contract_v2.5.in
+  reviewer_archive: docs/experiment_archive/p2_absolute_error_flag_contract_v2.5
+  large_output_root: C:/backup/phd/data/processed/recad_v2_5/p2_absolute_error_flags_v2.5
