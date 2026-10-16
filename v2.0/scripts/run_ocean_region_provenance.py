@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 from pathlib import Path
@@ -72,6 +73,12 @@ def write_utf8_lf(path: Path, text: str) -> None:
     path.write_bytes(text.replace("\r\n", "\n").encode("utf-8"))
 
 
+def sha256_tracked_text(path: Path) -> str:
+    """Hash the LF form stored by Git, independent of checkout line endings."""
+    normalized = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
 def write_table(frame: pd.DataFrame, path: Path) -> None:
     write_utf8_lf(path, frame.to_csv(index=False, lineterminator="\n"))
 
@@ -102,7 +109,9 @@ def write_product(
     geometry_hash: str,
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with netCDF4.Dataset(path, "w") as dataset:
+    # NetCDF-3 avoids HDF5 object timestamps, making the external evidence
+    # artifact byte-reproducible for identical inputs.
+    with netCDF4.Dataset(path, "w", format="NETCDF3_64BIT_OFFSET") as dataset:
         dataset.createDimension("node", len(longitude))
         for name, values, dtype, long_name in (
             ("longitude", longitude, "f8", "longitude in degrees east"),
@@ -123,7 +132,7 @@ def write_product(
                 "point not covered by the source geometry",
             ),
         ):
-            variable = dataset.createVariable(name, dtype, ("node",), zlib=True, complevel=2)
+            variable = dataset.createVariable(name, dtype, ("node",))
             variable[:] = values
             variable.long_name = long_name
         dataset.contract_id = "ocean_region_provenance_v2.5"
@@ -252,7 +261,9 @@ def grid_values(frame: pd.DataFrame, column: str) -> tuple[np.ndarray, np.ndarra
     grid = np.full((len(latitudes), len(longitudes)), np.nan)
     lat_index = np.searchsorted(latitudes, frame.latitude.to_numpy())
     lon_index = np.searchsorted(longitudes, frame.longitude.to_numpy())
-    grid[lat_index, lon_index] = frame[column].to_numpy(float)
+    values = frame[column].to_numpy(float)
+    values[values < 0] = np.nan
+    grid[lat_index, lon_index] = values
     return longitudes, latitudes, grid
 
 
@@ -267,25 +278,32 @@ def base_map(axis, extent=None) -> None:
 
 
 def save_map(frame: pd.DataFrame, column: str, title: str, path: Path, colors, labels) -> None:
-    longitude, latitude, grid = grid_values(frame, column)
     cmap = ListedColormap(colors)
     norm = BoundaryNorm(np.arange(-0.5, len(colors) + 0.5), len(colors))
     figure, axis = plt.subplots(figsize=(13.5, 6.8), subplot_kw={"projection": ccrs.Robinson()})
-    image = axis.pcolormesh(
-        longitude,
-        latitude,
-        grid,
+    axis.set_global()
+    selected = frame.loc[frame[column].ge(0)]
+    image = axis.scatter(
+        selected.longitude,
+        selected.latitude,
+        c=selected[column],
+        s=0.12,
+        linewidths=0,
         cmap=cmap,
         norm=norm,
         transform=ccrs.PlateCarree(),
         rasterized=True,
     )
     base_map(axis)
-    axis.set_global()
     axis.set_title(title, weight="bold")
-    colorbar = figure.colorbar(image, ax=axis, orientation="horizontal", pad=0.06, shrink=0.82)
-    colorbar.set_ticks(range(len(labels)), labels=labels, rotation=20, ha="right")
-    figure.savefig(path, dpi=180, bbox_inches="tight")
+    colorbar = figure.colorbar(image, ax=axis, orientation="horizontal", pad=0.07, shrink=0.78)
+    colorbar.set_ticks(range(len(labels)), labels=labels, rotation=18, ha="right")
+    colorbar.ax.tick_params(labelsize=8)
+    # Cartopy can collapse the projected GeoAxes when ``bbox_inches='tight'``
+    # is combined with a horizontal colorbar.  Keep the fixed canvas so the
+    # scientific map, rather than only its colorbar, is archived.
+    figure.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.18)
+    figure.savefig(path, dpi=180)
     plt.close(figure)
 
 
@@ -435,7 +453,7 @@ No statistical model is trained. The legacy candidate is the v2.4 latitude/longi
 
 The product contains {len(frame):,} coastal nodes. Polygon assignment leaves {unresolved:,} unresolved ({unresolved / len(frame):.3%}) and marks {boundaries:,} shared-boundary nodes ({boundaries / len(frame):.3%}). The new macro provenance differs from the legacy label at {changed:,} nodes ({changed / len(frame):.1%}). Within 125-150 E and 25-50 N, {japan_legacy_indian:,} nodes assigned to the GOaS North Pacific region carried the legacy Indian basin label.
 
-{chr(10).join(blocks)}
+{chr(10).join([block + chr(10) for block in blocks])}
 
 ## Decision and limitations
 
@@ -497,7 +515,7 @@ def build_archive(
     manifest = {
         "experiment_id": "p2_ocean_region_provenance_v2.5",
         "training_git_commit": git_commit(),
-        "data_manifest_sha256": sha256(config),
+        "data_manifest_sha256": sha256_tracked_text(config),
         "locked_test_opened": False,
         "external_independent_opened": False,
         "evidence_scope": "label-free geographic provenance over the complete v2.4 product nodes",
@@ -507,10 +525,10 @@ def build_archive(
         "files_sha256": {
             str(path.relative_to(ARCHIVE)).replace("\\", "/"): sha256(path) for path in tracked
         },
-        "archive_builder_sha256": sha256(Path(__file__)),
-        "analysis_script_sha256": sha256(Path(__file__)),
+        "archive_builder_sha256": sha256_tracked_text(Path(__file__)),
+        "analysis_script_sha256": sha256_tracked_text(Path(__file__)),
         "source_artifacts_sha256": {
-            str(config.relative_to(ROOT)).replace("\\", "/"): sha256(config),
+            str(config.relative_to(ROOT)).replace("\\", "/"): sha256_tracked_text(config),
             str(geometry): sha256(geometry),
             str(product): sha256(product),
             str(output_product): sha256(output_product),
@@ -543,7 +561,7 @@ def main() -> int:
         latitude,
         legacy,
         assignment,
-        sha256(args.config),
+        sha256_tracked_text(args.config),
         sha256(geometry),
     )
     frame = node_frame(longitude, latitude, legacy, assignment)

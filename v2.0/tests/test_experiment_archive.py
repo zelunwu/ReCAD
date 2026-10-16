@@ -46,6 +46,7 @@ SPEC.loader.exec_module(MODULE)
         "p2_process_predictors_v2.4",
         "p2_conditional_combination_v2.4",
         "p2_global_reliability_contract_v2.4",
+        "p2_ocean_region_provenance_v2.5",
         "p3_cruise_holdout_v2.4",
         "recad_v2_release_v2.4",
     ],

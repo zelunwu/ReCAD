@@ -1,0 +1,45 @@
+schema_version: 1
+experiment_id: p2_ocean_region_provenance_v2.5
+status: completed_provenance_repair
+owner: ReCAD
+issue: 81
+
+science:
+  question: Can the legacy longitude-threshold basin label be replaced by an auditable polygon source without allowing basin identity to determine product quality?
+  source: Flanders Marine Institute Global Oceans and Seas v1
+  source_doi: https://doi.org/10.14284/542
+  decision: Adopt GOaS v1 for provenance and reporting only; prohibit basin labels from directly setting A-D grades or release status.
+  permitted_claim: Geographic provenance is repaired on the complete v2.4 product node domain; physical reconstruction-error tiers remain unset.
+
+domain:
+  product: ReCAD_v2.4_fCO2_1993_2025.nc
+  nodes: 838661
+  unresolved_nodes: 3741
+  unresolved_fraction: 0.00446068
+  shared_boundary_nodes: 676
+  changed_macro_provenance_nodes: 148700
+  changed_macro_provenance_fraction: 0.177304
+
+source_artifacts:
+  raw_geometry: C:/backup/phd/data/raw/marine_regions/GOaS_v1_20211214.geojson
+  raw_geometry_sha256: 78e7512dec1c422ad363517e9c574fc2a33ae7e82f43e7f596a8afb0aac207dd
+  simplified_geometry: C:/backup/phd/data/raw/marine_regions/GOaS_v1_20211214_simplified_0p005deg.geojson
+  simplified_geometry_sha256: 920dad2f8742401cd309fc7763c563f2006fb2fec1be0571bf911a963dc46d74
+  simplification_tolerance_degrees: 0.005
+
+validation:
+  complete_product_geography: true
+  locked_test_opened: false
+  external_independent_opened: false
+  japan_old_indian_new_north_pacific_nodes: 15657
+  longitude_fallback_allowed: false
+
+artifacts:
+  config: configs/frozen/ocean_region_provenance_v2.5.in
+  reviewer_archive: docs/experiment_archive/p2_ocean_region_provenance_v2.5
+  large_output_root: C:/backup/phd/data/processed/recad_v2_5/p2_ocean_region_provenance_v2.5
+
+limitations:
+  - The 3741 unresolved coastal nodes remain explicit and require later source/coastline reconciliation.
+  - Region identity is provenance metadata and cannot substitute for local uncertainty evidence.
+  - This phase does not derive SSS or fCO2 physical error thresholds.
