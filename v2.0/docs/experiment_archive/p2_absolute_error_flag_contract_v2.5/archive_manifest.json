@@ -1,0 +1,33 @@
+{
+  "experiment_id": "p2_absolute_error_flag_contract_v2.5",
+  "training_git_commit": "not_applicable_preregistration",
+  "data_manifest_sha256": "f19c62202c509187a22c567499e691a979cced8715777cf373eddc5434154d47",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "methodology and schema preregistration; no model result",
+  "decision": {
+    "machine_decision": "freeze_methodology_and_block_unset_thresholds",
+    "thresholds_frozen": false,
+    "production_grading_allowed": false
+  },
+  "figure_source_data": {
+    "fig01_error_tier_decision_contract.png": [
+      "table01_error_tier_decision_contract.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_error_tier_decision_contract.png": "Figure 1. Ordered Issue 81 decision contract. A-D require a calibrated physical-error estimate and eligible direct or transfer evidence. U retains a numerical reconstruction while explicitly withholding an unsupported error claim; D means supported evidence of large error rather than unknown error."
+  },
+  "files_sha256": {
+    "README.md": "d0cc9ff3db4b50b3be369eeaeac98d72ebbab0fb65aa639d359c1ab608baff87",
+    "REPORT.md": "782d1b3214043968f53358343d40213ce47679de790d5b1e4c1dc16e2c0123de",
+    "CAPTIONS.md": "88532cc06364704ee4ba3147fb0a826f577f28795f0e5514cab4d8cf7fee7ed3",
+    "figures/fig01_error_tier_decision_contract.png": "a5054613e8677444a0b4dff5f402e706bd06fad19e6eae2f10bf7a12fa472190",
+    "tables/table01_error_tier_decision_contract.csv": "a82572a2c247fdf641771ee4b1e3dca85cf279a587574c7b9a6bc6967d8262f4"
+  },
+  "archive_builder_sha256": "e3faedb188e65d2ebeb21bde287347c610a807add00d01514395c0510eae57c0",
+  "analysis_script_sha256": "db3f2ac528367598fe645465d81706b349a70222723c79a1f38d3240525eb387",
+  "source_artifacts_sha256": {
+    "configs/frozen/absolute_error_flag_contract_v2.5.in": "f19c62202c509187a22c567499e691a979cced8715777cf373eddc5434154d47"
+  }
+}

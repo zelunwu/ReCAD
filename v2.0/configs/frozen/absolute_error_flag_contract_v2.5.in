@@ -1,0 +1,58 @@
+[contract]
+contract_id = absolute_error_flag_contract_v2.5
+schema_version = 2.5
+status = methodology_frozen_thresholds_pending_scientific_derivation
+issue = 81
+targets = SSS,fCO2
+target_estimand = wet-area and time weighted surface grid-month mean
+legacy_rank_field = relative_applicability_rank_v2_4
+
+[uncertainty]
+primary_statistic = absolute_error_q90_upper95
+absolute_error_quantile = 0.90
+confidence_level = 0.95
+component_policy = residual-first end-to-end calibration; covariance-preserving diagnostics
+unsupported_error_policy = U
+
+[validation]
+eligible_evidence = VD,VT
+unknown_evidence = VU,VF
+invalid_evidence = VI
+outside_domain_evidence = NA
+outer_protocols = whole_cruise,buffered_spatial_block,whole_region,forward_time,early_era
+threshold_selection_may_use_final_audit = false
+basin_may_change_error_tier = false
+fixed_grade_occupancy = false
+
+[target:SSS]
+variable_definition = sea-surface Practical Salinity on PSS-78 for the declared grid-month support
+unit = 1
+threshold_a = UNSET
+threshold_b = UNSET
+threshold_c = UNSET
+threshold_derivation = preregistered intended-use error budget
+
+[target:fCO2]
+variable_definition = sea-surface fugacity of carbon dioxide at the declared temperature and pressure convention
+unit = uatm
+threshold_a = UNSET
+threshold_b = UNSET
+threshold_c = UNSET
+threshold_derivation = preregistered intended-use error budget
+
+[reason_bits]
+NO_MATCHING_LOCAL_OBSERVATIONS = 1
+NO_VALIDATED_ANALOGUE = 2
+OUTSIDE_VALIDATED_ENVIRONMENT = 4
+GEOGRAPHIC_TRANSFER_UNVALIDATED = 8
+TEMPORAL_TRANSFER_UNVALIDATED = 16
+INSUFFICIENT_CALIBRATION_GROUPS = 32
+CALIBRATION_AUDIT_FAILED = 64
+REPRESENTATIVENESS_UNAVAILABLE = 128
+INPUT_GAPS_OR_IMPUTATION = 256
+INPUT_MISSINGNESS_UNVALIDATED = 512
+SEA_ICE_REGIME_UNVALIDATED = 1024
+NUMERICAL_EXECUTION_FAILURE = 2048
+PHYSICAL_VALIDITY_FAILURE = 4096
+TARGET_SUPPORT_UNRESOLVED = 8192
+DATA_LINEAGE_OR_LEAKAGE_FAILURE = 16384

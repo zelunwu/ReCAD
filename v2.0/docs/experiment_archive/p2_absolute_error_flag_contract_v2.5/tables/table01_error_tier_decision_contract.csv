@@ -1,0 +1,9 @@
+condition,prediction,error_tier,evidence,scientific_error_fields
+Outside declared domain,fill,fill,NA,fill
+Invalid or failed numerical prediction,fill,N,VI,fill
+Error evidence unavailable,retain,U,VU,fill
+Applicable uncertainty audit failed,retain,U,VF,fill
+Q90 upper 95% <= T_A,retain,A,VD or VT,publish
+T_A < Q90 upper 95% <= T_B,retain,B,VD or VT,publish
+T_B < Q90 upper 95% <= T_C,retain,C,VD or VT,publish
+Q90 upper 95% > T_C,retain,D,VD or VT,publish
