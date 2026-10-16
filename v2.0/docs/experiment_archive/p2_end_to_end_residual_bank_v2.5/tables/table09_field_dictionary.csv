@@ -1,0 +1,8 @@
+field,definition
+residual,prediction minus truth in target physical units
+absolute_error,absolute deployment-matched held-out residual
+record_q90_absolute_error,observation-equal q90 absolute error
+cruise_q90_absolute_error,q90 across within-cruise q90 absolute errors
+cruise_q90_upper95,distribution-free one-sided 95% upper bound for the cruise-level q90
+coverage90,fraction of held errors no larger than the frozen Issue-44 width90
+ocean_region_id,GOaS v1 provenance only; never a quality switch

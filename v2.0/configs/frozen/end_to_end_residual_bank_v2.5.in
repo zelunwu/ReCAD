@@ -1,0 +1,42 @@
+[contract]
+contract_id = end_to_end_residual_bank_v2.5
+schema_version = 2.5
+issue = 81
+targets = SSS,fCO2
+required_protocols = cruise,geographic,whole_region,forward,early_era
+available_protocols = cruise,geographic,whole_region,forward
+status = frozen_residual_bank_protocol_early_era_pending
+
+[source]
+partition_root = C:/backup/phd/data/processed/recad_v2_4/p2_global_reliability_contract_v2.4/partitions
+partition_pattern = {target}_{protocol}_fold*.parquet
+geographic_provenance = C:/backup/phd/data/processed/recad_v2_5/p2_ocean_region_provenance_v2.5/ocean_region_provenance_v2.5.nc
+output_root = C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5
+truth_column = truth
+prediction_column = prediction
+group_column = group_key
+node_column = coastal_node
+
+[statistic]
+absolute_error_quantile = 0.90
+confidence_level = 0.95
+primary_statistic = hierarchical_cruise_q90_upper95
+primary_weighting = cruise_equal
+secondary_weighting = observation_equal
+minimum_groups_for_finite_bound = 29
+minimum_rows_per_cohort = 100
+minimum_groups_per_cohort = 10
+
+[strata]
+geographic_km_edges = 0,25,50,100,200,400,inf
+environment_k16_edges = 0,0.5,1,1.5,2,3,inf
+unique_cruises_edges = 0,1,2,5,10,25,inf
+time_extrapolation_years_edges = 0,1,2,5,10,inf
+
+[policy]
+pool_protocols_for_primary_error = false
+basin_may_change_error_tier = false
+missing_protocol_blocks_final_grading = true
+thresholds_may_be_derived_from_this_bank = false
+independent_labels_opened = false
+unknown_outside_validated_support = true

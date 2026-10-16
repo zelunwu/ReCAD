@@ -1,0 +1,62 @@
+schema_version: 1
+experiment_id: p2_end_to_end_residual_bank_v2.5
+status: completed_partial_evidence_early_era_pending
+owner: ReCAD
+issue: 81
+
+science:
+  question: What deployment-matched end-to-end residual evidence is available for physical SSS and fCO2 error estimation under the frozen final candidates?
+  primary_statistic: Distribution-free one-sided 95% upper bound for the 90th percentile across complete-cruise within-cruise q90 absolute errors.
+  estimand: Surface grid-month reconstruction error under the frozen target support; observation-equal results remain secondary because product area-time reweighting is not identified by observed locations alone.
+  permitted_claim: Residual-bank construction and evidence-gap audit only; this experiment cannot define intended-use thresholds or publish A-D grades.
+  stopping_rule: Preserve protocol banks separately and fail final grading closed if any required protocol is unavailable.
+
+data:
+  prediction_source: C:/backup/phd/data/processed/recad_v2_4/p2_global_reliability_contract_v2.4/partitions
+  geographic_provenance: C:/backup/phd/data/processed/recad_v2_5/p2_ocean_region_provenance_v2.5/ocean_region_provenance_v2.5.nc
+  targets: [SSS, fCO2]
+  time_range: 1993-2025
+  independent_labels_opened: false
+
+protocols:
+  required: [cruise, geographic, whole_region, forward, early_era]
+  available_at_preregistration: [cruise, geographic, whole_region, forward]
+  missing_at_preregistration: [early_era]
+  pooling_for_primary_error: prohibited
+  grouping: Complete cruise/platform groups remain the independent evidence units inside every protocol.
+
+statistics:
+  absolute_error_quantile: 0.90
+  confidence_level: 0.95
+  minimum_groups_for_finite_bound: 29
+  support_bins_source: configs/frozen/end_to_end_residual_bank_v2.5.in
+  region_policy: GOaS v1 region is reporting provenance only and cannot alter a quality tier.
+
+artifacts:
+  config: configs/frozen/end_to_end_residual_bank_v2.5.in
+  output_directory: C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5
+  reviewer_archive: docs/experiment_archive/p2_end_to_end_residual_bank_v2.5
+
+thresholds:
+  SSS: {T_A: UNSET, T_B: UNSET, T_C: UNSET}
+  fCO2: {T_A: UNSET, T_B: UNSET, T_C: UNSET}
+
+outcome:
+  decision: residual_banks_reusable_but_contract_incomplete
+  final_grading_allowed: false
+  missing_required_protocols: [early_era]
+  duplicate_evaluation_identities: 0
+  SSS:
+    cruise: {rmse: 0.8956, record_q90: 1.0489, cruise_q90_upper95: 1.9645, coverage90: 0.8979}
+    geographic: {rmse: 1.5009, record_q90: 1.8740, cruise_q90_upper95: 3.5148, coverage90: 0.8041}
+    whole_region: {rmse: 2.6159, record_q90: 3.5215, cruise_q90_upper95: 3.8958, coverage90: 0.7880}
+    forward: {rmse: 1.2548, record_q90: 1.3378, cruise_q90_upper95: 2.5277, coverage90: 0.8347}
+  fCO2:
+    cruise: {rmse: 32.4197, record_q90: 46.4615, cruise_q90_upper95: 84.3777, coverage90: 0.9014}
+    geographic: {rmse: 52.4714, record_q90: 74.4612, cruise_q90_upper95: 133.6257, coverage90: 0.8324}
+    whole_region: {rmse: 52.1670, record_q90: 77.7316, cruise_q90_upper95: 125.4716, coverage90: 0.8148}
+    forward: {rmse: 38.8475, record_q90: 56.5269, cruise_q90_upper95: 108.3757, coverage90: 0.8489}
+  limitations:
+    - Hierarchical cruise bounds describe transfer across observed cruises and are not yet area-time-weighted product errors.
+    - Measurement and grid-month representativeness uncertainty remain separate missing components.
+    - Observation-free coasts remain unidentified unless a later frozen transfer audit validates an analogue.
