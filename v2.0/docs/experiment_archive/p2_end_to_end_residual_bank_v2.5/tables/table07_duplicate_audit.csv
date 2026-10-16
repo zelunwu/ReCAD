@@ -1,0 +1,9 @@
+target,protocol,rows,unique_record_ids,rows_with_duplicate_record_id,unique_evaluation_ids
+SSS,cruise,750040,750040,0,750040
+SSS,geographic,750040,750040,0,750040
+SSS,whole_region,750040,750040,0,750040
+SSS,forward,471115,471115,0,471115
+fCO2,cruise,887811,887811,0,887811
+fCO2,geographic,887811,887811,0,887811
+fCO2,whole_region,887811,887811,0,887811
+fCO2,forward,522946,522946,0,522946

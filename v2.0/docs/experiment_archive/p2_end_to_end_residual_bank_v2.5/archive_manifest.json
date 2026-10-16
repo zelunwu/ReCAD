@@ -1,0 +1,90 @@
+{
+  "experiment_id": "p2_end_to_end_residual_bank_v2.5",
+  "training_git_commit": "f83acfcf5f6cc72c08d92d39f469bf36e00f38a7",
+  "data_manifest_sha256": "dad2229f2ab9465d3a4ad2e50f2c9d6ead95cd2b2dfd4d01ba2a426aa726ac8c",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "development-only deployment-matched residual banks on frozen corrected outer predictions",
+  "decision": "residual_banks_reusable_but_early_era_missing_and_final_grading_blocked",
+  "figure_source_data": {
+    "fig01_record_q90.png": [
+      "table01_protocol_metrics.csv"
+    ],
+    "fig02_hierarchical_upper.png": [
+      "table01_protocol_metrics.csv"
+    ],
+    "fig03_coverage90.png": [
+      "table01_protocol_metrics.csv"
+    ],
+    "fig04_fold_variability.png": [
+      "table02_fold_metrics.csv"
+    ],
+    "fig05_geographic_support.png": [
+      "table04_support_strata_metrics.csv"
+    ],
+    "fig06_environment_support.png": [
+      "table04_support_strata_metrics.csv"
+    ],
+    "fig07_cruise_support.png": [
+      "table04_support_strata_metrics.csv"
+    ],
+    "fig08_protocol_completeness.png": [
+      "table05_protocol_completeness.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_record_q90.png": "Figure 1. Observation-equal 90th-percentile absolute held-out error for the frozen SSS and fCO2 candidates, kept separate across complete-cruise, buffered-geographic, whole-region, and forward-time protocols. Different physical units are shown in separate colored series and must not be compared across targets.",
+    "fig02_hierarchical_upper.png": "Figure 2. Distribution-free one-sided 95% upper bound for the 90th percentile across within-cruise 90th-percentile absolute errors. Complete cruises are evidence units, so dense rows from one cruise cannot create artificial confidence.",
+    "fig03_coverage90.png": "Figure 3. Empirical coverage of the nominal 90% Issue-44 intervals on the identical frozen predictions. Shifted protocols remain visibly below nominal coverage; this residual-bank phase does not repair or conceal that negative result.",
+    "fig04_fold_variability.png": "Figure 4. Fold-specific record-level 90th-percentile absolute error. Variation across held geographic blocks, regions, and time windows remains explicit instead of being erased by a single pooled score.",
+    "fig05_geographic_support.png": "Figure 5. Buffered-geographic held-out error stratified by distance to training support using fixed kilometer bins from the external .in contract. Empty or weak cohorts are not used to redefine bin boundaries.",
+    "fig06_environment_support.png": "Figure 6. Buffered-geographic held-out error stratified by standardized environmental k-nearest-neighbour distance. The diagnostic is in physical error units; the novelty score itself is not a quality grade.",
+    "fig07_cruise_support.png": "Figure 7. Buffered-geographic held-out error stratified by the count of nearby unique cruises. Cruise support is a deployment diagnostic and cannot by itself assign an A-D tier.",
+    "fig08_protocol_completeness.png": "Figure 8. Completeness of the five protocol banks required by the frozen absolute-error contract. Early-era evidence is missing for both targets, so final A-D grading remains blocked even though the other four banks are reusable."
+  },
+  "files_sha256": {
+    "README.md": "b8839df8588216a3ac97c4347326ae0743f331c569a1c96201e26c24ee60e27f",
+    "REPORT.md": "5b42bc78f3521cfef76cf0b69ebee6c52320c5d9c6c991be777ca8a510bb89c5",
+    "CAPTIONS.md": "94a523d034a218da17d3d7a71eb8f3dbbd5b38174ca768dbec14b51dc4728cc6",
+    "figures/fig01_record_q90.png": "edd6875b4974ee7dcd60342bb123dbf178a8855b6ca315400123f19d6cb94d23",
+    "figures/fig02_hierarchical_upper.png": "69b149f97687383d9becf6c61100aacabdd995dc23496c1da5b11faa3dcf8382",
+    "figures/fig03_coverage90.png": "fc23652fbb590806924d9cf0e8ad6bd37d536497333b6543c9f4badb1dd8ad69",
+    "figures/fig04_fold_variability.png": "979c9dffb2f31a4aa877dd0cb78cf0e67a25cf9357334ea5b0127259d82e84e1",
+    "figures/fig05_geographic_support.png": "e07d1cdae1757c830be2a4072ea5b12e097d181c4baf70c20a18810e46b264f6",
+    "figures/fig06_environment_support.png": "fd4a203b1207cb3d08dfdd1b0b132d2bf184fbe5540c870a8e13bbc0fffd00db",
+    "figures/fig07_cruise_support.png": "50718959e27985d3c464708bfbb96247b33126627e4f4bffe5883d48e1128544",
+    "figures/fig08_protocol_completeness.png": "61117b3abacf5d431b7eb8acfb6c3c0c963ff74e671abb1eeda85ca0a66d4e20",
+    "tables/table01_protocol_metrics.csv": "0046c79b45b47205e7ddbef4e95839f0bb98b6e46c0ae8963ff12f5fdd9331da",
+    "tables/table02_fold_metrics.csv": "f2f77f02dde2f07142e4e5af67f40b7c6fec0909909caac645570161b2565dcd",
+    "tables/table03_region_metrics.csv": "cb3108d1f9ace11c871d97729c737515d262402b4f5852c9361843001a31a6d3",
+    "tables/table04_support_strata_metrics.csv": "796595f18826b6c7ace0cae9f2e4e970b3c0729d443c690d96e7316e9fa4e4b2",
+    "tables/table05_protocol_completeness.csv": "28ac440192c4e7185f223bfc2bdef045581409d50ab473a9baf5b88ae87e138a",
+    "tables/table06_source_partitions.csv": "ec6993254e47ec1fb3a85627d98eb23facc24ffaf33bee74daedacf120c80e13",
+    "tables/table07_duplicate_audit.csv": "23cad5a5df8b269b33a7a28d60a9f396c49511cd092f22aad223bf98a8f63db2",
+    "tables/table08_decision.csv": "5ea547d79da8ba8d881f0ebbbb37d9dc52330ca167de617772d3654627d2129a",
+    "tables/table09_field_dictionary.csv": "d0919bfd91c7e95eb5e5842885a0475e34f717357deb30fd82b50da168e88966"
+  },
+  "archive_builder_sha256": "0b40a023c37b84af84169ab0e088f2e8e04eb57bdfd3b9fc8391286663a4a032",
+  "analysis_script_sha256": "0b40a023c37b84af84169ab0e088f2e8e04eb57bdfd3b9fc8391286663a4a032",
+  "source_artifacts_sha256": {
+    "configs/frozen/end_to_end_residual_bank_v2.5.in": "dad2229f2ab9465d3a4ad2e50f2c9d6ead95cd2b2dfd4d01ba2a426aa726ac8c",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/SSS_cruise_residual_bank.parquet": "5d4de6d14a9ae9aabfd56468da1182795ef7e1319585721a1abd1d83e51eb57f",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/SSS_geographic_residual_bank.parquet": "0f89b3e8b3c88603486a89752230fbf7b0dddb9d22fbf2e94a79de753146c30f",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/SSS_whole_region_residual_bank.parquet": "6035a92f0ff1a895ea5045960d7b6a55fba78de6544b730dd5e57d18837425cb",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/SSS_forward_residual_bank.parquet": "9f2cc61d700df11f2614371079068b6dc9a6741d4a440e1b7eda724bca9d5910",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/fCO2_cruise_residual_bank.parquet": "b2ac7214966d2692b6e0ed7b5ce95ffd1e53d56e17e2dc67cfad7c1ea59a647c",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/fCO2_geographic_residual_bank.parquet": "bb0687ae437ba8d506e4a497b5557c1c1d52dd9bb7dba5a0e9158d4826b4ab12",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/fCO2_whole_region_residual_bank.parquet": "ae8ac6801f15ef0275bb7f60c816f85868a03d869e724bccb2ad71b933add34a",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/banks/fCO2_forward_residual_bank.parquet": "c058572d0656ea148761fe4b41b2c890aa9c177910c325216ae7c696b9cebc41",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table01_protocol_metrics.csv": "0046c79b45b47205e7ddbef4e95839f0bb98b6e46c0ae8963ff12f5fdd9331da",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table02_fold_metrics.csv": "f2f77f02dde2f07142e4e5af67f40b7c6fec0909909caac645570161b2565dcd",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table03_region_metrics.csv": "cb3108d1f9ace11c871d97729c737515d262402b4f5852c9361843001a31a6d3",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table04_support_strata_metrics.csv": "796595f18826b6c7ace0cae9f2e4e970b3c0729d443c690d96e7316e9fa4e4b2",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table05_protocol_completeness.csv": "28ac440192c4e7185f223bfc2bdef045581409d50ab473a9baf5b88ae87e138a",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table06_source_partitions.csv": "ec6993254e47ec1fb3a85627d98eb23facc24ffaf33bee74daedacf120c80e13",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table07_duplicate_audit.csv": "23cad5a5df8b269b33a7a28d60a9f396c49511cd092f22aad223bf98a8f63db2",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table08_decision.csv": "5ea547d79da8ba8d881f0ebbbb37d9dc52330ca167de617772d3654627d2129a",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_end_to_end_residual_bank_v2.5/tables/table09_field_dictionary.csv": "d0919bfd91c7e95eb5e5842885a0475e34f717357deb30fd82b50da168e88966",
+    "C:/backup/phd/data/processed/recad_v2_5/p2_ocean_region_provenance_v2.5/ocean_region_provenance_v2.5.nc": "542cff523e169f269e8248b4bd68858a2a3bae102b10ab15ba3b1942d4f4c6f4"
+  }
+}
