@@ -1,0 +1,74 @@
+{
+  "experiment_id": "p2_ocean_region_provenance_v2.5",
+  "training_git_commit": "f4e32986d3cb8070a61d51e1cc043e2586760597",
+  "data_manifest_sha256": "ccf745bfa051fa762c858f1c169ccc56a64e5d6ba176343e931823f5e9e79dda",
+  "locked_test_opened": false,
+  "external_independent_opened": false,
+  "evidence_scope": "label-free geographic provenance over the complete v2.4 product nodes",
+  "decision": "adopt_goas_v1_for_provenance_only_and_prohibit_basin_release_switches",
+  "figure_source_data": {
+    "fig01_corrected_region_map.png": [
+      "table01_region_node_counts.csv"
+    ],
+    "fig02_legacy_basin_map.png": [
+      "table02_legacy_new_confusion.csv"
+    ],
+    "fig03_changed_nodes_map.png": [
+      "table07_changed_fraction_by_region.csv"
+    ],
+    "fig04_japan_corrected_map.png": [
+      "table03_boundary_fixtures.csv"
+    ],
+    "fig05_confusion_matrix.png": [
+      "table02_legacy_new_confusion.csv"
+    ],
+    "fig06_region_node_counts.png": [
+      "table01_region_node_counts.csv"
+    ],
+    "fig07_unresolved_nodes.png": [
+      "table04_unresolved_blocks.csv"
+    ],
+    "fig08_shared_boundary_nodes.png": [
+      "table05_shared_boundary_blocks.csv"
+    ]
+  },
+  "figure_captions": {
+    "fig01_corrected_region_map.png": "Figure 1. Polygon-based Global Oceans and Seas v1 provenance for every ReCAD v2.4 coastal node. The ten source regions are mutually auditable reporting strata and do not directly determine reconstruction quality or release status.",
+    "fig02_legacy_basin_map.png": "Figure 2. Legacy v2.4 basin labels produced by latitude and longitude thresholds. The 145 degree east boundary cuts through the western North Pacific and assigns part of Japan and adjacent seas to the Indian label.",
+    "fig03_changed_nodes_map.png": "Figure 3. Nodes whose reporting provenance changes when the coarse threshold rule is replaced by GOaS polygons. Purple denotes a changed macro label or a newly explicit Baltic or archipelagic region; gray denotes agreement.",
+    "fig04_japan_corrected_map.png": "Figure 4. Japan-area product nodes assigned from the GOaS North Pacific polygon. Both the Pacific-facing and Sea of Japan margins receive North Pacific provenance, removing the legacy Indian-label bypass.",
+    "fig05_confusion_matrix.png": "Figure 5. Node-count cross-tabulation between legacy coarse basins and new reporting macro basins. Cell labels are raw counts and color is logarithmic, exposing substantial off-diagonal assignments hidden by the old longitude boundaries.",
+    "fig06_region_node_counts.png": "Figure 6. Number of ReCAD coastal nodes in each GOaS source region. These counts describe geographic product support only and are not weights, quality grades, or target-observation counts.",
+    "fig07_unresolved_nodes.png": "Figure 7. Product nodes not covered by the frozen GOaS polygon geometry. They remain explicitly unresolved rather than receiving a fallback basin from longitude, and must be investigated before provenance is written into a release product.",
+    "fig08_shared_boundary_nodes.png": "Figure 8. Product nodes covered by more than one GOaS polygon because they lie exactly on a shared boundary. The stable lower region ID is retained for serialization while the boundary flag preserves the ambiguity for audits."
+  },
+  "files_sha256": {
+    "README.md": "15c0f83c876ee8bb2a8231d73bf9a62779db97a27d4a6e910fcc1499d61b8bbf",
+    "REPORT.md": "175df8e09298984b43307df131dd57a945f649a382fe71cfe7f4b56286f1ee83",
+    "CAPTIONS.md": "3b88c7dfadf8a721e0cef328ca0ac665d4ec3eb2c0de20f84ef12c4bc7859b2b",
+    "figures/fig01_corrected_region_map.png": "f47147709d53987a5b04a9ea885b8b466a7e3551712cf2ac3bd51fbf7ec7471d",
+    "figures/fig02_legacy_basin_map.png": "7e64c0b2382b435512f53b838918dc0d8d20b004fe47c0b27156c72834ad3700",
+    "figures/fig03_changed_nodes_map.png": "ddc2f9ca57e73996cf96edd982cac39a2682e701576b536658b00381567b1ce7",
+    "figures/fig04_japan_corrected_map.png": "58862f3a08a43b83ecf49f7390ff93e3469ef3bbd055720e2953a0ec7f85af91",
+    "figures/fig05_confusion_matrix.png": "54551c412aba5039abfe92ef01d9419d628f8bbc0eb9b581f72afa3255f6133e",
+    "figures/fig06_region_node_counts.png": "2ed27487c2dfe062ac019a7220e80fbf1ecb8ac28d2edad8b1ced82d2d8f2419",
+    "figures/fig07_unresolved_nodes.png": "5604bd6abd9bbc127ee8e141e7de27d5c473b35de4f29aab0b30f77f41d06c68",
+    "figures/fig08_shared_boundary_nodes.png": "333e0fc44beea4d565d69a000a19c94f54e021f96dde335c39b00d04d94bd43c",
+    "tables/table01_region_node_counts.csv": "574b05f7edab32609d9b5be2d41f35a3a0f95cf474888601cf89c607c7e64fdf",
+    "tables/table02_legacy_new_confusion.csv": "0572f002d09f44432d01d07303afbc843ed746cef5dd99ca52e70e4a2cd2609b",
+    "tables/table03_boundary_fixtures.csv": "4a23a80004bbb945811b0b99cbfc799c382cbe0f9d6d5032e67485ca0d5274db",
+    "tables/table04_unresolved_blocks.csv": "9859a3b3541060ded15e59efc3b14cf267646e0cdab0aa76cef614a67ac56fc1",
+    "tables/table05_shared_boundary_blocks.csv": "f7974623fd6a0ed0a3adf4a74e976fd0de8cd85c636a070851f2fd2bcd4c6fc8",
+    "tables/table06_macro_basin_counts.csv": "84a08f2707546ab97fc93ee36e062abbddb1c46d3b0548bb32ddf76a38157979",
+    "tables/table07_changed_fraction_by_region.csv": "420384be856085fa99ce35a4d5437f2726566045f65e95ed46b776fb5767746d",
+    "tables/table08_source_and_policy.csv": "5a47c882bb8f48913163de84a84d423d89e1fe2359889412cbe3a4680c477180"
+  },
+  "archive_builder_sha256": "b499ca97a20ab5bf26de4427946a5b739958980d1d24e5dc543dc382f9fd4a36",
+  "analysis_script_sha256": "b499ca97a20ab5bf26de4427946a5b739958980d1d24e5dc543dc382f9fd4a36",
+  "source_artifacts_sha256": {
+    "configs/frozen/ocean_region_provenance_v2.5.in": "ccf745bfa051fa762c858f1c169ccc56a64e5d6ba176343e931823f5e9e79dda",
+    "C:\\backup\\phd\\data\\raw\\marine_regions\\GOaS_v1_20211214_simplified_0p005deg.geojson": "920dad2f8742401cd309fc7763c563f2006fb2fec1be0571bf911a963dc46d74",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_4\\recad_v2_release_v2.4\\products\\ReCAD_v2.4_fCO2_1993_2025.nc": "be0b4ef9cb0de60ab9053323adae9abda7be74b97fce6f907f8782c2bbd0360b",
+    "C:\\backup\\phd\\data\\processed\\recad_v2_5\\p2_ocean_region_provenance_v2.5\\ocean_region_provenance_v2.5.nc": "542cff523e169f269e8248b4bd68858a2a3bae102b10ab15ba3b1942d4f4c6f4"
+  }
+}

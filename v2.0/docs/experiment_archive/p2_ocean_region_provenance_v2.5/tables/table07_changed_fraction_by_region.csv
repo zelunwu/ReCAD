@@ -1,0 +1,12 @@
+ocean_region_id,nodes,changed,region,changed_fraction
+-1,3741,3741,Unresolved,1.0
+0,226384,22070,Arctic Ocean,0.0974892218531345
+1,113681,0,Southern Ocean,0.0
+2,105180,29582,North Atlantic Ocean,0.2812511884388667
+3,43163,12739,South Atlantic Ocean,0.29513703866737717
+4,109929,32008,North Pacific Ocean,0.29116975502369713
+5,78759,7689,South Pacific Ocean,0.0976269378737668
+6,100102,2739,Indian Ocean,0.02736209066751913
+7,19599,9,Mediterranean Region,0.00045920710240318386
+8,4051,4051,Baltic Sea,1.0
+9,34072,34072,South China and Eastern Archipelagic Seas,1.0
