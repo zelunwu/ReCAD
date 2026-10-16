@@ -529,9 +529,9 @@ def build_archive(
         "analysis_script_sha256": sha256_tracked_text(Path(__file__)),
         "source_artifacts_sha256": {
             str(config.relative_to(ROOT)).replace("\\", "/"): sha256_tracked_text(config),
-            str(geometry): sha256(geometry),
-            str(product): sha256(product),
-            str(output_product): sha256(output_product),
+            str(geometry).replace("\\", "/"): sha256(geometry),
+            str(product).replace("\\", "/"): sha256(product),
+            str(output_product).replace("\\", "/"): sha256(output_product),
         },
     }
     write_utf8_lf(ARCHIVE / "archive_manifest.json", json.dumps(manifest, indent=2) + "\n")

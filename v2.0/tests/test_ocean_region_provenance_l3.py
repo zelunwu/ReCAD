@@ -6,16 +6,14 @@ from pathlib import Path
 
 import pytest
 
-from recad.data.ocean_regions import load_ocean_region_contract, sha256
+from recad.data.ocean_regions import load_ocean_region_contract
 
 pytestmark = pytest.mark.l3
 
 ROOT = Path(__file__).parents[1]
 CONFIG = ROOT / "configs" / "frozen" / "ocean_region_provenance_v2.5.in"
 ARCHIVE = ROOT / "docs" / "experiment_archive" / "p2_ocean_region_provenance_v2.5"
-GEOMETRY = Path(
-    "C:/backup/phd/data/raw/marine_regions/GOaS_v1_20211214_simplified_0p005deg.geojson"
-)
+GEOMETRY_KEY = "C:/backup/phd/data/raw/marine_regions/GOaS_v1_20211214_simplified_0p005deg.geojson"
 
 
 def tracked_text_sha256(path: Path) -> str:
@@ -35,6 +33,7 @@ def test_frozen_regions_are_stable_reporting_provenance_only() -> None:
 
 
 def test_archive_records_canonical_hashes_and_label_free_scope() -> None:
+    contract = load_ocean_region_contract(CONFIG)
     manifest = json.loads((ARCHIVE / "archive_manifest.json").read_text(encoding="utf-8"))
     assert manifest["locked_test_opened"] is False
     assert manifest["external_independent_opened"] is False
@@ -42,6 +41,6 @@ def test_archive_records_canonical_hashes_and_label_free_scope() -> None:
     script = ROOT / "scripts" / "run_ocean_region_provenance.py"
     assert manifest["archive_builder_sha256"] == tracked_text_sha256(script)
     assert manifest["analysis_script_sha256"] == tracked_text_sha256(script)
-    assert manifest["source_artifacts_sha256"][str(GEOMETRY)] == sha256(GEOMETRY)
+    assert manifest["source_artifacts_sha256"][GEOMETRY_KEY] == contract.simplified_sha256
     assert len(manifest["figure_captions"]) == 8
     assert len(manifest["figure_source_data"]) == 8
