@@ -16,10 +16,14 @@ import pandas as pd
 import psutil
 import torch
 
-from recad.evaluate.benchmark_backends import TABULAR_FAMILIES
+from recad.evaluate.benchmark_backends import PATCH_FAMILIES, TABULAR_FAMILIES
 from recad.evaluate.benchmark_contract import (
     assess_empirical_convergence,
     load_benchmark_contract,
+)
+from recad.evaluate.benchmark_patch_targets import (
+    fit_patch_target_estimator,
+    predict_patch_target_estimator,
 )
 from recad.evaluate.benchmark_search import (
     canonical_parameters,
@@ -29,6 +33,7 @@ from recad.evaluate.benchmark_search import (
     suggest_parameters,
 )
 from recad.evaluate.benchmark_targets import fit_target_estimator, predict_target_estimator
+from recad.evaluate.coastal_patches import CoastalPatchMemmap
 from recad.evaluate.model_zoo import group_equal_rmse
 from run_p2_model_zoo_v2_4 import prepare_split
 from run_p2_validation_repair_v2_4 import (
@@ -44,6 +49,7 @@ OUTPUT = Path(r"C:\backup\phd\data\processed\recad_v2_5\p2_model_family_benchmar
 SEARCH_ROOT = OUTPUT / "search"
 PARTITIONS = OUTPUT / "partitions"
 RESOURCES = OUTPUT / "resources"
+PATCH_CACHE = OUTPUT / "patch_cache"
 PROTOCOL_MAP = {
     "cruise": "whole_cruise",
     "geographic": "buffered_geographic",
@@ -78,15 +84,24 @@ def score(
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     started = time.perf_counter()
-    model = fit_target_estimator(
-        family,
-        parameters,
-        target,
-        train,
-        features_for(target),
-        seed=seed,
-    )
-    prediction = predict_target_estimator(model, validation)
+    if family in PATCH_FAMILIES:
+        cache = CoastalPatchMemmap(PATCH_CACHE)
+        model = fit_patch_target_estimator(family, parameters, target, train, cache, seed=seed)
+        prediction = predict_patch_target_estimator(model, validation, cache)
+        direct = model.direct
+        residual = model.residual
+    else:
+        model = fit_target_estimator(
+            family,
+            parameters,
+            target,
+            train,
+            features_for(target),
+            seed=seed,
+        )
+        prediction = predict_target_estimator(model, validation)
+        direct = model.direct.model
+        residual = model.residual.model if model.residual else None
     elapsed = time.perf_counter() - started
     objective = group_equal_rmse(validation, prediction)
     resources = {
@@ -95,11 +110,9 @@ def score(
         "peak_gpu_bytes": int(torch.cuda.max_memory_allocated())
         if torch.cuda.is_available()
         else 0,
-        "device": model.direct.model.device,
-        "parameter_count": model.direct.model.parameter_count
-        + (model.residual.model.parameter_count if model.residual else 0),
-        "updates": model.direct.model.updates
-        + (model.residual.model.updates if model.residual else 0),
+        "device": direct.device,
+        "parameter_count": direct.parameter_count + (residual.parameter_count if residual else 0),
+        "updates": direct.updates + (residual.updates if residual else 0),
     }
     del model
     gc.collect()
@@ -385,15 +398,27 @@ def run_outer_seeds(
         if destination.is_file():
             continue
         started = time.perf_counter()
-        model = fit_target_estimator(
-            family,
-            parameters,
-            target,
-            model_fit,
-            features_for(target),
-            seed=stable_seed(target, scheme, fold, family, seed),
-        )
-        prediction = predict_target_estimator(model, query)
+        if family in PATCH_FAMILIES:
+            cache = CoastalPatchMemmap(PATCH_CACHE)
+            model = fit_patch_target_estimator(
+                family,
+                parameters,
+                target,
+                model_fit,
+                cache,
+                seed=stable_seed(target, scheme, fold, family, seed),
+            )
+            prediction = predict_patch_target_estimator(model, query, cache)
+        else:
+            model = fit_target_estimator(
+                family,
+                parameters,
+                target,
+                model_fit,
+                features_for(target),
+                seed=stable_seed(target, scheme, fold, family, seed),
+            )
+            prediction = predict_target_estimator(model, query)
         held_prediction = prediction[len(calibration) :]
         output = held[
             [
@@ -444,7 +469,7 @@ def main() -> None:
     parser.add_argument("--target", choices=("SSS", "fCO2"), required=True)
     parser.add_argument("--scheme", choices=tuple(PROTOCOL_MAP), required=True)
     parser.add_argument("--fold", type=int, required=True)
-    parser.add_argument("--family", choices=TABULAR_FAMILIES, required=True)
+    parser.add_argument("--family", choices=(*TABULAR_FAMILIES, *PATCH_FAMILIES), required=True)
     args = parser.parse_args()
     frame = load_frame(args.target)
     split = next(

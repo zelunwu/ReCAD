@@ -4,12 +4,16 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+import torch
+from torch.utils.data import Dataset
 
 from recad.evaluate.benchmark_backends import (
     PATCH_FAMILIES,
     TABULAR_FAMILIES,
+    fit_patch_dataset_estimator,
     fit_patch_estimator,
     fit_tabular_estimator,
+    predict_patch_dataset_estimator,
     predict_patch_estimator,
     predict_tabular_estimator,
 )
@@ -144,4 +148,34 @@ def test_patch_adapters(family: str, parameters: dict[str, object]) -> None:
     model = fit_patch_estimator(family, features, target, parameters, seed=90)
     prediction = predict_patch_estimator(model, features[:5])
     assert prediction.shape == (5,)
+    assert np.isfinite(prediction).all()
+
+
+class PatchDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
+    def __init__(self) -> None:
+        rng = np.random.default_rng(91)
+        self.features = rng.normal(size=(12, 3, 5, 8, 8)).astype("float32")
+        self.target = rng.normal(size=12).astype("float32")
+
+    def __len__(self) -> int:
+        return len(self.target)
+
+    def __getitem__(self, index: int) -> tuple[torch.Tensor, torch.Tensor]:
+        return torch.from_numpy(self.features[index]), torch.tensor(self.target[index])
+
+
+@pytest.mark.l1
+def test_streaming_patch_adapter() -> None:
+    dataset = PatchDataset()
+    parameters = {
+        "base_channels": 4,
+        "depth": 2,
+        "dropout": 0.0,
+        "learning_rate": 1e-3,
+        "epochs": 1,
+        "batch_size": 4,
+    }
+    model = fit_patch_dataset_estimator("unet_convlstm", dataset, parameters, seed=91)
+    prediction = predict_patch_dataset_estimator(model, dataset, batch_size=4)
+    assert prediction.shape == (12,)
     assert np.isfinite(prediction).all()

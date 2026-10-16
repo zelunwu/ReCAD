@@ -1,4 +1,4 @@
-"""Resume every tabular cell in the Issue 89 global benchmark."""
+"""Resume every model-family cell in the Issue 89 global benchmark."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from recad.evaluate.benchmark_backends import TABULAR_FAMILIES
+from recad.evaluate.benchmark_backends import PATCH_FAMILIES, TABULAR_FAMILIES
 from run_p2_validation_repair_v2_4 import cached_splits, load_frame
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +27,8 @@ ORDER = (
     "tabm",
     "ft_transformer",
     "tabpfn_3",
+    "unet_convlstm",
+    "vision_transformer",
 )
 
 
@@ -55,6 +57,8 @@ def complete(target: str, scheme: str, fold: int, family: str) -> bool:
             "tabm",
             "ft_transformer",
             "tabpfn_3",
+            "unet_convlstm",
+            "vision_transformer",
         }
         else (89001, 89002, 89003)
     )
@@ -67,8 +71,8 @@ def complete(target: str, scheme: str, fold: int, family: str) -> bool:
 
 
 def main() -> None:
-    if set(ORDER) != set(TABULAR_FAMILIES):
-        raise RuntimeError("pipeline order drifted from the frozen tabular family set")
+    if set(ORDER) != set(TABULAR_FAMILIES) | set(PATCH_FAMILIES):
+        raise RuntimeError("pipeline order drifted from the frozen family set")
     log_path = OUTPUT / "tabular_pipeline.log"
     status_path = OUTPUT / "tabular_pipeline.status.json"
     license_failure = OUTPUT / "entry_gate/tabpfn_3.json"
@@ -142,7 +146,7 @@ def main() -> None:
         status_path,
         {"status": "complete", "families": list(ORDER), "finished_utc": utc_now()},
     )
-    (OUTPUT / "tabular_pipeline.complete").write_text("complete\n", encoding="utf-8")
+    (OUTPUT / "model_pipeline.complete").write_text("complete\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

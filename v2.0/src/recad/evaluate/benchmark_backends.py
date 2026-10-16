@@ -21,7 +21,7 @@ from sklearn.ensemble import (
 )
 from sklearn.linear_model import Ridge
 from torch import nn
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader, Dataset, TensorDataset
 
 from recad.evaluate.model_zoo import FTTransformer, ResidualMLP
 
@@ -507,3 +507,101 @@ def predict_patch_estimator(model: BenchmarkEstimator, values: np.ndarray) -> np
             result.append(model.estimator(batch).detach().cpu().numpy())
     prediction = np.concatenate(result) * model.target_scale + model.target_mean
     return np.asarray(prediction, dtype=np.float32).reshape(-1)
+
+
+def fit_patch_dataset_estimator(
+    family: str,
+    dataset: Dataset[tuple[torch.Tensor, torch.Tensor]],
+    parameters: dict[str, Any],
+    *,
+    seed: int,
+) -> BenchmarkEstimator:
+    """Fit a patch model from a streaming dataset without materializing all patches."""
+
+    if family not in PATCH_FAMILIES or not len(dataset):
+        raise ValueError("streaming patch training needs a non-empty registered family dataset")
+    example, _ = dataset[0]
+    channels = int(example.shape[1])
+    if family == "unet_convlstm":
+        model: nn.Module = UNetConvLSTMRegressor(
+            channels,
+            int(parameters["base_channels"]),
+            int(parameters["depth"]),
+            float(parameters["dropout"]),
+        )
+    else:
+        model = VisionTransformerRegressor(
+            channels,
+            int(parameters["width"]),
+            int(parameters["depth"]),
+            int(parameters["heads"]),
+            float(parameters["dropout"]),
+        )
+    _seed_all(seed)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    target_values = np.asarray(dataset.target, dtype=np.float32)
+    target_mean = float(target_values.mean())
+    target_scale = max(float(target_values.std()), 1e-6)
+    loader = DataLoader(
+        dataset,
+        batch_size=int(parameters.get("batch_size", 64)),
+        shuffle=True,
+        generator=torch.Generator().manual_seed(seed),
+        num_workers=0,
+        pin_memory=device == "cuda",
+    )
+    model = model.to(device)
+    optimizer = torch.optim.AdamW(
+        model.parameters(),
+        lr=float(parameters["learning_rate"]),
+        weight_decay=float(parameters.get("weight_decay", 1e-4)),
+    )
+    updates = 0
+    model.train()
+    for _ in range(int(parameters["epochs"])):
+        for features, target in loader:
+            features = features.to(device, non_blocking=True)
+            target = ((target - target_mean) / target_scale).to(device, non_blocking=True)
+            optimizer.zero_grad(set_to_none=True)
+            loss = nn.functional.mse_loss(model(features), target)
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), 5.0)
+            optimizer.step()
+            updates += 1
+    return BenchmarkEstimator(
+        family=family,
+        estimator=model,
+        target_mean=target_mean,
+        target_scale=target_scale,
+        device=device,
+        parameter_count=sum(parameter.numel() for parameter in model.parameters()),
+        updates=updates,
+    )
+
+
+def predict_patch_dataset_estimator(
+    model: BenchmarkEstimator,
+    dataset: Dataset[tuple[torch.Tensor, torch.Tensor]],
+    *,
+    batch_size: int = 256,
+) -> np.ndarray:
+    """Predict a streaming patch dataset in deterministic order."""
+
+    if model.family not in PATCH_FAMILIES or not isinstance(model.estimator, nn.Module):
+        raise ValueError("model is not a fitted streaming patch estimator")
+    loader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=0,
+        pin_memory=model.device == "cuda",
+    )
+    result = []
+    model.estimator.eval()
+    with torch.inference_mode():
+        for features, _ in loader:
+            result.append(
+                model.estimator(features.to(model.device, non_blocking=True)).cpu().numpy()
+            )
+    prediction = np.concatenate(result) * model.target_scale + model.target_mean
+    return np.asarray(prediction, dtype=np.float32)
