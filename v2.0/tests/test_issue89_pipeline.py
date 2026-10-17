@@ -65,3 +65,25 @@ def test_non_memory_failure_remains_actionable(
 
     assert not controller.preserve_resource_failure("SSS", "cruise", 0, "extra_trees")
     assert not controller.complete("SSS", "cruise", 0, "extra_trees")
+
+
+def test_windows_resource_exhaustion_is_preserved(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    controller = load_controller()
+    monkeypatch.setattr(controller, "OUTPUT", tmp_path)
+    failure = tmp_path / "failures/SSS_forward_fold1_extra_trees.json"
+    failure.parent.mkdir(parents=True)
+    failure.write_text(
+        json.dumps(
+            {
+                "error_type": "OSError",
+                "error": "[WinError 1450] Insufficient system resources",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert controller.preserve_resource_failure("SSS", "forward", 1, "extra_trees")
+    assert controller.complete("SSS", "forward", 1, "extra_trees")

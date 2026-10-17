@@ -87,7 +87,13 @@ def preserve_resource_failure(
     if not failure.is_file():
         return False
     payload = json.loads(failure.read_text(encoding="utf-8"))
-    if payload.get("error_type") != "MemoryError":
+    error_type = payload.get("error_type")
+    error_text = str(payload.get("error", "")).lower()
+    resource_exhausted = error_type == "MemoryError" or (
+        error_type == "OSError"
+        and ("winerror 1450" in error_text or "system resources" in error_text)
+    )
+    if not resource_exhausted:
         return False
     write_json(
         OUTPUT / "family_status" / f"{target}_{scheme}_fold{fold}_{family}.json",
@@ -98,7 +104,7 @@ def preserve_resource_failure(
             "family": family,
             "status": "resource_infeasible",
             "advancement_eligible": False,
-            "reason": "full_fidelity_memory_exhausted",
+            "reason": "full_fidelity_system_resources_exhausted",
             "failure": str(failure),
             "search_space_changed": False,
             "partial_trials_preserved": True,
